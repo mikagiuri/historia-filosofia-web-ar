@@ -2137,6 +2137,63 @@ ol.itin-temas li.temas-extra .temas-t{font-size:.95rem;color:var(--muted)}
 @media print{ #nudos .nud-noprint, #nudos .nud-guia, #nudos .nud-mods{ display:none } #nudos .nud-card{ border-color:#bbb } }
 
 
+/* ==== css/adagios.css ==== */
+/* «Adagios» (09-10, Bachillerato): repertorio de lemas clásicos al modo de los lugares comunes del Renacimiento (adagiosview.js) */
+#adagios .adg-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(min(19rem, 100%), 1fr)); gap:14px; margin-top:14px }
+#adagios .adg-card{ background:var(--surface); border:1px solid var(--line); border-inline-start:4px solid var(--e, var(--accent)); border-radius:12px;
+  padding:16px 18px 14px; display:flex; flex-direction:column; gap:.45rem; box-shadow:var(--shadow); line-height:1.5; scroll-margin-top:90px; transition:box-shadow .3s }
+#adagios .adg-card.adg-marca{ box-shadow:0 0 0 3px var(--accent) }
+#adagios .adg-es{ font-family:var(--serif, Georgia, serif); font-size:1.25rem; font-weight:600; line-height:1.3; margin:0; color:var(--ink) }
+#adagios .adg-orig{ display:flex; flex-direction:column; gap:.3rem; padding:.45rem .7rem; background:var(--surface-2); border-radius:8px }
+#adagios .adg-orig[hidden]{ display:none }
+#adagios .adg-la{ margin:0 }
+#adagios .adg-la i{ font-family:var(--serif, Georgia, serif); font-size:1.08rem }
+#adagios .adg-lam{ display:inline-flex; align-items:center; justify-content:center; width:1.55em; height:1.55em; margin-inline-start:.45em; vertical-align:.1em; padding:0;
+  border:1px solid var(--line); border-radius:50%; background:var(--surface-2); color:var(--muted); font:600 13px var(--serif); font-style:normal; line-height:1; cursor:pointer }   /* como el λ del glosario */
+#adagios .adg-lam:hover, #adagios .adg-lam[aria-expanded="true"]{ background:var(--accent); border-color:var(--accent); color:var(--on-accent, #fff) }
+#adagios .adg-gr{ margin:0; font-size:.95rem }
+#adagios .adg-gr [lang="grc"]{ font-family:"Noto Serif", "Times New Roman", "Palatino Linotype", serif }   /* la serif de la web no trae griego politónico: separaba los acentos */
+#adagios .adg-ilu{ font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:3px }
+#adagios .adg-ilu:hover{ color:var(--accent); text-decoration-style:solid }
+#adagios .adg-cuerpo{ display:flex; flex-direction:column; gap:.45rem }
+#adagios .adg-cuerpo p{ margin:0 }
+#adagios .adg-k{ font-weight:600; color:var(--e, var(--accent)) }
+#adagios .adg-uso{ font-size:.95rem }
+#adagios .adg-o{ font-size:.86rem; color:var(--muted); margin-top:auto }
+#adagios .adg-trampa{ font-size:.95rem; background:var(--surface-2); border-radius:8px; padding:.5rem .7rem }
+#adagios .adg-trampa strong{ color:var(--accent) }
+#adagios .adg-temas{ display:flex; flex-wrap:wrap; gap:.35rem; align-items:center; font-size:.86rem }
+#adagios .adg-tema{ font:inherit; font-size:.82rem; background:none; border:1px solid var(--line); border-radius:999px; padding:.15rem .6rem; color:var(--ink);
+  cursor:pointer; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+#adagios .adg-tema:hover{ border-color:var(--accent); color:var(--accent) }
+#adagios .adg-ayuda{ margin:0; font-size:.9rem; color:var(--muted) }
+#adagios .adg-desc{ align-self:flex-start; font:inherit; font-weight:600; background:var(--accent); color:var(--on-accent, #fff); border:0; border-radius:999px; padding:.3rem .9rem; cursor:pointer }
+#adagios .adg-oculta .adg-cuerpo{ display:none }
+#adagios .adg-card:not(.adg-oculta) .adg-ayuda{ display:none }
+#adagios .adg-cuenta{ color:var(--muted); font-size:13px; margin:10px 0 18px }
+#adagios .adg-guia{ max-width:62rem; margin:0 0 1rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); line-height:1.55 }
+#adagios .adg-guia > summary{ cursor:pointer; padding:.6rem .9rem; font-weight:600; color:var(--accent) }
+#adagios .adg-guia[open] > summary{ border-bottom:1px solid var(--line) }
+#adagios .adg-guia > :not(summary){ margin-inline-start:.9rem; margin-inline-end:.9rem }
+#adagios .adg-guia h3{ font-size:1rem; margin-top:.9rem; margin-bottom:.3rem }
+#adagios .adg-guia ol{ padding-inline-start:1.4rem }
+#adagios .adg-guia li{ margin:.35rem 0 }
+#adagios .adg-ej{ margin:.5rem 0; padding:.5rem .7rem; background:var(--surface-2); border-radius:8px; font-size:.95rem }
+#adagios .adg-guia > :last-child{ margin-bottom:.9rem }
+@media print{ #adagios .adg-desc, #adagios .adg-ayuda{ display:none } #adagios .adg-oculta .adg-cuerpo{ display:flex } #adagios .adg-lam{ display:none } #adagios .adg-orig[hidden]{ display:flex } }
+/* (09-10) imagen de cada adagio (dominio público; créditos en recursos/imagenes_museos/adagios/) */
+#adagios .adg-fig{ margin:-16px -18px .3rem; border-radius:11px 11px 0 0; overflow:hidden; background:var(--surface-2) }
+#adagios .adg-fig img{ display:block; width:100%; height:190px; object-fit:cover; object-position:50% 30% }
+#adagios .adg-fig-c img{ object-fit:contain; padding:6px }
+#adagios .adg-fig figcaption{ font-size:.78rem; line-height:1.35; color:var(--muted); padding:.35rem .9rem .1rem }
+#adagios .adg-mont{ display:flex; flex-wrap:wrap; gap:1rem; align-items:flex-end; margin-top:.6rem }
+#adagios .adg-mont figure{ margin:0; flex:1 1 14rem; max-width:20rem }
+#adagios .adg-mont img{ display:block; width:100%; height:auto; border-radius:8px; background:#fff }
+#adagios .adg-mont figcaption{ font-size:.82rem; color:var(--muted); margin-top:.3rem }
+@media print{ #adagios .adg-fig img{ height:140px } }
+#adagios .adg-guia p{ margin-block:.5rem }
+
+
 /* ==== css/retratos.css ==== */
 /* ===== Retratos de museo integrados en la teoría ===== usa los tokens de styles.css ===== */
 .museo-strip{ margin:2.4rem 0 .5rem; padding-top:1.2rem; border-top:1px solid var(--line); }

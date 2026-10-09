@@ -177,7 +177,7 @@ const GALERIA_RETRATOS2 = [
  },
  {
   "f": "media/retratos/museo2/bacon.jpg",
-  "t": "Francis Bacon",
+  "t": "فرنسيس بيكون",
   "pie": "British (English) School - Portrait of an Unknown Man (called 'Sir Francis Bacon, 1561–1626, Viscount St Albans') - 1210310 - National Trust · anonymous · Public Domain · Wikimedia Commons",
   "bloque": "B",
   "unidad": "Retrato · museo (dominio público)",
@@ -193,7 +193,7 @@ const GALERIA_RETRATOS2 = [
  },
  {
   "f": "media/retratos/museo2/hobbes.jpg",
-  "t": "Hobbes",
+  "t": "هوبز",
   "pie": "Portrait of Thomas Hobbes Malmesburiensis (4670898) · Unknown authorUnknown author · Public Domain · Wikimedia Commons",
   "bloque": "B",
   "unidad": "Retrato · museo (dominio público)",
@@ -201,7 +201,7 @@ const GALERIA_RETRATOS2 = [
  },
  {
   "f": "media/retratos/museo2/leibniz.jpg",
-  "t": "Leibniz",
+  "t": "لايبنتز",
   "pie": "Christoph Bernhard Francke - Bildnis des Philosophen Leibniz (ca. 1695) · Christoph Bernhard Francke · Public Domain · Wikimedia Commons",
   "bloque": "B",
   "unidad": "Retrato · museo (dominio público)",
@@ -323,7 +323,7 @@ const GALERIA_RETRATOS2 = [
  },
  {
   "f": "media/retratos/museo2/heidegger.jpg",
-  "t": "Heidegger",
+  "t": "هايدغر",
   "pie": "Freiburg, Zähringen- Jahnhalle, Prof. Martin Heidegger während eines Vortrags - LABW - Staatsarchiv Freiburg W 134 Nr. 023740f · Willy Pragher · CC BY 4.0 · Wikimedia Commons",
   "page": "https://commons.wikimedia.org/wiki/File:Freiburg,_Z%C3%A4hringen-_Jahnhalle,_Prof._Martin_Heidegger_w%C3%A4hrend_eines_Vortrags_-_LABW_-_Staatsarchiv_Freiburg_W_134_Nr._023740f.jpeg",
   "bloque": "C",

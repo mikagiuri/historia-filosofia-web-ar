@@ -24,7 +24,7 @@
     temas: "المواضيع", unidades: "الوحدات", tema: "الموضوع {n}", unidad: "الوحدة {n}",
     seguir: "لمواصلة هذا الموضوع", tarjetas: "بطاقات", cuestionarios: "اختبارات", infografias: "إنفوغرافيك", mapas: "خرائط المفاهيم",
     esquemas: "خطاطات", lecturas: "قراءات", comentarios: "شروح النصوص", dilemas: "معضلات أخلاقية", pistas: "تلميحات متدرجة", conceptos: "المفاهيم",
-    nTarjetas: "{n} بطاقات", nPreguntas: "{n} أسئلة", anterior: "الموضوع السابق", siguienteTema: "الموضوع التالي", anexos: "Exploraciones", volverTema: "العودة إلى الموضوع",
+    nTarjetas: "{n} بطاقات", nPreguntas: "{n} أسئلة", anterior: "الموضوع السابق", siguienteTema: "الموضوع التالي", anexos: "استكشافات", volverTema: "العودة إلى الموضوع",
     infografia: "إنفوغرافيك", mapa: "خريطة", esquema: "خطاطة", lectura: "قراءة", dilema: "معضلة", comentario: "شرح",
     pau: "مسار PAU", pauLead: "استعدوا لـ PAU بالترتيب: أولًا كيف هو الامتحان، ثم كل تمرين، وفي النهاية التدرب حسب المواضيع.",
     pau1: "كيف هو الامتحان", pau2: "التمرين 1 · شرح النص", pau3: "التمرين 2 · المقالة الفلسفية",

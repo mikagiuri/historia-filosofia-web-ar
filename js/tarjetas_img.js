@@ -1295,7 +1295,7 @@ const TARJETAS_IMG = {
  "feRazon|Émanation": "emanacion",
  "feRazon|Illumination": "iluminacion",
  "feRazon|Cinq voies": "cinco_vias",
- "feRazon|Rasoir d'Ockham": "navaja_de_ockham",
+ "feRazon|Rasoir d'أوكام": "navaja_de_ockham",
  "feRazon|Vérité surnaturelle": "verdad_sobrenatural",
  "feRazon|Vérité naturelle": "verdad_natural",
  "feRazon|Loi naturelle": "ley_natural",

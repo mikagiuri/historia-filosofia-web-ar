@@ -149,6 +149,10 @@
     if (typeof CITAS !== "undefined" && CITAS && document.getElementById("citas")) CITAS.forEach(function(c){
       if (c && c.c) add(out, { type: "اقتباس", label: strip(c.c), meta: c.a || "", go: "citas", arg: null, text: strip(c.o || ""), find: strip(c.c).slice(0, 60) });
     });
+    /* adagios (09-10) */
+    if (typeof ADAGIOS !== "undefined" && ADAGIOS && document.getElementById("adagios")) ADAGIOS.forEach(function(a){
+      if (a && a.es) add(out, { type: "مأثورة", label: a.es, meta: "", go: "adagios", arg: a.id, text: strip(a.la + " " + (a.sen || "") + " " + (a.o || "")), find: a.es.slice(0, 60) });   // el latín, solo tras λ: se busca pero no se muestra
+    });
     index = out;
     return out;
   }

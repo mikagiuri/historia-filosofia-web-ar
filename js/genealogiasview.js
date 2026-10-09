@@ -94,7 +94,7 @@ function genSvg(){
   return s + '</svg>';
 }
 /* nombre corto para la estación: sin «de …»/«-koa» largos si pasa de 18 caracteres */
-const GEN_CORTO = { ockham: "Ockham", lamettrie: "La Mettrie", ortega: "Ortega y Gasset" };   // donde la regla falla
+const GEN_CORTO = { ockham: "أوكام", lamettrie: "La Mettrie", ortega: "Ortega y Gasset" };   // donde la regla falla
 function genShort(n, id){
   if (GEN_CORTO[id]) return GEN_CORTO[id];
   if (n.length <= 18) return n;

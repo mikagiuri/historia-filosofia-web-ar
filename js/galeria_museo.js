@@ -182,7 +182,7 @@ const GALERIA_MUSEO = [
  },
  {
   "f": "media/retratos/museo/spinoza.jpg",
-  "t": "Spinoza",
+  "t": "اسبينوزا",
   "pie": "Spinoza · Public Domain · Wikimedia Commons",
   "bloque": "B",
   "unidad": "Medieval-Moderna · museo (dominio público)",
@@ -222,7 +222,7 @@ const GALERIA_MUSEO = [
  },
  {
   "f": "media/retratos/museo/kant.jpg",
-  "t": "Kant",
+  "t": "كانط",
   "pie": "Immanuel Kant Gemaelde 1 · Johann Gottlieb Becker (1720-1782) · Public Domain · Wikimedia Commons",
   "bloque": "C",
   "unidad": "Contemporánea · museo (dominio público)",
