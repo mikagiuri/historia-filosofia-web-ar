@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>الصفحة غير موجودة · Página no encontrada</title>
+<script>
+// GitHub Pages sirve este 404.html para cualquier ruta inexistente: vuelve a index.html conservando el hash
+// (las secciones de la web son rutas hash, p. ej. #tarjetas). Sin hash, un único tramo de ruta (…/tarjetas)
+// se convierte en hash (#tarjetas); index.html muestra su propio aviso si la sección no existe.
+(function(){
+  var base = "/historia-filosofia-web-ar/", h = location.hash;
+  if (!h) { var rest = location.pathname.indexOf(base) === 0 ? location.pathname.slice(base.length).replace(/\/+$/, "") : "";
+    if (/^[a-z0-9_-]+$/i.test(rest) && rest !== "index.html") h = "#" + rest; }
+  location.replace(base + h);
+})();
+</script>
+<style>
+:root{color-scheme:light dark}
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:#f0ece3;color:#1d1f27;font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:16px;box-sizing:border-box}
+main{max-width:34rem;text-align:center}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:600;font-size:1.5rem;margin:0 0 .5rem}
+p{margin:.25rem 0}
+.b{color:#5f6270}
+a{display:inline-block;margin-top:1rem;color:inherit;font-weight:600}
+@media (prefers-color-scheme: dark){body{background:#141519;color:#e8e6e1}.b{color:#a3a3b0}}
+</style>
+</head>
+<body>
+<main>
+<h1>الصفحة غير موجودة</h1>
+<p>هذا العنوان غير موجود. نعيدكم إلى الصفحة الرئيسية…</p>
+<p class="b" lang="es">Esta dirección no existe. Te llevamos al inicio de la web…</p>
+<a href="/historia-filosofia-web-ar/">الذهاب إلى الصفحة الرئيسية · <span lang="es">Ir al inicio</span></a>
+</main>
+</body>
+</html>

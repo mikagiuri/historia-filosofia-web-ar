@@ -1,0 +1,18 @@
+/* (09-10) Web en árabe: lo añade i18n_rebuild.js después de css/bundle.css (con <html dir="rtl">).
+   La maquetación se voltea sola porque las hojas usan propiedades lógicas (margin-inline-start…).
+   Aquí solo: tipografía árabe y aislamiento de los párrafos que sigan en castellano o lleven texto latino. */
+:root{
+  --serif:"Noto Naskh Arabic","Spectral",Georgia,"Times New Roman",serif;
+  --sans:"Noto Sans Arabic","IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  --mono:"IBM Plex Mono","Noto Sans Arabic",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+/* rótulos «الموضوع N» en una sola línea (la fuente mono no tiene árabe y la palabra es más larga que «Tema») */
+.temas-n{white-space:nowrap;font-size:.72rem}
+body{line-height:1.75}
+h1,h2,h3,h4{line-height:1.45;letter-spacing:0}
+/* cada bloque toma la dirección de su primer carácter fuerte: un segmento aún sin traducir se lee LTR */
+p,li,dd,dt,td,th,blockquote,figcaption,summary,h1,h2,h3,h4,h5,label{unicode-bidi:plaintext}
+/* los rótulos en versalitas no tienen sentido en árabe */
+[class*="kick"],.flabel,table.week thead th{letter-spacing:0;text-transform:none}
+/* código, cifras de rótulos y fórmulas siguen de izquierda a derecha */
+code,kbd,pre,.mono{direction:ltr;unicode-bidi:isolate}

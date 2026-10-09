@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body style="margin:0">
+<title>Duel of Reasons</title>
+<meta name="description" content="A Critical Thinking debate game: a conversation on a topic in which you decide whether to call out your opponent’s fallacy or hit back with a stronger reason, without losing your composure.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Spline+Sans:wght@400;500;600&display=swap">
+<style>
+  /* Layout: a conversation thread with the audience meter and composure at the top, and your two moves below. */
+  :root{
+    --bg:#e8eaf0; --surface:#ffffff; --surface-2:#f1f2f7; --ink:#191d28; --muted:#5a6173;
+    --line:#d3d7e2; --accent:#4356d6; --good:#15806a; --good-ink:#0a4b3e; --bad:#c4362a; --bad-ink:#7c1d16;
+    --warn:#b5691a; --cpu-bubble:#eceef5; --paper:#faf7ef; --paper-line:#e7dfcb; --shadow:0 10px 30px rgba(20,25,45,.12);
+    --fdisp:"Bricolage Grotesque",Georgia,serif; --fbody:"Spline Sans",system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#11141c; --surface:#1a1f2b; --surface-2:#222838; --ink:#e9ebf2; --muted:#9aa2b5;
+    --line:#2d3446; --accent:#8a97f5; --good:#4cc3a3; --good-ink:#b8f0e2; --bad:#f08478; --bad-ink:#ffd6cf;
+    --warn:#e2a15a; --cpu-bubble:#232a39; --paper:#20242f; --paper-line:#333a4c; --shadow:0 10px 30px rgba(0,0,0,.4); color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#11141c; --surface:#1a1f2b; --surface-2:#222838; --ink:#e9ebf2; --muted:#9aa2b5;
+    --line:#2d3446; --accent:#8a97f5; --good:#4cc3a3; --good-ink:#b8f0e2; --bad:#f08478; --bad-ink:#ffd6cf;
+    --warn:#e2a15a; --cpu-bubble:#232a39; --paper:#20242f; --paper-line:#333a4c; --shadow:0 10px 30px rgba(0,0,0,.4); color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--fbody);line-height:1.5;margin:0}
+  .wrap{max-width:720px;margin:0 auto;padding-block:20px;padding-inline:16px}
+  h1,h2,h3{font-family:var(--fdisp);text-wrap:balance;margin:0}
+  button{font-family:var(--fbody);cursor:pointer}
+  .btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;
+    padding:12px 16px;font-size:1rem;font-weight:600;transition:transform .08s,border-color .15s,background .15s;width:100%}
+  .btn:hover{border-color:var(--accent)}
+  .btn:active{transform:translateY(1px)}
+  .btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn-primary:hover{filter:brightness(1.05)}
+  .center{text-align:center}
+
+  .intro{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px 22px;box-shadow:var(--shadow)}
+  .eyebrow{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .intro h1{font-size:clamp(2rem,7vw,3rem);margin:6px 0 10px;line-height:1.02}
+  .lede{color:var(--muted);font-size:1.02rem;max-width:56ch;margin:0 auto}
+  .rules{display:grid;gap:10px;margin:22px 0;text-align:left}
+  .rule{display:flex;gap:12px;align-items:flex-start;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .rule .n{font-family:var(--fdisp);font-weight:800;color:var(--accent);font-size:1.3rem;line-height:1;min-width:1.2em}
+  .rule p{margin:0;font-size:.95rem}
+  .pick{display:grid;gap:10px;margin-top:6px;text-align:left}
+  .pick .btn{width:100%}
+  .pick .sides{display:block;color:var(--muted);font-weight:500;font-size:.82rem;margin-top:3px}
+
+  .hud{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .temple{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 12px;text-align:center;min-width:92px}
+  .temple .who{font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .temple .dots{font-size:1.05rem;letter-spacing:2px;line-height:1.2}
+  .temple.low{border-color:var(--bad)} .temple.low .who{color:var(--bad)}
+  .turnlbl{font-size:.82rem;color:var(--muted);font-weight:600}
+  .turnlbl b{color:var(--ink);font-family:var(--fdisp)}
+
+  .meter-wrap{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:12px}
+  .meter-top{display:flex;justify-content:space-between;font-size:.72rem;font-weight:600;color:var(--muted);margin-bottom:6px}
+  .meter-top .you{color:var(--good)} .meter-top .cpu{color:var(--bad)}
+  .meter{height:12px;border-radius:999px;background:color-mix(in srgb,var(--bad) 35%,var(--surface-2));overflow:hidden;position:relative}
+  .meter .fill{height:100%;background:var(--good);border-radius:999px;transition:width .5s ease}
+  .meter .mid{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--line)}
+
+  .theme-topic{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:12px;font-size:.9rem}
+  .theme-topic b{font-family:var(--fdisp)}
+  .theme-topic .you-side{color:var(--good);font-weight:600}
+
+  .thread{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;max-height:46vh;overflow-y:auto;padding:2px}
+  .bubble{max-width:88%;padding:11px 14px;border-radius:14px;font-size:.98rem;line-height:1.4}
+  .bubble .nm{font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:3px;opacity:.8}
+  .bubble.cpu{align-self:flex-start;background:var(--cpu-bubble);border:1px solid var(--line);border-bottom-left-radius:4px}
+  .bubble.cpu .nm{color:var(--bad)}
+  .bubble.you{align-self:flex-end;background:color-mix(in srgb,var(--good) 14%,var(--surface));border:1px solid color-mix(in srgb,var(--good) 40%,var(--line));border-bottom-right-radius:4px}
+  .bubble.you .nm{color:var(--good-ink)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bubble.you .nm{color:var(--good)}}
+  :root[data-theme="dark"] .bubble.you .nm{color:var(--good)}
+  .bubble.latest{box-shadow:0 0 0 2px color-mix(in srgb,var(--bad) 45%,transparent)}
+
+  .phase-tag{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;font-weight:600;color:var(--accent);
+    background:color-mix(in srgb,var(--accent) 12%,transparent);border-radius:999px;padding:5px 12px;margin-bottom:10px}
+  .phase-tag.hot{color:var(--bad);background:color-mix(in srgb,var(--bad) 13%,transparent)}
+  .choices{display:grid;gap:10px}
+  .choice{text-align:left;line-height:1.3}
+  .choice small{display:block;color:var(--muted);font-weight:500;font-size:.82rem;margin-top:3px}
+  .grid-fal{grid-template-columns:1fr 1fr}
+  @media (max-width:470px){.grid-fal{grid-template-columns:1fr}}
+  .btn-a{border-color:var(--bad)} .btn-a:hover{background:color-mix(in srgb,var(--bad) 10%,transparent)}
+  .btn-b{border-color:var(--accent)} .btn-b:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+  .pips{font-size:.8rem;letter-spacing:1px;color:var(--accent);font-weight:700}
+  .back{background:transparent;border:none;color:var(--muted);font-weight:600;font-size:.85rem;width:auto;padding:4px 2px;cursor:pointer}
+
+  .fb{border-radius:16px;padding:16px;margin-top:4px;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow)}
+  .fb.win{border-color:var(--good);background:color-mix(in srgb,var(--good) 9%,var(--surface))}
+  .fb.lose{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 9%,var(--surface))}
+  .fb.mid{border-color:var(--warn)}
+  .fb .head{font-family:var(--fdisp);font-weight:800;font-size:1.1rem;display:flex;align-items:center;gap:8px}
+  .fb.win .head{color:var(--good-ink)} .fb.lose .head{color:var(--bad-ink)} .fb.mid .head{color:var(--warn)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .fb.win .head{color:var(--good)} :root:not([data-theme="light"]) .fb.lose .head{color:var(--bad)}}
+  :root[data-theme="dark"] .fb.win .head{color:var(--good)} :root[data-theme="dark"] .fb.lose .head{color:var(--bad)}
+  .fb .name{margin-top:7px}
+  .fb .desmonta{margin-top:8px;font-size:.92rem;background:var(--surface-2);border-radius:10px;padding:9px 12px}
+  .fb .desmonta b{color:var(--accent)}
+  .fb .schop{margin-top:8px;font-size:.82rem;color:var(--muted)} .fb .schop b{color:var(--warn)}
+  .fb .delta{font-weight:700;font-family:var(--fdisp)} .fb .delta.pos{color:var(--good)} .fb .delta.neg{color:var(--bad)}
+
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .brand{font-family:var(--fdisp);font-weight:800}
+  .brand .accent{color:var(--accent)}
+  .ghost{background:transparent;border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-size:.82rem;font-weight:600;color:var(--muted);width:auto}
+  .foot{margin-top:18px;text-align:center;font-size:.78rem;color:var(--muted)}
+  .fade{animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.fade{animation:none}}
+  .verdict{font-family:var(--fdisp);font-weight:800;font-size:2rem;margin:6px 0}
+  .verdict.win{color:var(--good)} .verdict.lose{color:var(--bad)} .verdict.tie{color:var(--warn)}
+</style>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">Duel of <span class="accent">Reasons</span></div>
+    <button class="ghost" id="theme">Theme ◐</button>
+  </div>
+  <div id="app"></div>
+  <div class="foot">Critical Thinking · 2nd ESO · IES Martín de Bertendona. The winner isn’t always the one who spots the trick: sometimes it’s the one who hits hardest with reasons.</div>
+</div>
+
+<script>
+/* ---------- The 12 fallacies ---------- */
+const FALACIAS = {
+  persona:{nombre:"Attacking the person", tec:"ad hominem", q:"What does what the person is like have to do with whether their idea is good?"},
+  famoso: {nombre:"A famous person says so", tec:"false authority", q:"Are they a real expert on THIS, or just famous?"},
+  siempre:{nombre:"It’s always been done this way", tec:"appeal to tradition", q:"Does being age-old make it good?"},
+  pena:   {nombre:"Pity instead of reasons", tec:"appeal to pity", q:"Are they giving me a reason, or just trying to make me feel sorry for them?"},
+  deformar:{nombre:"Twisting what you said", tec:"straw man", q:"Did I really say that, or did they exaggerate it so they could attack it?"},
+  pocos:  {nombre:"A few cases, a conclusion about all", tec:"hasty generalisation", q:"How many cases? Does it really hold for everyone?"},
+  causa:  {nombre:"It came after, so it was the cause", tec:"false cause", q:"Is there proof that one causes the other, or do they just come one after the other?"},
+  dos:    {nombre:"There are only two options", tec:"false dilemma", q:"Are you sure there isn’t a single other option?"},
+  miedo:  {nombre:"Scaring you into agreeing", tec:"appeal to fear", q:"Are they giving me a reason, or just frightening me?"},
+  todos:  {nombre:"Everybody says so", tec:"ad populum", q:"Does the fact that lots of people do it make it true?"},
+  notrue: {nombre:"Redefining to suit yourself", tec:"‘no true Scotsman’", q:"Are you changing the definition just to dodge the counterexample? (Socrates accepted the distinction… and turned it around.)"},
+  equivoco:{nombre:"Playing on a double meaning", tec:"equivocation / amphiboly", q:"That word has two senses: which one are you using? If you switch senses halfway, you haven’t proved anything."},
+};
+const ORDEN_FAL = ["persona","famoso","siempre","pena","deformar","pocos","causa","dos","miedo","todos","notrue","equivoco"];
+const FIBRA = new Set(["persona"]); // fallacies that, besides being a trick, are disrespectful: they cost composure even if you catch them
+
+/* ---------- Eristic stratagems: they attack your composure, not the topic ---------- */
+const ESTRAT = {
+  insulto:  {t:"“Seriously, you think that? You’d have to be pretty dim not to see it. Just drop it.”", nombre:"an insult", schop:"stratagem 38, the ‘last resort’", q:"That’s not a reason, it’s an insult. Ask them to talk about the topic, not about you."},
+  ira:      {t:"“Of course, you’re always so slow at everything; no wonder you don’t get it.”", nombre:"provoking your anger", schop:"stratagem 8", q:"‘When angry, no one judges well.’ Breathe: don’t take the bait."},
+  persona:  {t:"“You have no idea about life, so you’d better not weigh in on this.”", nombre:"a personal attack", schop:"ad hominem, stratagem 21", q:"Who is saying it doesn’t change whether the idea is good or bad."},
+  categoria:{t:"“That’s typical of a fascist. Only a loser would think like that.”", nombre:"stuffing you into a hateful category", schop:"subsuming under a hateful category", q:"A label refutes nothing. Where is the reason?"},
+  miedo:    {t:"“If you keep contradicting me, you’ll end up with no friends.”", nombre:"a threat", schop:"appeal to fear (ad baculum)", q:"Fear is not a reason. Why would what they say be true?"},
+  desvio:   {t:"“What about you? The other day you did the same thing. Let’s talk about that instead.”", nombre:"changing the subject and pointing at you", schop:"stratagems 18 and 29", q:"Me slipping up doesn’t answer the question. Let’s get back to the topic."},
+  autoridad:{t:"“A Nobel Prize winner said it and it’s been proven. End of discussion.”", nombre:"authority used to silence you", schop:"stratagem 30", q:"Who, where and why? A quotation without a reason doesn’t close the topic."},
+};
+const ORDEN_ESTRAT = Object.keys(ESTRAT);
+const REACCIONES = [
+  {lbl:"Insult them back", t:"“Well, you’re even dumber, come on!”"},
+  {lbl:"Give in and agree with them", t:"“Fine, fine… whatever you say.”"},
+  {lbl:"Run away from the topic", t:"“I’m out, let’s talk about something else.”"},
+];
+
+/* ---------- Debate topics. The computer defends one position; you take the opposite. ----------
+   opp: the computer’s arguments. f=null is clean; with f it is a fallacy, and peso (1-3) = how much its position leans on that trick.
+   counters: your counterarguments. str (1-3) = strength; with f it is a tricky counterargument that will backfire on you. */
+const TEMAS = [
+ {nivel:["eso"], claim:"Should phones be kept out of class?",
+  cpuLado:"The computer defends: ‘let them be used freely in class’.",
+  tuLado:"You defend: ‘better outside the classroom’.",
+  opp:[
+   {t:"A phone gives you a dictionary and a calculator instantly; used well, it is a study tool.", f:null},
+   {t:"A tech guru said so in a talk: banning phones is for digital illiterates.", f:"famoso", peso:1, interes:"That guru advises a company that sells tablets and apps to schools."},
+   {t:"They’re already used in every modern school; falling behind is for backwaters.", f:"todos", peso:2},
+   {t:"Either phones are free, or we’ll raise kids who can’t cope with life in the 21st century.", f:"dos", peso:3},
+   {t:"I know two people who passed by looking things up on their phones; it clearly helps everyone.", f:"pocos", peso:2},
+   {t:"If we teach them to use it with rules, they learn to regulate themselves better than if it’s banned outright.", f:null},
+  ],
+  counters:[
+   {t:"In the classes where phones were collected, attention went up and copying went down: there is data.", str:3},
+   {t:"A useful tool can be used at specific moments; you don’t need it on you the whole lesson.", str:2},
+   {t:"For whatever is needed there are the school’s tablets, with no personal notifications.", str:2},
+   {t:"Lots of people are glad to switch off for a while; the classroom can be that place.", str:1},
+   {t:"Either phones out, or this will be an internet café and nobody will learn anything.", f:"dos"},
+   {t:"My uncle says so, and he’s been a teacher for 30 years, so phones out and that’s that.", f:"famoso"},
+  ]},
+ {nivel:["eso"], claim:"Is it a good idea to eat fast food every day?",
+  cpuLado:"The computer defends: ‘yes, go for it, every day’.",
+  tuLado:"You defend: ‘now and then, yes; every day, no’.",
+  opp:[
+   {t:"It’s cheap and quick; for someone short of time, it solves lunch.", f:null},
+   {t:"The most famous footballer in the world advertises it, so it can’t be that bad.", f:"famoso", peso:1, interes:"The footballer is paid millions to advertise that fast-food chain."},
+   {t:"The whole class eats there on Fridays; there must be a reason.", f:"todos", peso:2},
+   {t:"My cousin eats burgers and he’s really strong: this food makes you strong.", f:"causa", peso:2},
+   {t:"Either you eat this, or you go hungry; there’s no other cheap option.", f:"dos", peso:3},
+   {t:"Don’t take away the only treat of my day, I’m having such a hard time already.", f:"pena", peso:1},
+  ],
+  counters:[
+   {t:"The label says one meal has almost all the salt and fat for a whole day: eaten daily, it takes its toll.", str:3},
+   {t:"Eating it now and then isn’t the problem; the problem is every day.", str:2},
+   {t:"For what a daily meal deal costs, you can cook a varied week for less.", str:2},
+   {t:"There are sandwiches and fruit that are just as quick and cheaper.", str:1},
+   {t:"I know someone who got ill eating that; so everyone who eats it gets ill.", f:"pocos"},
+   {t:"If you keep eating that, you’ll definitely end up in hospital.", f:"miedo"},
+  ]},
+ {nivel:["eso"], claim:"Should we adopt a pet today?",
+  cpuLado:"The computer defends: ‘yes, today’.",
+  tuLado:"You defend: ‘prepare properly first, not today on a whim’.",
+  opp:[
+   {t:"There are animals at the shelter that need a home as soon as possible; waiting costs them too.", f:null},
+   {t:"Look at that little face; if we don’t bring him home today I’m going to be so sad.", f:"pena", peso:2},
+   {t:"My family has always had a dog, so we have to get one now.", f:"siempre", peso:1},
+   {t:"All my friends have a pet; I’m the only one who doesn’t.", f:"todos", peso:1},
+   {t:"Either we adopt him today, or we’ll never have a pet.", f:"dos", peso:3},
+   {t:"The vet says to wait, but since she has no children, she knows nothing about families.", f:"persona", peso:2},
+  ],
+  counters:[
+   {t:"A dog lives ten or fifteen years, and every day it needs feeding, walking and vet bills: it has to be organised beforehand.", str:3},
+   {t:"We can adopt as soon as we know who will walk it every day; it’s preparing, not giving up.", str:2},
+   {t:"If we bring it home with no plan and then can’t look after it, the animal is the one who suffers most.", str:2},
+   {t:"A week to get the house and the schedule ready isn’t that much.", str:1},
+   {t:"So according to you, animals don’t matter at all.", f:"deformar"},
+   {t:"An influencer vet said the sooner the better, so today.", f:"famoso"},
+  ]},
+ {nivel:["fil","hf"], claim:"Is justice just the interest of the stronger? · Socrates vs. Thrasymachus",
+  cpuLado:"The computer is Thrasymachus: being unjust pays better and makes you happier; justice only serves the powerful.",
+  tuLado:"You are Socrates: justice is a virtue that benefits whoever has it, and the just life is happier.",
+  estrat:[
+   {t:"He bursts in like a wild beast: “What a load of nonsense you’ve been spouting all this time!”", nombre:"the brutish entrance", schop:"intimidating before arguing", q:"Tone is not an argument. What does he have to say about the topic?"},
+   {t:"He lets out a guffaw: “There’s Socrates’ usual irony; I knew you’d slip away.”", nombre:"mockery", schop:"ridiculing instead of refuting", q:"Laughing refutes nothing. Ask him for the reason."},
+   {t:"“Socrates, do you still have a nurse? Because she leaves you with a runny nose and doesn’t wipe it.”", nombre:"the nurse insult", schop:"stratagem 38, the ‘last resort’", q:"It’s an insult, not an answer. Go back to the topic."},
+  ],
+  opp:[
+   {t:"The just person always comes off worse: he doesn’t cheat in business, he pays his taxes and, when he governs, he benefits others and not himself.", f:null},
+   {t:"When a doctor makes a mistake, at that moment he isn’t acting as a doctor. Same with the ruler: strictly speaking, a ruler never errs.", f:"notrue", peso:1},
+   {t:"You only ask questions to win, out of love of honour; you aren’t looking for the truth, so your questions don’t count.", f:"persona", peso:3},
+   {t:"Look who succeeds: tyrants and cheats. It’s perfectly clear that injustice is what makes you happy.", f:"pocos", peso:2},
+   {t:"Either you’re unjust and make a profit, or you’re just and get eaten alive; there is no middle ground.", f:"dos", peso:2},
+   {t:"The just man is a sucker who gets exploited; the unjust one is the clever one who does the exploiting. It’s one or the other. That’s why injustice is the virtue.", f:"dos", fAlt:["persona"], peso:2},
+  ],
+  counters:[
+   {t:"Even a band of thieves needs some justice among themselves to achieve anything; injustice sets them against each other and destroys them.", str:3},
+   {t:"Rulers make mistakes and pass laws that harm them; then obeying those laws does not benefit the stronger.", str:2},
+   {t:"A doctor, as a doctor, seeks the good of the patient, not his own; whoever rules well seeks the good of the ruled.", str:2},
+   {t:"If the function of the soul is to live, and justice is its virtue, the just person lives well; and living well is being happy.", str:2},
+   {t:"A sophist charges for teaching how to be right without being right; how are we supposed to believe you?", f:"persona"},
+   {t:"Either you admit that justice is a virtue, or you admit you would like to be robbed; choose.", f:"dos"},
+  ]},
+ {nivel:["hf"], claim:"The Atheismusstreit (1798): is it atheist to identify God with the moral order of the world?",
+  cpuLado:"The computer is Fichte’s accusers: that is atheism, and atheism must be banned.",
+  tuLado:"You are Fichte: the God worthy of faith is the living moral order of the world; a separate God-thing would be an idol.",
+  estrat:[
+   {t:"An anonymous pamphlet circulates, “Letter from a Father to His Student Son”: whoever reads your journal will lose his faith and his soul.", nombre:"the anonymous pamphlet", schop:"attacking without showing your face (poisoning the well)", q:"Whoever accuses from the shadows is not arguing. What do they claim, and what is their proof?"},
+   {t:"The government of Saxony threatens to confiscate the journal and punish whoever reads it.", nombre:"the threat of censorship", schop:"force instead of reasons (ad baculum)", q:"Gagging an idea does not refute it. Where is the argument?"},
+   {t:"“Atheist!” That one word is enough; there’s nothing more to discuss with you.", nombre:"the infamous label", schop:"subsuming under a hateful category", q:"A label refutes nothing. What exactly does what I say amount to?"},
+  ],
+  opp:[
+   {t:"A God who is not a substance, nor a person, nor a creator, but only “the moral order” — how does that differ from having no God?", f:null},
+   {t:"Fichte says God is just an idea we make for ourselves; in other words, he denies God. He is an atheist.", f:"deformar", peso:3},
+   {t:"If you take away the personal God, morality, the oath and the State collapse. It must be banned at once.", f:"miedo", peso:3},
+   {t:"Fichte is a Jacobin and a troublemaker; we all know what kind of philosophy comes from a man like that.", f:"persona", peso:2},
+   {t:"The catechism that all Christendom professes says God is a person and creator; who is he to amend it?", f:"siempre", peso:1},
+   {t:"All decent people are scandalised by that journal; there must be a reason.", f:"todos", peso:1},
+  ],
+  counters:[
+   {t:"The true God is the living moral order of the world, that in which you trust when you act well: that is not “an idea of mine”, it is the most real thing there is.", str:3},
+   {t:"Making God a thing or a person, one more being among beings, lowers him to an idol; denying that idol is not denying God.", str:3},
+   {t:"Punishing an idea with censorship does not refute it: if I am wrong, prove it, don’t gag me.", str:2},
+   {t:"Judge my reasons, not my politics: whether I am a Jacobin or not says nothing about whether I am right.", str:2},
+   {t:"Either you accept my idealism whole, or you are superstitious fanatics.", f:"dos"},
+   {t:"Whoever accuses me is an ignorant priest who hasn’t read a line of Kant.", f:"persona"},
+  ]},
+ {nivel:["fil","hf"], claim:"Descartes’ dualism: are mind and body two substances or just one?",
+  cpuLado:"The computer is the monist (Spinoza, La Mettrie): there is only one substance; a separate soul is superfluous.",
+  tuLado:"You are Descartes: the mind is a thinking thing, really distinct from the extended body.",
+  estrat:[
+   {t:"“Those are priests’ tales: the immortal soul is a superstition to frighten people.”", nombre:"contempt", schop:"subsuming under a hateful category", q:"Contempt is not an argument. What exactly is wrong with the distinction?"},
+   {t:"“You, hiding behind ‘I think, therefore I am’, don’t dare look the body in the face.”", nombre:"the personal jab", schop:"ad hominem", q:"My character does not decide whether mind and body are distinct."},
+   {t:"“Stop harping on about your ‘clear and distinct’ and talk like a normal person.”", nombre:"mockery", schop:"ridiculing instead of refuting", q:"Laughing at the vocabulary does not refute the idea."},
+  ],
+  opp:[
+   {t:"If the soul is not extended, it cannot push or move the body; contact requires extension. How do they interact, then?", f:null},
+   {t:"A single substance with two attributes, thought and extension, is enough to explain everything, without two worlds that no one knows how to connect.", f:null},
+   {t:"According to you the body is a worthless prison and only the soul counts; you despise the flesh entirely.", f:"deformar", peso:3},
+   {t:"Either the soul is a separate substance, or you are nothing but a machine without freedom: choose.", f:"dos", peso:2},
+   {t:"A glass of wine changes your thoughts; so thinking is just body chemistry, there is no soul.", f:"causa", peso:2},
+   {t:"Doctors and modern scholars are all materialists; are you going to be right all on your own?", f:"todos", peso:1},
+  ],
+  counters:[
+   {t:"I can doubt that I have a body, but not that I think; and what I conceive clearly and distinctly as separate can exist separately.", str:3},
+   {t:"That the body influences the mind does not prove they are the same: the musician is not his instrument, even though he plays it.", str:3},
+   {t:"I do not despise the body: I say I form a very close union with it, not that it is a prison.", str:2},
+   {t:"That a single substance is simpler does not make it true: we still have to explain why I think in the first person.", str:2},
+   {t:"Either you admit an immortal soul, or you are an animal without dignity: there is no middle ground.", f:"dos"},
+   {t:"Spinoza was expelled from his community; how can you believe a man like that?", f:"persona"},
+  ]},
+ {nivel:["hf"], claim:"Hegel against Kant: does reason have insurmountable limits, or can it think everything?",
+  cpuLado:"The computer defends Kant: we only know phenomena; about the thing in itself we must stay silent.",
+  tuLado:"You are Hegel: those limits are a prejudice; the thing in itself is an empty void and contradiction drives thought.",
+  estrat:[
+   {t:"“Your sentences are so obscure that no one can understand you; it’s easy to play the profound this way.”", nombre:"mockery for being obscure", schop:"ridiculing instead of refuting", q:"That you find me hard to read does not refute what I say. What exactly is false?"},
+   {t:"“You write to look important, not to clarify anything.”", nombre:"the personal jab", schop:"ad hominem", q:"My style does not decide whether Kant was right or not."},
+   {t:"“Stop harping on about ‘dialectics’ and give me a yes or a no.”", nombre:"impatience", schop:"forcing and diverting", q:"Forcibly simplifying does not answer the question."},
+  ],
+  opp:[
+   {t:"We only know phenomena, never the thing in itself: space, time and the categories are ours, not the things’.", f:null},
+   {t:"When reason leaves experience it falls into antinomies: it proves a thesis and its opposite with equal force. That marks a limit.", f:null},
+   {t:"So according to you reason already knows everything and we can invent the world at will.", f:"deformar", peso:3},
+   {t:"Either you accept my limits, or you go back to the old delirious metaphysics of souls and worlds. There is nothing else.", f:"dos", peso:2},
+   {t:"The Critique of Pure Reason is the supreme work of philosophy; who are you to correct Kant?", f:"famoso", peso:2},
+   {t:"Without those limits, philosophy goes back to fanaticism and superstition: it is dangerous.", f:"miedo", peso:1},
+  ],
+  counters:[
+   {t:"Examining the faculty of knowing before knowing is like wanting to learn to swim without going into the water.", str:3},
+   {t:"The thing in itself, what is left when you strip from the object everything you think of it, is no mystery: it is the emptiest abstraction.", str:3},
+   {t:"The contradiction of the antinomies is not the end of reason but its engine: the truth is the whole that overcomes them.", str:2},
+   {t:"I am not saying we invent the world: I am saying thought and reality are not two worlds separated by a wall.", str:2},
+   {t:"Either you think the totality as I do, or you are nothing but a cowardly sceptic: choose.", f:"dos"},
+   {t:"Kant was a creature of habit who never left Königsberg; what could he know about becoming?", f:"persona"},
+  ]},
+ {nivel:["fil","hf"], claim:"Socrates against Callicles (Gorgias): is the law of the stronger right?",
+  cpuLado:"The computer is Callicles: by nature, the strong should rule and have more; holding back is for the weak.",
+  tuLado:"You are Socrates: it is worse to commit an injustice than to suffer one, and a life without measure is not happy.",
+  estrat:[
+   {t:"“Stop asking those little slave questions and talk like a man.”", nombre:"the macho contempt", schop:"subsuming under a hateful category", q:"A manly tone is not an argument. What is false in what I say?"},
+   {t:"“Aren’t you ashamed, at your age, to waste time playing with words?”", nombre:"the jab about age", schop:"ad hominem", q:"My age does not decide whether I am right."},
+   {t:"“This is ridiculous, you’re boring me; you answer, since you know so much.”", nombre:"impatience", schop:"diverting and forcing", q:"Being bored refutes nothing. Let’s get back to the question."},
+  ],
+  opp:[
+   {t:"The justice of equality is invented by the many weak to tie down the strong out of fear; by nature, the best should have more.", f:null},
+   {t:"Look at nature: the lion respects no laws and the strong State imposes itself on the weak. That’s how things are, and how they should be.", f:"pocos", peso:1},
+   {t:"Philosophy is fine for children; a grown man who still goes on philosophising is ridiculous and deserves a beating.", f:"persona", peso:3},
+   {t:"Either you rule and enjoy, or you are ruled and put up with it: there is no good life halfway.", f:"dos", peso:2},
+   {t:"If you don’t learn rhetoric and keep up your questions, anyone could take you to court and have you killed without you knowing how to defend yourself.", f:"miedo", peso:2},
+   {t:"According to you we should let ourselves be trampled and never defend ourselves; you preach cowardice.", f:"deformar", peso:2},
+  ],
+  counters:[
+   {t:"If the stronger is the one who can do more, and the many can do more than one, then the justice of the many is that of nature: your own law contradicts you.", str:3},
+   {t:"A soul without measure is a leaky barrel: however much you pour in, it never fills; that life is not bliss, it is an endless lack.", str:3},
+   {t:"Pleasure and pain are felt at the same time (the thirsty man drinks with pleasure while still suffering thirst), but good and evil are not; so pleasure is not the good.", str:2},
+   {t:"I am not saying let yourself be trampled: I am saying that committing injustice harms the soul more than suffering it; that is why I prefer to take the blow than to deal it.", str:2},
+   {t:"You defend this because you are an unscrupulous social climber; that is why I don’t believe you.", f:"persona"},
+   {t:"Either you admit that justice has value, or you admit you are nothing but a tyrant: choose.", f:"dos"},
+  ]},
+ {nivel:["fil","hf"], claim:"Socrates against Euthyphro: what is piety?",
+  cpuLado:"The computer is Euthyphro: a seer who thinks himself an expert in religion and is about to prosecute his own father; he claims to know what ‘the pious’ is.",
+  tuLado:"You are Socrates: you are not looking for examples but for the definition: the feature by which every pious action is pious.",
+  estrat:[
+   {t:"“I know much more about these things than you, Socrates; that’s what being a seer is for.”", nombre:"the expert’s smugness", schop:"appealing to one’s own authority", q:"Being a seer does not answer the question: tell me what the pious is."},
+   {t:"“You tire me with all these little questions; anyone understands this except you.”", nombre:"impatience", schop:"disdain / ad hominem", q:"Tiring you refutes nothing. Let’s get back to the question."},
+   {t:"“I’m in a hurry, Socrates, they’re waiting for me; we’ll leave it for another day.”", nombre:"the flight", schop:"dodging the question", q:"Leaving is not answering: running away leaves the question standing."},
+  ],
+  opp:[
+   {t:"What is the pious? The pious is what I am doing right now: prosecuting whoever commits a crime. There you have it.", f:null},
+   {t:"Zeus himself bound his father Cronus in chains; if the gods do these things, who am I not to imitate them?", f:"famoso", peso:2},
+   {t:"It’s perfectly clear: the pious is what is dear to the gods, and the impious what is hateful to them.", f:null},
+   {t:"Then the pious will be what ALL the gods love without exception; none who is truly a god would love a crime.", f:"notrue", peso:2},
+   {t:"It is pious because the gods love it, and that’s that; that’s enough for you to know what it is.", f:null},
+   {t:"All of Athens knows full well what piety is; only you pretend not to understand.", f:"todos", peso:2},
+  ],
+  counters:[
+   {t:"I asked you WHAT piety is, not for an example of something pious. Give me the feature by which every pious action is pious, so we can measure any act against it.", str:3},
+   {t:"If the gods quarrel among themselves, as the poets tell, the same thing will be loved by some and hated by others: pious and impious at once. Your definition contradicts itself.", str:3},
+   {t:"Is the pious loved by the gods BECAUSE it is pious, or is it pious BECAUSE they love it? If they love it because it is already pious, being loved is not what makes it pious: you are telling me what happens to it, not what it is.", str:3},
+   {t:"Your ‘trade’ with the gods goes back to the start: pleasing them is nothing but being loved by them, and we already refuted that. You are going round in circles.", str:2},
+   {t:"A man capable of taking his own father to court has no heart; I don’t trust anything he says.", f:"persona"},
+   {t:"Either you define piety here and now, or admit you are impious: choose.", f:"dos"},
+  ]},
+ {nivel:["fil","hf"], claim:"Socrates against Euthydemus and Dionysodorus: the art of winning with words",
+  cpuLado:"The computer is the eristic brothers Euthydemus and Dionysodorus: they boast of refuting anything, whatever the other says, by playing on the double meaning of words.",
+  tuLado:"You are Socrates: distinguish the senses of each word and show that they refute the term, not the thing.",
+  estrat:[
+   {t:"They laugh in unison: “See? The great Socrates can’t even answer a child’s question.”", nombre:"the duet laughter", schop:"ridiculing instead of refuting", q:"Laughing refutes nothing. Where is the flaw in what I say?"},
+   {t:"They harass you in turns without letting you think: “Answer now! Yes or no! Quick!”", nombre:"the harassment in turns", schop:"steamrolling so you can’t distinguish", q:"Steamrolling is not arguing. Give me time to distinguish the senses."},
+   {t:"“It makes no difference what you answer, you’ll fall just the same; you’d better give up now.”", nombre:"the bluff of invincibility", schop:"intimidating with false invincibility", q:"That you boast of winning does not prove you are right."},
+  ],
+  opp:[
+   {t:"Do those who learn learn as the wise or as the ignorant? If they are wise, they learn what they already know; if ignorant, they learn without understanding anything. So learning is impossible.", f:"equivoco", peso:2},
+   {t:"Do you know anything? Then you are wise. And whoever knows, knows. So you know EVERYTHING, and have always known it.", f:"equivoco", peso:2, interes:"The two brothers charge for teaching this art: the more dazzling the trick, the more paying pupils."},
+   {t:"Do you have a dog, and is it a father of puppies? Then it is a father and it is yours: it is your father. And you are brother to the puppies.", f:"equivoco", peso:2},
+   {t:"You want the young man to become wise, that is, to stop being what he is; you want him to stop being: you want him to die!", f:"equivoco", peso:2},
+   {t:"Every question is answered yes or no. Answer only yes or no and you’ll see how you fall; qualifying is for cheats.", f:"dos", peso:2},
+   {t:"Earlier you said one thing and now another; so you contradict yourself and have lost, whatever you say.", f:"deformar", peso:1},
+  ],
+  counters:[
+   {t:"I distinguish: ‘to learn’ means two things, acquiring new knowledge and understanding what one already has. The ignorant learn in the first sense. Once the equivocation is undone, there is no paradox.", str:3},
+   {t:"‘Knowing something’ is not ‘knowing everything’: from knowing one thing it does not follow that I know them all. You are playing on the word ‘know’.", str:3},
+   {t:"‘Is a father’ and ‘is mine’ are each true separately, but they do not add up: the dog is father to its puppies and mine as an animal, not my father. You confuse two senses of ‘to be’.", str:3},
+   {t:"Wanting someone to become wise is not wanting him to ‘stop being’: it is wanting him to go on being himself and also to know. You are refuting a word, not my wish.", str:2},
+   {t:"Only a couple of fairground tricksters would say something like that; I’m not going to pay you the slightest attention.", f:"persona"},
+   {t:"Either you admit that your game is pure verbiage, or you are a pair of frauds: choose.", f:"dos"},
+  ]},
+ {nivel:["fil","hf"], claim:"Socrates against Crito: should one escape an unjust sentence?",
+  cpuLado:"The computer is Crito: a friend who enters the prison before dawn to convince Socrates to flee; he has money, contacts and a plan.",
+  tuLado:"You are Socrates: the question is not what people will say or what is convenient, but whether fleeing is just; and one must never commit injustice.",
+  estrat:[
+   {t:"“You will break my heart; if you die I lose an irreplaceable friend and no one will believe I did all I could.”", nombre:"the friend’s blackmail", schop:"appeal to pity / guilt-tripping", q:"Your pain matters to me, but it does not decide what is just."},
+   {t:"“Hurry up, the ship is about to arrive, it’s tonight or never; there’s no time to philosophise!”", nombre:"the rush", schop:"steamrolling so you don’t think", q:"Haste is not an argument; precisely because it is serious, it must be thought through."},
+   {t:"“Are you going to stay there so calm while your children are left orphans? What kind of father are you?”", nombre:"the father’s reproach", schop:"blaming instead of arguing", q:"Hinting that I am a bad father does not answer whether escaping is just."},
+  ],
+  opp:[
+   {t:"If you don’t escape, people will say your friends were tightfisted cowards for not spending money to save you. Think of our reputation.", f:"todos", peso:2, interes:"Crito is worried about his own reputation: he fears people will say he refused to pay for the escape."},
+   {t:"Think of your children: you leave them orphans, without upbringing or education. Abandoning them like that is selfish.", f:"pena", peso:2},
+   {t:"Either you escape and live, or you stay and hand victory to those who unjustly condemned you: there is no other way.", f:"dos", peso:2},
+   {t:"Staying is choosing the comfortable path; anyone with guts would have fled already.", f:"persona", fAlt:["todos"], peso:1},
+   {t:"We have the means and friends willing to get you out; we gladly take on the risk ourselves.", f:null},
+   {t:"Your death benefits those who unjustly condemned you and hurts those of us who love you.", f:null},
+  ],
+  counters:[
+   {t:"We should not heed what the majority thinks but whoever knows: in matters of health we follow the doctor, not the crowd; in matters of justice, the same. The mob can kill, but it does not decide what is just.", str:3},
+   {t:"The question is not what people will say, but whether escaping is just; and one must never commit injustice, not even to repay a harm received.", str:3},
+   {t:"If every individual overrides the sentences he dislikes, no city can stand. By living here I accepted to obey the laws, and I could have left if I disagreed: breaking that pact now would be unjust.", str:3},
+   {t:"A father who does not break his pacts raises my children better: fleeing would teach them the opposite. I would rather leave them good friends and a good example than a fugitive father.", str:2},
+   {t:"Only a coward like you, who fears what people will say, asks me to flee.", f:"persona"},
+   {t:"Either we flee tonight, or you abandon me to death: choose.", f:"dos"},
+  ]},
+];
+
+// Level of each topic: each TEMAS object carries its `nivel`. It is filtered per website by the link hash (#eso/#fil/#hf; no hash, all).
+TEMAS.forEach(t=>{ if(!t.nivel) t.nivel=["eso","fil","hf"]; });
+const LEVELS=["eso","fil","hf"];
+function activeLevel(){ try{ const h=(location.hash||"").replace("#","").toLowerCase(); return LEVELS.includes(h)?h:null; }catch(e){ return null; } }
+
+const MAXT = 6;
+let S=null, _seed=1;
+function rnd(){ _seed=(_seed*1103515245+12345)&0x7fffffff; return _seed/0x7fffffff; }
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const app=()=>document.getElementById('app');
+
+function freshState(ti){
+  return {ti, meter:50, temple:3, lastHit:false, turno:0, thread:[], move:null, hand:null,
+          fase:"turn", _oppQueue:shuffle(TEMAS[ti].opp.map((_,i)=>i)), comodines:{sabes:1, gana:1}};
+}
+function clamp(v){ return Math.max(0,Math.min(100,v)); }
+
+function render(){
+  if(!S || S.fase==="intro") return renderIntro();
+  if(S.fase==="end") return renderEnd();
+  renderGame();
+}
+
+function renderIntro(){
+  app().innerHTML = `
+   <div class="intro fade">
+     <div class="center">
+       <div class="eyebrow">Debate game · one conversation, one topic</div>
+       <h1>Argue and persuade</h1>
+       <p class="lede">You debate a topic against the computer, and a meter shows which side the audience is coming round to. On each turn, faced with what it has just said, you choose your move.</p>
+     </div>
+     <div class="rules">
+       <div class="rule"><span class="n">A</span><p><b>Call out the fallacy.</b> If its argument cheats, you name the trick and force it to defend it. When the trick is the heart of its position, this hurts it badly.</p></div>
+       <div class="rule"><span class="n">B</span><p><b>Counterargue.</b> You let its move pass and answer with a reason of your own. If it is strong enough, it persuades more than wasting time correcting a minor trick… but if it is weak and its trick was a big one, it sinks you. Careful: its arguments have strength too; if your reason is weaker than its, the audience goes over to it.</p></div>
+       <div class="rule"><span class="n">♦</span><p><b>Composure.</b> When you are disrespected or someone hits a nerve (an insult, a threat, a personal attack) you lose composure, even if you catch the move: the blow hurts all the same. It does not recover by itself, so it builds up. At zero you lose your cool (all you can do is insult, give in or run away); then stop and breathe to regain some calm.</p></div>
+       <div class="rule"><span class="n">★</span><p><b>Wildcards (one of each per game).</b> <b>How do you know?</b> dismantles the tricks that pretend to have support (a famous person, everybody, a few cases, a false cause, tradition) even if you don’t know the trick’s name; against a legitimate argument it costs you, because it gives you its reasons. <b>What’s in it for them?</b> brings to light the speaker’s hidden interest, if there is one; if there isn’t, it costs you: assuming bad faith without evidence is attacking the person.</p></div>
+     </div>
+     <div class="center" style="font-weight:600;margin:4px 0 8px">Choose the topic for this game:</div>
+     <div class="pick">
+       ${TEMAS.map((t,i)=>({t,i})).filter(({t})=>{const L=activeLevel();return !L||(t.nivel&&t.nivel.includes(L));}).map(({t,i})=>`<button class="btn" data-ti="${i}">${t.claim}<span class="sides">${t.tuLado}</span></button>`).join('')}
+     </div>
+   </div>`;
+  app().querySelectorAll('[data-ti]').forEach(b=>b.onclick=()=>{ _seed=(Date.now()&0x7fffffff)||1; S=freshState(+b.dataset.ti); S.fase="turn"; nextTurn(true); });
+}
+
+function pushThread(side, text, nm){ S.thread.push({side, text, nm}); }
+
+function nextTurn(first){
+  if(S.turno>=MAXT){ S.fase="end"; return render(); }
+  // composure no longer refills by itself: blows accumulate and it is only recovered by stopping to breathe (at zero)
+  // pick the computer’s move
+  const T=TEMAS[S.ti];
+  if(!first && rnd()<0.32){
+    const pool = (T.estrat && T.estrat.length) ? T.estrat : ORDEN_ESTRAT.map(k=>ESTRAT[k]);
+    const e = pool[Math.floor(rnd()*pool.length)];
+    S.move={kind:"estrat", e, t:e.t};
+  } else {
+    if(!S._oppQueue.length) S._oppQueue=shuffle(TEMAS[S.ti].opp.map((_,i)=>i));
+    const idx=S._oppQueue.shift();
+    const m=T.opp[idx];
+    S.move={kind:"arg", t:m.t, f:m.f, peso:m.peso||0, fuerza:m.fuerza, interes:m.interes};
+  }
+  S.lastHit = (S.move.kind==="estrat");
+  pushThread("cpu", S.move.t, "Computer");
+  S.fase="turn";
+  render();
+}
+
+function hud(){
+  const T=TEMAS[S.ti], you=S.meter, cpu=100-S.meter;
+  return `<div class="hud">
+      <div class="turnlbl">Turn <b>${Math.min(S.turno+1,MAXT)}</b> / ${MAXT}</div>
+      <div class="temple ${S.temple<=1?'low':''}"><div class="who">Composure</div><div class="dots" style="color:${S.temple<=1?'var(--bad)':'var(--good)'}">${"♦".repeat(S.temple)+"♢".repeat(3-S.temple)}</div></div>
+    </div>
+    <div class="meter-wrap">
+      <div class="meter-top"><span class="you">You ${you}%</span><span>Audience conviction</span><span class="cpu">Computer ${cpu}%</span></div>
+      <div class="meter"><div class="fill" style="width:${you}%"></div><div class="mid"></div></div>
+    </div>
+    <div class="theme-topic"><b>${T.claim}</b> &nbsp;·&nbsp; <span class="you-side">${T.tuLado}</span></div>`;
+}
+
+function threadHTML(){
+  return `<div class="thread" id="thread">`+
+    S.thread.map((m,i)=>`<div class="bubble ${m.side} ${i===S.thread.length-1 && m.side==='cpu'?'latest':''}"><div class="nm">${m.side==='cpu'?'Computer':'You'}</div>${m.text}</div>`).join('')+
+    `</div>`;
+}
+
+function renderGame(){
+  let html=hud()+threadHTML();
+  if(S.fase==="turn"){
+    if(S.temple<=0){
+      html+=`<div class="phase-tag hot">🥵 You’ve lost your cool — what do you come out with?</div><div class="choices fade">`;
+      html+=`<button class="btn btn-primary choice" id="respira">Stop and breathe<small>you don’t answer in the heat of the moment; you regain your calm</small></button>`;
+      REACCIONES.forEach((r,i)=>{ html+=`<button class="btn btn-a choice" data-rx="${i}">${r.lbl}<small>${r.t}</small></button>`; });
+      html+=`</div>`;
+      app().innerHTML=html; scrollThread();
+      document.getElementById('respira').onclick=()=>{ S.temple=1;
+        showFB("mid","You stopped in time.",`You don’t gain ground this time, but you regain your calm. Sometimes the smartest thing is not to answer in the heat of the moment.`,{},0,()=>{ S.turno++; nextTurn(false); }); };
+      app().querySelectorAll('[data-rx]').forEach(b=>b.onclick=()=>reaccion(+b.dataset.rx));
+      return;
+    }
+    const hot=S.move.kind==="estrat";
+    html+=`<div class="phase-tag ${hot?'hot':''}">${hot?'💢 It’s provoking you — respond':'Your turn — how do you respond?'}</div>`;
+    html+=`<div class="choices fade">
+       <button class="btn btn-a choice" data-act="a">${hot?'Point out that it’s a trick (not an argument)':'Call out the fallacy and force it to defend it'}<small>${hot?'you tell it that this does not answer the topic':'you name it; if it is the core of its position, you hurt it badly'}</small></button>
+       <button class="btn btn-b choice" data-act="b">Counterargue with a reason of your own<small>you let its move pass and hit back with your own point</small></button>
+     </div>`;
+    if(!S.comodines) S.comodines={sabes:1, gana:1};
+    html+=comodinesHTML();
+    app().innerHTML=html; scrollThread();
+    app().querySelectorAll('[data-com]').forEach(b=>b.onclick=()=>usarComodin(b.dataset.com));
+    app().querySelector('[data-act="a"]').onclick=()=>chooseA();
+    app().querySelector('[data-act="b"]').onclick=()=>chooseB();
+
+  } else if(S.fase==="name"){
+    html+=`<div class="phase-tag">🎯 Which fallacy is it? Name it to dismantle it</div><div class="choices grid-fal fade">`;
+    ORDEN_FAL.forEach(k=>{ html+=`<button class="btn choice" data-fal="${k}">${FALACIAS[k].nombre}<small>${FALACIAS[k].tec}</small></button>`; });
+    html+=`</div><div style="margin-top:8px"><button class="back" id="back">‹ back</button></div>`;
+    app().innerHTML=html; scrollThread();
+    app().querySelectorAll('[data-fal]').forEach(b=>b.onclick=()=>nameFal(b.dataset.fal));
+    document.getElementById('back').onclick=()=>{ S.fase="turn"; render(); };
+
+  } else if(S.fase==="counter"){
+    html+=`<div class="phase-tag">⚔️ Choose your counterargument</div><div class="choices fade">`;
+    S.hand.forEach((c,i)=>{ const pips="●".repeat(c.f?1:c.str)+"○".repeat(3-(c.f?1:c.str));
+      html+=`<button class="btn choice" data-c="${i}" style="padding:14px"><span style="font-family:var(--fdisp);font-weight:600">${c.t}</span><small><span class="pips">${pips}</span> apparent strength</small></button>`; });
+    html+=`</div><div style="margin-top:8px"><button class="back" id="back">‹ back</button></div>`;
+    app().innerHTML=html; scrollThread();
+    app().querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>playCounter(+b.dataset.c));
+    document.getElementById('back').onclick=()=>{ S.fase="turn"; render(); };
+  }
+}
+function scrollThread(){ const t=document.getElementById('thread'); if(t) t.scrollTop=t.scrollHeight; }
+
+function chooseA(){
+  if(S.move.kind==="estrat"){
+    const e=S.move.e; S.temple=Math.max(0,S.temple-1);
+    pushThread("you", `That’s not an argument: it’s ${e.nombre}. Answer me on the topic.`);
+    const d=8; S.meter=clamp(S.meter+d);
+    return showFB("win","You stop it in its tracks.",`You called out ${e.nombre} instead of taking the bait. The audience notices and sides with you. Even so, you lose a point of composure: it hit a nerve.`,{q:e.q,schop:e.schop},d);
+  }
+  S.fase="name"; render();
+}
+
+function nameFal(k){
+  const m=S.move, fa=FALACIAS[k];
+  const fibra = m.f && FIBRA.has(m.f); if(fibra) S.temple=Math.max(0,S.temple-1); // it was disrespectful: it costs composure even if you catch it
+  const notaFibra = fibra ? " And since it is also disrespectful, you lose a point of composure even though you caught it." : "";
+  if(m.f===null){
+    pushThread("you", `That’s “${fa.nombre}”.`);
+    const d=-10; S.meter=clamp(S.meter+d);
+    return showFB("lose","There was no trick there.",`It was a legitimate argument, and you accused it of ‘${fa.nombre}’. Calling out fallacies where there are none looks like dodging the topic, and the audience cools towards you.`,{},d);
+  }
+  const real=FALACIAS[m.f], alts=m.fAlt||[];
+  if(k===m.f || alts.includes(k)){
+    const elegida=FALACIAS[k];
+    pushThread("you", `That’s “${elegida.nombre}”: ${elegida.q}`);
+    const d=6+m.peso*3; S.meter=clamp(S.meter+d);
+    let extra = m.peso>=3?" It was the core of its whole position: dismantling it was devastating.":(m.peso===1?" It was a minor trick, but hey, it counts.":"");
+    if(alts.length){ const todas=[m.f,...alts].map(x=>FALACIAS[x].nombre).join(" and "); extra = ` This card hides two tricks at once (${todas}): either one counts.`+extra; }
+    return showFB("win","Caught, and by name!",`It was <b>${elegida.nombre}</b> <span style="color:var(--muted)">(${elegida.tec})</span> and you force it to defend it.${extra}${notaFibra}`,{q:elegida.q},d);
+  }
+  if(fibra){ pushThread("you", `That’s “${fa.nombre}”…`); const d=-3; S.meter=clamp(S.meter+d);
+    return showFB("mid","You saw the disrespect, but it wasn’t that fallacy.",`It was <b>${real.nombre}</b> <span style="color:var(--muted)">(${real.tec})</span>, not ‘${fa.nombre}’.${notaFibra}`,{q:real.q},d); }
+  pushThread("you", `That’s “${fa.nombre}”…`);
+  const d=-3; S.meter=clamp(S.meter+d);
+  showFB("mid","You saw the trick, but it wasn’t that one.",`There was a trick, yes, but not ‘${fa.nombre}’: it was <b>${real.nombre}</b> <span style="color:var(--muted)">(${real.tec})</span>. Accusing it under the wrong name costs you: the audience sees that you don’t quite know what is wrong.`,{q:real.q},d);
+}
+
+/* ---------- Wildcards (08-10-2026): ‘How do you know?’ and ‘What’s in it for them?’, one of each per game ---------- */
+const SIN_PRUEBAS = new Set(["famoso","todos","pocos","causa","siempre"]); // tricks that pretend to have support: they fall apart when you ask for evidence
+function temaConInteres(){ return TEMAS[S.ti].opp.some(o=>o.interes); }
+function comodinesHTML(){
+  const c=S.comodines||{sabes:1,gana:1}; let h=`<div class="choices comodines fade" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:10px">`;
+  h+=`<button class="btn choice" data-com="sabes" ${c.sabes?'':'disabled'}>★ How do you know?<small>${c.sabes?'asks for evidence; works even if you don’t know the trick’s name':'already used'}</small></button>`;
+  if(temaConInteres()) h+=`<button class="btn choice" data-com="gana" ${c.gana?'':'disabled'}>★ What’s in it for them?<small>${c.gana?'looks for a hidden interest; with no signs of one, it costs you':'already used'}</small></button>`;
+  return h+`</div>`;
+}
+function usarComodin(k){
+  const m=S.move; S.comodines[k]=0;
+  if(k==="sabes"){
+    pushThread("you", "How do you know? What evidence do you have?");
+    if(m.kind==="estrat"){ S.temple=Math.max(0,S.temple-1); return showFB("mid", "That wasn’t a claim.", "It was provoking you; asking how it knows does not stop it in its tracks, and the provocation has hit a nerve.", {}, 0); }
+    if(m.f===null){ const d=-3; S.meter=clamp(S.meter+d); return showFB("lose", "It did know.", "It explains its reasons and the audience listens: it was a legitimate argument. Asking for evidence is fine, but here you have wasted the wildcard.", {}, d); }
+    const fa=FALACIAS[m.f];
+    if(FIBRA.has(m.f)) S.temple=Math.max(0,S.temple-1);
+    if(SIN_PRUEBAS.has(m.f)){ const d=8; S.meter=clamp(S.meter+d); return showFB("win", "It had no evidence.", `You ask how it knows and it has nothing to show: its ‘${fa.nombre}’ is left without support. If you also name it, you score more.`, {q:fa.q}, d); }
+    return showFB("mid", "Its trick wasn’t about evidence.", `It was ‘${fa.nombre}’: asking for evidence doesn’t fix that.`, {q:fa.q}, 0);
+  }
+  pushThread("you", "And what do you gain if I believe it?");
+  if(m.kind==="arg" && m.interes){ const d=12; S.meter=clamp(S.meter+d); return showFB("win", "It had an interest!", `You ask what the speaker gains and it comes to light: ${m.interes} That doesn’t prove they are lying, but the audience no longer trusts them in the same way.`, {}, d); }
+  if(m.kind==="estrat") S.temple=Math.max(0,S.temple-1);
+  const d=-6; S.meter=clamp(S.meter+d); return showFB("lose", "You accuse it without signs.", "Nothing suggests it gains anything from this. Thinking about interests is part of critical thinking, but assuming bad faith without signs is attacking the person.", {}, d);
+}
+
+function chooseB(){
+  const pool=shuffle(TEMAS[S.ti].counters.slice());
+  // hand of 3 with at least one solid counterargument
+  const solidos=pool.filter(c=>!c.f), tramp=pool.filter(c=>c.f);
+  S.hand=shuffle([solidos[0], solidos[1]||solidos[0], (rnd()<0.6&&tramp[0])?tramp[0]:(solidos[2]||solidos[0])]).slice(0,3);
+  // make sure there are 3 different ones if possible
+  S.hand=[...new Set(S.hand)];
+  let pi=0; while(S.hand.length<3 && pi<pool.length){ if(!S.hand.includes(pool[pi])) S.hand.push(pool[pi]); pi++; }
+  S.fase="counter"; render();
+}
+
+function playCounter(i){
+  const c=S.hand[i], m=S.move;
+  if(m.kind==="estrat" || (m.f && FIBRA.has(m.f))) S.temple=Math.max(0,S.temple-1); // a provocation or a personal attack hits a nerve even if you ignore it
+  pushThread("you", c.t);
+  if(c.f){
+    const fa=FALACIAS[c.f]; const d=-10; S.meter=clamp(S.meter+d);
+    return showFB("lose","Your own blow was a trick.",`You hit back with <b>${fa.nombre}</b> <span style="color:var(--muted)">(${fa.tec})</span>, and the computer catches you. The audience marks you down for it.`,{q:fa.q},d);
+  }
+  const unchallenged = (m.kind==="arg" && m.f) ? m.peso : 0;
+  // the computer has strength too (08-10-2026): legitimate argument 2, trick 1, provocation 2; a topic can set ‘fuerza’ per argument
+  const rival = m.kind==="arg" ? (m.fuerza || (m.f ? 1 : 2)) : 2;
+  const d = (c.str - rival)*5 - unchallenged*4;
+  S.meter=clamp(S.meter+d);
+  if(unchallenged===0){
+    if(d<0) return showFB("lose", "Its argument weighed more.", `Your reason (strength ${c.str}) was weaker than what it had said. ${m.kind==="estrat"?"Ignoring its provocation is fine, but you needed a more solid answer.":"There was no trick to call out: a stronger reason was called for."}`,{},d);
+    return showFB(d>0?"win":"mid", d>0?"Good counterargument.":"A draw this turn.", `You answered with a reason of strength ${c.str}. ${m.kind==="estrat"?"And you rose above its provocation: elegant.":"Its move had no trick; this was the time to argue."}`,{},d);
+  }
+  if(d>0){
+    const fa=FALACIAS[m.f];
+    return showFB("win","You hit harder than its trick.",`You let its <b>${fa.nombre}</b> pass (a minor trick) and delivered a powerful counterargument. Sometimes it pays not to waste time correcting: the audience keeps your reason.`,{},d);
+  }
+  const fa=FALACIAS[m.f];
+  return showFB("lose","Its trick was still standing.",`Its <b>${fa.nombre}</b> was the core of its position and you let it pass; your counterargument wasn’t strong enough for that. Here it would have been better to <b>call it out</b>.`,{q:fa.q},d);
+}
+
+function reaccion(i){
+  pushThread("you", REACCIONES[i].t);
+  const d=-12; S.meter=clamp(S.meter+d); S.temple=1;
+  showFB("lose","You’ve lost it.",`Thrown off balance, all you could do was ${REACCIONES[i].lbl.toLowerCase()}. The audience goes over to the computer. That’s why the first thing is not to take the bait.`,{},d);
+}
+
+function showFB(cls, head, body, extra, delta, cont){
+  extra=extra||{};
+  const last=(S.turno+1>=MAXT);
+  const dtxt = (typeof delta==="number" && delta!==0) ? `<div class="name">Audience conviction: <span class="delta ${delta>0?'pos':'neg'}">${delta>0?'+':''}${delta}</span> → ${S.meter}%</div>`:``;
+  let html=hud()+threadHTML();
+  html+=`<div class="fb ${cls} fade">
+     <div class="head">${cls==='win'?'✓':(cls==='lose'?'✕':'◆')} ${head}</div>
+     <div class="name">${body}</div>
+     ${dtxt}
+     ${extra.q?`<div class="desmonta">To dismantle it: <b>${extra.q}</b></div>`:``}
+     ${extra.schop?`<div class="schop">Schopenhauer recorded it as <b>${extra.schop}</b> in ‘The Art of Being Right’.</div>`:``}
+   </div>
+   <div class="choices" style="margin-top:12px"><button class="btn btn-primary" id="cont">${last?'See the verdict':'Continue the debate'}</button></div>`;
+  app().innerHTML=html; scrollThread();
+  document.getElementById('cont').onclick = cont || (()=>{ S.turno++; nextTurn(false); });
+}
+
+function renderEnd(){
+  const you=S.meter, win=you>55, lose=you<45;
+  const cls=win?'win':(lose?'lose':'tie');
+  const titulo=win?'You convinced the audience':(lose?'The audience went over to the computer':'A close debate, with no clear winner');
+  const msg=win?'You knew when to call out a trick and when to hit hard with a reason, without losing your cool. That is arguing well.'
+    :(lose?'Tricks slipped past you, or you spent turns on trifles while the big things went unanswered, or you were thrown off balance. Look at the meter and try a different line.'
+      :'It was evenly matched. Sharpen when to call out the fallacy and when to counterattack, and you will tip it in your favour.');
+  app().innerHTML=`${hud()}
+    <div class="intro center fade">
+      <div class="eyebrow">End of the debate</div>
+      <div class="verdict ${cls}">${you}% of the audience</div>
+      <h2>${titulo}</h2>
+      <p class="lede" style="margin-top:10px">${msg}</p>
+      <div class="pick" style="margin-top:18px">
+        <button class="btn btn-primary" id="again">Debate again (this topic)</button>
+        <button class="btn" id="home">Choose another topic</button>
+      </div>
+    </div>`;
+  document.getElementById('again').onclick=()=>{ _seed=(Date.now()&0x7fffffff)||1; const ti=S.ti; S=freshState(ti); S.fase="turn"; nextTurn(true); };
+  document.getElementById('home').onclick=()=>{ S=null; renderIntro(); };
+}
+
+/* ---------- Light/dark theme ---------- */
+(function(){
+  const root=document.documentElement, btn=document.getElementById('theme');
+  let saved=null; try{saved=localStorage.getItem('dr_theme');}catch(e){}
+  if(saved) root.setAttribute('data-theme',saved);
+  btn.onclick=()=>{ const cur=root.getAttribute('data-theme');
+    const dark=cur? cur==='dark' : matchMedia('(prefers-color-scheme:dark)').matches;
+    const next=dark?'light':'dark'; root.setAttribute('data-theme',next);
+    try{localStorage.setItem('dr_theme',next);}catch(e){} };
+})();
+
+/* ---------- Start-up with hot-reload ---------- */
+function start(data){ if(data&&data.S){ S=data.S; if(typeof data.seed==='number') _seed=data.seed; } else { S=null; } render(); }
+try{ window.claude?.hot?.snapshot && window.claude.hot.snapshot(()=>({S, seed:_seed})); }catch(e){}
+if(window.claude?.hot?.ready) window.claude.hot.ready(start); else start(window.claude?.hot?.data ?? {});
+</script>
+
+</body>
+</html>

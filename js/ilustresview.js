@@ -1,0 +1,237 @@
+"use strict";
+/* ===== Vista Ilustres ===== depende de: ilustres.js (ILUSTRES), ilustres_retratos.js (ILUSTRES_RETRATOS, opcional),
+   theory.js (THEORY, para los enlaces a los temas) =====
+   Biografías de los pensadores que aparecen en la teoría de Filosofía 1.º y de Historia de la
+   Filosofía 2.º. Listado en orden cronológico, filtrable por materia (si la web trae las dos),
+   época y búsqueda; cada tarjeta abre la ficha del pensador (enlace profundo #ilustres/<id>).
+   Retrato de dominio público o CC (Wikimedia Commons) cuando lo hay; si no, un monograma. */
+
+const ILU_EPOCAS = [
+  ["ant", "القديمة"], ["med", "الوسيطة"], ["ren", "عصر النهضة"], ["mod", "الحديثة"], ["ilu", "الأنوار"], ["con", "المعاصرة"]
+];
+const ILU_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة" };
+let iluSubject = "all", iluEpoca = "all", iluQuery = "";
+
+function iluFold(s){ return (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+function iluEsc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+/* (29-09) orden: por época (ILU_EPOCAS) y, dentro de cada una, por nacimiento; así cada época sale una
+   sola vez aunque la época del eje del dpto. no coincida con las fechas (Hipatia, Hume, Bentham, Mill…) */
+function iluList(){
+  if (typeof ILUSTRES === "undefined" || !ILUSTRES) return [];
+  const ep = b => { const i = ILU_EPOCAS.findIndex(e => e[0] === b); return i < 0 ? ILU_EPOCAS.length : i; };
+  return Object.keys(ILUSTRES).map(k => Object.assign({ id: k }, ILUSTRES[k]))
+    .sort((a, b) => ep(a.block) - ep(b.block) || (a.born ?? 0) - (b.born ?? 0));
+}
+function iluPresent(){ const all = iluList(); return ["fil", "hf"].filter(s => all.some(p => (p.subjects || []).includes(s))); }
+function iluEpocaName(b){ const e = ILU_EPOCAS.find(x => x[0] === b); return e ? e[1] : ""; }
+/* retrato: {f, pie, page?} de ilustres_retratos.js (generado por tools/build_ilustres.js) */
+function iluRetrato(p){
+  return typeof ILUSTRES_RETRATOS !== "undefined" && ILUSTRES_RETRATOS[p.id] || null;
+}
+function iluInitials(name){
+  const w = String(name || "").replace(/\(.*?\)/g, "").split(/\s+/).filter(x => x && /^[A-ZÁÉÍÓÚÑÄÖÜ]/.test(x));
+  return ((w[0] || "?")[0] + (w.length > 1 ? w[w.length - 1][0] : "")).toUpperCase();
+}
+function iluAvatar(p, big){
+  const r = iluRetrato(p);
+  if (r) return '<img class="ilu-img' + (big ? " figimg" : "") + '" loading="lazy" src="' + iluEsc(r.f) + '" alt="' + iluEsc(p.name) + '">';
+  return '<span class="ilu-mono" aria-hidden="true">' + iluEsc(iluInitials(p.name)) + '</span>';
+}
+function iluHi(escaped, q){
+  if (!q || q.length < 2) return escaped;
+  const rx = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+  return escaped.replace(rx, "<mark>$1</mark>");
+}
+
+function iluFiltered(){
+  const q = iluFold(iluQuery);
+  return iluList().filter(p => {
+    if (iluSubject !== "all" && !(p.subjects || []).includes(iluSubject)) return false;
+    if (iluEpoca !== "all" && p.block !== iluEpoca) return false;
+    if (q && !iluFold([p.name, p.role, p.idea, (p.obras || []).join(" "), p.bio, p.anecdota].join(" ")).includes(q)) return false;
+    return true;
+  });
+}
+
+function renderIluControls(){
+  const box = document.getElementById("ilufilter");
+  if (!box) return;
+  const present = iluPresent();
+  if (iluSubject !== "all" && !present.includes(iluSubject)) iluSubject = "all";
+  const subjBtns = ["all"].concat(present).map(s =>
+    '<button class="fbtn" data-isub="' + s + '" aria-pressed="' + (s === iluSubject) + '">' +
+    (s === "all" ? "الكل" : ILU_SUBJECTS[s]) + '</button>').join("");
+  const epBtns = [["all", "الكل"]].concat(ILU_EPOCAS).map(e =>
+    '<button class="fbtn" data-iep="' + e[0] + '" aria-pressed="' + (e[0] === iluEpoca) + '">' +
+    (e[0] === "all" ? "" : '<i class="ilu-dot" data-b="' + e[0] + '" aria-hidden="true"></i>') + e[1] + '</button>').join("");
+  box.innerHTML =
+    (present.length > 1 ? '<div class="fgroup"><span class="flabel">المادة</span>' + subjBtns + '</div>' : '') +
+    '<div class="fgroup"><span class="flabel">العصر</span>' + epBtns + '</div>' +
+    '<div class="ilu-tools"><input class="ilu-search" id="ilusearch" type="search" placeholder="ابحثوا عن مفكر أو عمل أو فكرة…" autocomplete="off" aria-label="البحث في الأعلام"></div>';
+  box.querySelectorAll("[data-isub]").forEach(b => b.addEventListener("click", () => {
+    iluSubject = b.dataset.isub;
+    box.querySelectorAll("[data-isub]").forEach(x => x.setAttribute("aria-pressed", x.dataset.isub === iluSubject));
+    renderIluList();
+  }));
+  box.querySelectorAll("[data-iep]").forEach(b => b.addEventListener("click", () => {
+    iluEpoca = b.dataset.iep;
+    box.querySelectorAll("[data-iep]").forEach(x => x.setAttribute("aria-pressed", x.dataset.iep === iluEpoca));
+    renderIluList();
+  }));
+  const inp = document.getElementById("ilusearch");
+  inp.value = iluQuery;
+  let t = null;
+  inp.addEventListener("input", () => { clearTimeout(t); t = setTimeout(() => { iluQuery = inp.value.trim(); renderIluList(); }, 120); });
+}
+
+function renderIluList(){
+  const box = document.getElementById("ilubox"), cnt = document.getElementById("ilucount"), fb = document.getElementById("ilufilter");
+  if (!box) return;
+  if (fb) fb.hidden = false;
+  const rows = iluFiltered(), total = iluList().length;
+  if (cnt){
+    cnt.hidden = false;
+    cnt.textContent = rows.length + (rows.length === 1 ? " مفكر" : " مفكرين") + (rows.length !== total ? " (من " + total + ")" : "");
+  }
+  if (!rows.length){ box.innerHTML = '<p class="ilu-empty">لا يوجد مفكرون يطابقون البحث.</p>'; return; }
+  const q = iluQuery;
+  let html = "", last = null;
+  rows.forEach(p => {
+    if (p.block !== last){
+      if (last !== null) html += "</div>";
+      html += '<h2 class="ilu-era" data-b="' + p.block + '">' + iluEsc(iluEpocaName(p.block)) + '</h2><div class="ilu-grid">';
+      last = p.block;
+    }
+    html += '<button class="ilu-card" data-b="' + p.block + '" data-ilu="' + iluEsc(p.id) + '">' +
+      '<span class="ilu-av">' + iluAvatar(p) + '</span>' +
+      '<span class="ilu-txt"><b>' + iluHi(iluEsc(p.name), q) + '</b>' +
+      '<span class="ilu-dates">' + iluEsc(p.dates) + '</span>' +
+      '<span class="ilu-role">' + iluHi(iluEsc(p.role), q) + '</span></span></button>';
+  });
+  html += "</div>";
+  box.innerHTML = html;
+  box.querySelectorAll("[data-ilu]").forEach(b => b.addEventListener("click", () => loadIlustre(b.dataset.ilu)));
+}
+
+function iluTemaChips(p){
+  if (typeof THEORY === "undefined") return "";
+  const ks = (p.temas || []).filter(k => THEORY[k]);
+  if (!ks.length) return "";
+  return '<div class="ilu-sec ilu-sec-temas"><h3>يرد في الدرس</h3><div class="ilu-temas">' +
+    ks.map(k => '<button class="ilu-tema" data-th="' + iluEsc(k) + '"><span>' + iluEsc(THEORY[k].tema) + '</span>' + iluEsc(THEORY[k].title) + '</button>').join("") +
+    '</div></div>';
+}
+
+/* (29-09) Sus frases (citas.js, enlazadas por «id»), con el estilo de la sección Frases */
+const ILU_FRASES = "أقوال", ILU_CLASE = "في القسم";
+function iluCitas(p){
+  if (typeof CITAS === "undefined") return "";
+  const cs = CITAS.filter(c => c.id === p.id).sort((a, b) => (b.dest ? 1 : 0) - (a.dest ? 1 : 0));
+  if (!cs.length) return "";
+  return '<div class="ilu-sec ilu-cits"><h3>' + ILU_FRASES + '</h3>' + cs.map(c =>
+    '<figure class="ilu-cit' + (c.dest ? ' ilu-cit-dest' : '') + '">' + (c.dest ? '<span class="ilu-cit-badge">' + ILU_CLASE + '</span>' : '') +
+    '<blockquote class="ilu-cit-q">' + iluEsc(c.c) + '</blockquote>' +
+    (c.o ? '<figcaption class="ilu-cit-o">' + iluEsc(c.o) + '</figcaption>' : '') + '</figure>').join("") + '</div>';
+}
+
+/* Ficha de un pensador. Sin argumento (o id desconocido) vuelve al listado. */
+/* (01-10) «Su vida en fechas»: una sola línea vertical, de arriba abajo, con lo esencial (nace, los hechos del campo
+   «vida» {a, b?, t} y muere). No toca la biografía: va detrás, como una sección más de la ficha. */
+const ILU_VIDA = { tit: "حياته بالتواريخ", nace: "وُلد", muere: "توفي", ac: "{n} ق.م" };
+function iluAno(y){ return y < 0 ? ILU_VIDA.ac.replace("{n}", -y) : String(y); }
+function iluVida(p){
+  const v = (p.vida || []).filter(e => !e.ctx).slice().sort((x, y) => x.a - y.a);
+  if (!v.length || p.born == null) return "";
+  const c = /^c\./.test(p.dates || "") ? "c. " : "";
+  const fecha = e => e.b == null ? iluAno(e.a) : e.a < 0 && e.b < 0 ? ILU_VIDA.ac.replace("{n}", -e.a + "–" + -e.b) : iluAno(e.a) + "–" + iluAno(e.b);
+  const fila = (f, t, cl) => '<li' + (cl ? ' class="' + cl + '"' : '') + '><span class="vida-a">' + iluEsc(f) + '</span><span class="vida-t">' + iluEsc(t) + '</span></li>';
+  return '<div class="ilu-sec ilu-vida"><h3>' + ILU_VIDA.tit + '</h3><ol class="vida-linea">' +
+    fila(c + iluAno(p.born), ILU_VIDA.nace + (p.place ? " · " + p.place : ""), "vida-extremo") +
+    v.map(e => fila(fecha(e), e.t)).join("") +
+    (p.died != null ? fila(iluAno(p.died), ILU_VIDA.muere, "vida-extremo") : "") + '</ol></div>';
+}
+
+function loadIlustre(id){
+  const box = document.getElementById("ilubox");
+  if (!box) return;
+  const all = iluList(), p = all.find(x => x.id === id);
+  if (!p){ renderIluList(); return; }
+  const fb = document.getElementById("ilufilter"), cnt = document.getElementById("ilucount");
+  if (fb) fb.hidden = true;
+  if (cnt) cnt.hidden = true;
+  const seq = iluFiltered().some(x => x.id === id) ? iluFiltered() : all;
+  const i = seq.findIndex(x => x.id === id), prev = seq[i - 1], next = seq[i + 1];
+  const r = iluRetrato(p);
+  box.innerHTML =
+    '<div class="ilu-nav"><button class="btn ghost" data-back>→ كل الأعلام</button>' +
+    '<span class="ilu-pn">' +
+      (prev ? '<button class="btn ghost" data-go-ilu="' + iluEsc(prev.id) + '" title="' + iluEsc(prev.name) + '">‹ السابق</button>' : '') +
+      (next ? '<button class="btn ghost" data-go-ilu="' + iluEsc(next.id) + '" title="' + iluEsc(next.name) + '">التالي ›</button>' : '') +
+    '</span></div>' +
+    '<article class="ilu-ficha" data-b="' + p.block + '">' +
+      '<header class="ilu-head">' +
+        '<figure class="ilu-portrait">' + iluAvatar(p, true) +
+          (r ? '<figcaption>' + iluEsc(r.pie) + ' · ' + (r.page ? '<a href="' + iluEsc(r.page) + '" target="_blank" rel="noopener">' + (/wikipedia\.org/.test(r.page) ? "Wikipedia" : "Wikimedia Commons") + '</a>' : 'Wikimedia Commons') + '</figcaption>' : '') +
+        '</figure>' +
+        '<div class="ilu-id">' +
+          '<p class="ilu-era-tag"><i class="ilu-dot" data-b="' + p.block + '" aria-hidden="true"></i>' + iluEsc(iluEpocaName(p.block)) + ' · ' + iluEsc(p.role) + '</p>' +
+          '<h2>' + iluEsc(p.name) + '</h2>' +
+          '<p class="ilu-life">' + iluEsc(p.dates) + (p.place ? ' · ' + iluEsc(p.place) : '') + '</p>' +
+          (p.idea ? '<p class="ilu-idea">' + iluEsc(p.idea) + '</p>' : '') +
+        '</div>' +
+      '</header>' +
+      '<div class="ilu-bio">' + (p.bio || "") + '</div>' +
+      iluVida(p) +
+      iluCitas(p) +
+      (p.anecdota ? '<div class="ilu-sec ilu-anec"><h3><span>طُرفة</span>' + (p.tradicion ? ' <span class="ilu-trad">حسب التقليد</span>' : '') + '</h3>' +
+        p.anecdota + (p.fuente ? '<p class="ilu-fuente"><span>المصدر</span>: ' + iluEsc(p.fuente) + '</p>' : '') + '</div>' : '') +
+      ((p.obras || []).length ? '<div class="ilu-sec"><h3>الأعمال الرئيسية</h3><ul class="ilu-obras">' + p.obras.map(o => '<li>' + iluEsc(o) + '</li>').join("") + '</ul></div>' : '') +
+      iluTemaChips(p) +
+    '</article>';
+  box.querySelector("[data-back]").addEventListener("click", () => {
+    renderIluList();
+    try { history.replaceState(null, "", "#ilustres"); } catch (e){}
+    window.scrollTo(0, 0);
+  });
+  box.querySelectorAll("[data-go-ilu]").forEach(b => b.addEventListener("click", () => loadIlustre(b.dataset.goIlu)));
+  box.querySelectorAll("[data-th]").forEach(b => b.addEventListener("click", () => {
+    (window.show || show)("teoria");
+    if (typeof window.loadTheory === "function") window.loadTheory(b.dataset.th);
+  }));
+  const img = box.querySelector(".ilu-portrait img");
+  if (img) img.addEventListener("click", () => { if (typeof openLightbox === "function") openLightbox(img.src, img.alt); });
+  window.scrollTo(0, 0);
+}
+
+/* En la teoría: al final de cada unidad, una tira con los ilustres que aparecen en ella (enlaza a su
+   ficha). Envuelve loadTheory() igual que retratosview.js, sin tocar theory.js ni theoryview.js. */
+function iluInjectTheory(){
+  const body = document.getElementById("theorybody");
+  if (!body) return;
+  const old = body.querySelector(".ilu-strip"); if (old) old.remove();
+  const k = typeof theoryKey !== "undefined" ? theoryKey : null;   // unidad abierta (theoryview.js)
+  const ps = k ? iluList().filter(p => (p.temas || []).includes(k)) : [];
+  if (!ps.length) return;
+  const strip = document.createElement("aside");
+  strip.className = "ilu-strip";
+  strip.innerHTML = '<h3>أعلام هذا الموضوع</h3><div class="ilu-strip-list">' +
+    ps.map(p => '<button data-ilu="' + iluEsc(p.id) + '" data-b="' + p.block + '">' + iluEsc(p.name) + '<span>' + iluEsc(p.dates) + '</span></button>').join("") + '</div>';
+  body.appendChild(strip);
+  strip.querySelectorAll("[data-ilu]").forEach(b => b.addEventListener("click", () => {
+    (window.show || show)("ilustres");
+    loadIlustre(b.dataset.ilu);
+  }));
+}
+if (typeof loadTheory === "function"){
+  const origTheory = loadTheory;
+  loadTheory = function(k){ const out = origTheory.apply(this, arguments); try { iluInjectTheory(); } catch (e){} return out; };
+}
+
+/* «#ilustres» sin argumento (atrás del navegador, enlace) con una ficha abierta → vuelve al listado */
+window.addEventListener("hashchange", () => {
+  if (location.hash === "#ilustres" && document.querySelector("#ilubox .ilu-ficha")) renderIluList();
+});
+
+renderIluControls();
+renderIluList();
+try { iluInjectTheory(); } catch (e){}   // la primera unidad ya está pintada al cargar theoryview.js
