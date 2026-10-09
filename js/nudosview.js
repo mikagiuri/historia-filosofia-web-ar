@@ -161,11 +161,11 @@ function nudOpcion(n, c){
 }
 
 function nudCuaderno(){
-  const box = nudBox(), af = id => NUD.m.afs[id];
+  const box = nudBox(), af = id => NUD.m.afs[id], afc = id => af(id).replace(/\.\s*$/, "");   // (09-10) afc: al citarla entre comillas, sin su punto final (evita «….».)
   const lineas = NUD.log.map(e => {
-    if (e.tipo === "cambio") return "<li>" + nudT("lCambio", { a: af(e.id), de: nudVal(e.de), x: nudVal(e.a) }) + (e.razon ? "<br>" + nudT("porQue", { t: nudEsc(e.razon) }) : "") + "</li>";
+    if (e.tipo === "cambio") return "<li>" + nudT("lCambio", { a: afc(e.id), de: nudVal(e.de), x: nudVal(e.a) }) + (e.razon ? "<br>" + nudT("porQue", { t: nudEsc(e.razon) }) : "") + "</li>";
     const p = nudPar(e.n), k = { distingo: "lDist", bala: "lBala", aparente: "lAp" }[e.tipo];
-    return "<li>" + nudT(k, { a: af(p.a), b: af(p.b) }) + "<br>" + nudT("miRazon", { t: nudEsc(e.razon) }) + "</li>";
+    return "<li>" + nudT(k, { a: afc(p.a), b: afc(p.b) }) + "<br>" + nudT("miRazon", { t: nudEsc(e.razon) }) + "</li>";
   }).join("") || '<li class="nud-muted">' + nudT(NUD.orden.filter(id => NUD.resp[id].v === "P").length >= 3 ? "sinNudos" : "sinNudosPocoP") + "</li>";   // (09-10) el mensaje de «mucho Depende» solo si de verdad lo hay
   box.innerHTML = '<div class="nud-card nud-cuaderno"><h3>' + nudT("cuaderno") + '</h3><p class="nud-small nud-muted">' + NUD.m.titulo + " · " + new Date().toLocaleDateString(document.documentElement.lang || "es") + ". " + nudT("cuadSub") + "</p>" +
     "<h4>" + nudT("misResp") + "</h4><ul>" + NUD.orden.map(id => "<li>" + af(id) + " — <strong>" + nudVal(NUD.resp[id].v) + "</strong>" + (NUD.resp[id].dep ? '<br><span class="nud-small">' + nudT("dependeDe", { t: nudEsc(NUD.resp[id].dep) }) + "</span>" : "") + "</li>").join("") + "</ul>" +

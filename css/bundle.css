@@ -545,6 +545,8 @@ ol.itin-temas li.temas-extra .temas-t{font-size:.95rem;color:var(--muted)}
 .ficha-libro.ficha-flash{box-shadow:0 0 0 3px var(--accent)}
 @media (max-width:560px){.lomo{width:34px;font-size:.72rem}.lomo:nth-child(3n+2){width:32px}.lomo:nth-child(4n){width:38px}.ficha-img{width:84px}}
 @media print{.estanteria{display:none}.ficha-libro{break-inside:avoid}}
+/* (09-10) matriz de obras (anexo hf-corazon-piedra): primera columna como cabecera de fila */
+.matriz th[scope="row"]{background:var(--surface-2);font-weight:400;min-width:150px}.matriz td{font-size:.88rem;vertical-align:top;min-width:150px}
 
 
 /* ==== css/mobile.css ==== */

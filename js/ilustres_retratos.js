@@ -489,6 +489,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/museo2/comte.jpg",
   "pie": "Portrait dAuguste Comte (maison dA. Comte, Paris) (2424895050) · Jean-Pierre Dalbéra from Paris, France · CC BY 2.0"
  },
+ "balzac": {
+  "f": "media/retratos/ilustres/balzac.jpg",
+  "pie": "Balzac by Bisson daguerrotype original · Louis-Auguste Bisson · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Balzac_by_Bisson_daguerrotype_original.jpg"
+ },
  "feuerbach": {
   "f": "media/retratos/museo2/feuerbach.jpg",
   "pie": "Feuerbach Ludwig retouched · August Weger · Public Domain"
@@ -512,6 +517,16 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/proudhon.jpg",
   "pie": "Pierre Joseph Proudhon · Gustave Courbet · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Pierre_Joseph_Proudhon.jpg"
+ },
+ "dickens": {
+  "f": "media/retratos/ilustres/dickens.jpg",
+  "pie": "Charles Dickens by Herbert Watkins 29 April 1858 (alternate) · Herbert Watkins (1828–1916) · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Charles_Dickens_by_Herbert_Watkins_29_April_1858_(alternate).jpg"
+ },
+ "buchner": {
+  "f": "media/retratos/ilustres/buchner.jpg",
+  "pie": "Georg Büchner · Philipp August Joseph Hoffmann (1807 bis 1883) · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Georg_B%C3%BCchner.png"
  },
  "boole": {
   "f": "media/retratos/ilustres/boole.jpg",
