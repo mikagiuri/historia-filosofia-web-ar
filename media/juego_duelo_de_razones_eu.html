@@ -6,7 +6,7 @@
 </head>
 <body style="margin:0">
 <title>Arrazoien dueloa</title>
-<meta name="description" content="Pentsamendu kritikoko eztabaida-jokoa: gai bati buruzko elkarrizketa bat, non aurkariaren faltsukeria seinalatzea edo arrazoi sendoago batekin kontraerasotzea erabakitzen duzun, patxada galdu gabe.">
+<meta name="description" content="Pentsamendu kritikoko eztabaida-jokoa: gai bati buruzko elkarrizketa bat, non aurkariaren falazia seinalatzea edo arrazoi sendoago batekin kontraerasotzea erabakitzen duzun, patxada galdu gabe.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Spline+Sans:wght@400;500;600&display=swap">
@@ -455,7 +455,7 @@ function renderIntro(){
        <p class="lede">Gai bat eztabaidatzen duzu ordenagailuaren aurka eta neurgailu batek erakusten du publikoa norengana ari den konbentzitzen. Txanda bakoitzean, esan berri duenaren aurrean, zure jokaldia aukeratzen duzu.</p>
      </div>
      <div class="rules">
-       <div class="rule"><span class="n">A</span><p><b>Faltsukeria seinalatu.</b> Bere argudioak tranpa egiten badu, izendatu eta hura defendatzera behartzen duzu. Tranpa bere jarreraren bihotza denean, horrek kalte handia egiten dio.</p></div>
+       <div class="rule"><span class="n">A</span><p><b>Falazia seinalatu.</b> Bere argudioak tranpa egiten badu, izendatu eta hura defendatzera behartzen duzu. Tranpa bere jarreraren bihotza denean, horrek kalte handia egiten dio.</p></div>
        <div class="rule"><span class="n">B</span><p><b>Kontraargudiatu.</b> Bere jokaldia pasatzen uzten duzu eta zeure arrazoi batekin erantzuten duzu. Behar bezain sendoa bada, tranpa txiki bat zuzentzen entretenitzea baino gehiago konbentzitzen du… baina ahula bada eta bere tranpa handia bazen, hondoratu egiten zaitu. Kontuz: bere argudioek ere badute indarra; zure arrazoia berea baino ahulagoa bada, publikoa berarekin joaten da.</p></div>
        <div class="rule"><span class="n">♦</span><p><b>Patxada.</b> Errespetua galtzen dizutenean edo mina ematen dizutenean (irain bat, mehatxu bat, eraso pertsonal bat) patxada galtzen duzu, jokaldia harrapatuta ere: kolpeak berdin egiten du min. Ez da bere kabuz berreskuratzen, beraz pilatu egiten da. Zeron, onetik ateratzen zara (iraindu, amore eman edo ihes egin baino ez zaizu ateratzen); orduan gelditu eta arnasa hartu lasaitasun pixka bat berreskuratzeko.</p></div>
        <div class="rule"><span class="n">★</span><p><b>Komodinak (bakoitzetik bat partidako).</b> <b>Nola dakizu?</b> euskarria dutela itxurak egiten dituzten tranpak desegiten ditu (ospetsu bat, mundu guztia, kasu gutxi, kausa faltsu bat, tradizioa), haien izena jakin gabe ere; argudio zilegi baten aurrean kendu egiten dizu, bere arrazoiak ematen dizkizulako. <b>Zer irabazten du?</b> hitz egiten duenaren interes ezkutua azaleratzen du, baldin badu; ez badu, kendu egiten dizu: zantzurik gabe asmo txarra suposatzea pertsonari erasotzea da.</p></div>
@@ -527,7 +527,7 @@ function renderGame(){
     const hot=S.move.kind==="estrat";
     html+=`<div class="phase-tag ${hot?'hot':''}">${hot?'💢 Probokatzen ari zaizu — erantzun':'Zure txanda — nola erantzuten duzu?'}</div>`;
     html+=`<div class="choices fade">
-       <button class="btn btn-a choice" data-act="a">${hot?'Seinalatu tranpa bat dela (ez argudio bat)':'Seinalatu faltsukeria eta hura defendatzera behartu'}<small>${hot?'esaten diozu horrek ez diola gaiari erantzuten':'izendatzen duzu; bere jarreraren ardatza bada, kalte handia egiten diozu'}</small></button>
+       <button class="btn btn-a choice" data-act="a">${hot?'Seinalatu tranpa bat dela (ez argudio bat)':'Seinalatu falazia eta hura defendatzera behartu'}<small>${hot?'esaten diozu horrek ez diola gaiari erantzuten':'izendatzen duzu; bere jarreraren ardatza bada, kalte handia egiten diozu'}</small></button>
        <button class="btn btn-b choice" data-act="b">Kontraargudiatu zeure arrazoi batekin<small>bere jokaldia pasatzen uzten duzu eta zeurearekin jotzen duzu</small></button>
      </div>`;
     if(!S.comodines) S.comodines={sabes:1, gana:1};
@@ -538,7 +538,7 @@ function renderGame(){
     app().querySelector('[data-act="b"]').onclick=()=>chooseB();
 
   } else if(S.fase==="name"){
-    html+=`<div class="phase-tag">🎯 Zein faltsukeria da? Izendatu desmuntatzeko</div><div class="choices grid-fal fade">`;
+    html+=`<div class="phase-tag">🎯 Zein falazia da? Izendatu desmuntatzeko</div><div class="choices grid-fal fade">`;
     ORDEN_FAL.forEach(k=>{ html+=`<button class="btn choice" data-fal="${k}">${FALACIAS[k].nombre}<small>${FALACIAS[k].tec}</small></button>`; });
     html+=`</div><div style="margin-top:8px"><button class="back" id="back">‹ atzera</button></div>`;
     app().innerHTML=html; scrollThread();
@@ -574,7 +574,7 @@ function nameFal(k){
   if(m.f===null){
     pushThread("you", `Hori ${fa.nombre} da.`);
     const d=-10; S.meter=clamp(S.meter+d);
-    return showFB("lose","Han ez zegoen tranparik.",`Argudio zilegi bat zen, eta «${fa.nombre}» egotzi diozu. Faltsukeriarik ez dagoen lekuan seinalatzeak gaiari ihes egiten ari zarela ematen du, eta publikoa hoztu egiten da zurekin.`,{},d);
+    return showFB("lose","Han ez zegoen tranparik.",`Argudio zilegi bat zen, eta «${fa.nombre}» egotzi diozu. Falaziarik ez dagoen lekuan seinalatzeak gaiari ihes egiten ari zarela ematen du, eta publikoa hoztu egiten da zurekin.`,{},d);
   }
   const real=FALACIAS[m.f], alts=m.fAlt||[];
   if(k===m.f || alts.includes(k)){
@@ -586,7 +586,7 @@ function nameFal(k){
     return showFB("win","Harrapatua eta izenarekin!",`<b>${elegida.nombre}</b> <span style="color:var(--muted)">(${elegida.tec})</span> zen eta hura defendatzera behartzen duzu.${extra}${notaFibra}`,{q:elegida.q},d);
   }
   if(fibra){ pushThread("you", `Hori ${fa.nombre} da…`); const d=-3; S.meter=clamp(S.meter+d);
-    return showFB("mid","Errespetu falta ikusi duzu, baina ez zen faltsukeria hori.",`<b>${real.nombre}</b> <span style="color:var(--muted)">(${real.tec})</span> zen, ez «${fa.nombre}».${notaFibra}`,{q:real.q},d); }
+    return showFB("mid","Errespetu falta ikusi duzu, baina ez zen falazia hori.",`<b>${real.nombre}</b> <span style="color:var(--muted)">(${real.tec})</span> zen, ez «${fa.nombre}».${notaFibra}`,{q:real.q},d); }
   pushThread("you", `Hori ${fa.nombre} da…`);
   const d=-3; S.meter=clamp(S.meter+d);
   showFB("mid","Tranpa ikusi duzu, baina ez zen hori.",`Tranpa bazegoen, bai, baina ez «${fa.nombre}»: <b>${real.nombre}</b> <span style="color:var(--muted)">(${real.tec})</span> zen. Beste izen batekin salatzeak kendu egiten du: publikoak ikusten du ez dakizula ondo zer dagoen gaizki.`,{q:real.q},d);
@@ -683,7 +683,7 @@ function renderEnd(){
   const titulo=win?'Publikoa konbentzitu duzu':(lose?'Publikoa ordenagailuarekin joan da':'Eztabaida estua, irabazle argirik gabe');
   const msg=win?'Jakin duzu noiz seinalatu tranpa bat eta noiz jo gogor arrazoi batekin, onetik atera gabe. Hori ongi eztabaidatzea da.'
     :(lose?'Tranpak sartu dizkizute, edo txandak huskerietan gastatu dituzu garrantzitsua erantzun gabe geratzen zen bitartean, edo deseroso jarri zaituzte. Begiratu neurgailua eta probatu beste bide bat.'
-      :'Berdinduta egon da. Doitu noiz seinalatu faltsukeria eta noiz kontraerasotu eta zure alde okertuko duzu.');
+      :'Berdinduta egon da. Doitu noiz seinalatu falazia eta noiz kontraerasotu eta zure alde okertuko duzu.');
   app().innerHTML=`${hud()}
     <div class="intro center fade">
       <div class="eyebrow">Eztabaidaren amaiera</div>
