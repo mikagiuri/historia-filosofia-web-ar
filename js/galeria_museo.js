@@ -142,7 +142,7 @@ const GALERIA_MUSEO = [
  },
  {
   "f": "media/retratos/museo/averroes.jpg",
-  "t": "Averroes",
+  "t": "ابن رشد",
   "pie": "The Disgrace of Averroes Vies Des Savants Illustr s · Louis Figuier (15 February 1819 – 8 November 1894) · Public Domain · Wikimedia Commons",
   "bloque": "B",
   "unidad": "Medieval-Moderna · museo (dominio público)",
@@ -206,7 +206,7 @@ const GALERIA_MUSEO = [
  },
  {
   "f": "media/retratos/museo/hegel.jpg",
-  "t": "Hegel",
+  "t": "هيغل",
   "pie": "Hegel portrait by Schlesinger 1831 · Jakob Schlesinger (1792-1855) · Public Domain · Wikimedia Commons",
   "bloque": "C",
   "unidad": "Contemporánea · museo (dominio público)",

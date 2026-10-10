@@ -59,7 +59,8 @@ const ADG_ILU = [
   ["إيراسموس الروتردامي", "erasmo"], ["إيراسموس", "erasmo"], ["سقراط", "socrates"], ["أفلاطون", "platon"], ["أرسطو", "aristoteles"],
   ["هيراقليطس", "heraclito"], ["بارمنيدس", "parmenides"], ["بروتاغوراس", "protagoras"], ["أبيقور", "epicuro"], ["سينيكا", "seneca"],
   ["ترتليان", "tertuliano"], ["أوكام", "ockham"], ["ماكيافيلي", "maquiavelo"], ["هوبز", "hobbes"], ["اسبينوزا", "spinoza"],
-  ["جون لوك", "locke"], ["لايبنتز", "leibniz"], ["كانط", "kant"], ["هايدغر", "heidegger"]
+  ["جون لوك", "locke"], ["لايبنتز", "leibniz"], ["كانط", "kant"], ["هايدغر", "heidegger"],
+  ["ابن رشد", "averroes"], ["هيغل", "hegel"], ["ماركس", "marx"], ["داروين", "darwin"]
 ];
 let adgAmb = "all", adgPrueba = false;
 
