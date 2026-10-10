@@ -738,6 +738,7 @@ const ILUSTRES = {
    "hf-verdad-no-contradice",
    "hf-islam-ideas",
    "hf-toledo-traductores",
+   "hf-judios-andalus",
    "hf-modernidad",
    "hf-montaigne-ensayos",
    "hf-contrato",
@@ -1154,7 +1155,8 @@ const ILUSTRES = {
    "hf-aristoteles-arabe",
    "hf-verdad-no-contradice",
    "hf-islam-ideas",
-   "hf-toledo-traductores"
+   "hf-toledo-traductores",
+   "hf-judios-andalus"
   ]
  },
  "anselmo": {
@@ -1350,7 +1352,8 @@ const ILUSTRES = {
    "hf-aa",
    "hf-aristoteles-arabe",
    "hf-verdad-no-contradice",
-   "hf-islam-ideas"
+   "hf-islam-ideas",
+   "hf-judios-andalus"
   ]
  },
  "alberto_magno": {
@@ -1439,6 +1442,7 @@ const ILUSTRES = {
    "hf-aristoteles-arabe",
    "hf-verdad-no-contradice",
    "hf-toledo-traductores",
+   "hf-judios-andalus",
    "hf-montaigne-ensayos"
   ]
  },
@@ -2052,6 +2056,7 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-medieval",
+   "hf-judios-andalus",
    "hf-montaigne-ensayos",
    "hf-racionalismo",
    "hf-metafisica",
