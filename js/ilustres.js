@@ -614,6 +614,7 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-historicidad",
+   "hf-euskal-herria",
    "hf-metodos",
    "hf-beefs",
    "hf-preso",
@@ -1976,6 +1977,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-euskal-herria",
    "hf-metodos",
    "hf-medieval",
    "hf-platon-agustin",
@@ -3782,6 +3784,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-euskal-herria",
    "hf-metodos",
    "hf-beefs",
    "hf-platon-superficie",
@@ -3849,6 +3852,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-euskal-herria",
    "hf-existencialismo"
   ]
  },
@@ -4001,6 +4005,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-euskal-herria",
    "hf-existencialismo",
    "hf-beauvoir"
   ]
@@ -4078,6 +4083,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-euskal-herria",
    "hf-beefs",
    "hf-posmodernidad",
    "hf-existencialismo"
@@ -4656,6 +4662,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-euskal-herria",
    "hf-analitica"
   ]
  },
@@ -4754,6 +4761,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-euskal-herria",
    "hf-utilitarismo",
    "hf-etica-deber",
    "hf-analitica"
