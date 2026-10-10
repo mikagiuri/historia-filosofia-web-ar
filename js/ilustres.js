@@ -313,6 +313,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-sofistas"
   ]
  },
@@ -338,6 +339,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-sofistas",
    "hf-platon-superficie"
   ]
@@ -409,7 +411,9 @@ const ILUSTRES = {
   "subjects": [
    "hf"
   ],
-  "temas": []
+  "temas": [
+   "hf-beefs"
+  ]
  },
  "socrates": {
   "name": "سقراط",
@@ -430,6 +434,7 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-metodos",
+   "hf-beefs",
    "hf-sofistas",
    "hf-ap",
    "hf-aa",
@@ -610,6 +615,7 @@ const ILUSTRES = {
   "temas": [
    "hf-historicidad",
    "hf-metodos",
+   "hf-beefs",
    "hf-preso",
    "hf-sofistas",
    "hf-ap",
@@ -652,6 +658,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-helenismo"
   ]
  },
@@ -715,6 +722,7 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-metodos",
+   "hf-beefs",
    "hf-mito",
    "hf-sofistas",
    "hf-aa",
@@ -1305,6 +1313,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-aa",
    "hf-antropologia",
    "hf-medieval",
@@ -1416,6 +1425,7 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-historicidad",
+   "hf-beefs",
    "hf-aa",
    "hf-antropologia",
    "hf-medieval",
@@ -1519,6 +1529,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-medieval",
    "hf-fe-razon",
    "hf-modernidad"
@@ -1587,6 +1598,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-modernidad"
   ]
  },
@@ -1689,6 +1701,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-modernidad",
    "hf-descartes-makro"
   ]
@@ -2118,6 +2131,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-aa",
    "hf-modernidad",
    "hf-metafisica",
@@ -2150,6 +2164,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-racionalismo",
    "hf-metafisica",
    "hf-spinoza-universal",
@@ -2230,6 +2245,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-spinoza-universal",
    "hf-ilustracion"
   ]
@@ -2313,6 +2329,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-medieval",
    "hf-fe-razon",
    "hf-verdad-no-contradice",
@@ -2347,6 +2364,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-medieval",
    "hf-montaigne-ensayos",
    "hf-contrato",
@@ -2520,6 +2538,7 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-metodos",
+   "hf-beefs",
    "hf-montaigne-ensayos",
    "hf-racionalismo",
    "hf-metafisica",
@@ -2863,6 +2882,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-ilustracion",
    "hf-marx-biblioteca",
    "hf-corazon-piedra"
@@ -3043,6 +3063,7 @@ const ILUSTRES = {
   "temas": [
    "hf-historicidad",
    "hf-metodos",
+   "hf-beefs",
    "hf-mito",
    "hf-montaigne-ensayos",
    "hf-spinoza-sistema",
@@ -3592,6 +3613,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-marx-biblioteca"
   ]
  },
@@ -3673,6 +3695,7 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-metodos",
+   "hf-beefs",
    "hf-metafisica",
    "hf-spinoza-universal",
    "hf-ilustracion",
@@ -3733,6 +3756,7 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-metodos",
+   "hf-beefs",
    "hf-platon-superficie",
    "hf-platon-agustin",
    "hf-montaigne-ensayos",
@@ -3900,6 +3924,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-spinoza-sistema",
    "hf-spinoza-universal",
    "hf-kant-poetas"
@@ -3997,6 +4022,7 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-historicidad",
+   "hf-beefs",
    "hf-montaigne-ensayos",
    "hf-analitica"
   ]
@@ -4024,6 +4050,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-posmodernidad",
    "hf-existencialismo"
   ]
@@ -4171,6 +4198,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-platon",
    "hf-politica",
    "hf-sospecha",
@@ -4254,6 +4282,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-existencialismo",
    "hf-beauvoir"
   ]
@@ -4360,6 +4389,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-existencialismo"
   ]
  },
@@ -4465,6 +4495,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-posmodernidad"
   ]
  },
@@ -4514,6 +4545,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-posmodernidad",
    "hf-beauvoir"
   ]
@@ -4541,6 +4573,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-beefs",
    "hf-capitalismo",
    "hf-posmodernidad"
   ]
