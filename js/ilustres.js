@@ -624,6 +624,7 @@ const ILUSTRES = {
    "hf-platon-agustin",
    "hf-fe-razon",
    "hf-aristoteles-arabe",
+   "hf-verdad-no-contradice",
    "hf-modernidad",
    "hf-montaigne-ensayos",
    "hf-racionalismo",
@@ -723,6 +724,7 @@ const ILUSTRES = {
    "hf-medieval",
    "hf-fe-razon",
    "hf-aristoteles-arabe",
+   "hf-verdad-no-contradice",
    "hf-modernidad",
    "hf-montaigne-ensayos",
    "hf-contrato",
@@ -1063,6 +1065,7 @@ const ILUSTRES = {
    "hf-medieval",
    "hf-platon-agustin",
    "hf-fe-razon",
+   "hf-verdad-no-contradice",
    "hf-montaigne-ensayos",
    "hf-racionalismo",
    "hf-descartes-makro"
@@ -1133,7 +1136,8 @@ const ILUSTRES = {
   "temas": [
    "hf-medieval",
    "hf-fe-razon",
-   "hf-aristoteles-arabe"
+   "hf-aristoteles-arabe",
+   "hf-verdad-no-contradice"
   ]
  },
  "anselmo": {
@@ -1205,7 +1209,8 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
-   "hf-aristoteles-arabe"
+   "hf-aristoteles-arabe",
+   "hf-verdad-no-contradice"
   ]
  },
  "hildegarda": {
@@ -1301,6 +1306,7 @@ const ILUSTRES = {
    "hf-medieval",
    "hf-fe-razon",
    "hf-aristoteles-arabe",
+   "hf-verdad-no-contradice",
    "hf-montaigne-ensayos"
   ]
  },
@@ -1323,7 +1329,8 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-aa",
-   "hf-aristoteles-arabe"
+   "hf-aristoteles-arabe",
+   "hf-verdad-no-contradice"
   ]
  },
  "alberto_magno": {
@@ -1409,6 +1416,7 @@ const ILUSTRES = {
    "hf-medieval",
    "hf-fe-razon",
    "hf-aristoteles-arabe",
+   "hf-verdad-no-contradice",
    "hf-montaigne-ensayos"
   ]
  },
@@ -2301,6 +2309,7 @@ const ILUSTRES = {
   "temas": [
    "hf-medieval",
    "hf-fe-razon",
+   "hf-verdad-no-contradice",
    "hf-modernidad",
    "hf-montaigne-ensayos",
    "hf-racionalismo",
