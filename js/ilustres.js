@@ -438,6 +438,7 @@ const ILUSTRES = {
    "hf-antropologia",
    "hf-etica",
    "hf-politica",
+   "hf-aristoteles-arabe",
    "hf-montaigne-ensayos",
    "hf-kant-poetas",
    "hf-etica-deber",
@@ -622,6 +623,7 @@ const ILUSTRES = {
    "hf-medieval",
    "hf-platon-agustin",
    "hf-fe-razon",
+   "hf-aristoteles-arabe",
    "hf-modernidad",
    "hf-montaigne-ensayos",
    "hf-racionalismo",
@@ -720,6 +722,7 @@ const ILUSTRES = {
    "hf-politica",
    "hf-medieval",
    "hf-fe-razon",
+   "hf-aristoteles-arabe",
    "hf-modernidad",
    "hf-montaigne-ensayos",
    "hf-contrato",
@@ -745,7 +748,9 @@ const ILUSTRES = {
   "subjects": [
    "hf"
   ],
-  "temas": []
+  "temas": [
+   "hf-aristoteles-arabe"
+  ]
  },
  "crates": {
   "name": "كراتس الطيبي",
@@ -1003,7 +1008,8 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
-   "hf-fe-razon"
+   "hf-fe-razon",
+   "hf-aristoteles-arabe"
   ]
  },
  "agustin": {
@@ -1126,7 +1132,8 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-medieval",
-   "hf-fe-razon"
+   "hf-fe-razon",
+   "hf-aristoteles-arabe"
   ]
  },
  "anselmo": {
@@ -1197,7 +1204,9 @@ const ILUSTRES = {
   "subjects": [
    "hf"
   ],
-  "temas": []
+  "temas": [
+   "hf-aristoteles-arabe"
+  ]
  },
  "hildegarda": {
   "name": "هيلدغارد فون بينغن",
@@ -1291,6 +1300,7 @@ const ILUSTRES = {
    "hf-antropologia",
    "hf-medieval",
    "hf-fe-razon",
+   "hf-aristoteles-arabe",
    "hf-montaigne-ensayos"
   ]
  },
@@ -1312,7 +1322,8 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
-   "hf-aa"
+   "hf-aa",
+   "hf-aristoteles-arabe"
   ]
  },
  "alberto_magno": {
@@ -1397,6 +1408,7 @@ const ILUSTRES = {
    "hf-antropologia",
    "hf-medieval",
    "hf-fe-razon",
+   "hf-aristoteles-arabe",
    "hf-montaigne-ensayos"
   ]
  },
@@ -1438,7 +1450,9 @@ const ILUSTRES = {
   "subjects": [
    "hf"
   ],
-  "temas": []
+  "temas": [
+   "hf-aristoteles-arabe"
+  ]
  },
  "duns_escoto": {
   "name": "يوحنا دونس سكوت",
