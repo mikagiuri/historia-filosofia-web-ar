@@ -268,7 +268,8 @@
       .map(function(k){ return { go: "teoria", arg: k, label: strip(T[k].title).replace(/^(Exploración|Esplorazioa|Exploration|Anexo|Eranskina|Annexe|Annex|Appendix)\s*-\s*/, "") }; }));
     /* (10-10) ficha de la época del tema (epocas_fichas.js, vista Ilustres), si existe */
     var EF = G("EPOCAS_FICHAS"), epo = subject === "hf" && window.Epocas && window.Epocas.epocaDeTema ? window.Epocas.epocaDeTema(tema) : null;
-    if (EF && epo && EF[epo] && view("ilustres")) row(t("epoca"), [{ go: "ilustres", arg: "epoca-" + epo, label: typeof iluEpocaName === "function" ? iluEpocaName(epo) : epo }]);
+    if (EF && subject === "hf"){ var porTema = Object.keys(EF).filter(function(k){ return (EF[k].temasHF || []).indexOf(tema) >= 0; })[0]; if (porTema) epo = porTema; }   // (Fase 3) con / con2
+    if (EF && epo && EF[epo] && view("ilustres")) row(t("epoca"), [{ go: "ilustres", arg: "epoca-" + epo, label: typeof iluNombreFicha === "function" ? iluNombreFicha(epo) : epo }]);
     /* tema anterior / siguiente, en el orden de la materia; desde un anexo, solo «Volver al tema» */
     var ks = temasDe(subject), i = ks.indexOf(key), prev = i > 0 ? ks[i - 1] : null, next = i >= 0 && i < ks.length - 1 ? ks[i + 1] : null;
     if (i < 0 && esAnexo(T[key])) prev = ks.filter(function(k){ return !T[k].sigla && temaOf("teoria", k, T[k]) === tema; })[0] || null;

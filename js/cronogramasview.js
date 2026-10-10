@@ -321,13 +321,25 @@ function ejeGrid(E){
   return '<div class="eje-grid">' + E.periods.map((p, i) => {
     const ev = E.events[i] || {};
     return '<div class="eje-col eje-c" style="' + ejeVars(p) + '">' +
-      '<h3 class="eje-per">' + escapeCrono(p.name) + '</h3>' +
+      '<h3 class="eje-per">' + (ejeFicha(i) ? '<button type="button" class="eje-per-btn" data-eje-epoca="' + ejeFicha(i) + '" title="' + escapeCrono(EJE_VER_EPOCA) + '">' + escapeCrono(p.name) + ' <span aria-hidden="true">›</span></button>' : escapeCrono(p.name)) + '</h3>' +
       '<p class="eje-k">' + escapeCrono(T.siglos) + '</p><p class="eje-siglos">' + escapeCrono(p.siglos) + '</p>' +
       '<p class="eje-k">' + escapeCrono(T.evento) + '</p><p class="eje-evt"><span class="eje-pill">' + escapeCrono(ev.name) +
       '</span> <span class="eje-dt">' + escapeCrono(ev.date) + '</span></p>' +
       '<p class="eje-k">' + escapeCrono(T.reps) + '</p>' + ejeReps(p) + '</div>';
   }).join("") + '</div>';
 }
+/* (10-10, Fase 3) cada periodo del eje del curso abre su ficha de época en Ilustres (epocas_fichas.js), si existe.
+   Los cinco periodos del eje del departamento, en orden; la Moderna (1600-1800) abre la del siglo XVII, que enlaza
+   con la de la Ilustración, y la Contemporánea, la del siglo XIX, que enlaza con la de los siglos XX y XXI. */
+const EJE_FICHAS = ["ant", "med", "ren", "mod", "con"], EJE_VER_EPOCA = "عرض بطاقة الحقبة";
+function ejeFicha(i){
+  const k = EJE_FICHAS[i];
+  return k && typeof EPOCAS_FICHAS !== "undefined" && EPOCAS_FICHAS[k] && typeof loadIlustre === "function" && document.getElementById("ilustres") ? k : null;
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest && e.target.closest("[data-eje-epoca]"); if (!b) return;
+  (window.show || show)("ilustres"); loadIlustre("epoca-" + b.dataset.ejeEpoca);
+});
 function ejeCard(E){
   return '<div class="crono-card eje-card"><div class="crono-h"><h2 class="crono-title">' + escapeCrono(E.title) + '</h2>' +
     '<span class="crono-span eje-sub">' + escapeCrono(E.sub) + '</span></div>' +

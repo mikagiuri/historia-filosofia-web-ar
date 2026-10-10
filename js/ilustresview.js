@@ -208,22 +208,27 @@ function iluListaPlegada(items, n){
   return items.slice(0, n).join(", ") + (resto.length ? ' <details class="ilu-conc-mas"><summary>' + ILU_REL.mas.replace("{n}", resto.length) + '</summary>' + resto.join(", ") + '</details>' : '');
 }
 function iluFichaEpoca(b){ return typeof EPOCAS_FICHAS !== "undefined" && EPOCAS_FICHAS && EPOCAS_FICHAS[b] || null; }
+/* (10-10, Fase 3) una época de ILUSTRES puede tener varias fichas (Contemporánea: con y con2), con su propio
+   «block», «nombre» y rango de «nacidos»; estas funciones resuelven la ficha de un pensador y su título. */
+function iluEnFicha(p, k){ const f = iluFichaEpoca(k); return !!f && (f.block || k) === p.block && (!f.nacidos || (p.born >= f.nacidos[0] && p.born <= f.nacidos[1])); }
+function iluFichaDe(p){ if (typeof EPOCAS_FICHAS === "undefined") return null; return Object.keys(EPOCAS_FICHAS).find(k => iluEnFicha(p, k)) || (iluFichaEpoca(p.block) ? p.block : null); }
+function iluNombreFicha(k){ const f = iluFichaEpoca(k); return f && f.nombre || iluEpocaName(f && f.block || k); }
 function loadEpoca(b){
   const box = document.getElementById("ilubox"), f = iluFichaEpoca(b);
   if (!box || !f){ renderIluList(); return; }
   const fb = document.getElementById("ilufilter"), cnt = document.getElementById("ilucount");
   if (fb) fb.hidden = true;
   if (cnt) cnt.hidden = true;
-  const i = ILU_EPOCAS.findIndex(e => e[0] === b), prev = ILU_EPOCAS[i - 1], next = ILU_EPOCAS[i + 1];
-  const navEp = (e, txt) => e && iluFichaEpoca(e[0]) ? '<button class="btn ghost" data-epoca="' + e[0] + '">' + txt.replace("{e}", iluEsc(iluEpocaName(e[0]))) + '</button>' : '';
+  const orden = Object.keys(EPOCAS_FICHAS), i = orden.indexOf(b), prev = orden[i - 1], next = orden[i + 1], blk = f.block || b;
+  const navEp = (k, txt) => k ? '<button class="btn ghost" data-epoca="' + k + '">' + txt.replace("{e}", iluEsc(iluNombreFicha(k))) + '</button>' : '';
   const sec = (k, cls) => f[k] ? '<div class="ilu-sec' + (cls ? " " + cls : "") + '"><h3>' + ILU_EPO[k] + '</h3>' + f[k] + '</div>' : '';
-  const ps = iluList().filter(p => p.block === b);
+  const ps = iluList().filter(p => iluEnFicha(p, b));
   box.innerHTML =
     '<div class="ilu-nav"><button class="btn ghost" data-back>' + ILU_EPO.volver + '</button>' +
     '<span class="ilu-pn">' + navEp(prev, "‹ {e}") + navEp(next, "{e} ›") + '</span></div>' +
-    '<article class="ilu-ficha ilu-epoca" data-b="' + b + '">' +
-      '<header class="ilu-epo-head"><p class="ilu-era-tag"><i class="ilu-dot" data-b="' + b + '" aria-hidden="true"></i>' + ILU_EPO.epoca + '</p>' +
-        '<h2>' + iluEsc(iluEpocaName(b)) + '</h2>' + (f.anos ? '<p class="ilu-life">' + iluEsc(f.anos) + '</p>' : '') + '</header>' +
+    '<article class="ilu-ficha ilu-epoca" data-b="' + blk + '">' +
+      '<header class="ilu-epo-head"><p class="ilu-era-tag"><i class="ilu-dot" data-b="' + blk + '" aria-hidden="true"></i>' + ILU_EPO.epoca + '</p>' +
+        '<h2>' + iluEsc(iluNombreFicha(b)) + '</h2>' + (f.anos ? '<p class="ilu-life">' + iluEsc(f.anos) + '</p>' : '') + '</header>' +
       sec("abre") + sec("social") + sec("politico") + sec("ciencia") + sec("pensamiento") +
       (ps.length ? '<div class="ilu-sec ilu-conc"><h3>' + ILU_EPO.pensadores + '</h3><div class="ilu-conc-txt">' +
         iluListaPlegada(ps.map(p => '<button type="button" class="ilu-rel-a" data-go-ilu="' + iluEsc(p.id) + '" title="' + iluEsc(p.dates) + '">' + iluEsc(p.name) + '</button>'), 20) + '</div></div>' : '') +
@@ -281,8 +286,8 @@ function loadIlustre(id){
           (r ? '<figcaption>' + iluEsc(r.pie) + ' · ' + (r.page ? '<a href="' + iluEsc(r.page) + '" target="_blank" rel="noopener">' + (/wikipedia\.org/.test(r.page) ? "Wikipedia" : "Wikimedia Commons") + '</a>' : 'Wikimedia Commons') + '</figcaption>' : '') +
         '</figure>' +
         '<div class="ilu-id">' +
-          '<p class="ilu-era-tag"><i class="ilu-dot" data-b="' + p.block + '" aria-hidden="true"></i>' + (iluFichaEpoca(p.block)
-            ? '<button type="button" class="ilu-era-link" data-epoca="' + p.block + '" title="' + ILU_EPO.ver + '">' + iluEsc(iluEpocaName(p.block)) + '</button>'
+          '<p class="ilu-era-tag"><i class="ilu-dot" data-b="' + p.block + '" aria-hidden="true"></i>' + (iluFichaDe(p)
+            ? '<button type="button" class="ilu-era-link" data-epoca="' + iluFichaDe(p) + '" title="' + ILU_EPO.ver + '">' + iluEsc(iluEpocaName(p.block)) + '</button>'
             : iluEsc(iluEpocaName(p.block))) + ' · ' + iluEsc(p.role) + '</p>' +
           '<h2>' + iluEsc(p.name) + '</h2>' +
           '<p class="ilu-life">' + iluEsc(p.dates) + (p.place ? ' · ' + iluEsc(p.place) : '') + '</p>' +

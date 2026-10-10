@@ -1048,6 +1048,11 @@ ol.itin-temas li.temas-extra .temas-t{font-size:.95rem;color:var(--muted)}
 #cronogramas .crono-leg-note{ color:var(--muted); font-size:12px; margin:8px 0 0; }
 #cronogramas .crono-none{ margin:16px 0; }
 
+/* (10-10) título de periodo del eje: abre la ficha de época en Ilustres; mismo aspecto que el título, con «›» */
+#cronogramas .eje-per-btn{ background:none; border:0; padding:0; font:inherit; color:inherit; cursor:pointer; text-align:start; }
+#cronogramas .eje-per-btn span{ font-weight:400; }
+#cronogramas .eje-per-btn:hover{ text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; }
+
 
 /* ==== css/genealogias.css ==== */
 /* ===== Genealogías (genealogiasview.js): plano de metro diacrónico ===== */
