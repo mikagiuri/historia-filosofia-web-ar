@@ -1950,6 +1950,26 @@ ol.itin-temas li.temas-extra .temas-t{font-size:.95rem;color:var(--muted)}
 #logica .lg-guia ol, #logica .lg-guia ul{ padding-inline-start:1.4rem }
 #logica .lg-guia li{ margin:.25rem 0 }
 #logica .lg-guia > :last-child{ margin-bottom:.9rem }
+/* (10-10) cuadrado de oposición: cuatro esquinas, relaciones en medio y líneas detrás (CSS lógico: vale en RTL) */
+#logica .lg-cu{ position:relative; display:grid; grid-template-columns:1fr minmax(4.5rem,.7fr) 1fr; grid-template-areas:"a arr e" "izq cen der" "i aba o"; gap:.6rem; align-items:center; direction:ltr }
+#logica .lg-cu-lineas{ position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none }
+#logica .lg-cu-l{ stroke:var(--muted); stroke-width:1.5 }
+#logica .lg-cu-ld{ stroke-dasharray:4 4; opacity:.45 }
+#logica .lg-cu-esq{ position:relative; z-index:1; display:flex; flex-direction:column; gap:.2rem; text-align:start; padding:.55rem .65rem; border:1.5px solid var(--line); border-radius:10px; background:var(--surface); color:var(--ink); font:inherit; cursor:pointer }
+#logica .lg-cu-A{ grid-area:a } #logica .lg-cu-E{ grid-area:e } #logica .lg-cu-I{ grid-area:i } #logica .lg-cu-O{ grid-area:o }
+#logica .lg-cu-letra{ font-weight:700; font-size:1.3rem; line-height:1 }
+#logica .lg-cu-frase{ font-size:.85rem; line-height:1.3 }
+#logica .lg-cu-valor{ font-size:.8rem; font-weight:700 }
+#logica .lg-cu-v{ border-color:var(--ok) } #logica .lg-cu-v .lg-cu-valor{ color:var(--ok) }
+#logica .lg-cu-f{ border-color:var(--bad) } #logica .lg-cu-f .lg-cu-valor{ color:var(--bad) }
+#logica .lg-cu-q .lg-cu-valor{ color:var(--muted) }
+#logica .lg-cu-dato{ box-shadow:0 0 0 3px var(--r-log, var(--accent)) }
+#logica .lg-cu-rel{ position:relative; z-index:1; justify-self:center; font-size:.75rem; color:var(--muted); background:var(--surface); padding:.1rem .35rem; border-radius:6px; text-align:center }
+#logica .lg-cu-arriba{ grid-area:arr } #logica .lg-cu-izq{ grid-area:izq; justify-self:start } #logica .lg-cu-centro{ grid-area:cen; font-weight:700; color:var(--ink) } #logica .lg-cu-der{ grid-area:der; justify-self:end } #logica .lg-cu-abajo{ grid-area:aba }
+#logica .lg-cu-perdida{ text-decoration:line-through; opacity:.7 }
+#logica .lg-cu-sp{ display:block; font-size:.9em }
+#logica .lg-cu-rel{ max-width:100% }
+@media (max-width:480px){ #logica .lg-cu{ grid-template-columns:1fr 5.2rem 1fr; gap:.4rem } #logica .lg-cu-frase{ font-size:.78rem } #logica .lg-cu-rel{ font-size:.66rem; padding:.05rem .2rem } #logica .lg-cu-sp{ display:none } #logica .lg-cu-centro{ font-size:.6rem } }
 
 
 /* ==== css/leibniz.css ==== */

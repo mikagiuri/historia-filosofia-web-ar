@@ -31,7 +31,7 @@ const QUIZ_TEMAS = {
 const QUIZ_TEMA = {
   "fil-t1": "T1", "fil-metodo-q": "T1", "fil-ramas-q": "T1", "fil-t1-banco": "T1", "fil-presocraticos-q": "T1", "fil-presocraticos-banco": "T1",
   "fil-t2": "T2", "fil-mente-q": "T2", "fil-t2-banco": "T2", "fil-t3": "T3", "fil-ciencia-q": "T3", "fil-t3-banco": "T3", "fil-metafisica": "M",
-  "fil-logica-q": "T4", "fil-t4-banco": "T4", "fil-etica-q": "T5", "fil-t5-banco": "T5", "fil-helenismo-q": "T5", "fil-helenismo-banco": "T5",
+  "fil-logica-q": "T4", "fil-t4-banco": "T4", "fil-venn-q": "T4", "fil-etica-q": "T5", "fil-t5-banco": "T5", "fil-helenismo-q": "T5", "fil-helenismo-banco": "T5",
   "fil-politica-q": "T6", "fil-t6-banco": "T6", "fil-t7": "T7", "fil-t7-banco": "T7",
   "hf-t1-historicidad": "T1", "hf-a01-banco": "T1", "ltfh-A1": "T1", "hf-t2-metodos": "T2", "hf-a02-banco": "T2", "hf-a03-banco": "T3",
   "preso": "T4", "hf-a04-banco": "T4", "hf25": "T5", "hf-a05-banco": "T5", "hf-a06-banco": "T6", "ltfh-AP": "T6", "ltfh-A6": "T6",

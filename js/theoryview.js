@@ -233,6 +233,65 @@ function theorySplitParts(body, html, trocear){
   body.querySelectorAll("[data-thwhole]").forEach(b => b.addEventListener("click", () => { theoryWhole = !theoryWhole; theoryShowPart(body, theoryPart, true); }));
 }
 
+/* (10-10) Diagramas de Venn dentro de la teoría (exploración «Clases, conjuntos y diagramas de Venn»).
+   En theory.js cada figura es una línea traducible: <figure class="tv-venn" data-venn="…"><figcaption>…</figcaption></figure>.
+   data-venn: «c=A,B» (nombres de los círculos, 2 o 3) y, separadas por «;», las regiones de cada marca:
+   sel = resultado de una operación (color), vac = vacía (gris), x = hay al menos uno (✕). Una región es una
+   cadena de 0 y 1 en el orden de los círculos («10» = dentro de A y fuera de B; «00» = fuera de todos);
+   «110|111» pone el ✕ sobre la línea entre las dos regiones (no se sabe en cuál está). */
+const TVV = {
+  2: { vb: "0 0 300 190", c: [[118, 98], [182, 98]], r: 64, etq: [[56, 34, "end"], [244, 34, "start"]],
+    cen: { "10": [84, 98], "01": [216, 98], "11": [150, 98], "00": [30, 170] } },
+  3: { vb: "0 0 320 300", c: [[120, 118], [200, 118], [160, 188]], r: 74, etq: [[34, 44, "start"], [286, 44, "end"], [160, 290, "middle"]],
+    cen: { "100": [86, 92], "010": [234, 92], "110": [160, 78], "001": [160, 236], "101": [112, 166], "011": [208, 166], "111": [160, 136], "000": [26, 280] } }
+};
+let tvvN = 0;
+function tvVennSvg(spec){
+  const o = {}; spec.split(";").forEach(p => { const i = p.indexOf("="); if (i > 0) o[p.slice(0, i).trim()] = p.slice(i + 1).trim(); });
+  const nom = (o.c || "A,B").split(","), n = nom.length === 3 ? 3 : 2, G = TVV[n], id = "tvv" + (++tvvN);
+  const [, , W, H] = G.vb.split(" ").map(Number), lista = k => (o[k] ? o[k].split(",").map(s => s.trim()).filter(Boolean) : []);
+  const circ = (j, extra) => '<circle cx="' + G.c[j][0] + '" cy="' + G.c[j][1] + '" r="' + G.r + '"' + (extra || "") + "/>";
+  let defs = "<defs>" + G.c.map((_, j) => '<clipPath id="' + id + "c" + j + '">' + circ(j) + "</clipPath>").join("");
+  const region = (r, cls) => {   /* rectángulo del universo recortado por los círculos de dentro y enmascarado por los de fuera */
+    const fuera = [...r].map((b, j) => b === "0" ? j : -1).filter(j => j >= 0), mid = id + "m" + r;
+    if (!defs.includes('id="' + mid + '"')) defs += '<mask id="' + mid + '"><rect width="' + W + '" height="' + H + '" fill="#fff"/>' + fuera.map(j => circ(j, ' fill="#000"')).join("") + "</mask>";
+    let g = '<rect x="6" y="6" width="' + (W - 12) + '" height="' + (H - 12) + '" class="' + cls + '" mask="url(#' + mid + ')"/>';
+    [...r].forEach((b, j) => { if (b === "1") g = '<g clip-path="url(#' + id + "c" + j + ')">' + g + "</g>"; });
+    return g;
+  };
+  const zonas = lista("sel").map(r => region(r, "tvv-sel")).join("") + lista("vac").map(r => region(r, "tvv-vac")).join("");
+  const xs = lista("x").map(x => { const ps = x.split("|").map(r => G.cen[r]).filter(Boolean); if (!ps.length) return "";
+    const px = ps.reduce((a, p) => a + p[0], 0) / ps.length, py = ps.reduce((a, p) => a + p[1], 0) / ps.length;
+    return '<text x="' + px + '" y="' + (py + 7) + '" text-anchor="middle" class="tvv-x">✕</text>'; }).join("");
+  const marco = '<rect x="6" y="6" width="' + (W - 12) + '" height="' + (H - 12) + '" rx="4" class="tvv-u"/><text x="14" y="26" class="tvv-t tvv-tu">U</text>';
+  const etq = nom.slice(0, n).map((t, j) => '<text x="' + G.etq[j][0] + '" y="' + G.etq[j][1] + '" text-anchor="' + G.etq[j][2] + '" class="tvv-t">' + t.replace(/[&<>]/g, "") + "</text>").join("");
+  return '<svg viewBox="' + G.vb + '" role="img" aria-hidden="true">' + defs + "</defs>" + marco + zonas + G.c.map((_, j) => circ(j, ' class="tvv-c"')).join("") + etq + xs + "</svg>";
+}
+/* Diagramas de Euler: <figure class="tv-venn" data-euler="c=S@cx,cy,r|P@cx,cy,r[,lx,ly];x=cx,cy|…;q=cx,cy;p=nombre@cx,cy[,lx,ly]">.
+   Cada círculo es una clase en la posición que expresa la relación (dentro, fuera, cruzados); ✕ = hay al menos uno,
+   ? = puede haber o no, p = un individuo (punto con su nombre). La caja es 0 0 300 200, o la de «vb=…». */
+function tvEulerSvg(spec){
+  const o = {}; spec.split(";").forEach(p => { const i = p.indexOf("="); if (i > 0) o[p.slice(0, i).trim()] = p.slice(i + 1).trim(); });
+  const num = s => s.split(",").map(Number), esc = t => t.replace(/[&<>"]/g, "");
+  const circ = (o.c || "").split("|").filter(Boolean).map((c, j) => {
+    const [nom, pos] = c.split("@"), [cx, cy, r, lx, ly] = num(pos);
+    return '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" class="tvv-c tve-' + (j % 3) + '"/><text x="' + (lx != null ? lx : cx) + '" y="' + (ly != null ? ly : cy - r + 26) + '" text-anchor="middle" class="tvv-t">' + esc(nom) + "</text>";
+  }).join("");
+  const marca = (k, ch, cls) => (o[k] || "").split("|").filter(Boolean).map(p => { const [x, y] = num(p); return '<text x="' + x + '" y="' + (y + 9) + '" text-anchor="middle" class="' + cls + '">' + ch + "</text>"; }).join("");
+  const puntos = (o.p || "").split("|").filter(Boolean).map(p => { const [nom, pos] = p.split("@"), [x, y, lx, ly] = num(pos);
+    return '<circle cx="' + x + '" cy="' + y + '" r="5" class="tve-p"/><text x="' + (lx != null ? lx : x) + '" y="' + (ly != null ? ly : y + 24) + '" text-anchor="middle" class="tvv-t tve-pt">' + esc(nom) + "</text>"; }).join("");
+  return '<svg viewBox="' + (o.vb || "0 0 300 200") + '" role="img" aria-hidden="true">' + circ + puntos + marca("x", "✕", "tvv-x") + marca("q", "?", "tvv-x tve-q") + "</svg>";
+}
+function tvVennFiguras(root){
+  root.querySelectorAll("figure.tv-venn[data-venn]").forEach(f => { if (!f.querySelector("svg")) f.insertAdjacentHTML("afterbegin", tvVennSvg(f.dataset.venn)); });
+  root.querySelectorAll("figure.tv-venn[data-euler]").forEach(f => { if (!f.querySelector("svg")) f.insertAdjacentHTML("afterbegin", tvEulerSvg(f.dataset.euler)); });
+}
+document.head.insertAdjacentHTML("beforeend",
+  '<style>.tv-venns{display:grid;grid-template-columns:repeat(auto-fill,minmax(10.5rem,1fr));gap:.8rem;margin:1rem 0}.tv-venn{margin:0;text-align:center}.tv-venn svg{width:100%;max-width:17rem;display:block;margin:0 auto}' +
+  '.tv-venn figcaption{font-size:.86rem;color:var(--muted);margin-top:.25rem;line-height:1.35}.tvv-u{fill:none;stroke:var(--line);stroke-width:1.5}.tvv-c{fill:none;stroke:var(--ink);stroke-width:2}' +
+  '.tvv-sel{fill:var(--fil,var(--accent));fill-opacity:.45}.tvv-vac{fill:var(--muted);fill-opacity:.5}.tvv-t{font:700 24px var(--sans);fill:var(--ink)}.tvv-tu{font-size:16px;fill:var(--muted)}.tvv-x{font:700 30px var(--sans);fill:var(--bad,#b3261e)}' +
+  '.tve-0{fill:var(--fil,var(--accent));fill-opacity:.16}.tve-1{fill:var(--ink);fill-opacity:.06}.tve-2{fill:var(--ok,#2f7a4d);fill-opacity:.12}.tve-q{fill:var(--muted)}.tve-p{fill:var(--ink)}.tve-pt{font-size:18px;font-weight:600}</style>');
+
 /* (07-10) apartados con número estable: «#teoria/<clave>/<n>» (o «<clave>§<n>») abre el tema en su n-ésimo <h2>
    original, aunque el tema se lea por páginas; cada apartado lleva un «§» con su enlace. */
 function theorySecArg(k){ const m = /^(.*?)(?:\/|§)(\d+)$/.exec(k || ""); return m && THEORY[m[1]] ? { k: m[1], sec: +m[2] } : { k: k, sec: null }; }
@@ -264,6 +323,7 @@ function loadTheory(k){
   const hs = [...body.querySelectorAll("h2")];
   hs.forEach((h, i) => { h.id = "th-" + i; });
   body.querySelectorAll(".figimg").forEach(img => img.addEventListener("click", () => openLightbox(img.src, img.alt)));
+  tvVennFiguras(body);
   /* (09-10) estantería de libros (anexo de la biblioteca de Marx): el lomo abre su ficha y la muestra */
   body.querySelectorAll(".lomo[data-libro]").forEach(b => b.addEventListener("click", () => {
     const d = body.querySelector("#libro-" + b.dataset.libro); if (!d) return;

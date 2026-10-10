@@ -64,6 +64,26 @@ const LOG_TXT = {
   tabParad: "مفارقات", tabEjerc: "تمارين", tabClasicos: "حجج كلاسيكية", parTodas: "الكل", parGrupo: "إظهار", parProblema: "أين المشكلة؟", parSalidas: "الحلول التي اقتُرحت",
   parForma: "الصورة المنطقية", parEuler: "الجملة كمخطط أويلر", parConting: "ممكن: صف واحد خاطئ ومنطقة فارغة", parEscala: "الجملة على سُلَّم", parDice: "ماذا تقول، وماذا تفترض، وماذا لا تقول", parPensar: "للتفكير:", parTabla: "شاهدوها في جدول الحقيقة",
   parIntro: "المفارقة استدلال ينطلق من شيء مقبول، ثم يصل، عبر خطوات تبدو صحيحة، إلى نتيجة غير مقبولة أو متناقضة. اقرؤوا كل مفارقة وفكّروا في موضع الخلل قبل أن تفتحوا الشروح.",
+  /* (10-10) pestañas «Cuadrado de oposición» y «Leyes de conjuntos» (tema 4 de Filosofía 1.º, apartados 6-18) */
+  tabCuadrado: "مربع التقابل", tabConjuntos: "قوانين المجموعات",
+  introCuadrado: "القضايا الأربع A وE وI وO التي لها الموضوع نفسه والمحمول نفسه مترابطة: إذا عرفتم أنّ إحداها صادقة أو كاذبة، فقد تعرفون أحيانًا شيئًا عن الأخرى. اختاروا قضية، وحدّدوا هل هي صادقة أم كاذبة، وانظروا ماذا ينتج عن ذلك بالنسبة إلى القضايا الأخرى. ثم غيّروا القراءة: مع قراءة المنطق الحالي، الذي لا يفترض مسبقًا أنّ S موجودة، تضيع العلاقات كلها تقريبًا.",
+  introConjuntos: "تُركَّب الفئات (أو المجموعات) بعمليات تشبه الروابط المنطقية: الاتحاد (أو)، والتقاطع (و)، والمتمم (ليس). اكتبوا عبارتين، وستُظهر مخططات فن بالألوان المنطقة الناتجة عن كل واحدة منهما. إذا تطابقت المنطقتان، فالعبارتان متكافئتان: لقد تحققتم من قانون.",
+  cuElige: "نعرف أنّ…", cuEsV: "صادقة", cuEsF: "كاذبة",
+  cuLectura: "قراءة", cuTrad: "القراءة التقليدية: نفترض أنه يوجد S واحد على الأقل", cuActual: "المنطق الحالي: لا نفترض أنّ S موجودة",
+  cuTerminos: "مثال:",
+  cuEj1: "الرياضيون والعُسر", cuEj1A: "كل الرياضيين عُسر.", cuEj1E: "لا أحد من الرياضيين أعسر.", cuEj1I: "بعض الرياضيين عُسر.", cuEj1O: "بعض الرياضيين ليسوا عُسرًا.",
+  cuEj2: "الثدييات والفقاريات", cuEj2A: "كل الثدييات فقارية.", cuEj2E: "لا شيء من الثدييات فقاري.", cuEj2I: "بعض الثدييات فقارية.", cuEj2O: "بعض الثدييات ليست فقارية.",
+  cuEj3: "وحيدات القرن", cuEj3A: "كل وحيدات القرن لها قرن واحد.", cuEj3E: "لا شيء من وحيدات القرن له قرن واحد.", cuEj3I: "بعض وحيدات القرن لها قرن واحد.", cuEj3O: "بعض وحيدات القرن ليس لها قرن واحد.",
+  cuV: "صادقة", cuF: "كاذبة", cuQ: "غير معروف", cuDato: "مُعطًى",
+  cuContradictorias: "متناقضتان", cuContrarias: "متضادتان", cuSubcontrarias: "داخلتان تحت التضاد", cuSubalternas: "متداخلتان", cuPerdida: "تضيع",
+  cuNotaTrad: "مع هذه القراءة تتحقق علاقات المربع الأربع: المتناقضتان (قيمتاهما متعاكستان دائمًا)، والمتضادتان (لا تصدقان معًا)، والداخلتان تحت التضاد (لا تكذبان معًا)، والمتداخلتان (إذا صدقت الكلية صدقت الجزئية أيضًا).",
+  cuNotaActual: "مع هذه القراءة لا تبقى إلا المتناقضتان. فإذا لم يوجد أيّ S، كانت «كل S هو P» و«لا شيء من S هو P» صادقتين في الوقت نفسه، وكانت «بعض S هو P» كاذبة. وقد تجنّب أرسطو المشكلة بطريقة أخرى: فعنده أنّ القضايا الموجبة تفترض وجود S والسالبة لا تفترضه، وكانت O عنده «ليس كل S هو P».",
+  coIzq: "العبارة الأولى", coDer: "العبارة الثانية",
+  coAyuda: "استعملوا الحروف A وB وC، و∪ (الاتحاد)، و∩ (التقاطع)، و− (الفرق)، وᶜ بعد حرف أو قوس (المتمم)، والأقواس. ويمكن أيضًا استعمال + بدل ∪، و· أو & بدل ∩، و' بدل ᶜ.",
+  coIguales: "العبارتان تعطيان المنطقة نفسها: إنهما متكافئتان.", coDistintas: "المنطقتان لا تتطابقان: العبارتان غير متكافئتين. انظروا إلى المناطق التي تختلفان فيها.",
+  coLeyes: "قوانين للتجربة:", coConm: "التبادل", coAsoc: "التجميع", coDM1: "دي مورغان (1)", coDM2: "دي مورغان (2)", coDist: "التوزيع", coDist2: "التوزيع (2)", coComp: "المتمم", coDif: "الفرق", coTrampa: "عبارة ليست قانونًا",
+  coErrCar: "لا أفهم الرمز «{c}».", coErrFalta: "ينقص شيء في العبارة.", coErrParen: "ينقص إغلاق قوس.", coErrVacia: "اكتبوا عبارة.",
+  coDifieren: "المناطق التي تختلفان فيها", coUnivVacio: "U = المجموعة الشاملة: كل ما نتحدث عنه. يدلّ اللون على المنطقة الناتجة.",
   /* (09-10) guía larga y sencilla de cada pestaña, plegada bajo la introducción */
   guiaTit: "دليل: كيف يُستعمل ولماذا",
   guiaTablas: "<h3>لماذا نستعملها؟</h3><p>حين نفكر ونستدل، نربط الجمل بكلمات مثل «لا» و«و» و«أو» و«إذا…، فإنّ». يفيدنا جدول الصدق في أن نرى، دون أن نخطئ، متى تكون الجملة المركبة صادقة ومتى تكون كاذبة. ويفيدنا أيضًا في التأكد من صحة الاستدلال: أي هل <em>يجب</em> أن تكون النتيجة صادقة كلما كانت المقدمات صادقة.</p><h3>قبل أن نبدأ: نعوّض الجمل بحروف</h3><p>نعوّض كل جملة بسيطة بحرف. مثلًا: «تمطر» = <em>p</em> و«الأرض مبتلّة» = <em>q</em>. وتسمى الكلمات التي تربط الجمل أدوات الربط:</p><ul><li><strong>¬</strong> «لا»: ¬p = «لا تمطر».</li><li><strong>∧</strong> «و»: p ∧ q = «تمطر والأرض مبتلّة». لا تكون صادقة إلا إذا صدق الجزآن معًا.</li><li><strong>∨</strong> «أو»: p ∨ q. تكون صادقة إذا صدق أحد الجزأين على الأقل.</li><li><strong>→</strong> «إذا…، فإنّ»: p → q = «إذا أمطرت، فالأرض مبتلّة». لا تكون كاذبة إلا في حالة واحدة: حين تمطر والأرض ليست مبتلّة.</li><li><strong>↔</strong> «إذا وفقط إذا»: تكون صادقة حين يكون للجزأين القيمة نفسها (كلاهما ص أو كلاهما خ).</li></ul><h3>خطوة بخطوة</h3><ol><li>انقروا على أحد الأمثلة أو اكتبوا صيغتكم في خانة «الصيغة». الرموز غير الموجودة في لوحة المفاتيح لها أزرار تحت الخانة.</li><li>استعملوا الأقواس للتجميع، كما في الرياضيات: (p ∨ q) ∧ r ليست مثل p ∨ (q ∧ r).</li><li>يُرسم الجدول تلقائيًا أثناء الكتابة. كل سطر هو احتمال، أي تركيبة من ص وخ للحروف: مع حرفين يكون هناك 4 أسطر، ومع ثلاثة أحرف 8 أسطر.</li><li>انظروا إلى العمود الأخير والرسالة التي تحته. قد تكون الصيغة <strong>تحصيل حاصل</strong> (صادقة دائمًا) أو <strong>تناقضًا</strong> (كاذبة دائمًا) أو <strong>ممكنة</strong> (تتوقف على حال العالم).</li><li>في الأسفل، في «هل هذه الحجة صحيحة؟»، اكتبوا المقدمات يفصل بينها فاصلة منقوطة، ثم النتيجة، وانقروا على «تحقّق». إذا وُجد سطر تكون فيه كل المقدمات صادقة والنتيجة كاذبة، فسيظهر بالأحمر. هذا هو <strong>المثال المضاد</strong>: الحجة غير صحيحة.</li></ol><h3>تجربة للبداية</h3><p>في أمثلة الحجة، انقروا على «إثبات التالي»: «إذا أمطرت، فالأرض مبتلّة؛ الأرض مبتلّة؛ إذن تمطر». يبدو هذا معقولًا، لكن الجدول يجد المثال المضاد: قد تكون الأرض مبتلّة لأن أحدًا سقاها. قارنوه بـ«Modus ponens» الذي هو صحيح فعلًا.</p><p class=\"lg-nota\">انتبهوا: كون الحجة صحيحة لا يعني أن نتيجتها صادقة. يعني أنه، <em>إذا</em> كانت المقدمات صادقة، فالنتيجة صادقة أيضًا.</p>",
@@ -76,7 +96,7 @@ const LOG_TXT = {
 const logT = (k, v) => String(LOG_TXT[k] || k).replace(/\{(\w+)\}/g, (_, x) => (v && v[x] != null ? v[x] : ""));
 const logEsc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const LOG = { parGrupo: "all", tab: "tablas", formula: "(p → q) ∧ p → q", prem: "p → q; p", concl: "q",
-  sil: { S: "", P: "", M: "", may: "A", men: "A", con: "A", fig: 1 }, gate: "AND", gA: 1, gB: 0, circ: {} };
+  sil: { S: "", P: "", M: "", may: "A", men: "A", con: "A", fig: 1 }, cu: { tipo: "A", val: true, trad: true, ej: 1 }, co: { izq: "(A ∪ B)ᶜ", der: "Aᶜ ∩ Bᶜ" }, gate: "AND", gA: 1, gB: 0, circ: {} };
 const logGuia = k => '<details class="lg-guia"><summary>' + logT("guiaTit") + "</summary>" + logT(k) + "</details>";
 const logBox = () => document.getElementById("logicabox");
 
@@ -436,14 +456,110 @@ function logRenderParadojas(vista){
       todas.filter(p => p.grupo === g.id).map(tarjeta).join("") + "</section>").join("");
 }
 
+/* ---------- pestaña: cuadrado de oposición (10-10) ----------
+   Se prueba con todos los «mundos» posibles de dos clases: hay o no hay S fuera de P (r10) y S dentro de P (r11).
+   La lectura tradicional descarta el mundo sin S. Una proposición se sigue (V/F) si vale lo mismo en todos los
+   mundos compatibles con el dato; si no, «no se sabe». */
+const LOG_CU_VAL = { A: m => !m.r10, E: m => !m.r11, I: m => m.r11, O: m => m.r10 };
+function logCuResultado(cu){
+  const mundos = [];
+  [false, true].forEach(r10 => [false, true].forEach(r11 => { if (!cu.trad || r10 || r11) mundos.push({ r10, r11 }); }));
+  const ok = mundos.filter(m => LOG_CU_VAL[cu.tipo](m) === cu.val), res = {};
+  ["A", "E", "I", "O"].forEach(t => { const vs = ok.map(LOG_CU_VAL[t]); res[t] = vs.every(Boolean) ? "V" : (!vs.some(Boolean) ? "F" : "?"); });
+  return res;
+}
+function logCuadradoHtml(){
+  const cu = LOG.cu, res = logCuResultado(cu), ej = "cuEj" + cu.ej;
+  const esq = t => '<button type="button" class="lg-cu-esq lg-cu-' + t + (t === cu.tipo ? " lg-cu-dato" : "") + ' lg-cu-' + { V: "v", F: "f", "?": "q" }[res[t]] + '" data-cutipo="' + t + '" aria-pressed="' + (t === cu.tipo) + '">' +
+    '<span class="lg-cu-letra">' + t + '</span><span class="lg-cu-frase">' + logEsc(logT(ej + t)) + '</span><span class="lg-cu-valor">' + logT({ V: "cuV", F: "cuF", "?": "cuQ" }[res[t]]) + (t === cu.tipo ? " · " + logT("cuDato") : "") + "</span></button>";
+  const rel = (k, cls) => '<span class="lg-cu-rel ' + cls + (k !== "cuContradictorias" && !cu.trad ? " lg-cu-perdida" : "") + '">' + logT(k) + (k !== "cuContradictorias" && !cu.trad ? '<span class="lg-cu-sp">' + logT("cuPerdida") + "</span>" : "") + "</span>";
+  const linea = (x1, y1, x2, y2, contra) => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" class="lg-cu-l' + (!contra && !cu.trad ? " lg-cu-ld" : "") + '" vector-effect="non-scaling-stroke"/>';
+  const svg = '<svg class="lg-cu-lineas" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' + linea(18, 14, 82, 14) + linea(18, 86, 82, 86) + linea(14, 18, 14, 82) + linea(86, 18, 86, 82) + linea(20, 20, 80, 80, true) + linea(80, 20, 20, 80, true) + "</svg>";
+  return '<div class="lg-cu">' + svg + esq("A") + rel("cuContrarias", "lg-cu-arriba") + esq("E") + rel("cuSubalternas", "lg-cu-izq") + rel("cuContradictorias", "lg-cu-centro") + rel("cuSubalternas", "lg-cu-der") +
+    esq("I") + rel("cuSubcontrarias", "lg-cu-abajo") + esq("O") + '</div><p class="lg-nota">' + logT(cu.trad ? "cuNotaTrad" : "cuNotaActual") + "</p>";
+}
+function logRenderCuadrado(){
+  const cu = LOG.cu, grupo = (attr, pares, actual) => '<div class="fgroup">' + pares.map(([v, l]) => '<button type="button" class="fbtn" data-' + attr + '="' + v + '" aria-pressed="' + (String(actual) === String(v)) + '">' + l + "</button>").join("") + "</div>";
+  return '<div class="lg-panel"><p class="lg-label">' + logT("cuTerminos") + "</p>" + grupo("cuej", [1, 2, 3].map(n => [n, logT("cuEj" + n)]), cu.ej) +
+    '<p class="lg-label">' + logT("cuElige") + "</p>" + grupo("cutipo", ["A", "E", "I", "O"].map(t => [t, t]), cu.tipo) +
+    grupo("cuval", [["1", logT("cuEsV")], ["0", logT("cuEsF")]], cu.val ? "1" : "0") +
+    '<p class="lg-label">' + logT("cuLectura") + "</p>" + grupo("cutrad", [["1", logT("cuTrad")], ["0", logT("cuActual")]], cu.trad ? "1" : "0") +
+    '</div><div class="lg-panel" id="lg-cu">' + logCuadradoHtml() + "</div>";
+}
+
+/* ---------- pestaña: leyes de conjuntos (10-10) ----------
+   Expresiones con A, B, C, U y ∅; ∪, ∩, −, ᶜ y paréntesis (∩ liga más que ∪ y −). Cada expresión se calcula
+   como el conjunto de regiones del diagrama (bit j = dentro del círculo j; la región 0 es fuera de todos)
+   y se dibuja con tvVennSvg (theoryview.js). */
+function logCoTokens(s){
+  const out = [];
+  for (const c of s){
+    if (/\s/.test(c)) continue;
+    if (/[abcABC]/.test(c)) out.push({ k: "var", j: "ABC".indexOf(c.toUpperCase()) });
+    else if (c === "U" || c === "u") out.push({ k: "U" });
+    else if ("∅Ø0".includes(c)) out.push({ k: "0" });
+    else if ("∪+|".includes(c)) out.push({ k: "or" });
+    else if ("∩·&*^".includes(c)) out.push({ k: "and" });
+    else if ("−-\\".includes(c)) out.push({ k: "dif" });
+    else if ("ᶜ'’".includes(c)) out.push({ k: "c" });
+    else if (c === "(" || c === ")") out.push({ k: c });
+    else throw new Error(logT("coErrCar", { c }));
+  }
+  return out;
+}
+function logCoEval(s){
+  if (!String(s).trim()) throw new Error(logT("coErrVacia"));
+  const tk = logCoTokens(s); let i = 0, usaC = false;
+  const peek = () => tk[i] && tk[i].k, TODO = 255;
+  const expr = () => { let a = term(); while (peek() === "or" || peek() === "dif"){ const op = tk[i++].k, b = term(); a = op === "or" ? a | b : a & ~b & TODO; } return a; };
+  const term = () => { let a = fac(); while (peek() === "and"){ i++; a &= fac(); } return a; };
+  const fac = () => { let a = atom(); while (peek() === "c"){ i++; a = ~a & TODO; } return a; };
+  const atom = () => {
+    const x = tk[i]; if (!x) throw new Error(logT("coErrFalta"));
+    if (x.k === "var"){ i++; if (x.j === 2) usaC = true; let m = 0; for (let r = 0; r < 8; r++) if (r & (1 << x.j)) m |= 1 << r; return m; }
+    if (x.k === "U"){ i++; return TODO; }
+    if (x.k === "0"){ i++; return 0; }
+    if (x.k === "("){ i++; const e = expr(); if (peek() !== ")") throw new Error(logT("coErrParen")); i++; return e; }
+    throw new Error(logT("coErrFalta"));
+  };
+  const m = expr();
+  if (i < tk.length) throw new Error(logT("coErrFalta"));
+  return { m, usaC };
+}
+const LOG_CO_EJ = [["A ∪ B", "B ∪ A", "coConm"], ["(A ∪ B) ∪ C", "A ∪ (B ∪ C)", "coAsoc"], ["(A ∪ B)ᶜ", "Aᶜ ∩ Bᶜ", "coDM1"], ["(A ∩ B)ᶜ", "Aᶜ ∪ Bᶜ", "coDM2"],
+  ["A ∩ (B ∪ C)", "(A ∩ B) ∪ (A ∩ C)", "coDist"], ["A ∪ (B ∩ C)", "(A ∪ B) ∩ (A ∪ C)", "coDist2"], ["A ∪ Aᶜ", "U", "coComp"], ["A − B", "A ∩ Bᶜ", "coDif"], ["(A ∪ B)ᶜ", "Aᶜ ∪ Bᶜ", "coTrampa"]];
+const LOG_CO_TECLAS = ["A", "B", "C", "∪", "∩", "−", "ᶜ", "(", ")", "U", "∅"];
+function logCoRegiones(m, n){ const out = []; for (let r = 0; r < (1 << n); r++) if (m & (1 << r)) out.push([...Array(n)].map((_, j) => (r >> j) & 1).join("")); return out.join(","); }
+function logConjHtml(){
+  let a, b;
+  try { a = logCoEval(LOG.co.izq); b = logCoEval(LOG.co.der); } catch (err){ return '<p class="lg-error">' + logEsc(err.message) + "</p>"; }
+  if (typeof tvVennSvg !== "function") return "";
+  const n = a.usaC || b.usaC ? 3 : 2, nom = n === 3 ? "A,B,C" : "A,B", todo = (1 << (1 << n)) - 1, ma = a.m & todo, mb = b.m & todo, iguales = ma === mb;
+  const fig = (m, tit) => '<figure class="tv-venn">' + tvVennSvg("c=" + nom + ";sel=" + logCoRegiones(m, n)) + "<figcaption>" + logEsc(tit) + "</figcaption></figure>";
+  return '<div class="tv-venns">' + fig(ma, LOG.co.izq) + fig(mb, LOG.co.der) + "</div>" +
+    '<p class="lg-veredicto ' + (iguales ? "lg-tautologia" : "lg-contradiccion") + '">' + logT(iguales ? "coIguales" : "coDistintas") + "</p>" +
+    (iguales ? "" : '<div class="tv-venns">' + fig((ma ^ mb) & todo, logT("coDifieren")) + "</div>") +
+    '<p class="lg-nota">' + logT("coUnivVacio") + "</p>";
+}
+function logRenderConjuntos(){
+  const tecl = id => '<div class="lg-teclas" data-para="' + id + '">' + LOG_CO_TECLAS.map(k => '<button type="button" class="chip" data-tecla="' + k + '">' + k + "</button>").join("") + "</div>";
+  return '<div class="lg-panel"><p class="lg-nota">' + logT("coAyuda") + '</p><label class="lg-label" for="lg-co1">' + logT("coIzq") + '</label><input id="lg-co1" class="lg-input" value="' + logEsc(LOG.co.izq) + '" autocomplete="off" spellcheck="false">' + tecl("lg-co1") +
+    '<label class="lg-label" for="lg-co2">' + logT("coDer") + '</label><input id="lg-co2" class="lg-input" value="' + logEsc(LOG.co.der) + '" autocomplete="off" spellcheck="false">' + tecl("lg-co2") +
+    '<p class="lg-nota">' + logT("coLeyes") + " " + LOG_CO_EJ.map(([x, y, k]) => '<button type="button" class="chip" data-ejco1="' + logEsc(x) + '" data-ejco2="' + logEsc(y) + '">' + logT(k) + "</button>").join(" ") + "</p></div>" +
+    '<div class="lg-panel" id="lg-co">' + logConjHtml() + "</div>";
+}
+
 /* ---------- montaje y eventos ---------- */
+const LOG_SUB_SIL = ["silogismos", "cuadrado", "conjuntos"];
 function logRender(){
   const box = logBox(); if (!box) return;
   const tabs = [["tablas", "tabTablas"], ["silogismos", "tabSilog"], ["puertas", "tabPuertas"], ["paradojas", "tabParad"], ["ejercicios", "tabEjerc"], ["clasicos", "tabClasicos"]];
-  box.innerHTML = '<div class="fgroup lg-tabs" role="tablist">' + tabs.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (LOG.tab === k) + '">' + logT(l) + "</button>").join("") + "</div>" +
+  box.innerHTML = '<div class="fgroup lg-tabs" role="tablist">' + tabs.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + ((LOG_SUB_SIL.includes(LOG.tab) ? "silogismos" : LOG.tab) === k) + '">' + logT(l) + "</button>").join("") + "</div>" +
+    /* (10-10) «Cuadrado de oposición» y «Leyes de conjuntos» van como subpestañas de Silogismos: no más de 6 pestañas arriba */
+    (LOG_SUB_SIL.includes(LOG.tab) ? '<div class="fgroup lg-subtabs">' + [["silogismos", "tabSilog"], ["cuadrado", "tabCuadrado"], ["conjuntos", "tabConjuntos"]].map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (LOG.tab === k) + '">' + logT(l) + "</button>").join("") + "</div>" : "") +
     /* (08-10) una introducción breve en cada pestaña, por si se llega a ella sin contexto (Paradojas ya tiene la suya) */
-    ({ tablas: "introTablas", silogismos: "introSilog", puertas: "introPuertas", ejercicios: "introEjerc", clasicos: "introClasicos" }[LOG.tab] ? '<p class="lg-intro">' + logT({ tablas: "introTablas", silogismos: "introSilog", puertas: "introPuertas", ejercicios: "introEjerc", clasicos: "introClasicos" }[LOG.tab]) + "</p>" + logGuia({ tablas: "guiaTablas", silogismos: "guiaSilog", puertas: "guiaPuertas", ejercicios: "guiaEjerc", clasicos: "guiaClasicos" }[LOG.tab]) : "") +
-    '<div class="lg-cuerpo">' + (LOG.tab === "silogismos" ? logRenderSil() : LOG.tab === "puertas" ? logRenderPuertas() : LOG_PAR_VISTAS.includes(LOG.tab) ? logRenderParadojas(LOG.tab) : logRenderTablas()) + "</div>";
+    ({ tablas: "introTablas", silogismos: "introSilog", cuadrado: "introCuadrado", conjuntos: "introConjuntos", puertas: "introPuertas", ejercicios: "introEjerc", clasicos: "introClasicos" }[LOG.tab] ? '<p class="lg-intro">' + logT({ tablas: "introTablas", silogismos: "introSilog", cuadrado: "introCuadrado", conjuntos: "introConjuntos", puertas: "introPuertas", ejercicios: "introEjerc", clasicos: "introClasicos" }[LOG.tab]) + "</p>" + ({ tablas: "guiaTablas", silogismos: "guiaSilog", puertas: "guiaPuertas", ejercicios: "guiaEjerc", clasicos: "guiaClasicos" }[LOG.tab] ? logGuia({ tablas: "guiaTablas", silogismos: "guiaSilog", puertas: "guiaPuertas", ejercicios: "guiaEjerc", clasicos: "guiaClasicos" }[LOG.tab]) : "") : "") +
+    '<div class="lg-cuerpo">' + (LOG.tab === "silogismos" ? logRenderSil() : LOG.tab === "cuadrado" ? logRenderCuadrado() : LOG.tab === "conjuntos" ? logRenderConjuntos() : LOG.tab === "puertas" ? logRenderPuertas() : LOG_PAR_VISTAS.includes(LOG.tab) ? logRenderParadojas(LOG.tab) : logRenderTablas()) + "</div>";
 }
 function logInsertar(input, txt){
   const a = input.selectionStart != null ? input.selectionStart : input.value.length, b = input.selectionEnd != null ? input.selectionEnd : a;
@@ -452,7 +568,7 @@ function logInsertar(input, txt){
 }
 function logRefrescar(id){
   const el = document.getElementById(id); if (!el) return;
-  el.innerHTML = id === "lg-tabla" ? logTablaHtml() : id === "lg-arg" ? logArgHtml() : id === "lg-sil" ? logSilHtml() : id === "lg-circ" ? logCircuitoHtml() : logRenderPuertaSola();
+  el.innerHTML = id === "lg-tabla" ? logTablaHtml() : id === "lg-arg" ? logArgHtml() : id === "lg-sil" ? logSilHtml() : id === "lg-circ" ? logCircuitoHtml() : id === "lg-cu" ? logCuadradoHtml() : id === "lg-co" ? logConjHtml() : logRenderPuertaSola();
 }
 function logWire(){
   const box = logBox(); if (!box || box.dataset.lgWired) return;
@@ -466,6 +582,11 @@ function logWire(){
     if (b.dataset.ejs){ const [m, f] = b.dataset.ejs.split("-"); Object.assign(LOG.sil, { may: m[0], men: m[1], con: m[2], fig: +f }); logRender(); return; }
     if (b.dataset.diag){ LOG.sil.diag = b.dataset.diag; logRefrescar("lg-sil"); return; }
     if (b.dataset.parf){ LOG.formula = b.dataset.parf; LOG.tab = "tablas"; logRender(); const t = document.getElementById("lg-tabla"); if (t) t.scrollIntoView({ block: "center" }); return; }
+    if (b.dataset.cuej){ LOG.cu.ej = +b.dataset.cuej; logRender(); return; }
+    if (b.dataset.cutipo){ LOG.cu.tipo = b.dataset.cutipo; logRender(); return; }
+    if (b.dataset.cuval){ LOG.cu.val = b.dataset.cuval === "1"; logRender(); return; }
+    if (b.dataset.cutrad){ LOG.cu.trad = b.dataset.cutrad === "1"; logRender(); return; }
+    if (b.dataset.ejco1 != null){ LOG.co.izq = b.dataset.ejco1; LOG.co.der = b.dataset.ejco2; logRender(); return; }
     if (b.dataset.gate){ LOG.gate = b.dataset.gate; logRender(); return; }
     if (b.dataset.pin){ LOG["g" + b.dataset.pin] = LOG["g" + b.dataset.pin] ? 0 : 1; logRefrescar("lg-puerta"); return; }
     if (b.dataset.var){ LOG.circ[b.dataset.var] = !LOG.circ[b.dataset.var]; logRefrescar("lg-circ"); return; }
@@ -478,6 +599,7 @@ function logWire(){
     const t = ev.target;
     if (t.id === "lg-f"){ LOG.formula = t.value; logRefrescar("lg-tabla"); }
     else if (t.id === "lg-f2"){ LOG.formula = t.value; logRefrescar("lg-circ"); }
+    else if (t.id === "lg-co1" || t.id === "lg-co2"){ LOG.co[t.id === "lg-co1" ? "izq" : "der"] = t.value; logRefrescar("lg-co"); }
     else if (t.id === "lg-p" || t.id === "lg-c"){ LOG[t.id === "lg-p" ? "prem" : "concl"] = t.value; logRefrescar("lg-arg"); }
     else if (t.dataset.term){ LOG.sil[t.dataset.term] = t.value; logRefrescar("lg-sil"); }
   });
@@ -492,7 +614,7 @@ function loadLogica(arg){
   const m = /^(?:paradojas|ejercicios|clasicos)\/([\w-]+)$/.exec(arg || ""), ficha = m && typeof PARADOJAS !== "undefined" ? PARADOJAS.find(p => p.id === m[1]) : null;
   const grupo = ficha && typeof PARADOJAS_GRUPOS !== "undefined" ? PARADOJAS_GRUPOS.find(g => g.id === ficha.grupo) : null;
   if (ficha){ LOG.tab = (grupo && grupo.view) || "paradojas"; LOG.parGrupo = ficha.grupo; }
-  else if (arg && ["tablas", "silogismos", "puertas", ...LOG_PAR_VISTAS].includes(arg)){ LOG.tab = arg; LOG.parGrupo = "all"; }
+  else if (arg && ["tablas", "silogismos", "cuadrado", "conjuntos", "puertas", ...LOG_PAR_VISTAS].includes(arg)){ LOG.tab = arg; LOG.parGrupo = "all"; }
   logRender(); logWire();
   if (ficha){ const el = document.getElementById("par-" + ficha.id); if (el) el.scrollIntoView({ block: "start" }); }
 }

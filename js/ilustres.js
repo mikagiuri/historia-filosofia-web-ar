@@ -1025,7 +1025,8 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-fe-razon",
-   "hf-aristoteles-arabe"
+   "hf-aristoteles-arabe",
+   "hf-renacimiento-magia"
   ]
  },
  "agustin": {
@@ -1563,7 +1564,9 @@ const ILUSTRES = {
   "subjects": [
    "hf"
   ],
-  "temas": []
+  "temas": [
+   "hf-renacimiento-magia"
+  ]
  },
  "pico": {
   "name": "جيوفاني بيكو ديلا ميراندولا",
@@ -1583,7 +1586,8 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
-   "hf-modernidad"
+   "hf-modernidad",
+   "hf-renacimiento-magia"
   ]
  },
  "erasmo": {
@@ -1663,7 +1667,8 @@ const ILUSTRES = {
    "hf-modernidad",
    "hf-sospecha",
    "hf-analitica",
-   "hf-descartes-makro"
+   "hf-descartes-makro",
+   "hf-renacimiento-magia"
   ]
  },
  "tomas_moro": {
@@ -1758,7 +1763,9 @@ const ILUSTRES = {
   "subjects": [
    "hf"
   ],
-  "temas": []
+  "temas": [
+   "hf-renacimiento-magia"
+  ]
  },
  "francis_bacon": {
   "name": "فرنسيس بيكون",
@@ -1782,7 +1789,8 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
-   "hf-racionalismo"
+   "hf-racionalismo",
+   "hf-renacimiento-magia"
   ]
  },
  "galileo": {
@@ -1861,7 +1869,8 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-modernidad",
-   "hf-descartes-makro"
+   "hf-descartes-makro",
+   "hf-renacimiento-magia"
   ]
  },
  "harvey": {
@@ -2153,7 +2162,8 @@ const ILUSTRES = {
    "hf-kant",
    "hf-marxismos",
    "hf-analitica",
-   "hf-descartes-makro"
+   "hf-descartes-makro",
+   "hf-renacimiento-magia"
   ]
  },
  "leibniz": {
