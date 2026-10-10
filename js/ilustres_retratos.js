@@ -299,6 +299,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/museo2/voltaire.jpg",
   "pie": "Atelier de Nicolas de Largillière, portrait de Voltaire, détail (musée Carnavalet) -001 · Nicolas de Largillière · Public Domain"
  },
+ "euler": {
+  "f": "media/retratos/ilustres/euler.jpg",
+  "pie": "Leonhard Euler (pastel, 1753) · Jakob Emanuel Handmann · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Leonhard_Euler.jpg"
+ },
  "lamettrie": {
   "f": "media/retratos/ilustres/lamettrie.jpg",
   "pie": "Portrait de Julien Offray de La Mettrie · Georg Friedrich Schmidt · Public domain",
@@ -503,6 +508,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "John Stuart Mill by John Watkins 1865 · John Watkins · Public Domain",
   "page": "https://commons.wikimedia.org/wiki/File:John_Stuart_Mill_by_John_Watkins,_1865.jpg"
  },
+ "de_morgan": {
+  "f": "media/retratos/ilustres/de_morgan.jpg",
+  "pie": "De Morgan Augustus (Memoir of Augustus De Morgan, 1882) · Sophia Elizabeth De Morgan (ed.) · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:De_Morgan_Augustus.jpg"
+ },
  "considerant": {
   "f": "media/retratos/ilustres/considerant.jpg",
   "pie": "Considerant, Victor · Charles Philippe Auguste Carey · Public domain",
@@ -552,6 +562,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/tylor.jpg",
   "pie": "Edward Burnett Tylor (Popular Science Monthly, vol. 26, 1884-1885) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:PSM_V26_D156_Edward_Burnett_Tylor.jpg"
+ },
+ "venn": {
+  "f": "media/retratos/ilustres/venn.jpg",
+  "pie": "John Venn (hacia 1870) · Maull & Fox · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:John_Venn_2.jpg"
  },
  "kropotkin": {
   "f": "media/retratos/ilustres/kropotkin.jpg",
