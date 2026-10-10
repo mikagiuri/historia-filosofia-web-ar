@@ -383,7 +383,7 @@
       return (gr.g ? '<h3 class="temas-b" data-' + grpAttr + '="' + esc(gr.g) + '">' + esc((grpNames && grpNames[gr.g]) || gr.g) + '</h3>' : '') + '<ol class="itin-temas" style="--c:' + (SUBJ_COLOR[subject] || "var(--accent)") + '">' + gr.ks.map(function(k){
         var n = temaOf("teoria", k, T[k]), extra = !!THEORY_EXTRA[k], anexo = extra && typeof T[k].temaN === "number";   /* anexos: «Anexo - …», sin «Tema N» */
         return '<li' + (extra ? ' class="temas-extra"' : '') + (gr.g ? ' data-' + grpAttr + '="' + esc(gr.g) + '"' : '') + '><button type="button" data-igo="teoria" data-iarg="' + esc(k) + '">' +
-          (T[k].sigla ? '<span class="temas-n">' + esc(T[k].sigla) + '</span>' : typeof n === "number" && !anexo ? '<span class="temas-n">' + esc(t("tema", { n: n })) + '</span>' : '') + '<span class="temas-t">' + esc(strip(T[k].title)) + '</span>' + (anexo ? '<span class="temas-anexo">في القسم</span>' : '') + '</button></li>';
+          (T[k].sigla ? '<span class="temas-n">' + esc(T[k].sigla) + '</span>' : typeof n === "number" && !anexo ? '<span class="temas-n">' + esc(t("tema", { n: n })) + '</span>' : '') + '<span class="temas-t">' + esc(strip(T[k].title)) + '</span>' + (anexo && T[k].clase ? '<span class="temas-anexo">في القسم</span>' : '') + '</button></li>';
       }).join("") + '</ol>';
     }).join("");
   }
