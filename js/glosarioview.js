@@ -34,6 +34,9 @@ const GLO_CSS = `
 #glosario .gloitem .tag{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap}
 #glosario .gloitem p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink)}
 #glosario .gloitem .src{color:var(--muted);font-size:12px;margin-top:7px}
+#glosario .gloitem .glo-ilu{font-size:12.5px;margin-top:5px;color:var(--muted)}
+#glosario .gloitem .glo-ilu b{font-weight:600;margin-inline-end:3px}
+#glosario .gloitem .glo-ilu button{background:none;border:0;padding:0;font:inherit;color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
 #glosario .gloitem .ety{color:var(--muted);font-size:13px;line-height:1.5;margin-top:8px;padding-top:7px;border-top:1px dashed var(--line-soft)}
 #glosario .gloitem .ety[hidden]{display:none}
 #glosario .gloitem .ety b{font-weight:600;color:var(--ink)}
@@ -145,6 +148,16 @@ function renderGloGrids(){
   if (gloGrid && typeof EsqGrid !== "undefined"){ const g = GLOSARIO_GRIDS[gloGrid]; EsqGrid.render({ subject: g.subject, v2: g.v2 }, document.getElementById("glogridbox")); }
 }
 
+/* (10-10) Al pie de cada término, los pensadores que nombra (campo «ilustre», tools/build_glosario_ilustres.js),
+   con enlace a su ficha de Ilustres; solo los que están en esta web. */
+const GLO_ILU = "مفكرون";
+function gloIlustres(g){
+  if (typeof ILUSTRES === "undefined" || !ILUSTRES) return "";
+  const ids = (g.ilustre || []).filter(id => ILUSTRES[id]);
+  if (!ids.length) return "";
+  return '<div class="glo-ilu"><b>' + GLO_ILU + '</b> ' + ids.map(id => '<button type="button" data-glo-ilu="' + gloEsc(id) + '">' + gloEsc(ILUSTRES[id].name) + '</button>').join(" · ") + '</div>';
+}
+
 function renderGloList(){
   renderGloGrids();
   const list = document.getElementById("glolist");
@@ -169,8 +182,9 @@ function renderGloList(){
     const ety = g.et ? '<div class="ety"' + (abre ? "" : " hidden") + "><b>" + GLO_ETY + "</b> " + gloIt(gloHi(gloEsc(g.et), gloQuery)) + "</div>" : "";
     const btn = g.et ? '<button type="button" class="glo-root" aria-expanded="' + !!abre + '" aria-label="' + GLO_ETY_BTN + '" title="' + GLO_ETY_BTN + '">λ</button>' : "";
     const src = g.tema ? '<div class="src">' + gloEsc(g.tema) + (g.unidad ? " · " + g.unidad : "") + '</div>' : "";
+    const ilu = gloIlustres(g);
     const ep = g.subject === "hf" && { A: "ant", B: "medmod", C: "con" }[g.bloque];   // (30-09) color del bloque de HF (styles.css)
-    return '<article class="gloitem"' + (ep ? ' data-ep="' + ep + '"' : '') + '><div class="top"><h4>' + term + btn + '</h4><span class="tag">' + gloEsc(tag) + '</span></div><p>' + def + '</p>' + ety + src + '</article>';
+    return '<article class="gloitem"' + (ep ? ' data-ep="' + ep + '"' : '') + '><div class="top"><h4>' + term + btn + '</h4><span class="tag">' + gloEsc(tag) + '</span></div><p>' + def + '</p>' + ety + src + ilu + '</article>';
   }).join("");
 }
 
@@ -178,6 +192,8 @@ function renderGloList(){
 (() => {
   const list = document.getElementById("glolist");
   if (list) list.addEventListener("click", e => {
+    const il = e.target.closest("[data-glo-ilu]");
+    if (il){ (window.show || show)("ilustres"); if (typeof loadIlustre === "function") loadIlustre(il.dataset.gloIlu); return; }
     const b = e.target.closest(".glo-root"); if (!b) return;
     const ety = b.closest(".gloitem").querySelector(".ety"); if (!ety) return;
     ety.hidden = !ety.hidden; b.setAttribute("aria-expanded", String(!ety.hidden));

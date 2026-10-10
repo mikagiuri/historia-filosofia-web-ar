@@ -134,6 +134,67 @@ function iluCitas(p){
     (c.o ? '<figcaption class="ilu-cit-o">' + iluEsc(c.o) + '</figcaption>' : '') + '</figure>').join("") + '</div>';
 }
 
+/* (10-10) «Afines y opuestos» y «Conceptos del glosario», al final de la ficha (idea tomada de las fichas de
+   cerebrofilosofico.com, sin contenido nuevo: todo sale de datos ya revisados).
+   · Afines y opuestos: sus líneas de Genealogías (GENEALOGIAS.lineas, con quién va antes y después), sus
+     oposiciones (GENEALOGIAS.op) y los acuerdos y desacuerdos de sus tesis (GEN_TESIS.enlaces, con el porqué).
+   · Conceptos del glosario: los términos con su id en el campo «ilustre» (tools/build_glosario_ilustres.js).
+   Solo se enlaza a pensadores que están en esta web (build_subject.js filtra ILUSTRES por materia). */
+const ILU_REL = { tit: "الأقربون والخصوم", frente: "في مواجهة", tesis: "أطروحاته في النقاش", acuerdo: "يتفق مع", desacuerdo: "يختلف مع",
+  conceptos: "مفاهيم من المسرد", mas: "و{n} أخرى" };
+function iluLink(id, cl){
+  const q = ILUSTRES[id]; if (!q) return "";
+  return '<button type="button" class="ilu-rel-a' + (cl ? " " + cl : "") + '" data-go-ilu="' + iluEsc(id) + '">' + iluEsc(q.name) + '</button>';
+}
+function iluRelaciones(p){
+  const out = [];
+  if (typeof GENEALOGIAS !== "undefined" && GENEALOGIAS){
+    (GENEALOGIAS.lineas || []).forEach(l => {
+      const ids = (l.ilustre || []).filter(id => id === p.id || ILUSTRES[id]), i = ids.indexOf(p.id);
+      if (i < 0) return;
+      const tramo = ids.slice(Math.max(0, i - 1), i + 2).map(id => id === p.id ? '<b>' + iluEsc(p.name) + '</b>' : iluLink(id));
+      out.push('<li><span class="ilu-rel-linea" style="--l:' + iluEsc(l.color) + '">' + iluEsc(l.name) + '</span> ' + tramo.join(' <span aria-hidden="true">→</span> ') + '</li>');
+    });
+    const op = (GENEALOGIAS.op || []).map(o => o.ilustre || []).filter(o => o.includes(p.id))
+      .map(o => o.find(id => id !== p.id)).filter(id => ILUSTRES[id]);
+    if (op.length) out.push('<li><span class="ilu-rel-op">' + ILU_REL.frente + '</span> ' + op.map(id => iluLink(id)).join(" · ") + '</li>');
+  }
+  let deb = "";
+  if (typeof GEN_TESIS !== "undefined" && GEN_TESIS){
+    const de = {}; (GEN_TESIS.tesis || []).forEach(t => { de[t.id] = t.ilustre; });
+    const rows = (GEN_TESIS.enlaces || []).map(e => {
+      const [a, b] = String(e.k).split("|"), otro = de[a] === p.id ? de[b] : de[b] === p.id ? de[a] : null;
+      if (!otro || otro === p.id || !ILUSTRES[otro]) return "";
+      const ok = e.tipo === "acuerdo";
+      return '<li class="' + (ok ? "ilu-rel-si" : "ilu-rel-no") + '"><span class="ilu-rel-tipo">' + (ok ? ILU_REL.acuerdo : ILU_REL.desacuerdo) + '</span> ' +
+        iluLink(otro) + (e.por ? '<span class="ilu-rel-por">' + iluEsc(e.por) + '</span>' : '') + '</li>';
+    }).filter(Boolean);
+    if (rows.length) deb = '<h4>' + ILU_REL.tesis + '</h4><ul class="ilu-rel-tesis">' + rows.join("") + '</ul>';
+  }
+  if (!out.length && !deb) return "";
+  return '<div class="ilu-sec ilu-rel"><h3>' + ILU_REL.tit + '</h3>' + (out.length ? '<ul class="ilu-rel-list">' + out.join("") + '</ul>' : '') + deb + '</div>';
+}
+const ILU_CONC_VISIBLES = 12;
+function iluConceptos(p){
+  if (typeof GLOSARIO === "undefined" || !Array.isArray(GLOSARIO)) return "";
+  const ts = GLOSARIO.filter(g => (g.ilustre || []).includes(p.id) && (!p.subjects || p.subjects.includes(g.subject)));
+  if (!ts.length) return "";
+  const a = g => '<button type="button" class="ilu-conc-a" data-glo="' + iluEsc(g.t) + '" data-glo-sub="' + iluEsc(g.subject) + '">' + iluEsc(g.t) + '</button>';
+  const vis = ts.slice(0, ILU_CONC_VISIBLES).map(a).join(", "), resto = ts.slice(ILU_CONC_VISIBLES);
+  return '<div class="ilu-sec ilu-conc"><h3>' + ILU_REL.conceptos + '</h3><div class="ilu-conc-txt">' + vis +
+    (resto.length ? ' <details class="ilu-conc-mas"><summary>' + ILU_REL.mas.replace("{n}", resto.length) + '</summary>' + resto.map(a).join(", ") + '</details>' : '') + '</div></div>';
+}
+/* abrir el glosario filtrado por un término (como el buscador general, search.js) */
+function iluAbrirGlosario(t, sub){
+  (window.show || show)("glosario");
+  try {
+    if (typeof gloSubject !== "undefined"){ gloSubject = sub || gloSubject; gloBloque = "all"; gloArea = "all"; gloQuery = t; }
+    if (typeof renderGloControls === "function") renderGloControls();
+    if (typeof renderGloList === "function") renderGloList();
+  } catch (e){}
+  window.scrollTo(0, 0);
+}
+
 /* Ficha de un pensador. Sin argumento (o id desconocido) vuelve al listado. */
 /* (01-10) «Su vida en fechas»: una sola línea vertical, de arriba abajo, con lo esencial (nace, los hechos del campo
    «vida» {a, b?, t} y muere). No toca la biografía: va detrás, como una sección más de la ficha. */
@@ -187,6 +248,8 @@ function loadIlustre(id){
         p.anecdota + (p.fuente ? '<p class="ilu-fuente"><span>المصدر</span>: ' + iluEsc(p.fuente) + '</p>' : '') + '</div>' : '') +
       ((p.obras || []).length ? '<div class="ilu-sec"><h3>الأعمال الرئيسية</h3><ul class="ilu-obras">' + p.obras.map(o => '<li>' + iluEsc(o) + '</li>').join("") + '</ul></div>' : '') +
       iluTemaChips(p) +
+      iluRelaciones(p) +
+      iluConceptos(p) +
     '</article>';
   box.querySelector("[data-back]").addEventListener("click", () => {
     renderIluList();
@@ -194,6 +257,7 @@ function loadIlustre(id){
     window.scrollTo(0, 0);
   });
   box.querySelectorAll("[data-go-ilu]").forEach(b => b.addEventListener("click", () => loadIlustre(b.dataset.goIlu)));
+  box.querySelectorAll("[data-glo]").forEach(b => b.addEventListener("click", () => iluAbrirGlosario(b.dataset.glo, b.dataset.gloSub)));
   box.querySelectorAll("[data-th]").forEach(b => b.addEventListener("click", () => {
     (window.show || show)("teoria");
     if (typeof window.loadTheory === "function") window.loadTheory(b.dataset.th);

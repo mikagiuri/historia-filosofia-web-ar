@@ -2326,3 +2326,19 @@ ol.itin-temas li.temas-extra .temas-t{font-size:.95rem;color:var(--muted)}
 #ilustres .vida-a{font:600 .82rem var(--mono);color:var(--e);min-width:10.5em}
 #ilustres .vida-t{font-family:var(--serif);font-size:1rem;color:var(--ink)}
 
+/* (10-10) «Afines y opuestos» y «Conceptos del glosario» al final de la ficha: texto con enlaces, sin chips */
+#ilustres .ilu-rel-list, #ilustres .ilu-rel-tesis{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;line-height:1.5}
+#ilustres .ilu-rel h4{font-size:.9rem;margin:14px 0 6px;color:var(--muted)}
+#ilustres .ilu-rel-a, #ilustres .ilu-conc-a{background:none;border:0;padding:0;font:inherit;color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+#ilustres .ilu-rel-a:hover, #ilustres .ilu-conc-a:hover{text-decoration-thickness:2px}
+#ilustres .ilu-rel-linea{font-size:.78rem;font-weight:600;color:var(--muted);margin-inline-end:4px}
+#ilustres .ilu-rel-linea::before{content:"";display:inline-block;width:.7em;height:.7em;border-radius:50%;background:var(--l);margin-inline-end:5px;vertical-align:-.05em}
+#ilustres .ilu-rel-op, #ilustres .ilu-rel-tipo{font-size:.78rem;font-weight:600;margin-inline-end:4px}
+#ilustres .ilu-rel-op, #ilustres .ilu-rel-no .ilu-rel-tipo{color:var(--bad)}
+#ilustres .ilu-rel-si .ilu-rel-tipo{color:var(--ok)}
+#ilustres .ilu-rel-por{display:block;font-size:.9rem;color:var(--muted);max-width:70ch}
+#ilustres .ilu-conc-txt{margin:0;line-height:1.7;max-width:70ch}
+#ilustres .ilu-conc-mas{display:inline}
+#ilustres .ilu-conc-mas summary{display:inline;cursor:pointer;color:var(--muted);font-size:.9rem}
+#ilustres .ilu-conc-mas[open] summary{display:none}
+
