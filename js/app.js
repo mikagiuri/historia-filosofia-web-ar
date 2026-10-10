@@ -81,7 +81,7 @@ const ROUTE_KEY_OK = {
   cuestionarios: k => typeof QUIZZES === "undefined" || !!QUIZZES[k],
   tarjetas: k => typeof DECKS === "undefined" || !!DECKS[k],
   materiales: k => typeof MATERIALS === "undefined" || !!MATERIALS[k],
-  ilustres: k => typeof iluList !== "function" || iluList().some(x => x.id === k)
+  ilustres: k => typeof iluList !== "function" || iluList().some(x => x.id === k) || (/^epoca-/.test(k) && typeof EPOCAS_FICHAS !== "undefined" && !!EPOCAS_FICHAS[k.slice(6)])
 };
 function routeNote(msg){
   let n = document.getElementById("routenote");

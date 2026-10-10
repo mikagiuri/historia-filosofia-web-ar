@@ -24,7 +24,7 @@
     temas: "المواضيع", unidades: "الوحدات", tema: "الموضوع {n}", unidad: "الوحدة {n}",
     seguir: "لمواصلة هذا الموضوع", tarjetas: "بطاقات", cuestionarios: "اختبارات", infografias: "إنفوغرافيك", mapas: "خرائط المفاهيم",
     esquemas: "خطاطات", lecturas: "قراءات", comentarios: "شروح النصوص", dilemas: "معضلات أخلاقية", pistas: "تلميحات متدرجة", conceptos: "المفاهيم",
-    nTarjetas: "{n} بطاقات", nPreguntas: "{n} أسئلة", anterior: "الموضوع السابق", siguienteTema: "الموضوع التالي", anexos: "استكشافات", volverTema: "العودة إلى الموضوع",
+    nTarjetas: "{n} بطاقات", nPreguntas: "{n} أسئلة", anterior: "الموضوع السابق", siguienteTema: "الموضوع التالي", anexos: "استكشافات", epoca: "الحقبة", volverTema: "العودة إلى الموضوع",
     infografia: "إنفوغرافيك", mapa: "خريطة", esquema: "خطاطة", lectura: "قراءة", dilema: "معضلة", comentario: "شرح",
     pau: "مسار PAU", pauLead: "استعدوا لـ PAU بالترتيب: أولًا كيف هو الامتحان، ثم كل تمرين، وفي النهاية التدرب حسب المواضيع.",
     pau1: "كيف هو الامتحان", pau2: "التمرين 1 · شرح النص", pau3: "التمرين 2 · المقالة الفلسفية",
@@ -266,6 +266,9 @@
     /* (07-10) anexos de este tema: fuera de la secuencia, aquí y en el índice de temas */
     if (!esAnexo(T[key])) row(t("anexos"), Object.keys(T).filter(function(k){ return T[k].subject === subject && esAnexo(T[k]) && T[k].temaN === tema; })
       .map(function(k){ return { go: "teoria", arg: k, label: strip(T[k].title).replace(/^(Exploración|Esplorazioa|Exploration|Anexo|Eranskina|Annexe|Annex|Appendix)\s*-\s*/, "") }; }));
+    /* (10-10) ficha de la época del tema (epocas_fichas.js, vista Ilustres), si existe */
+    var EF = G("EPOCAS_FICHAS"), epo = subject === "hf" && window.Epocas && window.Epocas.epocaDeTema ? window.Epocas.epocaDeTema(tema) : null;
+    if (EF && epo && EF[epo] && view("ilustres")) row(t("epoca"), [{ go: "ilustres", arg: "epoca-" + epo, label: typeof iluEpocaName === "function" ? iluEpocaName(epo) : epo }]);
     /* tema anterior / siguiente, en el orden de la materia; desde un anexo, solo «Volver al tema» */
     var ks = temasDe(subject), i = ks.indexOf(key), prev = i > 0 ? ks[i - 1] : null, next = i >= 0 && i < ks.length - 1 ? ks[i + 1] : null;
     if (i < 0 && esAnexo(T[key])) prev = ks.filter(function(k){ return !T[k].sigla && temaOf("teoria", k, T[k]) === tema; })[0] || null;

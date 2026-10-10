@@ -99,7 +99,9 @@ function renderIluList(){
   rows.forEach(p => {
     if (p.block !== last){
       if (last !== null) html += "</div>";
-      html += '<h2 class="ilu-era" data-b="' + p.block + '">' + iluEsc(iluEpocaName(p.block)) + '</h2><div class="ilu-grid">';
+      html += '<h2 class="ilu-era" data-b="' + p.block + '">' + (iluFichaEpoca(p.block)
+        ? '<button type="button" class="ilu-era-btn" data-epoca="' + p.block + '" title="' + ILU_EPO.ver + '">' + iluEsc(iluEpocaName(p.block)) + ' <span aria-hidden="true">›</span></button>'
+        : iluEsc(iluEpocaName(p.block))) + '</h2><div class="ilu-grid">';
       last = p.block;
     }
     html += '<button class="ilu-card" data-b="' + p.block + '" data-ilu="' + iluEsc(p.id) + '">' +
@@ -111,6 +113,7 @@ function renderIluList(){
   html += "</div>";
   box.innerHTML = html;
   box.querySelectorAll("[data-ilu]").forEach(b => b.addEventListener("click", () => loadIlustre(b.dataset.ilu)));
+  box.querySelectorAll("[data-epoca]").forEach(b => b.addEventListener("click", () => loadIlustre("epoca-" + b.dataset.epoca)));
 }
 
 function iluTemaChips(p){
@@ -195,6 +198,48 @@ function iluAbrirGlosario(t, sub){
   window.scrollTo(0, 0);
 }
 
+/* (10-10) Fichas de época (epocas_fichas.js): mismo marco que la ficha de un pensador. Apartados fijos y, al final,
+   los pensadores de esa época en Ilustres (calculado) y el paso a la época siguiente. */
+const ILU_EPO = { ver: "عرض بطاقة الحقبة", abre: "ما الذي يفتتحها", social: "المجتمع", politico: "السياسة",
+  ciencia: "العلم والتقنية", pensamiento: "الفكر", pensadores: "مفكرو هذه الحقبة", rupturas: "القطائع والتحولات",
+  trampa: "فخّ", epoca: "العصر", volver: "→ كل الأعلام" };
+function iluListaPlegada(items, n){
+  const resto = items.slice(n);
+  return items.slice(0, n).join(", ") + (resto.length ? ' <details class="ilu-conc-mas"><summary>' + ILU_REL.mas.replace("{n}", resto.length) + '</summary>' + resto.join(", ") + '</details>' : '');
+}
+function iluFichaEpoca(b){ return typeof EPOCAS_FICHAS !== "undefined" && EPOCAS_FICHAS && EPOCAS_FICHAS[b] || null; }
+function loadEpoca(b){
+  const box = document.getElementById("ilubox"), f = iluFichaEpoca(b);
+  if (!box || !f){ renderIluList(); return; }
+  const fb = document.getElementById("ilufilter"), cnt = document.getElementById("ilucount");
+  if (fb) fb.hidden = true;
+  if (cnt) cnt.hidden = true;
+  const i = ILU_EPOCAS.findIndex(e => e[0] === b), prev = ILU_EPOCAS[i - 1], next = ILU_EPOCAS[i + 1];
+  const navEp = (e, txt) => e && iluFichaEpoca(e[0]) ? '<button class="btn ghost" data-epoca="' + e[0] + '">' + txt.replace("{e}", iluEsc(iluEpocaName(e[0]))) + '</button>' : '';
+  const sec = (k, cls) => f[k] ? '<div class="ilu-sec' + (cls ? " " + cls : "") + '"><h3>' + ILU_EPO[k] + '</h3>' + f[k] + '</div>' : '';
+  const ps = iluList().filter(p => p.block === b);
+  box.innerHTML =
+    '<div class="ilu-nav"><button class="btn ghost" data-back>' + ILU_EPO.volver + '</button>' +
+    '<span class="ilu-pn">' + navEp(prev, "‹ {e}") + navEp(next, "{e} ›") + '</span></div>' +
+    '<article class="ilu-ficha ilu-epoca" data-b="' + b + '">' +
+      '<header class="ilu-epo-head"><p class="ilu-era-tag"><i class="ilu-dot" data-b="' + b + '" aria-hidden="true"></i>' + ILU_EPO.epoca + '</p>' +
+        '<h2>' + iluEsc(iluEpocaName(b)) + '</h2>' + (f.anos ? '<p class="ilu-life">' + iluEsc(f.anos) + '</p>' : '') + '</header>' +
+      sec("abre") + sec("social") + sec("politico") + sec("ciencia") + sec("pensamiento") +
+      (ps.length ? '<div class="ilu-sec ilu-conc"><h3>' + ILU_EPO.pensadores + '</h3><div class="ilu-conc-txt">' +
+        iluListaPlegada(ps.map(p => '<button type="button" class="ilu-rel-a" data-go-ilu="' + iluEsc(p.id) + '" title="' + iluEsc(p.dates) + '">' + iluEsc(p.name) + '</button>'), 20) + '</div></div>' : '') +
+      sec("rupturas") + sec("trampa", "ilu-anec") +
+    '</article>';
+  box.querySelector("[data-back]").addEventListener("click", () => {
+    renderIluList();
+    try { history.replaceState(null, "", "#ilustres"); } catch (e){}
+    window.scrollTo(0, 0);
+  });
+  box.querySelectorAll("[data-go-ilu]").forEach(x => x.addEventListener("click", () => loadIlustre(x.dataset.goIlu)));
+  box.querySelectorAll("[data-epoca]").forEach(x => x.addEventListener("click", () => loadEpoca(x.dataset.epoca)));
+  try { history.replaceState(null, "", "#ilustres/epoca-" + b); } catch (e){}
+  window.scrollTo(0, 0);
+}
+
 /* Ficha de un pensador. Sin argumento (o id desconocido) vuelve al listado. */
 /* (01-10) «Su vida en fechas»: una sola línea vertical, de arriba abajo, con lo esencial (nace, los hechos del campo
    «vida» {a, b?, t} y muere). No toca la biografía: va detrás, como una sección más de la ficha. */
@@ -215,6 +260,7 @@ function iluVida(p){
 function loadIlustre(id){
   const box = document.getElementById("ilubox");
   if (!box) return;
+  if (/^epoca-/.test(id || "") && iluFichaEpoca(id.slice(6))){ loadEpoca(id.slice(6)); return; }
   const all = iluList(), p = all.find(x => x.id === id);
   if (!p){ renderIluList(); return; }
   const fb = document.getElementById("ilufilter"), cnt = document.getElementById("ilucount");
@@ -235,7 +281,9 @@ function loadIlustre(id){
           (r ? '<figcaption>' + iluEsc(r.pie) + ' · ' + (r.page ? '<a href="' + iluEsc(r.page) + '" target="_blank" rel="noopener">' + (/wikipedia\.org/.test(r.page) ? "Wikipedia" : "Wikimedia Commons") + '</a>' : 'Wikimedia Commons') + '</figcaption>' : '') +
         '</figure>' +
         '<div class="ilu-id">' +
-          '<p class="ilu-era-tag"><i class="ilu-dot" data-b="' + p.block + '" aria-hidden="true"></i>' + iluEsc(iluEpocaName(p.block)) + ' · ' + iluEsc(p.role) + '</p>' +
+          '<p class="ilu-era-tag"><i class="ilu-dot" data-b="' + p.block + '" aria-hidden="true"></i>' + (iluFichaEpoca(p.block)
+            ? '<button type="button" class="ilu-era-link" data-epoca="' + p.block + '" title="' + ILU_EPO.ver + '">' + iluEsc(iluEpocaName(p.block)) + '</button>'
+            : iluEsc(iluEpocaName(p.block))) + ' · ' + iluEsc(p.role) + '</p>' +
           '<h2>' + iluEsc(p.name) + '</h2>' +
           '<p class="ilu-life">' + iluEsc(p.dates) + (p.place ? ' · ' + iluEsc(p.place) : '') + '</p>' +
           (p.idea ? '<p class="ilu-idea">' + iluEsc(p.idea) + '</p>' : '') +
@@ -258,6 +306,7 @@ function loadIlustre(id){
   });
   box.querySelectorAll("[data-go-ilu]").forEach(b => b.addEventListener("click", () => loadIlustre(b.dataset.goIlu)));
   box.querySelectorAll("[data-glo]").forEach(b => b.addEventListener("click", () => iluAbrirGlosario(b.dataset.glo, b.dataset.gloSub)));
+  box.querySelectorAll("[data-epoca]").forEach(b => b.addEventListener("click", () => loadIlustre("epoca-" + b.dataset.epoca)));
   box.querySelectorAll("[data-th]").forEach(b => b.addEventListener("click", () => {
     (window.show || show)("teoria");
     if (typeof window.loadTheory === "function") window.loadTheory(b.dataset.th);

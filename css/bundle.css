@@ -2342,3 +2342,13 @@ ol.itin-temas li.temas-extra .temas-t{font-size:.95rem;color:var(--muted)}
 #ilustres .ilu-conc-mas summary{display:inline;cursor:pointer;color:var(--muted);font-size:.9rem}
 #ilustres .ilu-conc-mas[open] summary{display:none}
 
+/* (10-10) Fichas de época: el título de la época (listado) y la etiqueta de época (ficha) abren la ficha, sin botones nuevos */
+#ilustres .ilu-era-btn{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:start}
+#ilustres .ilu-era-btn span{color:var(--e);font-weight:400}
+#ilustres .ilu-era-btn:hover{color:var(--e)}
+#ilustres .ilu-era-link{background:none;border:0;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+#ilustres .ilu-epo-head{margin-bottom:6px}
+#ilustres .ilu-epo-head h2{font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:4px}
+#ilustres .ilu-epoca .ilu-sec p, #ilustres .ilu-epoca .ilu-sec li{font-size:1rem;line-height:1.65;max-width:70ch}
+#ilustres .ilu-epoca .ilu-sec ul{padding-inline-start:1.2em;margin:0}
+
