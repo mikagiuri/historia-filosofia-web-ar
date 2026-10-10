@@ -111,7 +111,8 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
-   "hf-preso"
+   "hf-preso",
+   "hf-kant-juicios"
   ]
  },
  "anaximenes": {
@@ -150,7 +151,8 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
-   "hf-preso"
+   "hf-preso",
+   "hf-renacimiento-magia"
   ]
  },
  "jenofanes": {
@@ -200,7 +202,8 @@ const ILUSTRES = {
   "temas": [
    "hf-preso",
    "hf-ap",
-   "hf-platon"
+   "hf-platon",
+   "hf-kant-juicios"
   ]
  },
  "parmenides": {
@@ -226,7 +229,8 @@ const ILUSTRES = {
    "hf-preso",
    "hf-ap",
    "hf-platon",
-   "hf-montaigne-ensayos"
+   "hf-montaigne-ensayos",
+   "hf-kant-juicios"
   ]
  },
  "anaxagoras": {
@@ -314,7 +318,8 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-beefs",
-   "hf-sofistas"
+   "hf-sofistas",
+   "hf-kant-juicios"
   ]
  },
  "gorgias": {
@@ -379,7 +384,9 @@ const ILUSTRES = {
   "subjects": [
    "hf"
   ],
-  "temas": []
+  "temas": [
+   "hf-kant-juicios"
+  ]
  },
  "filolao": {
   "name": "فيلولاوس القروطوني",
@@ -446,6 +453,7 @@ const ILUSTRES = {
    "hf-aristoteles-arabe",
    "hf-montaigne-ensayos",
    "hf-kant-poetas",
+   "hf-kant-juicios",
    "hf-etica-deber",
    "hf-sospecha"
   ]
@@ -490,7 +498,8 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-preso",
-   "hf-helenismo"
+   "hf-helenismo",
+   "hf-kant-juicios"
   ]
  },
  "hipias": {
@@ -636,8 +645,10 @@ const ILUSTRES = {
    "hf-toledo-traductores",
    "hf-modernidad",
    "hf-montaigne-ensayos",
+   "hf-renacimiento-magia",
    "hf-racionalismo",
    "hf-kant-poetas",
+   "hf-kant-juicios",
    "hf-sospecha",
    "hf-descartes-makro"
   ]
@@ -741,8 +752,10 @@ const ILUSTRES = {
    "hf-judios-andalus",
    "hf-modernidad",
    "hf-montaigne-ensayos",
+   "hf-renacimiento-magia",
    "hf-contrato",
    "hf-utilitarismo",
+   "hf-kant-juicios",
    "hf-descartes-makro"
   ]
  },
@@ -765,7 +778,8 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
-   "hf-aristoteles-arabe"
+   "hf-aristoteles-arabe",
+   "hf-kant-juicios"
   ]
  },
  "crates": {
@@ -938,7 +952,9 @@ const ILUSTRES = {
   "subjects": [
    "hf"
   ],
-  "temas": []
+  "temas": [
+   "hf-kant-juicios"
+  ]
  },
  "carneades": {
   "name": "كارنيادس القوريني",
@@ -1084,6 +1100,7 @@ const ILUSTRES = {
    "hf-islam-ideas",
    "hf-toledo-traductores",
    "hf-montaigne-ensayos",
+   "hf-renacimiento-magia",
    "hf-racionalismo",
    "hf-descartes-makro"
   ]
@@ -1157,7 +1174,9 @@ const ILUSTRES = {
    "hf-verdad-no-contradice",
    "hf-islam-ideas",
    "hf-toledo-traductores",
-   "hf-judios-andalus"
+   "hf-judios-andalus",
+   "hf-renacimiento-magia",
+   "hf-kant-juicios"
   ]
  },
  "anselmo": {
@@ -1208,7 +1227,8 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
-   "hf-medieval"
+   "hf-medieval",
+   "hf-kant-juicios"
   ]
  },
  "avempace": {
@@ -1354,7 +1374,8 @@ const ILUSTRES = {
    "hf-aristoteles-arabe",
    "hf-verdad-no-contradice",
    "hf-islam-ideas",
-   "hf-judios-andalus"
+   "hf-judios-andalus",
+   "hf-renacimiento-magia"
   ]
  },
  "alberto_magno": {
@@ -1465,7 +1486,9 @@ const ILUSTRES = {
   "subjects": [
    "hf"
   ],
-  "temas": []
+  "temas": [
+   "hf-renacimiento-magia"
+  ]
  },
  "dante": {
   "name": "دانتي أليغييري",
@@ -1665,10 +1688,10 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-modernidad",
+   "hf-renacimiento-magia",
    "hf-sospecha",
    "hf-analitica",
-   "hf-descartes-makro",
-   "hf-renacimiento-magia"
+   "hf-descartes-makro"
   ]
  },
  "tomas_moro": {
@@ -1789,8 +1812,8 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
-   "hf-racionalismo",
-   "hf-renacimiento-magia"
+   "hf-renacimiento-magia",
+   "hf-racionalismo"
   ]
  },
  "galileo": {
@@ -1843,6 +1866,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-renacimiento-magia",
    "hf-marx-biblioteca"
   ]
  },
@@ -1869,8 +1893,8 @@ const ILUSTRES = {
   ],
   "temas": [
    "hf-modernidad",
-   "hf-descartes-makro",
-   "hf-renacimiento-magia"
+   "hf-renacimiento-magia",
+   "hf-descartes-makro"
   ]
  },
  "harvey": {
@@ -2003,6 +2027,7 @@ const ILUSTRES = {
    "hf-fe-razon",
    "hf-modernidad",
    "hf-montaigne-ensayos",
+   "hf-renacimiento-magia",
    "hf-racionalismo",
    "hf-descartes-simulacion",
    "hf-metafisica",
@@ -2072,6 +2097,7 @@ const ILUSTRES = {
    "hf-spinoza-sistema",
    "hf-spinoza-universal",
    "hf-kant-poetas",
+   "hf-kant-juicios",
    "hf-descartes-makro"
   ]
  },
@@ -2157,13 +2183,13 @@ const ILUSTRES = {
    "hf-beefs",
    "hf-aa",
    "hf-modernidad",
+   "hf-renacimiento-magia",
    "hf-metafisica",
    "hf-ilustracion",
    "hf-kant",
    "hf-marxismos",
    "hf-analitica",
-   "hf-descartes-makro",
-   "hf-renacimiento-magia"
+   "hf-descartes-makro"
   ]
  },
  "leibniz": {
@@ -2194,6 +2220,7 @@ const ILUSTRES = {
    "hf-metafisica",
    "hf-spinoza-universal",
    "hf-kant",
+   "hf-kant-juicios",
    "hf-descartes-makro"
   ]
  },
@@ -2272,7 +2299,30 @@ const ILUSTRES = {
   "temas": [
    "hf-beefs",
    "hf-spinoza-universal",
-   "hf-ilustracion"
+   "hf-ilustracion",
+   "hf-kant-juicios"
+  ]
+ },
+ "euler": {
+  "name": "ليونهارد أويلر",
+  "dates": "1707 – 1783",
+  "born": 1707,
+  "died": 1783,
+  "place": "بازل (سويسرا)",
+  "role": "عالم رياضيات سويسري",
+  "idea": "يمكن النظر إلى العلاقات بين الفئات كأنها علاقات بين دوائر: دائرة داخل أخرى، أو منفصلتان، أو متقاطعتان.",
+  "bio": "<p>وُلد ليونهارد أويلر في بازل ودرس على يد عالم الرياضيات يوهان برنولي. وقضى معظم حياته في خدمة أكاديميتين للعلوم: أكاديمية سان بطرسبورغ (1727-1741، ثم من جديد منذ 1766 حتى وفاته) وأكاديمية برلين (1741-1766). وهو من أغزر علماء الرياضيات إنتاجًا في التاريخ: كتب في التحليل والأعداد والميكانيكا والبصريات وعلم الفلك. فقد البصر في إحدى عينيه نحو سنة 1740، وبعد عودته إلى سان بطرسبورغ صار شبه أعمى؛ لكنه واصل العمل بإملاء حساباته.</p>\n<p>وأهميته للفلسفة تعود قبل كل شيء إلى <em>رسائل إلى أميرة ألمانية</em>، التي كتبها في برلين ليشرح علم عصره لتلميذة شابة، ونُشرت في ثلاثة مجلدات (1768-1772). وفي الرسائل المخصصة للمنطق (من الرسالة 102 إلى 108، سنة 1761) مثّل القضايا بـ<strong>دوائر</strong>: دائرة داخل أخرى لـ«كل»، ودوائر منفصلة لـ«لا أحد»، ودوائر متقاطعة لـ«بعض».</p>\n<p>هذه الرسوم، أي <strong>مخططات أويلر</strong>، صارت شائعة إلى حدّ أنها ما زالت تُستعمل لتعليم القياس. وبعد قرن حوّلها جون فن لكي تصلح أيضًا حين لا نعرف كيف تتموضع الفئات.</p>",
+  "obras": [
+   "مدخل إلى تحليل اللامتناهيات (1748)",
+   "رسائل إلى أميرة ألمانية (1768-1772)"
+  ],
+  "fuente": "J. J. O'Connor وE. F. Robertson، «Leonhard Euler»، MacTutor History of Mathematics",
+  "block": "ilu",
+  "subjects": [
+   "hf"
+  ],
+  "temas": [
+   "hf-kant-juicios"
   ]
  },
  "lamettrie": {
@@ -2364,6 +2414,7 @@ const ILUSTRES = {
    "hf-metafisica",
    "hf-spinoza-universal",
    "hf-kant",
+   "hf-kant-juicios",
    "hf-descartes-makro"
   ]
  },
@@ -2572,6 +2623,7 @@ const ILUSTRES = {
    "hf-ilustracion",
    "hf-kant",
    "hf-kant-poetas",
+   "hf-kant-juicios",
    "hf-etica-deber",
    "hf-sospecha",
    "hf-descartes-makro"
@@ -2788,6 +2840,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-renacimiento-magia",
    "hf-spinoza-sistema",
    "hf-spinoza-universal",
    "hf-kant-poetas",
@@ -3091,9 +3144,11 @@ const ILUSTRES = {
    "hf-beefs",
    "hf-mito",
    "hf-montaigne-ensayos",
+   "hf-renacimiento-magia",
    "hf-spinoza-sistema",
    "hf-spinoza-universal",
    "hf-kant-poetas",
+   "hf-kant-juicios",
    "hf-sospecha",
    "hf-corazon-piedra",
    "hf-capitalismo",
@@ -3328,6 +3383,7 @@ const ILUSTRES = {
    "hf"
   ],
   "temas": [
+   "hf-renacimiento-magia",
    "hf-spinoza-universal",
    "hf-kant-poetas"
   ]
@@ -3697,6 +3753,30 @@ const ILUSTRES = {
    "hf-corazon-piedra"
   ]
  },
+ "boole": {
+  "name": "جورج بول",
+  "dates": "1815 – 1864",
+  "born": 1815,
+  "died": 1864,
+  "place": "لينكولن (إنجلترا)",
+  "role": "رياضي ومنطقي بريطاني",
+  "idea": "يمكن التعامل مع المنطق كأنه جبر: فإذا جعلنا 1 للصواب و0 للخطأ، تصبح أدوات الربط عمليات حسابية.",
+  "bio": "<p>وُلد جورج بول في لينكولن، وهو ابن إسكافي قليل الموارد. لم يتمكن من دخول الجامعة وكان في معظمه <strong>معلّمًا لنفسه</strong>: تعلم بمفرده اللغات القديمة والرياضيات. وفي السادسة عشرة كان يعمل معلمًا ليساعد أسرته، ثم فتح مدرسته الخاصة. أكسبته مقالاته في الرياضيات سمعة طيبة، وفي سنة 1849 عُيّن أستاذًا للرياضيات في كلية الملكة بمدينة كورك (إيرلندا)، حيث درّس إلى أن توفي وعمره 49 سنة.</p>\n<p>كانت إضافته الكبرى أن بيّن أن الاستدلال المنطقي يمكن التعبير عنه برموز وقواعد حساب، مثل الجبر. وفي <em>قوانين الفكر</em> (1854) اقترح أن نكتب 1 للصواب و0 للخطأ. وهكذا يعمل الربط بـ«و» مثل الضرب، والربط بـ«أو» مثل الجمع. وهذا ما نسميه اليوم <strong>جبر بول</strong>.</p>\n<p>بول أحد مؤسسي <strong>المنطق الرمزي</strong> الحديث، الذي طوّره فريجه بعده بقليل بمنطق المحمولات. وقد تجاوز إرثه الفلسفة بكثير: ففي سنة 1938 بيّن كلود شانون أن عملياته يمكن بناؤها بدارات كهربائية، هي <strong>البوابات المنطقية</strong>. ولهذا فجبره هو أساس الإلكترونيات الرقمية وجميع الحواسيب. وعلى يده، تحوّل المنطق الذي أسسه أرسطو إلى حساب، ثم إلى تكنولوجيا.</p>",
+  "obras": [
+   "التحليل الرياضي للمنطق (1847)",
+   "قوانين الفكر (1854)"
+  ],
+  "anecdota": "<p>وهو في الرابعة عشرة تقريبًا، ترجم بول من اليونانية قصيدة للشاعر القديم ميلياغروس، ونشرها له أبوه في جريدة بلينكولن. وكانت الترجمة جيدة إلى درجة أن معلمًا من المنطقة كتب إلى الجريدة ينفي أن يكون فتى في هذا العمر، ابن إسكافي ودون دراسة، قادرًا على إنجازها. وكان الجدل، الذي اضطرت الأسرة إلى التدخل فيه، هو في العمق أول اعتراف عمومي بموهبته. وهذا الذي علّم نفسه بنفسه سينتهي به الأمر إلى تحويل المنطق إلى حساب رياضي.</p>",
+  "fuente": "ديزموند ماكهيل، جورج بول: حياته وأعماله",
+  "tradicion": false,
+  "block": "con",
+  "subjects": [
+   "hf"
+  ],
+  "temas": [
+   "hf-kant-juicios"
+  ]
+ },
  "marx": {
   "name": "كارل ماركس",
   "dates": "1818 – 1883",
@@ -3819,6 +3899,32 @@ const ILUSTRES = {
    "hf-sospecha",
    "hf-posmodernidad",
    "hf-existencialismo"
+  ]
+ },
+ "frege": {
+  "name": "غوتلوب فريجه",
+  "dates": "1848 – 1925",
+  "born": 1848,
+  "died": 1925,
+  "place": "فيسمار (مكلنبورغ)",
+  "role": "رياضي ومنطقي وفيلسوف",
+  "idea": "بلغة صورية من الرموز، يمكن للمنطق أن يزيل غموض اللغة العادية وأن يكون أساسًا للحساب كله.",
+  "bio": "<p>وُلد غوتلوب فريجه في فيسمار، في شمال ألمانيا. درس الرياضيات والفيزياء والفلسفة في يينا وغوتنغن، وكان أستاذًا للرياضيات في جامعة يينا طوال مسيرته. لم يكن عمله معروفًا في حياته، رغم أن مفكرين مثل برتراند راسل ولودفيغ فتغنشتاين قرؤوه باهتمام.</p>\n<p>في كتابه <em>كتابة المفاهيم</em> (1879) أنشأ لغة صورية من الرموز للتعبير عن الاستدلالات دون غموض اللغة العادية. وبها أسس <strong>منطق الرتبة الأولى</strong> أو منطق المحمولات، الذي يسمح بتحليل العبارات التي فيها سُوَر مثل «كل» أو «بعض». وهو أساس المنطق الحالي، وكان أكبر تقدم في هذا الميدان منذ أرسطو. ودافع فريجه أيضًا عن <strong>المذهب المنطقي</strong>: يمكن اشتقاق الحساب من المنطق. وفي سنة 1902 كتب إليه راسل ليريه مفارقة تمس نسقه، مما اضطره إلى إعادة التفكير في المشروع. كما ميّز بين <strong>المعنى</strong> و<strong>الإحالة</strong> في العبارات: «نجمة الصباح» و«نجمة المساء» لهما معنى مختلف، لكنهما تحيلان على الشيء نفسه، وهو كوكب الزهرة.</p>\n<p>يُعدّ فريجه أبا <strong>الفلسفة التحليلية</strong>. وواصل راسل ووايتهد برنامجه في <em>أصول الرياضيات</em>، وأثّر عمله في فتغنشتاين. وهو مع جبر بول من أسس المعلوماتية، بمنطقه الرمزي.</p>",
+  "obras": [
+   "كتابة المفاهيم (1879)",
+   "أسس الحساب (1884)",
+   "في المعنى والإحالة (1892)",
+   "القوانين الأساسية للحساب (1893-1903)"
+  ],
+  "anecdota": "<p>في سنة 1911، سافر مهندس نمساوي شاب اسمه لودفيغ فتغنشتاين إلى يينا ليعرض على فريجه أفكاره حول أسس المنطق. وبعد سنوات، تذكّر فتغنشتاين أن فريجه فنّد كل حججه بسهولة، لكنه شجعه عند الوداع على العودة. وهو الذي نصحه بالذهاب إلى كامبريدج للدراسة مع برتراند راسل. وهكذا وجّه هذا الأستاذ، الذي كان شبه مجهول، أحد أهم فلاسفة القرن 20، الذي ظل يعترف بفضله عليه في مقدمة <em>الرسالة</em>.</p>",
+  "fuente": "شهادة فتغنشتاين التي نقلها بيتر غيتش؛ مقدمة الرسالة المنطقية الفلسفية",
+  "tradicion": false,
+  "block": "con",
+  "subjects": [
+   "hf"
+  ],
+  "temas": [
+   "hf-kant-juicios"
   ]
  },
  "freud": {

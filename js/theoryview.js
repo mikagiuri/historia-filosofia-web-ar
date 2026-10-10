@@ -290,7 +290,7 @@ document.head.insertAdjacentHTML("beforeend",
   '<style>.tv-venns{display:grid;grid-template-columns:repeat(auto-fill,minmax(10.5rem,1fr));gap:.8rem;margin:1rem 0}.tv-venn{margin:0;text-align:center}.tv-venn svg{width:100%;max-width:17rem;display:block;margin:0 auto}' +
   '.tv-venn figcaption{font-size:.86rem;color:var(--muted);margin-top:.25rem;line-height:1.35}.tvv-u{fill:none;stroke:var(--line);stroke-width:1.5}.tvv-c{fill:none;stroke:var(--ink);stroke-width:2}' +
   '.tvv-sel{fill:var(--fil,var(--accent));fill-opacity:.45}.tvv-vac{fill:var(--muted);fill-opacity:.5}.tvv-t{font:700 24px var(--sans);fill:var(--ink)}.tvv-tu{font-size:16px;fill:var(--muted)}.tvv-x{font:700 30px var(--sans);fill:var(--bad,#b3261e)}' +
-  '.tve-0{fill:var(--fil,var(--accent));fill-opacity:.16}.tve-1{fill:var(--ink);fill-opacity:.06}.tve-2{fill:var(--ok,#2f7a4d);fill-opacity:.12}.tve-q{fill:var(--muted)}.tve-p{fill:var(--ink)}.tve-pt{font-size:18px;font-weight:600}</style>');
+  '.tve-0{fill:var(--fil,var(--accent));fill-opacity:.16}.tve-1{fill:var(--ink);fill-opacity:.06}.tve-2{fill:var(--ok,#2f7a4d);fill-opacity:.12}.tve-q{fill:var(--muted)}.tve-p{fill:var(--ink)}.tve-pt{font-size:18px;font-weight:600}.tv-f{white-space:nowrap}</style>');
 
 /* (07-10) apartados con número estable: «#teoria/<clave>/<n>» (o «<clave>§<n>») abre el tema en su n-ésimo <h2>
    original, aunque el tema se lea por páginas; cada apartado lleva un «§» con su enlace. */
