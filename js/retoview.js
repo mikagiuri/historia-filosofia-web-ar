@@ -14,6 +14,8 @@ const RETO_HOWTO = { como: "طريقة اللعب:", txt: "اختاروا ماد
 
 const reto = { subject: null, pool: [], title: "", idx: 0, score: 0, streak: 0, best: 0, correct: 0, t: null, answered: false, time: RETO_TIME };
 
+/* (10-10) rótulos como cadenas exactas, para que los traduzca ui/<lang>.json */
+const RETO_TXT = { repasar: "راجِع الأسئلة التي أخطأت فيها", correctaEs: "الجواب الصحيح هو" };
 function retoBox(){ return document.getElementById("retobox"); }
 function retoShuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function retoSubjectsPresent(){ return [...new Set(Object.values(QUIZZES).map(q => q.subject))].filter(s => RETO_SUBJ[s]); }
@@ -96,7 +98,7 @@ function renderRetoQuestion(){
         '<div class="reto-opts" id="retoOpts">' +
           reto.optOrder.map((orig, disp) => '<button class="reto-opt" data-i="' + orig + '"><span class="k">' + "ABCD"[disp] + '</span><span>' + it.o[orig] + '</span></button>').join("") +
         '</div>' +
-        '<div class="reto-fb" id="retoFb"></div>' +
+        '<div class="reto-fb" id="retoFb" role="status" aria-live="polite"></div>' +
         '<div class="reto-foot"><button class="reto-next" id="retoNext" hidden>' +
           (reto.idx === n - 1 ? "عرض النتيجة" : "التالي ←") + '</button></div>' +
       '</div>' +
@@ -147,7 +149,7 @@ function retoAnswer(i){
   }
   const sc = document.querySelector(".reto-score"); if (sc) sc.textContent = reto.score + " pts";
   const fb = document.getElementById("retoFb");
-  const head = ok ? '<b class="reto-gain">+' + gain + ' pts.</b> ' : (i < 0 ? '<b>انتهى الوقت!</b> ' : '<b>La correcta es ' + "ABCD"[reto.optOrder.indexOf(it.a)] + '.</b> ');
+  const head = ok ? '<b class="reto-gain">+' + gain + ' pts.</b> ' : (i < 0 ? '<b>انتهى الوقت!</b> ' : '<b>' + RETO_TXT.correctaEs + ' ' + "ABCD"[reto.optOrder.indexOf(it.a)] + '.</b> ');
   fb.innerHTML = head + it.fb;
   fb.classList.add("show");
   document.getElementById("retoNext").hidden = false;
@@ -184,7 +186,7 @@ function renderRetoResult(){
         (record ? '¡nueva mejor marca! 🎉' : 'mejor marca: ' + Math.max(prev, reto.score) + ' pts') + '</p>' +
       '<div class="reto-actions">' +
         '<button class="btn2 primary" id="retoAgain">إعادة</button>' +
-        (reto.wrong && reto.wrong.length ? '<button class="btn2" id="retoReview">Repasar las que fallé (' + reto.wrong.length + ')</button>' : '') +
+        (reto.wrong && reto.wrong.length ? '<button class="btn2" id="retoReview">' + RETO_TXT.repasar + ' (' + reto.wrong.length + ')</button>' : '') +
         '<button class="btn2" id="retoHome">Otro reto</button>' +
       '</div>' +
     '</div></div>';

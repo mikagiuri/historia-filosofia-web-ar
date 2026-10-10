@@ -10,6 +10,8 @@ let quizPool = [];          // items en juego (todo el cuestionario o solo los f
 let quizOrder = [];         // orden barajado de índices sobre quizPool
 let quizOptOrder = [];      // orden barajado de las opciones de la pregunta actual
 let quizFailed = [];        // items fallados en esta partida (para «Repasar las que fallé»)
+/* (10-10) rótulos como cadenas exactas: el diccionario ui/<lang>.json solo traduce cadenas completas entre comillas */
+const QUIZ_TXT = { repasar: "راجِع الأسئلة التي أخطأت فيها", correcto: "صحيح.", correctaEs: "الجواب الصحيح هو" };
 let quizReviewing = false;  // true si repasamos solo los fallos (no toca la mejor marca)
 
 function quizShuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
@@ -220,7 +222,7 @@ function drawQuiz(){
       bestLine = `<p class="best">أفضل نتيجة في هذا المتصفح: ${Math.max(prevBest, qscore)} / ${total}</p>`;
     }
     const reviewBtn = quizFailed.length
-      ? `<button class="btn" id="qreview">Repasar las que fallé (${quizFailed.length})</button>` : "";
+      ? `<button class="btn" id="qreview">${QUIZ_TXT.repasar} (${quizFailed.length})</button>` : "";
     box.innerHTML = `<div class="q-result"><p class="eyebrow">${quizReviewing ? "مراجعة" : "النتيجة"}</p>
       <div class="big">${qscore} / ${total}</div>
       ${bestLine}
@@ -239,7 +241,7 @@ function drawQuiz(){
       <div class="q-num">${quiz.name}</div>
       <p class="q-text">${it.q}</p>
       <div class="opts" id="opts">${quizOptOrder.map((orig, disp) => `<button class="opt" data-i="${orig}"><span class="k">${"ABCD"[disp]}</span><span>${it.o[orig]}</span></button>`).join("")}</div>
-      <div class="fb" id="fb"></div>
+      <div class="fb" id="fb" role="status" aria-live="polite"></div>
       <div class="q-foot"><button class="btn hide" id="qnext">${qpos === total - 1 ? "عرض النتيجة" : "التالي ←"}</button></div>
     </div>`;
 
@@ -253,7 +255,7 @@ function drawQuiz(){
     if (i === it.a){ op.classList.add("correct"); qscore++; }
     else { op.classList.add("wrong"); if (correctBtn){ correctBtn.classList.remove("dim"); correctBtn.classList.add("correct"); } quizFailed.push(it); }
     const fb = document.getElementById("fb");
-    fb.innerHTML = "<b>" + (i === it.a ? "Correcto. " : "La correcta es " + correctLetter + ". ") + "</b>" + it.fb;
+    fb.innerHTML = "<b>" + (i === it.a ? QUIZ_TXT.correcto + " " : QUIZ_TXT.correctaEs + " " + correctLetter + ". ") + "</b>" + it.fb;
     fb.classList.add("show");
     document.getElementById("qnext").classList.remove("hide");
   }));

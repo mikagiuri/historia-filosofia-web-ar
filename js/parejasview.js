@@ -175,7 +175,7 @@ function renderParRound(){
       '<span class="stat">أزواج <b id="parDone">0</b> / ' + par.pairs.length + '</span>' +
       '<span class="stat">Errores <b id="parErr">0</b></span>' +
       '<span class="stat">⏱ <b id="parTime">0 s</b></span>' +
-      '<span class="par-score" id="parScore">0 pts</span>' +
+      '<span class="par-score" id="parScore" role="status" aria-live="polite">0 pts</span>' +
     '</div>' +
     '<div class="par-board">' +
       '<div><div class="par-col-h">Término</div><div class="par-terms">' + terms + '</div></div>' +

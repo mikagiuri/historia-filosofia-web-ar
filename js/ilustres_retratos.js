@@ -550,8 +550,8 @@ const ILUSTRES_RETRATOS = {
  },
  "tylor": {
   "f": "media/retratos/ilustres/tylor.jpg",
-  "pie": "Edward Burnett Tylor · CC BY-SA 3.0",
-  "page": "https://commons.wikimedia.org/wiki/File:Edward_Burnett_Tylor.jpg"
+  "pie": "Edward Burnett Tylor (Popular Science Monthly, vol. 26, 1884-1885) · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:PSM_V26_D156_Edward_Burnett_Tylor.jpg"
  },
  "kropotkin": {
   "f": "media/retratos/ilustres/kropotkin.jpg",
