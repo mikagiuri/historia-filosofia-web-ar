@@ -105,7 +105,7 @@ function lzAlfaRender(){
   const vale = c => lzT("vale", { t: c.t, n: c.n }) + (c.de ? " <span class=\"lz-de\">(" + c.de + ")</span>" : "");
   el.querySelector(".lz-veredicto").innerHTML = '<p class="lz-frase">' + lzT("frase", { s: s.t, p: p.t }) + "</p>" +
     '<p class="lz-valores">' + vale(s) + " · " + vale(p) + "</p>" +
-    '<p class="' + (ok ? "lz-ok" : "lz-no") + '">' + (ok ? lzT("verdad", { s: s.n, p: p.n, c: s.n / p.n }) : lzT("falso", { s: s.n, p: p.n, r: r })) + "</p>";
+    '<p class="' + (ok ? "lz-ok" : "lz-no") + '">' + (ok ? lzT("verdad", { s: s.n, p: p.n, c: s.n / p.n }) : lzT("كاذب", { s: s.n, p: p.n, r: r })) + "</p>";
 }
 
 /* --- diagramas de Leibniz: círculos (los «de Euler») y líneas --- */

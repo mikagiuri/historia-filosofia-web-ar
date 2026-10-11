@@ -2024,6 +2024,20 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 #logica .lg-cu-rel{ max-width:100% }
 @media (max-width:480px){ #logica .lg-cu{ grid-template-columns:1fr 5.2rem 1fr; gap:.4rem } #logica .lg-cu-frase{ font-size:.78rem } #logica .lg-cu-rel{ font-size:.66rem; padding:.05rem .2rem } #logica .lg-cu-sp{ display:none } #logica .lg-cu-centro{ font-size:.6rem } }
 
+/* (12-10) Lógica moderna: Formalizar y Reglas de inferencia (js/logicamoderna.js) */
+#logicabox .lg-fz-frase{ font:600 1.05rem/1.45 var(--serif, Georgia, serif); margin:.2rem 0 .4rem; }
+#logicabox .lg-reglas{ display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap:.8rem; }
+#logicabox .lg-regla{ border:1px solid var(--line); border-left:4px solid #2e9e6b; border-radius:8px; padding:.6rem .8rem; background:var(--surface); }
+#logicabox .lg-regla.lg-falaz{ border-left-color:#c0392b; }
+#logicabox .lg-regla h3{ margin:.1rem 0 .3rem; font-size:1rem; }
+#logicabox .lg-regla p{ margin:.25rem 0; font-size:.92rem; }
+#logicabox .lg-forma{ font-family:var(--mono, ui-monospace, monospace); }
+#logicabox .lg-infej{ border-top:1px solid var(--line-soft, var(--line)); padding:.6rem 0; }
+#logicabox .lg-infej > p:first-child{ margin:.1rem 0 .4rem; }
+#logicabox .chip.lg-chip-ok{ outline:2px solid #2e9e6b; } #logicabox .chip.lg-chip-no{ outline:2px solid #c0392b; }
+#logicabox .lg-cq-cel{ min-width:2.2rem; justify-content:center; } #logicabox .lg-cq-cel.on{ background:var(--accent); color:#fff; border-color:var(--accent); }
+#logicabox .lg-cq-x{ font-size:.85rem; color:var(--muted); }
+
 
 /* ==== css/leibniz.css ==== */
 /* Taller de Leibniz (08-10, Bachillerato): rueda escalonada, máquina de multiplicar, hexagrama binario y números característicos. */

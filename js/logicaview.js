@@ -20,7 +20,7 @@ const LOG_TXT = {
   valido: "صحيحة: في كل الأسطر التي تكون فيها المقدمات صادقة، تكون النتيجة صادقة أيضًا.",
   noValido: "غير صحيحة: يوجد سطر واحد على الأقل تكون فيه المقدمات صادقة والنتيجة كاذبة (معلَّم بالأحمر). هذا مثال مضاد.",
   filasPremisas: "الأسطر المظللة هي التي تكون فيها جميع المقدمات صادقة.",
-  mp: "Modus ponens", mt: "Modus tollens", ac: "إثبات التالي (مغالطة)", sd: "القياس الفصلي", sh: "القياس الشرطي",
+  mp: "Modus ponens (إثبات المقدَّم)", mt: "Modus tollens (نفي التالي)", ac: "إثبات التالي (مغالطة)", sd: "القياس الفصلي", sh: "القياس الشرطي",
   demorgan: "قانون دي مورغان", tercero: "الثالث المرفوع", nocontra: "تناقض",
   terminos: "الحدود (بصيغة المفرد)", tS: "الموضوع (S)", tP: "المحمول (P)", tM: "الحد الأوسط (M)",
   defS: "أثيني", defP: "فانٍ", defM: "إنسان",
@@ -551,15 +551,25 @@ function logRenderConjuntos(){
 
 /* ---------- montaje y eventos ---------- */
 const LOG_SUB_SIL = ["silogismos", "cuadrado", "conjuntos"];
+/* (12-10) «Lógica moderna»: tablas de verdad, formalizar, reglas de inferencia y puertas lógicas (las dos del medio, en logicamoderna.js) */
+const LOG_SUB_MOD = ["tablas", "formalizar", "inferencia", "cuantificadores", "puertas"];
+const LOG_INTRO = { tablas: "introTablas", silogismos: "introSilog", cuadrado: "introCuadrado", conjuntos: "introConjuntos", puertas: "introPuertas", ejercicios: "introEjerc", clasicos: "introClasicos", formalizar: "introFormalizar", inferencia: "introInferencia", cuantificadores: "introCuantificadores" };
+const LOG_GUIA = { tablas: "guiaTablas", silogismos: "guiaSilog", puertas: "guiaPuertas", ejercicios: "guiaEjerc", clasicos: "guiaClasicos" };
 function logRender(){
   const box = logBox(); if (!box) return;
-  const tabs = [["tablas", "tabTablas"], ["silogismos", "tabSilog"], ["puertas", "tabPuertas"], ["paradojas", "tabParad"], ["ejercicios", "tabEjerc"], ["clasicos", "tabClasicos"]];
-  box.innerHTML = '<div class="fgroup lg-tabs" role="tablist">' + tabs.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + ((LOG_SUB_SIL.includes(LOG.tab) ? "silogismos" : LOG.tab) === k) + '">' + logT(l) + "</button>").join("") + "</div>" +
-    /* (10-10) «Cuadrado de oposición» y «Leyes de conjuntos» van como subpestañas de Silogismos: no más de 6 pestañas arriba */
-    (LOG_SUB_SIL.includes(LOG.tab) ? '<div class="fgroup lg-subtabs">' + [["silogismos", "tabSilog"], ["cuadrado", "tabCuadrado"], ["conjuntos", "tabConjuntos"]].map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (LOG.tab === k) + '">' + logT(l) + "</button>").join("") + "</div>" : "") +
+  /* (12-10) arriba: «Lógica clásica» y «Lógica moderna», cada una con sus subpestañas (no más de 6 pestañas arriba) */
+  const grupo = LOG_SUB_SIL.includes(LOG.tab) ? "silogismos" : LOG_SUB_MOD.includes(LOG.tab) ? "tablas" : LOG.tab;
+  const tabs = [["silogismos", "tabClasica"], ["tablas", "tabModerna"], ["paradojas", "tabParad"], ["ejercicios", "tabEjerc"], ["clasicos", "tabClasicos"]];
+  const sub = LOG_SUB_SIL.includes(LOG.tab) ? [["silogismos", "tabSilog"], ["cuadrado", "tabCuadrado"], ["conjuntos", "tabConjuntos"]]
+    : LOG_SUB_MOD.includes(LOG.tab) ? [["tablas", "tabTablas"], ["formalizar", "tabFormalizar"], ["inferencia", "tabInferencia"], ["cuantificadores", "tabCuantificadores"], ["puertas", "tabPuertas"]].filter(([k]) => ["tablas", "puertas"].includes(k) || typeof logRenderFormalizar === "function") : null;
+  const cuerpo = LOG.tab === "silogismos" ? logRenderSil() : LOG.tab === "cuadrado" ? logRenderCuadrado() : LOG.tab === "conjuntos" ? logRenderConjuntos() : LOG.tab === "puertas" ? logRenderPuertas()
+    : LOG.tab === "formalizar" && typeof logRenderFormalizar === "function" ? logRenderFormalizar() : LOG.tab === "inferencia" && typeof logRenderInferencia === "function" ? logRenderInferencia() : LOG.tab === "cuantificadores" && typeof logRenderCuantificadores === "function" ? logRenderCuantificadores()
+    : LOG_PAR_VISTAS.includes(LOG.tab) ? logRenderParadojas(LOG.tab) : logRenderTablas();
+  box.innerHTML = '<div class="fgroup lg-tabs" role="tablist">' + tabs.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (grupo === k) + '">' + logT(l) + "</button>").join("") + "</div>" +
+    (sub ? '<div class="fgroup lg-subtabs">' + sub.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (LOG.tab === k) + '">' + logT(l) + "</button>").join("") + "</div>" : "") +
     /* (08-10) una introducción breve en cada pestaña, por si se llega a ella sin contexto (Paradojas ya tiene la suya) */
-    ({ tablas: "introTablas", silogismos: "introSilog", cuadrado: "introCuadrado", conjuntos: "introConjuntos", puertas: "introPuertas", ejercicios: "introEjerc", clasicos: "introClasicos" }[LOG.tab] ? '<p class="lg-intro">' + logT({ tablas: "introTablas", silogismos: "introSilog", cuadrado: "introCuadrado", conjuntos: "introConjuntos", puertas: "introPuertas", ejercicios: "introEjerc", clasicos: "introClasicos" }[LOG.tab]) + "</p>" + ({ tablas: "guiaTablas", silogismos: "guiaSilog", puertas: "guiaPuertas", ejercicios: "guiaEjerc", clasicos: "guiaClasicos" }[LOG.tab] ? logGuia({ tablas: "guiaTablas", silogismos: "guiaSilog", puertas: "guiaPuertas", ejercicios: "guiaEjerc", clasicos: "guiaClasicos" }[LOG.tab]) : "") : "") +
-    '<div class="lg-cuerpo">' + (LOG.tab === "silogismos" ? logRenderSil() : LOG.tab === "cuadrado" ? logRenderCuadrado() : LOG.tab === "conjuntos" ? logRenderConjuntos() : LOG.tab === "puertas" ? logRenderPuertas() : LOG_PAR_VISTAS.includes(LOG.tab) ? logRenderParadojas(LOG.tab) : logRenderTablas()) + "</div>";
+    (LOG_INTRO[LOG.tab] ? '<p class="lg-intro">' + logT(LOG_INTRO[LOG.tab]) + "</p>" + (LOG_GUIA[LOG.tab] ? logGuia(LOG_GUIA[LOG.tab]) : "") : "") +
+    '<div class="lg-cuerpo">' + cuerpo + "</div>";
 }
 function logInsertar(input, txt){
   const a = input.selectionStart != null ? input.selectionStart : input.value.length, b = input.selectionEnd != null ? input.selectionEnd : a;
@@ -614,7 +624,7 @@ function loadLogica(arg){
   const m = /^(?:paradojas|ejercicios|clasicos)\/([\w-]+)$/.exec(arg || ""), ficha = m && typeof PARADOJAS !== "undefined" ? PARADOJAS.find(p => p.id === m[1]) : null;
   const grupo = ficha && typeof PARADOJAS_GRUPOS !== "undefined" ? PARADOJAS_GRUPOS.find(g => g.id === ficha.grupo) : null;
   if (ficha){ LOG.tab = (grupo && grupo.view) || "paradojas"; LOG.parGrupo = ficha.grupo; }
-  else if (arg && ["tablas", "silogismos", "cuadrado", "conjuntos", "puertas", ...LOG_PAR_VISTAS].includes(arg)){ LOG.tab = arg; LOG.parGrupo = "all"; }
+  else if (arg && ["tablas", "silogismos", "cuadrado", "conjuntos", "puertas", "formalizar", "inferencia", "cuantificadores", ...LOG_PAR_VISTAS].includes(arg)){ LOG.tab = arg; LOG.parGrupo = "all"; }
   logRender(); logWire();
   if (ficha){ const el = document.getElementById("par-" + ficha.id); if (el) el.scrollIntoView({ block: "start" }); }
 }
