@@ -583,6 +583,15 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 #mapa .mapa-exp summary{ cursor:pointer; font-size:.88rem; color:var(--muted, inherit); }
 #mapa .mapa-exp ul{ margin:.2rem 0 .4rem; padding-left:1rem; font-size:.92rem; }
 
+/* (11-10) Cruces entre juegos por tesis (js/cruces_tesis.js): Nudos, Rayuela y Red de tesis */
+.cru-box{ margin:.9rem 0 .4rem; padding:.6rem .8rem; border-left:3px solid var(--accent); background:var(--surface-2); border-radius:6px; font-size:.92rem; }
+.cru-box ul{ margin:.35rem 0; padding-left:1.1rem; }
+.cru-a{ background:none; border:0; padding:0; font:inherit; color:var(--accent); cursor:pointer; text-align:start; text-decoration:underline; text-underline-offset:2px; }
+.cru-enl{ margin:.35rem 0 0; }
+.cru-enl.cru-acuerdo b{ color:#2e9e6b; } .cru-enl.cru-desacuerdo b{ color:#c0392b; }
+.cru-links{ margin:.35rem 0 0; line-height:1.7; }
+.cru-nota{ margin:.35rem 0 0; font-size:.82rem; color:var(--muted); }
+
 
 /* ==== css/mobile.css ==== */
 /* ===== Capa móvil (mobile-first overrides) — Aula de Filosofía =====

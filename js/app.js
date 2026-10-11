@@ -45,7 +45,7 @@ window.VIEW_LOADERS = {
   pistas: "loadPista",
   logica: "loadLogica", juegosucio: "loadJuegoSucio",   // (08-10) #juegosucio/<estratagema>
       // (01-10) #logica/tablas|silogismos|puertas   // (01-10) #pistas/kant-imperativo
-  leibniz: "loadLeibniz", rescritura: "loadRescritura", nudos: "loadNudos", adagios: "loadAdagios",   // (09-10) #adagios/<id>
+  leibniz: "loadLeibniz", rescritura: "loadRescritura", nudos: "loadNudos", adagios: "loadAdagios", rayuela: "loadRayuela",   // (11-10) #rayuela/<estación>   // (09-10) #adagios/<id>
     // (09-10) #nudos/mentir|creer
     // (09-10) #rescritura/distinguir|escribir[/texto]
     // (08-10) #leibniz/maquina|binario|alfabeto|tratados|diagramas|calculemos|reverso|newton|voltaire

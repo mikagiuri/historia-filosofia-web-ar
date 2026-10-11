@@ -116,6 +116,13 @@ function drawGenea(){
 function loadGenea(k){
   if (typeof GENEALOGIAS === "undefined") return;
   if (k === "tesis" || k === "verde-roja"){ genModo = k; drawGenea(); return; }
+  /* (11-10) #genealogias/tesis/<id>: la Red de tesis con esa tesis abierta (enlaces desde Nudos y Rayuela) */
+  const mt = /^tesis\/([\w-]+)$/.exec(k || "");
+  if (mt && typeof GT !== "undefined" && typeof GEN_TESIS !== "undefined" && GEN_TESIS.tesis.some(t => t.id === mt[1])){
+    GT.sel = mt[1]; genModo = "tesis"; drawGenea();
+    setTimeout(() => { const el = document.querySelector('#geneabox .gt-tesis[data-gt="' + mt[1] + '"]'); if (el) el.scrollIntoView({ block: "center" }); }, 60);
+    return;
+  }
   genModo = "lineas";
   genHidden = new Set();
   if (k && GENEALOGIAS.lineas.some(l => l.id === k)) GENEALOGIAS.lineas.forEach(l => { if (l.id !== k) genHidden.add("l:" + l.id); });

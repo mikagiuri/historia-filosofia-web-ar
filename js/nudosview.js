@@ -125,7 +125,8 @@ function nudNudo(n){
       : '<p class="nud-small nud-muted">' + nudT("elige") + '</p><div class="nud-choices">' +
         [["ca", "oCa"], ["cb", "oCb"], ["di", "oDi"], ["ba", "oBa"]].map(([c, l]) => '<button type="button" class="nud-choice" data-nudc="' + c + '" aria-pressed="false">' + nudT(l) + "</button>").join("") +
         '</div><div id="nud-extra"></div>') +
-    '<p class="nud-src">' + nudT("saberMas") + " " + n.fuente + "</p></div>";
+    '<p class="nud-src">' + nudT("saberMas") + " " + n.fuente + "</p>" +
+    (typeof cruTesisHtml === "function" ? cruTesisHtml(cruNudoTesis(NUD.m.id, n.k)) : "") + "</div>";   // (11-10) cruces_tesis.js
   if (ap){
     nudTexto(10, () => { NUD.hechos.add(n.k); NUD.log.push({ tipo: "aparente", n, razon: document.getElementById("nud-tx").value.trim() }); nudSiguiente(); });
     return;
@@ -170,6 +171,7 @@ function nudCuaderno(){
   box.innerHTML = '<div class="nud-card nud-cuaderno"><h3>' + nudT("cuaderno") + '</h3><p class="nud-small nud-muted">' + NUD.m.titulo + " · " + new Date().toLocaleDateString(document.documentElement.lang || "es") + ". " + nudT("cuadSub") + "</p>" +
     "<h4>" + nudT("misResp") + "</h4><ul>" + NUD.orden.map(id => "<li>" + af(id) + " — <strong>" + nudVal(NUD.resp[id].v) + "</strong>" + (NUD.resp[id].dep ? '<br><span class="nud-small">' + nudT("dependeDe", { t: nudEsc(NUD.resp[id].dep) }) + "</span>" : "") + "</li>").join("") + "</ul>" +
     "<h4>" + nudT("misNudos") + '</h4><ul class="nud-log">' + lineas + "</ul>" +
+    (typeof cruNudoRayuela === "function" ? cruNudoRayuela(NUD.m.id) : "") +   // (11-10) «Vívelo en la Rayuela»
     "<h4>" + nudT("reto") + '</h4><label class="nud-lab" for="nud-reto">' + nudT("retoTxt") + '</label><textarea id="nud-reto" class="nud-reto"></textarea>' +
     '<p class="nud-row nud-noprint"><button type="button" class="btn" id="nud-imp">' + nudT("imprimir") + '</button> <button type="button" class="btn ghost" id="nud-cop">' + nudT("copiar") +
     '</button> <button type="button" class="btn ghost" id="nud-ini">' + nudT("inicio") + '</button> <span class="nud-small nud-muted" id="nud-msg" aria-live="polite"></span></p></div>';

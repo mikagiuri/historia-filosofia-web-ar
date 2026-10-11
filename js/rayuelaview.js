@@ -298,6 +298,7 @@ function renderRayFinal(esNuevo){
         '<textarea id="rayrefl" rows="6" placeholder="' + rayEsc(RAY_TXT.tuTexto) + '">' + rayEsc(refl) + '</textarea><small id="raywc"></small></div>' +
       (ray.tens.length ? '<div class="ray-box tens"><b>' + RAY_TXT.tensViaje + '</b><p>' + RAY_TXT.tensPau + '</p>' +
         ray.tens.map(x => { const t = rayTension(x.id); return t ? rayTensBloque(t, x.js, ray.elec[x.i], ray.elec) : ""; }).join("") + '</div>' : "") +
+      (typeof cruRayuelaFinal === "function" ? cruRayuelaFinal(ray.ruta, ray.tens.map(x => x.id)) : "") +   // (11-10) cruces_tesis.js
       '<div class="ray-box"><b>' + RAY_TXT.recorrido + '</b><ol class="ray-ruta">' + ray.elec.map(e => '<li><span class="ray-badge sm">' + rayEsc(e.n) + '</span> ' + rayEsc(RAY_R.estaciones[e.n].titulo) + ' — «' + rayEsc(e.t) + '»</li>').join("") + '</ol></div>' +
       '<p class="ray-stats">' + (got === total ? RAY_TXT.todos : RAY_TXT.finales + ' <b>' + got + ' / ' + total + '</b>') + '</p>' +
       '<div class="ray-actions"><button class="ray-btn" id="raygo">' + RAY_TXT.otroViaje + '</button><button class="pbtn" id="rayplano">' + RAY_TXT.miPlano + '</button></div>' +
@@ -334,5 +335,12 @@ function renderRayPlano(sel){
   rayBox().querySelector("#rayreset").addEventListener("click", () => { if (confirm(RAY_TXT.seguro)){ raySave({}); renderRayPlano(); } });
 }
 
+/* (11-10) enlace profundo #rayuela/<n>: empieza un viaje en la estación n (solo estaciones de pregunta de una red abierta);
+   lo usan Nudos y la Red de tesis de Genealogías (cruces_tesis.js) */
+function loadRayuela(n){
+  const s = RAY_R && RAY_R.estaciones[n];
+  if (!s || s.tipo !== "pregunta" || !rayRedAbierta(s.red) || !rayBox()) return;
+  ray.modo = "viaje"; ray.ruta = [String(n)]; ray.elec = []; ray.tens = []; ray.fin = null; renderRayEstacion();
+}
 if (RAY_R && RAY_R.txt) Object.assign(RAY_TXT, RAY_R.txt);
 if (rayBox() && RAY_R) renderRayPortada();

@@ -45,14 +45,15 @@ function gtRed(){
 }
 function gtEnlaces(id){
   const es = GEN_TESIS.enlaces.filter(e => gtPar(e).includes(id) && GT.ver.has(e.tipo));
-  if (!es.length) return "";
+  const jg = typeof cruJuegosDeTesis === "function" ? cruJuegosDeTesis(id) : "";   // (11-10) Nudos y Rayuela (cruces_tesis.js)
+  if (!es.length) return jg ? '<div class="gt-enl">' + jg + "</div>" : "";
   return '<div class="gt-enl">' + ["acuerdo", "desacuerdo"].map(tipo => {
     const xs = es.filter(e => e.tipo === tipo); if (!xs.length) return "";
     return '<p class="gt-enl-tit gt-' + tipo + '">' + gtT(tipo === "acuerdo" ? "concuerda" : "seOpone") + "</p><ul>" + xs.map(e => {
       const otro = gtTesis(gtPar(e).find(x => x !== id)), p = gtP(otro.ilustre);
       return '<li><button type="button" class="gt-salto" data-gtgo="' + otro.id + '"><strong>' + gtEsc(p.name) + "</strong>: «" + gtEsc(otro.t) + '»</button><span class="gt-por">' + gtEsc(e.por) + "</span></li>";
     }).join("") + "</ul>";
-  }).join("") + "</div>";
+  }).join("") + jg + "</div>";
 }
 /* arcos a la derecha de la columna, entre el centro vertical de cada tesis */
 function gtArcos(){
