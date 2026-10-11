@@ -165,6 +165,9 @@ function iluRelaciones(p){
   {   /* (11-10) sus polémicas con coetáneos (polemicasview.js): enlazan a #polemicas/<id> */
     const pol = typeof window.polDe === "function" ? window.polDe(p.id) : "";
     if (pol) out.push(pol);
+    /* (11-10) perseguidos y comunidades en que aparece (casosview.js) */
+    const cas = typeof window.casosDe === "function" ? window.casosDe(p.id) : "";
+    if (cas) out.push(cas);
   }
   let deb = "";
   if (typeof GEN_TESIS !== "undefined" && GEN_TESIS){

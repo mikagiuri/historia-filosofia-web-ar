@@ -2350,6 +2350,65 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 #genealogias .pol-gen-p{ display:block; font-size:.88rem; color:var(--muted); margin-top:.1rem }
 
 
+/* ==== css/casos.css ==== */
+/* (11-10, Bachillerato) «Perseguidos por sus ideas» y «Comunidades de filósofos» (casosview.js): mismo aspecto que Polémicas */
+:is(#perseguidos, #comunidades) .cas-criterio{ color:var(--muted); font-size:.95rem; margin:.4rem 0 .2rem }
+:is(#perseguidos, #comunidades) .cas-cuenta{ color:var(--muted); font-size:.85rem; margin:.2rem 0 0 }
+:is(#perseguidos, #comunidades) .cas-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(min(18rem, 100%), 1fr)); gap:12px; margin-top:12px }
+:is(#perseguidos, #comunidades) .cas-card{ display:flex; gap:12px; align-items:flex-start; text-align:start; font:inherit; color:var(--ink); cursor:pointer;
+  background:var(--surface); border:1px solid var(--line); border-inline-start:4px solid var(--e, var(--accent)); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow) }
+:is(#perseguidos, #comunidades) .cas-card:hover, :is(#perseguidos, #comunidades) .cas-card:focus-visible{ border-color:var(--e, var(--accent)) }
+:is(#perseguidos, #comunidades) .cas-txt{ display:flex; flex-direction:column; gap:.3rem; min-width:0 }
+:is(#perseguidos, #comunidades) .cas-minis{ display:flex; flex:none }
+:is(#perseguidos, #comunidades) .cas-minis img{ width:46px; height:46px; border-radius:50%; object-fit:cover; object-position:top; border:2px solid var(--surface); background:var(--surface-2) }
+:is(#perseguidos, #comunidades) .cas-minis img + img{ margin-inline-start:-16px }
+:is(#perseguidos, #comunidades) .cas-nom{ font-family:var(--serif, Georgia, serif); font-size:1.12rem; font-weight:600; line-height:1.3 }
+:is(#perseguidos, #comunidades) .cas-meta{ font-size:.82rem; color:var(--muted) }
+:is(#perseguidos, #comunidades) .cas-preg{ font-size:.95rem; line-height:1.45 }
+:is(#perseguidos, #comunidades) .cas-nav{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin:.4rem 0 .8rem }
+:is(#perseguidos, #comunidades) .cas-ficha{ background:var(--surface); border:1px solid var(--line); border-top:4px solid var(--e, var(--accent)); border-radius:12px; padding:18px 20px; box-shadow:var(--shadow); line-height:1.55 }
+:is(#perseguidos, #comunidades) .cas-tit{ font-family:var(--serif, Georgia, serif); margin:.2rem 0 .6rem; line-height:1.25 }
+:is(#perseguidos, #comunidades) .cas-gente{ display:flex; flex-wrap:wrap; gap:10px; margin:.2rem 0 .6rem }
+:is(#perseguidos, #comunidades) .cas-per{ display:flex; flex-direction:column; align-items:center; gap:4px; width:84px; font:inherit; font-size:.8rem; line-height:1.2; text-align:center; color:var(--ink); background:none; border:0; padding:0; cursor:pointer }
+:is(#perseguidos, #comunidades) .cas-per img{ width:72px; height:72px; border-radius:50%; object-fit:cover; object-position:top; border:2px solid var(--line); background:var(--surface-2) }
+:is(#perseguidos, #comunidades) .cas-per:hover img{ border-color:var(--accent) }
+:is(#perseguidos, #comunidades) .cas-per span{ text-decoration:underline; text-decoration-style:dotted; text-underline-offset:3px }
+:is(#perseguidos, #comunidades) .cas-k{ font-weight:600; color:var(--e, var(--accent)); margin:.7rem 0 .15rem }
+:is(#perseguidos, #comunidades) .cas-sec p{ margin:.15rem 0 }
+:is(#perseguidos, #comunidades) .cas-cita{ margin:.8rem 0; padding:0 0 0 .7rem; border-inline-start:3px solid var(--e, var(--accent)); font-family:var(--serif, Georgia, serif) }
+:is(#perseguidos, #comunidades) .cas-cita p{ margin:0 }
+:is(#perseguidos, #comunidades) .cas-cita cite{ display:block; font:normal .82rem var(--sans, inherit); color:var(--muted) }
+:is(#perseguidos, #comunidades) .cas-trampa{ background:var(--surface-2); border-radius:8px; padding:.5rem .8rem; margin-top:.8rem }
+:is(#perseguidos, #comunidades) .cas-trampa .cas-k{ margin-top:.2rem }
+:is(#perseguidos, #comunidades) .cas-pensar{ margin-top:.9rem }
+:is(#perseguidos, #comunidades) .cas-temas{ display:flex; flex-wrap:wrap; gap:.35rem; align-items:center; margin-top:1rem; font-size:.88rem }
+:is(#perseguidos, #comunidades) .cas-tema{ font:inherit; font-size:.82rem; background:none; border:1px solid var(--line); border-radius:999px; padding:.15rem .6rem; color:var(--ink); cursor:pointer;
+  max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+:is(#perseguidos, #comunidades) .cas-tema:hover{ border-color:var(--accent); color:var(--accent) }
+:is(#perseguidos, #comunidades) .cas-fuentes{ margin-top:.8rem; font-size:.88rem }
+:is(#perseguidos, #comunidades) .cas-fuentes ul{ margin:.2rem 0 0; padding-inline-start:1.2rem }
+/* imágenes, mapas, cronología y etapas (Comunidades) */
+:is(#perseguidos, #comunidades) .cas-imgs{ display:grid; grid-template-columns:repeat(auto-fit, minmax(min(14rem, 100%), 1fr)); gap:12px; margin:.6rem 0 .4rem }
+:is(#perseguidos, #comunidades) .cas-fig{ margin:0 }
+:is(#perseguidos, #comunidades) .cas-fig img{ display:block; width:100%; height:auto; max-height:26rem; object-fit:contain; border-radius:8px; background:var(--surface-2) }
+:is(#perseguidos, #comunidades) .cas-fig figcaption{ font-size:.8rem; color:var(--muted); margin-top:.3rem; line-height:1.35 }
+:is(#perseguidos, #comunidades) .cas-crono{ list-style:none; margin:.3rem 0 0; padding:0 0 0 14px; border-inline-start:3px solid var(--e, var(--accent)) }
+:is(#perseguidos, #comunidades) .cas-crono li{ position:relative; margin:0 0 .55rem; padding-inline-start:4px; display:grid; gap:.05rem }
+:is(#perseguidos, #comunidades) .cas-crono li::before{ content:""; position:absolute; inset-inline-start:-21px; top:.45em; width:11px; height:11px; border-radius:50%; background:var(--surface); border:3px solid var(--e, var(--accent)) }
+:is(#perseguidos, #comunidades) .cas-anio{ font-weight:700; font-size:.88rem; color:var(--e, var(--accent)) }
+:is(#perseguidos, #comunidades) .cas-suc{ font-size:.95rem }
+
+:is(#perseguidos, #comunidades) .cas-etapas{ list-style:none; margin:.3rem 0 0; padding:0; display:grid; gap:8px }
+:is(#perseguidos, #comunidades) .cas-etapas li{ background:var(--surface-2); border-radius:10px; padding:10px 12px; border-inline-start:4px solid var(--e, var(--accent)) }
+:is(#perseguidos, #comunidades) .cas-etapas p{ margin:.1rem 0 }
+:is(#perseguidos, #comunidades) .cas-et-n{ font-weight:700; color:var(--e, var(--accent)) }
+:is(#perseguidos, #comunidades) .cas-et-a{ font-weight:400; font-size:.85rem; color:var(--muted); margin-inline-start:.3rem }
+:is(#perseguidos, #comunidades) .cas-et-q{ font-style:italic; font-size:.92rem }
+:is(#perseguidos, #comunidades) .cas-gente-txt{ font-size:.9rem; color:var(--muted); margin:.2rem 0 .5rem }
+:is(#perseguidos, #comunidades) .cas-per-txt{ font:inherit; color:var(--ink); background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:3px }
+:is(#perseguidos, #comunidades) .cas-per-txt:hover{ color:var(--accent) }
+
+
 /* ==== css/duelo.css ==== */
 /* «Duelo de razones» (11-10: de juego aparte a sección; dueloview.js). Mismo diseño que el juego original, con los colores y
    el tema claro/oscuro de la web (--surface, --line, --ok, --bad…). «Modo proyector»: pantalla completa y letra grande. */

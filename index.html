@@ -56,6 +56,8 @@
           <button data-view="citas">أقوال</button>
           <button data-view="adagios">المأثورات</button>
           <button data-view="polemicas">سجالات</button>
+          <button data-view="perseguidos">المضطهَدون</button>
+          <button data-view="comunidades">الجماعات</button>
         </div>
       </div>
       <div class="navsec">
@@ -313,6 +315,24 @@
     <p class="lead">فلاسفة عاشوا في الزمن نفسه وتواجهوا حقًّا. اختاروا مع مَن أنتم، وقدّموا سببكم، وانظروا إلى أقوى حجة للطرف الآخر.</p>
     <div class="filterbar" id="polemicasfilter" role="group" aria-label="تصفية السجالات"></div>
     <div id="polemicasbox"></div>
+  </section>
+
+  <section class="view" id="perseguidos">
+    <!-- (11-10) Perseguidos por sus ideas y Comunidades de filósofos: fichas (perseguidos.js, comunidades.js + casosview.js, casos.css).
+         Solo Bachillerato: la web de ESO no las lleva (build_eso.js). -->
+    <p class="eyebrow">للمراجعة</p>
+    <h1 class="title">مضطهَدون بسبب أفكارهم</h1>
+    <p class="lead">فلاسفة وعلماء كلّفتهم طريقة تفكيرهم حياتهم أو حريتهم أو وطنهم.</p>
+    <div class="filterbar" id="perseguidosfilter" role="group" aria-label="تصفية المضطهَدين"></div>
+    <div id="perseguidosbox"></div>
+  </section>
+
+  <section class="view" id="comunidades">
+    <p class="eyebrow">للمراجعة</p>
+    <h1 class="title">جماعات الفلاسفة</h1>
+    <p class="lead">مدارس وحلقات ومجموعات من المفكرين، والأماكن التي كانوا يجتمعون فيها: حدائق، وجمنازيومات، وبيوت، وقاعات.</p>
+    <div class="filterbar" id="comunidadesfilter" role="group" aria-label="تصفية الجماعات"></div>
+    <div id="comunidadesbox"></div>
   </section>
 
   <section class="view" id="adagios">
@@ -1075,6 +1095,9 @@
 <script src="js/adagiosview.js"></script>
 <script src="js/polemicas.js"></script>
 <script src="js/polemicasview.js"></script>
+<script src="js/perseguidos.js"></script>
+<script src="js/comunidades.js"></script>
+<script src="js/casosview.js"></script>
 <script src="js/duelo.js"></script>
 <script src="js/dueloview.js"></script>
 <script src="js/juego_aristoteles.js"></script>
