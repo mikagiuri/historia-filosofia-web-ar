@@ -38,6 +38,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Xenophanes in Thomas Stanley History of Philosophy · Unknown authorUnknown author · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Xenophanes_in_Thomas_Stanley_History_of_Philosophy.jpg"
  },
+ "lao_zi": {
+  "f": "media/retratos/ilustres/lao_zi.jpg",
+  "pie": "Laozi 002 · Thanato (fotografía) · CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Laozi_002.jpg"
+ },
  "confucio": {
   "f": "media/retratos/ilustres/confucio.jpg",
   "pie": "Confucius Tang Dynasty · Wu Daozi (atribuido), 685-758 · Public domain",
@@ -75,6 +80,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/policleto.jpg",
   "pie": "Estatua de Policleto (s. XIX, figura imaginada), Nuevo Hermitage, San Petersburgo · Александр Сигачёв · CC BY-SA 4.0",
   "page": "https://commons.wikimedia.org/wiki/File:N-Herm_-_POLIKLET.jpg"
+ },
+ "buda": {
+  "f": "media/retratos/ilustres/buda.jpg",
+  "pie": "Gandhara Buddha (Museo Nacional de Tokio) · Escultura de Gandhara, s. I-II · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Gandhara_Buddha_(tnm).jpeg"
  },
  "socrates": {
   "f": "media/retratos/museo/socrates.jpg",
@@ -215,6 +225,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/museo2/ockham.jpg",
   "pie": "William of Occam - Sketch - Frater Occham iste, 1341 · Public Domain"
  },
+ "leonardo": {
+  "f": "media/retratos/ilustres/leonardo.jpg",
+  "pie": "Portrait of Leonardo · Atribuido a Francesco Melzi · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Francesco_Melzi_-_Portrait_of_Leonardo.png"
+ },
  "pico": {
   "f": "media/retratos/citas/pico.jpg",
   "pie": "Pico1 · Cristofano dell'Altissimo · Public domain",
@@ -326,6 +341,10 @@ const ILUSTRES_RETRATOS = {
  "voltaire": {
   "f": "media/retratos/museo2/voltaire.jpg",
   "pie": "Atelier de Nicolas de Largillière, portrait de Voltaire, détail (musée Carnavalet) -001 · Nicolas de Largillière · Public Domain"
+ },
+ "du_chatelet": {
+  "f": "media/retratos/museo2/emilie-chatelet.jpg",
+  "pie": "Portrait of Émilie du Châtelet · Marianne Loir · Public Domain"
  },
  "euler": {
   "f": "media/retratos/ilustres/euler.jpg",
@@ -629,6 +648,15 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/museo2/freud.jpg",
   "pie": "Sigmund Freud, bust portrait, facing front LCCN2010651703 · Miscellaneous Items in High Demand, PPOC, Library of Congress · Public Domain"
  },
+ "bergson": {
+  "f": "media/galeria_museo/spinoza_universal/bergson.jpg",
+  "pie": "Henri Bergson 02 · Henri Manuel · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Henri_Bergson_02.jpg"
+ },
+ "husserl": {
+  "f": "media/retratos/museo2/husserl.jpg",
+  "pie": "Edmund Husserl (Jewish influence in modern thought, 1929) · Public Domain"
+ },
  "whitehead": {
   "f": "media/retratos/ilustres/whitehead.jpg",
   "pie": "ANWhitehead · unknown · Public domain",
@@ -677,6 +705,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Jos Ortega y Gasset cropped · SAS Scandinavian Airlines · Public Domain",
   "page": "https://commons.wikimedia.org/wiki/File:Jos%C3%A9_Ortega_y_Gasset_(cropped).jpg"
  },
+ "jaspers": {
+  "f": "media/retratos/citas/jaspers.jpg",
+  "pie": "Karl Jaspers 1946 · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Karl_Jaspers_1946.jpg"
+ },
  "sapir": {
   "f": "media/retratos/ilustres/sapir.jpg",
   "pie": "Edward Sapir · unnkown · Public domain",
@@ -715,6 +748,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/whorf.jpg",
   "pie": "Benjamin Lee Whorf by Bachrach (cropped) · Bachrach Studios · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Benjamin_Lee_Whorf_by_Bachrach_(cropped).jpg"
+ },
+ "marcuse": {
+  "f": "media/retratos/ilustres/marcuse.jpg",
+  "pie": "Herbert Marcuse in Newton, Massachusetts 1955 · Familia Marcuse (Harold Marcuse) · CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Herbert_Marcuse_in_Newton,_Massachusetts_1955.jpeg"
  },
  "gadamer": {
   "f": "media/retratos/ilustres/gadamer.jpg",
