@@ -2292,6 +2292,10 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 #adagios .adg-mont figcaption{ font-size:.82rem; color:var(--muted); margin-top:.3rem }
 @media print{ #adagios .adg-fig img{ height:140px } }
 #adagios .adg-guia p{ margin-block:.5rem }
+/* (12-10) frases célebres en la misma sección (interruptor «Frases»): retrato del autor y la frase como título */
+#adagios .adg-fig-ret img{ object-position:50% 18% }
+#adagios .adg-fig-ret figcaption{ font-size:.85rem; color:var(--ink) }
+#adagios .adg-cita{ font-size:1.12rem; font-style:italic; font-weight:500; line-height:1.4 }
 
 
 /* ==== css/polemicas.css ==== */

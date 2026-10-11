@@ -152,8 +152,8 @@
       dk.cards.forEach(function(c){ if (c && c[1]) add(out, { type: "بطاقة", label: strip(c[1]), meta: dk.name, go: "tarjetas", arg: k, text: strip(c[2] || ""), find: strip(c[1]).slice(0, 60) }); });
     });
     /* citas */
-    if (typeof CITAS !== "undefined" && CITAS && document.getElementById("citas")) CITAS.forEach(function(c){
-      if (c && c.c) add(out, { type: "اقتباس", label: strip(c.c), meta: c.a || "", go: "citas", arg: null, text: strip(c.o || ""), find: strip(c.c).slice(0, 60) });
+    if (typeof CITAS !== "undefined" && CITAS && document.getElementById("adagios")) CITAS.forEach(function(c){
+      if (c && c.c) add(out, { type: "اقتباس", label: strip(c.c), meta: c.a || "", go: "adagios", arg: "frases", text: strip(c.o || ""), find: strip(c.c).slice(0, 60) });
     });
     /* polémicas (11-10) */
     if (typeof POLEMICAS !== "undefined" && POLEMICAS && document.getElementById("polemicas")) POLEMICAS.forEach(function(p){

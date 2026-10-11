@@ -6,10 +6,18 @@
    Los nombres de pensadores con ficha en Ilustres (en esta web) abren su biografía: el primero de cada ficha.
    Filtro por ámbito y modo «Ponte a prueba» (solo el lema en español; el resto se descubre al pulsar). Arriba solo las fichas:
    la historia (Erasmo, florilegios, Montaigne) y el cuaderno de lugares comunes van al final, plegados.
-   Enlace profundo: #adagios/<id>. Los temas se enlazan solo si existen en la web (THEORY filtrado). */
+   Enlace profundo: #adagios/<id>. Los temas se enlazan solo si existen en la web (THEORY filtrado).
+   (12-10) Interruptor «Colección: Adagios | Frases»: las frases célebres (citas.js, CITAS), con el mismo aspecto: retrato del autor,
+   la frase, qué quiere decir (sen), cuándo usarla (uso) y de dónde viene; filtro por época. Sustituye a la antigua sección
+   «Frases» (#citas, que ahora abre aquí: alias en app.js). Enlace profundo: #adagios/frases. */
 
 /* textos de interfaz: cadenas enteras (así los traduce web_i18n/ui/<lang>.json) */
 const ADG_TXT = {
+  coleccion: "المجموعة", colAdagios: "المأثورات", colFrases: "أقوال",
+  leadA: "شعارات لاتينية ويونانية يستشهد بها الفلاسفة منذ قرون: ماذا تقول، ومن أين تأتي، ومتى تُستعمل. تعلّموها كما يتعلمها تلميذ في عصر النهضة.",
+  leadF: "أقوال فلسفية مشهورة: ماذا تعني، ومن أين تأتي، ومتى تُستعمل في تعليق على نص أو في إنشاء فلسفي.",
+  epoca: "العصر", todas: "الكل", antigua: "القديمة", medieval: "الوسيطة", moderna: "الحديثة", contemporanea: "المعاصرة",
+  usoF: "استعملها:", cuentaF: "{n} عبارات", cuentaF1: "قول واحد",
   ambito: "المجال", todos: "الكل",
   saber: "المعرفة", realidad: "الواقع", etica: "الأخلاق والحياة", politica: "السياسة", humano: "الإنسان",
   modo: "الطريقة", leer: "قراءة", prueba: "اختبروا أنفسكم",
@@ -62,7 +70,10 @@ const ADG_ILU = [
   ["جون لوك", "locke"], ["لايبنتز", "leibniz"], ["كانط", "kant"], ["هايدغر", "heidegger"],
   ["ابن رشد", "averroes"], ["هيغل", "hegel"], ["ماركس", "marx"], ["داروين", "darwin"]
 ];
-let adgAmb = "all", adgPrueba = false;
+let adgAmb = "all", adgPrueba = false, adgCol = "adagios", adgEp = "all";
+const ADG_EPOCAS = ["antigua", "medieval", "moderna", "contemporanea"];
+const ADG_EP_COLOR = { antigua: "ant", medieval: "med", moderna: "mod", contemporanea: "con" };   // color de época (styles.css)
+function adgHayFrases(){ return typeof CITAS !== "undefined" && CITAS && CITAS.length; }
 
 function adgEsc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 function adgBox(){ return document.getElementById("adagiosbox"); }
@@ -85,12 +96,21 @@ function adgNombres(txt, hechos){
 function adgFiltro(){
   const f = document.getElementById("adagiosfilter");
   if (!f) return;
-  f.innerHTML = '<div class="fgroup"><span class="flabel">' + adgT("ambito") + '</span>' +
-    ["all"].concat(ADG_AMB).map(a => '<button class="fbtn" data-adg-a="' + a + '" aria-pressed="' + (a === adgAmb) + '">' +
-      adgT(a === "all" ? "todos" : a) + '</button>').join("") + '</div>' +
+  f.innerHTML = (adgHayFrases() ? '<div class="fgroup"><span class="flabel">' + adgT("coleccion") + '</span>' +
+      [["adagios", "colAdagios"], ["frases", "colFrases"]].map(c => '<button class="fbtn" data-adg-c="' + c[0] + '" aria-pressed="' + (adgCol === c[0]) + '">' + adgT(c[1]) + '</button>').join("") + '</div>' : '') +
+    (adgCol === "frases" ?
+      '<div class="fgroup"><span class="flabel">' + adgT("epoca") + '</span>' +
+      ["all"].concat(ADG_EPOCAS).filter(e => e === "all" || CITAS.some(q => q.e === e)).map(e => '<button class="fbtn" data-adg-e="' + e + '" aria-pressed="' + (e === adgEp) + '">' +
+        adgT(e === "all" ? "todas" : e) + '</button>').join("") + '</div>' :
+      '<div class="fgroup"><span class="flabel">' + adgT("ambito") + '</span>' +
+      ["all"].concat(ADG_AMB).map(a => '<button class="fbtn" data-adg-a="' + a + '" aria-pressed="' + (a === adgAmb) + '">' +
+        adgT(a === "all" ? "todos" : a) + '</button>').join("") + '</div>') +
     '<div class="fgroup"><span class="flabel">' + adgT("modo") + '</span>' +
     [["leer", false], ["prueba", true]].map(m => '<button class="fbtn" data-adg-m="' + m[0] + '" aria-pressed="' + (adgPrueba === m[1]) + '">' + adgT(m[0]) + '</button>').join("") + '</div>';
   f.querySelectorAll("[data-adg-a]").forEach(b => b.addEventListener("click", () => { adgAmb = b.dataset.adgA; adgFiltro(); adgRender(); }));
+  f.querySelectorAll("[data-adg-e]").forEach(b => b.addEventListener("click", () => { adgEp = b.dataset.adgE; adgFiltro(); adgRender(); }));
+  f.querySelectorAll("[data-adg-c]").forEach(b => b.addEventListener("click", () => { adgCol = b.dataset.adgC; adgLead(); adgFiltro(); adgRender();
+    if (typeof setDeepHash === "function") setDeepHash("adagios", adgCol === "frases" ? "frases" : ""); }));
   f.querySelectorAll("[data-adg-m]").forEach(b => b.addEventListener("click", () => { adgPrueba = b.dataset.adgM === "prueba"; adgFiltro(); adgRender(); }));
 }
 
@@ -121,6 +141,24 @@ function adgFicha(a){
     '</div></article>';
 }
 
+/* (12-10) ficha de una frase célebre: mismo aspecto que un adagio (retrato del autor en lugar de la obra de arte) */
+function adgFichaF(q, i){
+  const h = new Set(), N = t => adgNombres(t, h);
+  const autor = q.id && adgHayIlu(q.id) ? '<button class="adg-ilu" data-ilu="' + adgEsc(q.id) + '" title="' + adgEsc(adgT("verBio", { n: q.a })) + '">' + adgEsc(q.a) + '</button>' : adgEsc(q.a);
+  if (q.id) h.add(q.id);
+  return '<article class="adg-card adg-frase' + (adgPrueba ? ' adg-oculta' : '') + '" id="adgf-' + i + '" data-ep="' + (ADG_EP_COLOR[q.e] || "") + '">' +
+    (q.img ? '<figure class="adg-fig adg-fig-ret"><img src="' + adgEsc(q.img) + '" alt="' + adgEsc(q.a) + '" loading="lazy" decoding="async"><figcaption>' + autor + '</figcaption></figure>' : '') +
+    '<h2 class="adg-es adg-cita">«' + adgEsc(q.c) + '»</h2>' +
+    (adgPrueba ? '<p class="adg-ayuda">' + adgT("pruebaAyuda") + '</p><button class="adg-desc" aria-expanded="false">' + adgT("descubrir") + '</button>' : '') +
+    '<div class="adg-cuerpo">' +
+      (q.sen ? '<p class="adg-sen"><span class="adg-k">' + adgT("sentido") + '</span> ' + N(q.sen) + '</p>' : '') +
+      (q.uso ? '<p class="adg-uso"><span class="adg-k">' + adgT("usoF") + '</span> ' + N(q.uso) + '</p>' : '') +
+      (q.trampa ? '<p class="adg-trampa"><strong>' + adgT("trampa") + '.</strong> ' + N(q.trampa) + '</p>' : '') +
+      '<p class="adg-o"><span class="adg-k">' + adgT("origen") + '</span> ' + (q.img ? adgEsc(q.a) : autor) + ', ' + adgEsc(q.o) + '.</p>' +
+    '</div></article>';
+}
+function adgLead(){ const l = document.querySelector("#adagios .lead"); if (l) l.textContent = adgT(adgCol === "frases" ? "leadF" : "leadA"); }
+
 function adgHistoria(){
   const h = new Set(), p = k => '<p>' + adgNombres(adgT(k), h) + '</p>';
   return '<details class="adg-guia"><summary>' + adgT("hTit") + '</summary>' + p("h1") +
@@ -138,6 +176,14 @@ function adgHistoria(){
 function adgRender(){
   const box = adgBox();
   if (!box) return;
+  if (adgCol === "frases" && adgHayFrases()){
+    /* primero las destacadas en clase y las que ya tienen explicación */
+    const lf = CITAS.map((q, i) => [q, i]).filter(([q]) => adgEp === "all" || q.e === adgEp)
+      .sort((x, y) => (y[0].dest ? 2 : 0) + (y[0].sen ? 1 : 0) - ((x[0].dest ? 2 : 0) + (x[0].sen ? 1 : 0)) || x[1] - y[1]);
+    box.innerHTML = '<div class="adg-grid">' + lf.map(([q, i]) => adgFichaF(q, i)).join("") + '</div>' +
+      '<p class="adg-cuenta">' + (lf.length === 1 ? adgT("cuentaF1") : adgT("cuentaF", { n: lf.length })) + '</p>';
+    return;
+  }
   const l = ADAGIOS.filter(a => adgAmb === "all" || a.amb === adgAmb);
   box.innerHTML = '<div class="adg-grid">' + l.map(adgFicha).join("") + '</div>' +
     '<p class="adg-cuenta">' + (l.length === 1 ? adgT("cuenta1") : adgT("cuenta", { n: l.length })) + '</p>' + adgHistoria();
@@ -162,6 +208,8 @@ function adgRender(){
 
 function loadAdagios(arg){
   const id = String(arg || "").split("/")[0];
+  if (id === "frases" && adgHayFrases()){ adgCol = "frases"; adgLead(); adgFiltro(); adgRender(); return; }
+  if (adgCol !== "adagios"){ adgCol = "adagios"; adgLead(); adgFiltro(); }
   const a = ADAGIOS.find(x => x.id === id);
   if (a && adgAmb !== "all" && a.amb !== adgAmb){ adgAmb = "all"; adgFiltro(); }
   adgRender();

@@ -58,8 +58,9 @@ function parseHash(){
   const raw = (location.hash || "").replace(/^#/, "");
   if (!raw) return null;
   const i = raw.indexOf("/");
-  const go = i < 0 ? raw : raw.slice(0, i);
+  let go = i < 0 ? raw : raw.slice(0, i);
   let arg = i < 0 ? null : raw.slice(i + 1);
+  if (go === "citas"){ go = "adagios"; arg = "frases"; }   // (12-10) la antigua sección «Frases» vive ahora en Adagios (interruptor)
   const el = go && document.getElementById(go);
   if (!(el && el.classList.contains("view"))) return null;   // p. ej. #th-3 (ancla interna del índice): se ignora
   if (arg){ try { arg = decodeURIComponent(arg); } catch (e){} }
