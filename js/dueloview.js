@@ -15,6 +15,7 @@ const DUE_TXT = {
   rT: "<b>رباطة الجأش.</b> حين يُساء إليكم أو يُضرب على وتر حساس لديكم (شتيمة، تهديد، هجوم شخصي) تفقدون شيئًا من رباطة جأشكم، حتى لو كشفتم الحركة: فالضربة تؤلم بالقدر نفسه. وهي لا تعود من تلقاء نفسها، لذا تتراكم الخسارة. عند الصفر تفقدون أعصابكم (لا يخرج منكم إلا الشتم أو الاستسلام أو الهروب)؛ حينئذ توقفوا وتنفّسوا لتستعيدوا شيئًا من الهدوء.",
   rC: "<b>الأوراق الرابحة (واحدة من كل نوع في كل جولة).</b> <b>كيف تعرف ذلك؟</b> تفكّك الخدع التي تتظاهر بأن لها سندًا (شخص مشهور، الجميع، حالات قليلة، سبب زائف، التقليد) حتى لو لم تعرفوا اسمها؛ أما أمام حجة مشروعة فتخسرون بها، لأنه يقدّم لكم حججه. <b>ماذا يربح؟</b> تكشف المصلحة الخفية لمن يتكلم، إن كانت لديه مصلحة؛ وإن لم تكن، تخسرون بها: افتراض سوء النية دون قرائن هجوم على الشخص.",
   elige: "اختاروا موضوع هذه الجولة:",
+  grupos: "المواضيع", gDia: "من الحياة اليومية", gSocrates: "سقراط", gAgustin: "القديس أوغسطين", gModerna: "العصر الحديث", gContemporanea: "من كانط إلى اليوم",
   nivel: "المستوى", nEso: "السنة الثانية ESO", nFil: "الفلسفة 1", nHf: "تاريخ الفلسفة",
   proyector: "وضع العرض", salirProy: "الخروج من وضع العرض",
   pie: "لا يفوز دائمًا من يكتشف الخدعة: أحيانًا يفوز من يضرب بقوة أكبر بالحجج.",
@@ -72,6 +73,10 @@ const DUE_FIBRA = new Set(["persona"]);   // además de trampa, falta de respeto
 const DUE_SIN_PRUEBAS = new Set(["famoso", "todos", "pocos", "causa", "siempre"]);   // fingen tener apoyo: se caen al pedir pruebas
 const DUE_MAXT = 6, DUE_NIVELES = ["eso", "fil", "hf"];
 let DS = null, dueSeed = 1, dueNivel = null;
+/* (12-10) selector por grupos para no mostrar todos los temas de golpe: cada tema de duelo.js trae su «grupo» */
+const DUE_GRUPOS = [["dia", "gDia"], ["socrates", "gSocrates"], ["agustin", "gAgustin"], ["moderna", "gModerna"], ["contemporanea", "gContemporanea"]];
+let dueGrupo = null;
+function dueGruposVis(){ const ts = dueTemas(); return DUE_GRUPOS.filter(([g]) => ts.some(({ t }) => (t.grupo || "dia") === g)); }
 /* #duelo/<nivel>/<tema> sin codificar la barra (setDeepHash la codificaría) */
 function dueHash(){ const h = "#duelo" + [].slice.call(arguments).filter(Boolean).map(x => "/" + encodeURIComponent(x)).join(""); if (location.hash !== h){ try { history.replaceState(null, "", h); } catch (e){} } }
 function dueRnd(){ dueSeed = (dueSeed * 1103515245 + 12345) & 0x7fffffff; return dueSeed / 0x7fffffff; }
@@ -99,8 +104,13 @@ function dueIntro(){
     '<div class="due-rules">' + [["A", "rA"], ["B", "rB"], ["♦", "rT"], ["★", "rC"]].map(([n, k]) => '<div class="due-rule"><span class="due-n">' + n + '</span><p>' + dueT(k) + '</p></div>').join("") + '</div>' +
     (multi ? '<div class="due-niveles" role="group" aria-label="' + dueT("nivel") + '">' + [["", "todos"]].concat([["eso", "nEso"], ["fil", "nFil"], ["hf", "nHf"]]).map(([v, k]) =>
       '<button type="button" class="fbtn" data-due-nivel="' + v + '" aria-pressed="' + ((dueNivel || "") === v) + '">' + (k === "todos" ? "—" : dueT(k)) + '</button>').join("") + '</div>' : '') +
+    (function(){
+      const gs = dueGruposVis(); if (!gs.some(([g]) => g === dueGrupo)) dueGrupo = gs.length ? gs[0][0] : null;
+      return gs.length > 1 ? '<div class="fgroup due-grupos" role="group" aria-label="' + dueT("grupos") + '">' + gs.map(([g, k]) =>
+        '<button type="button" class="fbtn" data-due-grupo="' + g + '" aria-pressed="' + (dueGrupo === g) + '">' + dueT(k) + ' <span class="due-ng">' + dueTemas().filter(({ t }) => (t.grupo || "dia") === g).length + '</span></button>').join("") + '</div>' : '';
+    })() +
     '<div class="due-center due-elige">' + dueT("elige") + '</div><div class="due-pick">' +
-    dueTemas().map(({ t, i }) => '<button type="button" class="due-btn" data-due-ti="' + i + '">' + t.claim + '<span class="due-sides">' + t.tuLado + '</span></button>').join("") + '</div>' +
+    dueTemas().filter(({ t }) => !dueGrupo || (t.grupo || "dia") === dueGrupo).map(({ t, i }) => '<button type="button" class="due-btn" data-due-ti="' + i + '">' + t.claim + '<span class="due-sides">' + t.tuLado + '</span></button>').join("") + '</div>' +
     '<p class="due-pie">' + dueT("pie") + '</p></div>';
 }
 function dueEmpezar(ti){ dueSeed = (Date.now() & 0x7fffffff) || 1; DS = dueFresh(ti); dueTurno(true); }
@@ -297,6 +307,7 @@ document.addEventListener("click", e => {
   const t = e.target; if (!t.closest || !t.closest("#duelo")) return;
   if (t.closest("#dueproy")) return dueProyector();
   const nv = t.closest("[data-due-nivel]"); if (nv){ dueNivel = nv.dataset.dueNivel || null; return dueIntro(); }
+  const gr = t.closest("[data-due-grupo]"); if (gr){ dueGrupo = gr.dataset.dueGrupo; return dueIntro(); }
   const ti = t.closest("[data-due-ti]"); if (ti){ dueEmpezar(+ti.dataset.dueTi); dueHash(dueNivel || dueNivelWeb(), DUELO_TEMAS[+ti.dataset.dueTi].id); return; }
   const fal = t.closest("[data-due-fal]"); if (fal) return dueNombrar(fal.dataset.dueFal);
   const c = t.closest("[data-due-c]"); if (c) return dueContra(+c.dataset.dueC);
@@ -311,7 +322,7 @@ document.addEventListener("click", e => {
   if (k === "cont"){ const f = DS.cont; DS.cont = null; if (f) return f(); DS.turno++; return dueTurno(false); }
   if (k === "descargar") return dueDescargar();
   if (k === "again"){ return dueEmpezar(DS.ti); }
-  if (k === "home"){ DS = null; dueHash(dueNivel); return dueIntro(); }
+  if (k === "home"){ dueGrupo = DUELO_TEMAS[DS.ti].grupo || dueGrupo; DS = null; dueHash(dueNivel); return dueIntro(); }
 });
 
 /* enlace profundo: #duelo/<nivel>[/<id del tema>] (los temas «pol-…» salen de Polémicas) */
@@ -320,7 +331,7 @@ function loadDuelo(arg){
   const [nv, id] = String(arg || "").split("/");
   if (DUE_NIVELES.includes(nv) && !dueNivelWeb()) dueNivel = nv;
   const i = id ? DUELO_TEMAS.findIndex(t => t.id === id) : -1;
-  if (i >= 0) return dueEmpezar(i);
+  if (i >= 0){ dueGrupo = DUELO_TEMAS[i].grupo || null; return dueEmpezar(i); }
   DS = null; dueIntro();
 }
 window.loadDuelo = loadDuelo;

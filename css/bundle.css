@@ -2507,6 +2507,9 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 #duelo.due-proy .due-btn{ font-size:1.25rem; padding:16px 20px }
 #duelo.due-proy .due-thread{ max-height:52vh }
 #duelo.due-proy .due-bubble{ font-size:1.3rem }
+/* (12-10) selector por grupos de temas */
+#duelo .due-grupos{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin:6px 0 4px }
+#duelo .due-ng{ font-size:.78em; opacity:.7; margin-inline-start:3px }
 
 
 /* ==== css/retratos.css ==== */
