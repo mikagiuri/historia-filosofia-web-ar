@@ -7,13 +7,17 @@
    al ocultar líneas, el plano se recoloca y se compacta. */
 const GEN_T = { lineas: "الخطوط", todas: "الكل", ninguna: "لا شيء", op: "التعارضات",
   none: "لا يوجد أي خط مفعّل: انقروا على خط لرؤيته.", hint: "اسحبوا للتنقل عبر التاريخ ←",
-  mLineas: "مخطط الخطوط", mTesis: "شبكة الأطروحات", mVR: "أخضر أم أحمر؟" };   // (09-10) modos: plano, red de tesis y ejercicio (genealogias_tesisview.js)
+  mLineas: "مخطط الخطوط", mTesis: "شبكة الأطروحات", mVR: "أخضر أم أحمر؟",
+  ruta: "مساركم في الحجلة: {n} مفكرين على {m} خطوط. تظهر الخطوط التي سافرتم عليها (وفيها اثنان على الأقل من مفكريكم)، ويتبع الخط المنقّط ترتيب رحلتكم.",
+  quitarRuta: "إزالة المسار" };   // (09-10) modos: plano, red de tesis y ejercicio (genealogias_tesisview.js)
 const GEN_EPOCAS = [["ant", "القديمة"], ["med", "الوسيطة"], ["ren", "عصر النهضة"], ["mod", "الحديثة"], ["ilu", "الأنوار"], ["con", "المعاصرة"]];
 /* (30-09) al entrar, solo dos líneas activas (con todas a la vez el plano abruma); «Todas» sigue a un clic */
 const GEN_DEFECTO = ["idea", "dual"];
 function genDefecto(){ return new Set(typeof GENEALOGIAS === "undefined" ? [] : GENEALOGIAS.lineas.filter(l => !GEN_DEFECTO.includes(l.id)).map(l => "l:" + l.id)); }
 let genHidden = genDefecto();
 let genModo = "lineas";   // "lineas" | "tesis" | "verde-roja"
+/* (11-10) «Tu recorrido en el metro»: los pensadores de un viaje de la Rayuela, en el orden del viaje (#genealogias/ruta/id,id…) */
+let genRuta = null;
 function genModos(){
   if (typeof GEN_TESIS === "undefined") return "";
   return '<div class="fgroup gen-modos" role="group">' + [["lineas", GEN_T.mLineas], ["tesis", GEN_T.mTesis], ["verde-roja", GEN_T.mVR]]
@@ -84,10 +88,16 @@ function genSvg(){
     const lift = 34 + Math.min(60, Math.abs(xb - xa) / 6), top = Math.min(ya, yb) - lift;
     s += '<path class="gen-op" data-a="' + a + '" data-b="' + b + '" d="M' + xa + ',' + ya + ' C' + xa + ',' + top + ' ' + xb + ',' + top + ' ' + xb + ',' + yb + '"/>';
   });
+  // (11-10) recorrido de la Rayuela: línea de puntos por los pensadores del viaje, en su orden
+  const enRuta = id => !!(genRuta && genRuta.includes(id));
+  if (genRuta){
+    const pts = genRuta.filter(id => laneOf.has(id)).map(id => xOf(id) + "," + yOf(laneOf.get(id)[0]));
+    if (pts.length > 1) s += '<path class="gen-rutapath" d="M' + pts.join(" L") + '"/>';
+  }
   // estaciones y nombres (el nombre, una sola vez, en el carril más alto)
   lines.forEach((l, li) => l.ilustre.forEach(id => {
     const x = xOf(id), y = yOf(li), first = laneOf.get(id)[0] === li;
-    s += '<g class="gen-st" data-ilu="' + id + '" data-line="' + l.id + '" tabindex="0" role="link" aria-label="' + genEsc(genPerson(id).name) + '">' +
+    s += '<g class="gen-st' + (genRuta ? (enRuta(id) ? " gen-ruta" : " gen-noruta") : "") + '" data-ilu="' + id + '" data-line="' + l.id + '" tabindex="0" role="link" aria-label="' + genEsc(genPerson(id).name) + '">' +
       '<circle cx="' + x + '" cy="' + y + '" r="6" stroke="' + l.color + '"/>' +
       (first ? '<text class="gen-st-lbl" transform="translate(' + (x + 4) + ',' + (y - 11) + ') rotate(-38)">' + genEsc(genShort(genPerson(id).name, id)) + '</text>' : '') + '</g>';
   }));
@@ -109,7 +119,12 @@ function drawGenea(){
     box.innerHTML = genModos() + '<div id="gentesisbox" data-modo="' + genModo + '"></div>'; genTesisRender(genModo); return;
   }
   const keep = box.querySelector(".gen-scroll"), sl = keep ? keep.scrollLeft : 0;
-  box.innerHTML = genModos() + genLegend() + '<p class="gen-hint">' + GEN_T.hint + '</p><div class="gen-scroll">' + genSvg() + '</div>';
+  const rutaInfo = genRuta ? (function(){
+    const ls = GENEALOGIAS.lineas.filter(l => !genHidden.has("l:" + l.id) && l.ilustre.some(id => genRuta.includes(id)));
+    return '<p class="gen-rutainfo">' + GEN_T.ruta.replace("{n}", genRuta.filter(id => ls.some(l => l.ilustre.includes(id))).length).replace("{m}", ls.length) +
+      ' <button type="button" class="btn ghost" data-gruta="off">' + GEN_T.quitarRuta + '</button></p>';
+  })() : "";
+  box.innerHTML = genModos() + rutaInfo + genLegend() + '<p class="gen-hint">' + GEN_T.hint + '</p><div class="gen-scroll">' + genSvg() + '</div>';
   const sc = box.querySelector(".gen-scroll"); if (sc) sc.scrollLeft = sl;
 }
 /* enlace profundo #genealogias/<línea>: solo esa línea visible; #genealogias/tesis y #genealogias/verde-roja: los otros modos */
@@ -123,6 +138,17 @@ function loadGenea(k){
     setTimeout(() => { const el = document.querySelector('#geneabox .gt-tesis[data-gt="' + mt[1] + '"]'); if (el) el.scrollIntoView({ block: "center" }); }, 60);
     return;
   }
+  /* (11-10) #genealogias/ruta/id,id…: recorrido de la Rayuela; solo las líneas que lo tocan */
+  const mr = /^ruta\/([\w,-]+)$/.exec(k || "");
+  if (mr){
+    genRuta = mr[1].split(",").filter(genPerson);
+    genModo = "lineas"; genHidden = new Set();
+    /* las líneas con al menos dos pensadores del viaje (las que de verdad has recorrido); si no hay ninguna, las que toquen uno */
+    const n = l => l.ilustre.filter(id => genRuta.includes(id)).length, min = GENEALOGIAS.lineas.some(l => n(l) >= 2) ? 2 : 1;
+    GENEALOGIAS.lineas.forEach(l => { if (n(l) < min) genHidden.add("l:" + l.id); });
+    drawGenea(); return;
+  }
+  genRuta = null;
   genModo = "lineas";
   genHidden = new Set();
   if (k && GENEALOGIAS.lineas.some(l => l.id === k)) GENEALOGIAS.lineas.forEach(l => { if (l.id !== k) genHidden.add("l:" + l.id); });
@@ -133,6 +159,8 @@ function loadGenea(k){
 document.addEventListener("click", e => {
   const m = e.target.closest && e.target.closest("#geneabox [data-gmodo]");
   if (m){ genModo = m.dataset.gmodo; drawGenea(); if (typeof setDeepHash === "function") setDeepHash("genealogias", genModo === "lineas" ? "" : genModo); const again = document.querySelector('#geneabox [data-gmodo="' + genModo + '"]'); if (again) again.focus(); return; }
+  const q = e.target.closest && e.target.closest("#geneabox [data-gruta]");
+  if (q){ genRuta = null; genHidden = genDefecto(); drawGenea(); if (typeof setDeepHash === "function") setDeepHash("genealogias", ""); return; }
   const b = e.target.closest && e.target.closest("#geneabox [data-gfil]");
   if (b){
     const k = b.dataset.gfil;

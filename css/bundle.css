@@ -1200,6 +1200,12 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 #genealogias .gt-vr-res.gt-desacuerdo{ border-inline-start-color:var(--gt-no); }
 @media (max-width:760px){ #genealogias .gt-wrap{ grid-template-columns:minmax(0,1fr); } #genealogias .gt-arcs{ display:none; } }
 
+/* (11-10) «Tu recorrido en el metro»: viaje de la Rayuela sobre el plano (#genealogias/ruta/…) */
+#geneabox .gen-rutainfo{ margin:.4rem 0 .6rem; padding:.5rem .7rem; border-left:3px solid var(--accent); background:var(--surface-2); border-radius:6px; font-size:.92rem; }
+#geneabox .gen-rutapath{ fill:none; stroke:var(--accent); stroke-width:3.5; stroke-dasharray:2 7; stroke-linecap:round; opacity:.85; }
+#geneabox .gen-st.gen-ruta circle{ r:9; stroke-width:4; fill:var(--accent); }
+#geneabox .gen-st.gen-noruta{ opacity:.35; }
+
 
 /* ==== css/parejas.css ==== */
 /* ===== Parejas: juego de emparejar término ↔ definición (glosario) ===== usa tokens de styles.css ===== */
