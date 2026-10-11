@@ -1,10 +1,13 @@
 "use strict";
-/* ===== Vista "خطاطات المؤلفين" ===== depende de: esquemas_autor.js =====
+/* ===== Vista "ملخصات" (antes «Esquemas de autor») ===== depende de: esquemas_autor.js (HF) y/o resumenes_fil.js (Filosofía 1.º) =====
    Muestra los esquemas por tema/autor (mapas ds-* del departamento) en formato
    textual limpio, imprimible. Complementa la vista "خطاطات" (grafos mermaid). */
 
 let eaBlock = "all";
-const EA_BLOCKS = { A: "القديمة", B: "الوسيطة والحديثة", C: "المعاصرة" };
+const EA_BLOCKS = { A: "القديمة", B: "الوسيطة والحديثة", C: "المعاصرة", F1: "الفلسفة 1" };
+/* (12-10) HF (ESQUEMAS_AUTOR) y Filosofía 1.º (RESUMENES_FIL): cada web publicada trae solo los suyos; la del profesor, los dos */
+const EA_LIST = (typeof ESQUEMAS_AUTOR !== "undefined" ? ESQUEMAS_AUTOR : []).concat(typeof RESUMENES_FIL !== "undefined" ? RESUMENES_FIL : []);
+const EA_HAS = ["A", "B", "C", "F1"].filter(function (b){ return EA_LIST.some(function (e){ return e.block === b; }); });
 /* (07-10) formato: esquema (listas), tabla por autor o tabla sinóptica del bloque (una fila por autor) */
 let eaFmt = "esq";
 try { const f = localStorage.getItem("eaFmt"); if (f === "tab" || f === "sin") eaFmt = f; } catch (e) {}
@@ -62,10 +65,10 @@ function eaEsc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").r
 function renderEAFilter(){
   const box = document.getElementById("eafilter");
   if (!box) return;
-  box.innerHTML = '<div class="fgroup"><span class="flabel">المحور</span>' +
-    ["all", "A", "B", "C"].map(function (b){
+  box.innerHTML = (EA_HAS.length < 2 ? '' : '<div class="fgroup"><span class="flabel">المحور</span>' +
+    ["all"].concat(EA_HAS).map(function (b){
       return '<button class="fbtn" data-eb="' + b + '" aria-pressed="' + (b === eaBlock) + '">' +
-        (b === "all" ? "الكل" : EA_BLOCKS[b]) + '</button>'; }).join("") + '</div>' +
+        (b === "all" ? "الكل" : EA_BLOCKS[b]) + '</button>'; }).join("") + '</div>') +
     '<div class="fgroup"><span class="flabel">الصيغة</span>' +
     Object.keys(EA_FMTS).map(function (f){
       return '<button class="fbtn" data-ef="' + f + '" aria-pressed="' + (f === eaFmt) + '">' + EA_FMTS[f] + '</button>'; }).join("") + '</div>';
@@ -79,7 +82,7 @@ function renderEAFilter(){
 function renderEABody(){
   const box = document.getElementById("eabody");
   if (!box) return;
-  const list = ESQUEMAS_AUTOR.filter(function (e){ return eaBlock === "all" || e.block === eaBlock; });
+  const list = EA_LIST.filter(function (e){ return eaBlock === "all" || e.block === eaBlock; });
   /* ítems: texto (formato antiguo) u objeto {t, d, a, c} (desde el 25-09, sacados de los esquemas v2) */
   function item(i){
     if (typeof i === "string") return '<li>' + eaEsc(i) + '</li>';
@@ -89,7 +92,7 @@ function renderEABody(){
   }
   /* Sinóptica: una fila por autor/tema del bloque (o de todos), columnas comunes */
   /* (08-10) con ejes comunes (esquemas_ejes.js): una tabla por bloque, una fila por tema y una columna por eje */
-  if (eaFmt === "sin" && typeof EA_EJES !== "undefined"){
+  if (eaFmt === "sin" && typeof EA_EJES !== "undefined" && typeof ESQUEMAS_AUTOR !== "undefined" && eaBlock !== "F1"){
     box.innerHTML = ["A", "B", "C"].filter(function (b){ return (eaBlock === "all" || eaBlock === b) && EA_EJES[b]; }).map(function (b){
       const E = EA_EJES[b];
       return '<article class="easchema"><h2>' + eaEsc(EA_BLOCKS[b]) + '</h2><div class="ea-tw"><table class="ea-tab ea-sin ea-ejes"><thead><tr><th>الموضوع</th>' +
@@ -98,22 +101,20 @@ function renderEABody(){
           const sch = ESQUEMAS_AUTOR[f.i] || {};
           return '<tr><td>' + eaEsc(sch.title || "") + '</td>' + f.c.map(function (x){ return '<td>' + eaEsc(x) + '</td>'; }).join("") + '</tr>';
         }).join("") + '</tbody></table></div></article>';
-    }).join("");
+    }).join("") + (eaBlock === "all" && list.some(function (e){ return e.block === "F1"; }) ?
+      '<h2>' + eaEsc(EA_BLOCKS.F1) + '</h2>' + sinGen(list.filter(function (e){ return e.block === "F1"; })) : '');
     eaIlu();
     return;
   }
-  if (eaFmt === "sin"){
-    box.innerHTML = '<article class="easchema"><div class="ea-tw"><table class="ea-tab ea-sin"><thead><tr>' +
+  function sinGen(lst){ return '<article class="easchema"><div class="ea-tw"><table class="ea-tab ea-sin"><thead><tr>' +
       '<th>المؤلف أو الموضوع</th><th>سؤال</th><th>الفقرات</th><th>الفكرة الأساسية</th></tr></thead><tbody>' +
-      list.map(function (sch){
+      lst.map(function (sch){
         const heads = (sch.sections || []).filter(function (s){ return s.heading; }).map(function (s){
           return '<li><strong>' + eaEsc(s.heading) + '</strong>' + (s.d ? ': ' + eaEsc(s.d) : '') + '</li>'; }).join("");
         return '<tr><td>' + eaEsc(sch.title) + '</td><td>' + eaEsc(sch.pregunta || "") + '</td><td>' +
           (heads ? '<ul>' + heads + '</ul>' : '') + '</td><td>' + eaEsc(sch.idea || "") + '</td></tr>';
-      }).join("") + '</tbody></table></div></article>';
-    eaIlu();
-    return;
-  }
+      }).join("") + '</tbody></table></div></article>'; }
+  if (eaFmt === "sin"){ box.innerHTML = sinGen(list); eaIlu(); return; }
   box.innerHTML = list.map(function (sch){
     if (eaFmt === "tab"){   /* tabla por autor: una fila por apartado */
       const rows = (sch.sections || []).map(function (s){
