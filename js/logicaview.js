@@ -562,7 +562,7 @@ function logRender(){
   const tabs = [["silogismos", "tabClasica"], ["tablas", "tabModerna"], ["paradojas", "tabParad"], ["ejercicios", "tabEjerc"], ["clasicos", "tabClasicos"]];
   const sub = LOG_SUB_SIL.includes(LOG.tab) ? [["silogismos", "tabSilog"], ["cuadrado", "tabCuadrado"], ["conjuntos", "tabConjuntos"]]
     : LOG_SUB_MOD.includes(LOG.tab) ? [["tablas", "tabTablas"], ["formalizar", "tabFormalizar"], ["inferencia", "tabInferencia"], ["cuantificadores", "tabCuantificadores"], ["puertas", "tabPuertas"]].filter(([k]) => ["tablas", "puertas"].includes(k) || typeof logRenderFormalizar === "function") : null;
-  const cuerpo = LOG.tab === "silogismos" ? logRenderSil() : LOG.tab === "cuadrado" ? logRenderCuadrado() : LOG.tab === "conjuntos" ? logRenderConjuntos() : LOG.tab === "puertas" ? logRenderPuertas()
+  const cuerpo = LOG.tab === "silogismos" ? logRenderSil() : LOG.tab === "cuadrado" ? logRenderCuadrado() + (typeof logmConversion === "function" ? logmConversion() : "") : LOG.tab === "conjuntos" ? logRenderConjuntos() : LOG.tab === "puertas" ? logRenderPuertas()
     : LOG.tab === "formalizar" && typeof logRenderFormalizar === "function" ? logRenderFormalizar() : LOG.tab === "inferencia" && typeof logRenderInferencia === "function" ? logRenderInferencia() : LOG.tab === "cuantificadores" && typeof logRenderCuantificadores === "function" ? logRenderCuantificadores()
     : LOG_PAR_VISTAS.includes(LOG.tab) ? logRenderParadojas(LOG.tab) : logRenderTablas();
   box.innerHTML = '<div class="fgroup lg-tabs" role="tablist">' + tabs.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (grupo === k) + '">' + logT(l) + "</button>").join("") + "</div>" +

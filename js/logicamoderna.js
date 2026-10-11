@@ -83,7 +83,9 @@ const LOGM_REGLAS = [
 const LOGM_FALACIAS = [
   { k: "ac", n: "إثبات التالي", p: "p → q; q", c: "p", ej: "إذا أمطرت، تبتلّ الأرض. الأرض مبتلّة. إذن أمطرت.", por: "قد تكون الأرض مبتلّة لسبب آخر: سقاها أحدهم. الشرط الكافي ليس الشرط الوحيد الممكن." },
   { k: "na", n: "نفي المقدَّم", p: "p → q; ¬p", c: "¬q", ej: "إذا درستَ، تنجح. لم تدرس. إذن لن تنجح.", por: "القاعدة لا تقول ماذا يحدث إذا لم تدرس: ربما تنجح لسبب آخر." },
-  { k: "ad", n: "إثبات أحد طرفي الفصل", p: "p ∨ q; p", c: "¬q", ej: "إمّا أن نذهب إلى السينما أو نذهب للعشاء. نذهب إلى السينما. إذن لن نذهب للعشاء.", por: "«أو» المنطقية فصل شامل: يمكن فعل الأمرين معًا. لا تكون الحجة صحيحة إلا إذا كانت الجملة تستبعد الأمرين معًا." }
+  { k: "ad", n: "إثبات أحد طرفي الفصل", p: "p ∨ q; p", c: "¬q", ej: "إمّا أن نذهب إلى السينما أو نذهب للعشاء. نذهب إلى السينما. إذن لن نذهب للعشاء.", por: "«أو» المنطقية فصل شامل: يمكن فعل الأمرين معًا. لا تكون الحجة صحيحة إلا إذا كانت الجملة تستبعد الأمرين معًا." },
+  { k: "nc", n: "نفي أحد طرفي الوصل", p: "¬(p ∧ q)", c: "¬p", ej: "ليس صحيحًا أنه في البيت وفي القسم في الوقت نفسه. إذن ليس في البيت.", por: "يكفي ألّا يتحقق أحد الطرفين: قد يكون في البيت وليس في القسم. من ¬(p ∧ q) يلزم فقط ¬p ∨ ¬q (دي مورغان)." },
+  { k: "cc", n: "عكس الشرطية", p: "p → q", c: "q → p", ej: "إذا كان كلبًا، فهو من الثدييات. إذن، إذا كان من الثدييات، فهو كلب.", por: "كون p كافيًا لـq لا يعني أن q كافٍ لـp: القطّ أيضًا من الثدييات. إنه الخطأ نفسه الذي يخلط بين «إذا» و«فقط إذا»." }
 ];
 const LOGM_EJ = [
   { t: "إذا كان سقراط إنسانًا، فهو فانٍ. سقراط إنسان. إذن سقراط فانٍ.", r: "mp" },
@@ -95,7 +97,9 @@ const LOGM_EJ = [
   { t: "إذا شككت، فأنا أفكر. أنا أشك. إذن أنا أفكر.", r: "mp" },
   { t: "تدرس آنا الفلسفة أو التاريخ. تدرس الفلسفة. إذن لا تدرس التاريخ.", r: "ad" },
   { t: "لو كانت النفس مادية، لتحلّلت مثل الجسد. النفس لا تتحلّل. إذن النفس ليست مادية.", r: "mt" },
-  { t: "إذا كانت النظرية جيدة، تتحقق تنبؤاتها. تنبؤاتها تتحقق. إذن النظرية جيدة.", r: "ac" }
+  { t: "إذا كانت النظرية جيدة، تتحقق تنبؤاتها. تنبؤاتها تتحقق. إذن النظرية جيدة.", r: "ac" },
+  { t: "إذا أمطرت، فهناك غيوم. إذن، إذا كانت هناك غيوم، فإنها تمطر.", r: "cc" },
+  { t: "ليس صحيحًا أن المتهم مذنب وأنه تصرّف وحده. إذن المتهم ليس مذنبًا.", r: "nc" }
 ];
 function logmTodas(){ return LOGM_REGLAS.concat(LOGM_FALACIAS); }
 function logmForma(x){ return x.p.split(";").map(s => s.trim()).join(" · ") + " ⊢ " + x.c; }
@@ -108,6 +112,7 @@ function logRenderInferencia(){
   const T = logmTodas();
   return '<div class="lg-panel"><h2>' + logmT("validas") + '</h2><div class="lg-reglas">' + LOGM_REGLAS.map(x => logmCarta(x, false)).join("") + "</div></div>" +
     '<div class="lg-panel"><h2>' + logmT("falacias") + '</h2><div class="lg-reglas">' + LOGM_FALACIAS.map(x => logmCarta(x, true)).join("") + "</div></div>" +
+    logmPuedeNoPuede() +
     '<div class="lg-panel"><h2>' + logmT("ejTit") + '</h2><p class="lg-nota">' + logmT("ejAyuda") + "</p>" +
     LOGM_EJ.map((e, i) => {
       const r = LOG.inf[i], bien = T.find(x => x.k === e.r);
@@ -127,6 +132,10 @@ const LOGM_CQ_TXT = {
   cqNeg: "نفي المكمِّم: ¬∀x Px تكافئ ∃x ¬Px («ليس الكل» = «بعضها ليس»)، و¬∃x Px تكافئ ∀x ¬Px («لا شيء» = «كلها ليست»). لهذا تكون A وO متناقضتين، وكذلك E وI.",
   cqMundo: "عالم صغير", cqMundoAyuda: "خمسة أفراد (a, b, c, d, e). حدّدوا أيّها S وأيّها P، وانظروا أيّ القضايا تصبح صادقة.",
   cqInd: "الفرد", cqVacio: "جرّبوا أن تتركوا S فارغة: عندئذ تكون «كل S هو P» و«لا شيء من S هو P» صادقتين معًا، وتكون «بعض S هو P» كاذبة. في المنطق الحديث، لا تفترض القضية الكلية أن S موجودة: هذا هو الالتزام الوجودي في الموضوع 4.",
+  cqOrdenTit: "مغالطة في المكمِّمات: تغيير الترتيب",
+  cqOrden: "«لكل شخص أمّ» تُكتب ∀x ∃y Myx: لكل شخص x يوجد شخص y هو أمّه. «توجد أمّ للجميع» تُكتب ∃y ∀x Myx: يوجد y واحد هو أمّ لكل x. تغيير ترتيب ∀ و∃ يغيّر المعنى: الجملة الثانية لا تلزم عن الأولى.",
+  cqOrdenMadre: "أمّه", cqOrdenContra: "المثال المضاد: في هذا العالم لكل واحد أمّه، إذن ∀x ∃y Myx صادقة؛ لكن لا توجد أمّ للثلاثة معًا، إذن ∃y ∀x Myx كاذبة. مقدمة صادقة ونتيجة كاذبة: الاستدلال غير صحيح. (أما العكس فصحيح: إذا وُجدت أمّ للجميع، فلكل واحد أمّ).",
+  cqOrdenFilo: "في الفلسفة: يُناقَش هل يقوم أرسطو بهذه القفزة في بداية «الأخلاق إلى نيقوماخوس» (I 2)، لأنه إذا كان كل فعل يطلب غاية ما، فلا يلزم عن ذلك أن توجد غاية واحدة تطلبها كل الأفعال. ويرى بعض نقّاد البراهين الكوسمولوجية هذه المغالطة في الانتقال من «لكل شيء سبب» إلى «يوجد سبب لكل شيء».",
   cqTesti: "يُظهر ذلك: {x}", cqContra: "تفشل عند: {x}", cqNadie: "لا يوجد أيّ واحد", cqSinS: "صادقة لأنه لا يوجد أيّ S",
   cqPresets: "عوالم نموذجية:", cqP1: "كل S هو P", cqP2: "لا شيء من S هو P", cqP3: "بعضها نعم وبعضها لا", cqP4: "لا يوجد أيّ S",
   cqEjTit: "ما الصيغة؟", cqEjAyuda: "اختاروا الصيغة التي تقول ما تقوله الجملة. الحرف الكبير هو المحمول، والحرف الصغير فرد معيّن.",
@@ -152,7 +161,9 @@ const LOGM_CQ_EJ = [
   { f: "لم يكن يصوّت في الجمعية إلا المواطنون.", d: "V = كان يصوّت في الجمعية، C = مواطن", o: ["∀x (Cx → Vx)", "∀x (Vx → Cx)", "∃x (Vx ∧ Cx)"], r: 1, por: "حالة فخّ: «إلا الـ C» (أي «فقط الـ C») تضع الشرط اللازم بعد السهم: كل من كان يصوّت كان مواطنًا (وليس كل مواطن كان يصوّت)." },
   { f: "يوجد شيء لم يتسبّب فيه شيء آخر.", d: "C = له سبب هو شيء آخر", o: ["¬∃x Cx", "∀x ¬Cx", "∃x ¬Cx"], r: 2, por: "يوجد x واحد على الأقل ليس له سبب: هذه فكرة المحرّك الأول عند أرسطو أو السبب الأول عند توما الأكويني." },
   { f: "سقراط فانٍ.", d: "M = فانٍ، s = سقراط", o: ["∃x Mx", "Ms", "∀x Mx"], r: 1, por: "الفرد المعيّن يُكتب بحرف صغير (ثابت): لا حاجة إلى مكمِّم." },
-  { f: "كل من يفكر موجود.", d: "P = يفكر، E = موجود", o: ["∀x (Px → Ex)", "∀x (Ex → Px)", "∃x (Px ∧ Ex)"], r: 0, por: "كلية موجبة (A). لاستخلاص «أنا موجود» نحتاج أيضًا إلى المقدمة «أنا أفكر» (Pi) وإلى التخصيص الكلي، كما في مثال سقراط." }
+  { f: "كل من يفكر موجود.", d: "P = يفكر، E = موجود", o: ["∀x (Px → Ex)", "∀x (Ex → Px)", "∃x (Px ∧ Ex)"], r: 0, por: "كلية موجبة (A). لاستخلاص «أنا موجود» نحتاج أيضًا إلى المقدمة «أنا أفكر» (Pi) وإلى التخصيص الكلي، كما في مثال سقراط." },
+  { f: "لكل شخص أمّ.", d: "M = «y أمّ x»", o: ["∃y ∀x Myx", "∀x ∃y Myx", "∀x ∀y Myx"], r: 1, por: "لكل شخص أمّ ما (قد تختلف من حالة إلى أخرى). أما ∃y ∀x Myx فتعني أنه توجد أمّ واحدة للجميع: وهذا هو تغيير ترتيب المكمِّمات." },
+  { f: "يوجد شخص يُعجب به الجميع.", d: "A = «x يُعجب بـy»", o: ["∀x ∃y Axy", "∃y ∀x Axy", "∃x ∃y Axy"], r: 1, por: "يوجد y بحيث يُعجب به الجميع. أما ∀x ∃y Axy فتعني فقط أن كل واحد يُعجب بشخص ما، وربما بأشخاص مختلفين." }
 ];
 function logmCqEval(m){
   const ix = i => LOGM_CQ_IND[i], S = m.map(r => !!r[0]), P = m.map(r => !!r[1]), all = [0, 1, 2, 3, 4];
@@ -180,6 +191,10 @@ function logRenderCuantificadores(){
     '<div class="lg-panel"><h2>' + logmT("cqMundo") + '</h2><p class="lg-nota">' + logmT("cqMundoAyuda") + '</p><p class="lg-nota">' + logmT("cqPresets") + " " +
     [["p1", "cqP1"], ["p2", "cqP2"], ["p3", "cqP3"], ["p4", "cqP4"]].map(([k, l]) => '<button type="button" class="chip" data-cqpre="' + k + '">' + logmT(l) + "</button>").join(" ") + "</p>" +
     '<div id="lg-cq">' + logmCqMundo() + '</div><p class="lg-nota">' + logmT("cqVacio") + "</p></div>" +
+    logmGeneralizacion() +
+    /* (12-10) la falacia del cambio de orden de los cuantificadores, con su contraejemplo */
+    '<div class="lg-panel"><h2>' + logmT("cqOrdenTit") + "</h2><p>" + logmT("cqOrden") + '</p><div class="tablewrap"><table class="lg-tabla"><thead><tr><th>x</th><th>' + logmT("cqOrdenMadre") + "</th></tr></thead><tbody>" +
+      [["a", "m1"], ["b", "m2"], ["c", "m3"]].map(([x, y]) => "<tr><td>" + x + "</td><td>" + y + "</td></tr>").join("") + '</tbody></table></div><p class="lg-nota">' + logmT("cqOrdenContra") + '</p><p class="lg-nota">' + logmT("cqOrdenFilo") + "</p></div>" +
     '<div class="lg-panel"><h2>' + logmT("cqEjTit") + '</h2><p class="lg-nota">' + logmT("cqEjAyuda") + "</p>" +
     LOGM_CQ_EJ.map((e, i) => {
       const r = ej[i];
@@ -190,6 +205,58 @@ function logRenderCuantificadores(){
 }
 
 Object.assign(LOGM_TXT, LOGM_CQ_TXT);
+
+/* ---------- (12-10) lo que faltaba: conversión ilícita, generalización apresurada y «lo que la lógica puede y no puede refutar» ---------- */
+const LOGM_EXTRA_TXT = {
+  convTit: "العكس: هل يمكن قلب القضية؟",
+  convIntro: "العكس هو تبادل الموضوع والمحمول. أحيانًا يحافظ على الصدق وأحيانًا لا. وقلب القضية حين لا يجوز ذلك هو مغالطة العكس غير المشروع.",
+  convProp: "القضية", convConv: "المعكوسة", convVale: "هل يصحّ؟", convEj: "مثال",
+  convSi: "Sí", convNo: "لا: عكس غير مشروع", convAcc: "فقط «بعض P هو S» (إذا كان S موجودًا)",
+  genTit: "من «بعض» إلى «كل»: التعميم المتسرع",
+  gen: "من ∃x (Sx ∧ Px)، أي «بعض S هو P»، لا يلزم ∀x (Sx → Px)، أي «كل S هو P». يبيّن المنطق ذلك بمثال مضاد: في عالم «بعضها نعم وبعضها لا» تكون القضية I صادقة والقضية A كاذبة. أمّا عدد الحالات اللازمة للتعميم بحذر فلم يعد مسألة من مسائل المنطق الاستنباطي، بل مسألة استقراء: لا يضمنه أيّ عدد من الحالات.",
+  genVer: "شاهدوه في العالم الصغير",
+  lpTit: "ما يستطيع المنطق تفنيده وما لا يستطيع",
+  lpIntro: "المغالطات الصورية السابقة تُفنَّد بالصورة: يكفي مثال مضاد واحد. ومغالطات أخرى ليس فيها خلل في الصورة، لكنّ صياغتها صوريًا تساعد على رؤيتها. وأخرى لا يمكن تفنيدها بالمنطق، لأنّ المشكلة في المضمون.",
+  lpAyuda: "المنطق يساعد، لكنه لا يكفي", lpNo: "المنطق لا يفنّدها", lpQueVe: "ما يبيّنه المنطق",
+  lpNoIntro: "قد تكون صورتها صحيحة، وقد لا تكون حجة أصلًا: الخلل في كون المقدمات صادقة أو في صلتها بالموضوع. ولكشفها يجب السؤال عن المضمون.",
+  lpDuelo: "تدرّبوا عليها في «مبارزة الحجج» →"
+};
+const LOGM_CONV = [
+  ["A", "كل S هو P", "كل P هو S", "no", "كل كلب ثديي؛ لكن ليس كل ثديي كلبًا."],
+  ["E", "لا شيء من S هو P", "لا شيء من P هو S", "si", "لا شيء من الأسماك ثديي؛ إذن لا شيء من الثدييات سمكة."],
+  ["I", "بعض S هو P", "بعض P هو S", "si", "بعض الفلاسفة يونانيون؛ إذن بعض اليونانيين فلاسفة."],
+  ["O", "بعض S ليس P", "بعض P ليس S", "no", "بعض الحيوانات ليست كلابًا؛ لكن لا يلزم من ذلك أنّ بعض الكلاب ليست حيوانات."]
+];
+const LOGM_AYUDA = [
+  { n: "الاشتراك اللفظي", ej: "«غاية» الشيء هي كماله. والموت «نهاية» الحياة. إذن الموت هو كمال الحياة. (في الإسبانية كلمة واحدة «fin» تعني «الغاية» و«النهاية» معًا.)", ve: "عند الصياغة الصورية، تأخذ «fin» بمعنى «الغاية» و«fin» بمعنى «النهاية» حرفين مختلفين: يظهر حدّ رابع، فلا يبقى القياس صحيحًا." },
+  { n: "المصادرة على المطلوب", ej: "هذا الكتاب يقول الحقيقة، لأنّ الكتاب نفسه يقول ذلك.", ve: "الحجة صحيحة (p ⊢ p)، لكنّ النتيجة كانت موجودة أصلًا في المقدمة: فهي لا تثبت شيئًا لم يكن مُسلَّمًا به من قبل." },
+  { n: "الثنائية الزائفة", ej: "إمّا أن تكون معي وإمّا أن تكون ضدي. أنت لست معي. إذن أنت ضدي.", ve: "الصورة قياس فصلي، وهو صحيح. ما يختلّ هو المقدمة p ∨ q: هناك خيارات أخرى." },
+  { n: "المنحدر الزلق", ej: "إذا سمحنا باستعمال الهاتف في الاستراحة، فسيستعملونه في القسم؛ وإذا استعملوه في القسم، فلن ينتبه أحد؛ وإذا لم ينتبه أحد، فسيرسب الجميع.", ve: "السلسلة p → q، q → r، r → s صحيحة (قياس شرطي)، لكنّ كل قضية شرطية فيها محتملة في أحسن الأحوال: والاحتمال يضعف في كل خطوة." },
+  { n: "القياس المضمر", ej: "إنه غالٍ، إذن لا بدّ أنه جيد.", ve: "لكي يكون صحيحًا تنقصه مقدمة: «كل ما هو غالٍ جيد». الصياغة الصورية تُظهرها، وعندئذ نرى أنها كاذبة." }
+];
+const LOGM_NOFORMAL = [
+  ["الهجوم على الشخص (الشخصنة، ad hominem)", "تهاجم المتكلّم، لا ما يقوله."],
+  ["السلطة الزائفة", "تُسند النتيجة إلى شخص ليس خبيرًا في ذلك المجال."],
+  ["الاحتكام إلى الأغلبية (ad populum)", "اعتقاد كثير من الناس بشيء لا يجعله صحيحًا."],
+  ["الاحتكام إلى الشفقة أو إلى الخوف", "تبحث عن إثارة عاطفة بدل تقديم سبب."],
+  ["رجل القشّ", "تفنّد صيغة مشوَّهة لما قاله الآخر."],
+  ["السبب الزائف", "حدوث شيء بعد شيء آخر لا يثبت أنه سببه."]
+];
+function logmConversion(){
+  return '<div class="lg-panel"><h2>' + logmT("convTit") + '</h2><p class="lg-nota">' + logmT("convIntro") + '</p><div class="tablewrap"><table class="lg-tabla"><thead><tr><th></th><th>' + logmT("convProp") + "</th><th>" + logmT("convConv") + "</th><th>" + logmT("convVale") + "</th><th>" + logmT("convEj") + "</th></tr></thead><tbody>" +
+    LOGM_CONV.map(([t, p, c, v, e]) => "<tr><th>" + t + "</th><td>" + logEsc(p) + "</td><td>" + logEsc(c) + '</td><td class="lg-' + (v === "si" ? "v" : "f") + '">' + logmT(v === "si" ? "convSi" : "convNo") + (t === "A" ? "<br><small>" + logmT("convAcc") + "</small>" : "") + "</td><td>" + logEsc(e) + "</td></tr>").join("") + "</tbody></table></div></div>";
+}
+function logmGeneralizacion(){
+  return '<div class="lg-panel"><h2>' + logmT("genTit") + "</h2><p>" + logmT("gen") + '</p><p><button type="button" class="btn ghost" data-cqpre="p3">' + logmT("genVer") + "</button></p></div>";
+}
+function logmPuedeNoPuede(){
+  const duelo = document.getElementById("duelo") ? '<p><button type="button" class="btn ghost" data-igo="duelo" data-iarg="">' + logmT("lpDuelo") + "</button></p>" : "";
+  return '<div class="lg-panel"><h2>' + logmT("lpTit") + '</h2><p class="lg-nota">' + logmT("lpIntro") + "</p><h3>" + logmT("lpAyuda") + '</h3><div class="lg-reglas">' +
+    LOGM_AYUDA.map(x => '<div class="lg-regla lg-medio"><h3>' + logEsc(x.n) + '</h3><p><b>' + logmT("ejemplo") + ":</b> " + logEsc(x.ej) + "</p><p><b>" + logmT("lpQueVe") + ":</b> " + logEsc(x.ve) + "</p></div>").join("") + "</div>" +
+    "<h3>" + logmT("lpNo") + '</h3><p class="lg-nota">' + logmT("lpNoIntro") + '</p><ul class="lg-nof">' + LOGM_NOFORMAL.map(([n, d]) => "<li><b>" + logEsc(n) + ":</b> " + logEsc(d) + "</li>").join("") + "</ul>" + duelo + "</div>";
+}
+Object.assign(LOGM_TXT, LOGM_EXTRA_TXT);
+
 
 /* ---------- eventos (delegados en la caja del Rincón; logicaview.js maneja los demás) ---------- */
 (function(){
@@ -203,7 +270,7 @@ Object.assign(LOGM_TXT, LOGM_CQ_TXT);
     else if (b.dataset.fzsol != null){ const i = +b.dataset.fzsol; LOG.fz[i] = Object.assign(LOG.fz[i] || {}, { sol: true }); const r = document.getElementById("lg-fzr-" + i); if (r) r.innerHTML = logmFzRes(i); }
     else if (b.dataset.infp != null){ LOG.prem = b.dataset.infp; LOG.concl = b.dataset.infc; LOG.tab = "tablas"; logRender(); const a = document.getElementById("lg-arg"); if (a) a.scrollIntoView({ block: "center" }); }
     else if (b.dataset.cqi != null){ const r = LOG.cq.m[+b.dataset.cqi]; r[+b.dataset.cqj] = r[+b.dataset.cqj] ? 0 : 1; const c = document.getElementById("lg-cq"); if (c) c.innerHTML = logmCqMundo(); }
-    else if (b.dataset.cqpre){ LOG.cq.m = LOGM_CQ_PRE[b.dataset.cqpre].map(r => r.slice()); const c = document.getElementById("lg-cq"); if (c) c.innerHTML = logmCqMundo(); }
+    else if (b.dataset.cqpre){ LOG.cq.m = LOGM_CQ_PRE[b.dataset.cqpre].map(r => r.slice()); const c = document.getElementById("lg-cq"); if (c){ c.innerHTML = logmCqMundo(); if (b.closest(".lg-panel") !== c.closest(".lg-panel")) c.scrollIntoView({ block: "center" }); } }
     else if (b.dataset.cqej != null){ LOG.cq.ej[+b.dataset.cqej] = +b.dataset.cqo; const y = window.scrollY; logRender(); window.scrollTo(0, y); }
     else if (b.dataset.infej != null){ LOG.inf[+b.dataset.infej] = b.dataset.infr; const y = window.scrollY; logRender(); window.scrollTo(0, y); }
   });

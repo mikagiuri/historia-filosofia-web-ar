@@ -2037,6 +2037,9 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 #logicabox .chip.lg-chip-ok{ outline:2px solid #2e9e6b; } #logicabox .chip.lg-chip-no{ outline:2px solid #c0392b; }
 #logicabox .lg-cq-cel{ min-width:2.2rem; justify-content:center; } #logicabox .lg-cq-cel.on{ background:var(--accent); color:#fff; border-color:var(--accent); }
 #logicabox .lg-cq-x{ font-size:.85rem; color:var(--muted); }
+#logicabox .lg-regla.lg-medio{ border-left-color:#d95f02; }
+#logicabox .lg-nof{ margin:.3rem 0; padding-left:1.1rem; } #logicabox .lg-nof li{ margin:.25rem 0; }
+#logicabox .lg-panel > h3{ margin:1rem 0 .4rem; }
 
 
 /* ==== css/leibniz.css ==== */
