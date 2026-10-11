@@ -21,7 +21,7 @@
     ariaItin: "مسار الموضوع", ariaPau: "مسار PAU", ariaCrumbs: "أين أنتم", deEsteTema: "من هذا الموضوع:",
     p1: "اقرؤوا الدرس", p1clases: "تابعوا الحصص", p2: "راجعوا بالبطاقات", p3: "اختبروا أنفسكم", p4: "مراجعة بصرية",
     aqui: "أنتم هنا", siguiente: "الخطوة التالية",
-    temas: "المواضيع", unidades: "الوحدات", tema: "الموضوع {n}", unidad: "الوحدة {n}",
+    temas: "المواضيع", exploraciones: "استكشافات", unidades: "الوحدات", tema: "الموضوع {n}", unidad: "الوحدة {n}",
     seguir: "لمواصلة هذا الموضوع", tarjetas: "بطاقات", cuestionarios: "اختبارات", infografias: "إنفوغرافيك", mapas: "خرائط المفاهيم",
     esquemas: "خطاطات", lecturas: "قراءات", comentarios: "شروح النصوص", dilemas: "معضلات أخلاقية", pistas: "تلميحات متدرجة", conceptos: "المفاهيم",
     nTarjetas: "{n} بطاقات", nPreguntas: "{n} أسئلة", anterior: "الموضوع السابق", siguienteTema: "الموضوع التالي", anexos: "استكشافات", epoca: "الحقبة", volverTema: "العودة إلى الموضوع",
@@ -380,11 +380,24 @@
       groups[groups.length - 1].ks.push(k);
     });
     return '<div class="sec-head"><h2 class="sec">' + esc(t("temas")) + '</h2></div>' + groups.map(function(gr){
-      return (gr.g ? '<h3 class="temas-b" data-' + grpAttr + '="' + esc(gr.g) + '">' + esc((grpNames && grpNames[gr.g]) || gr.g) + '</h3>' : '') + '<ol class="itin-temas" style="--c:' + (SUBJ_COLOR[subject] || "var(--accent)") + '">' + gr.ks.map(function(k){
-        var n = temaOf("teoria", k, T[k]), extra = !!THEORY_EXTRA[k], anexo = extra && typeof T[k].temaN === "number";   /* anexos: «Anexo - …», sin «Tema N» */
-        return '<li' + (extra ? ' class="temas-extra"' : '') + (gr.g ? ' data-' + grpAttr + '="' + esc(gr.g) + '"' : '') + '><button type="button" data-igo="teoria" data-iarg="' + esc(k) + '">' +
-          (T[k].sigla ? '<span class="temas-n">' + esc(T[k].sigla) + '</span>' : typeof n === "number" && !anexo ? '<span class="temas-n">' + esc(t("tema", { n: n })) + '</span>' : '') + '<span class="temas-t">' + esc(strip(T[k].title)) + '</span>' + (anexo && T[k].clase ? '<span class="temas-anexo">في القسم</span>' : '') + '</button></li>';
-      }).join("") + '</ol>';
+      return (gr.g ? '<h3 class="temas-b" data-' + grpAttr + '="' + esc(gr.g) + '">' + esc((grpNames && grpNames[gr.g]) || gr.g) + '</h3>' : '') + '<ol class="itin-temas" style="--c:' + (SUBJ_COLOR[subject] || "var(--accent)") + '">' + (function(){
+        /* (11-10) las exploraciones de cada tema van plegadas en «Exploraciones (n)», al final de lo de ese tema */
+        var out = "", exp = [], ga = gr.g ? ' data-' + grpAttr + '="' + esc(gr.g) + '"' : '';
+        function flush(){
+          if (!exp.length) return;
+          out += '<li class="temas-exp"' + ga + '><details><summary>' + esc(t("exploraciones")) + ' (' + exp.length + ')</summary><ol class="itin-temas">' + exp.join("") + '</ol></details></li>';
+          exp = [];
+        }
+        gr.ks.forEach(function(k){
+          var n = temaOf("teoria", k, T[k]), extra = !!THEORY_EXTRA[k], anexo = extra && typeof T[k].temaN === "number";   /* anexos: «Exploración - …», sin «Tema N» */
+          var li = '<li' + (extra ? ' class="temas-extra"' : '') + ga + '><button type="button" data-igo="teoria" data-iarg="' + esc(k) + '">' +
+            (T[k].sigla ? '<span class="temas-n">' + esc(T[k].sigla) + '</span>' : typeof n === "number" && !anexo ? '<span class="temas-n">' + esc(t("tema", { n: n })) + '</span>' : '') + '<span class="temas-t">' + esc(anexo ? strip(T[k].title).replace(/^[^\s-]+ - /, "") : strip(T[k].title)) + '</span>' + (anexo && T[k].clase ? '<span class="temas-anexo">في القسم</span>' : '') + '</button></li>';
+          if (anexo) exp.push(li);
+          else { if (!extra) flush(); out += li; }
+        });
+        flush();
+        return out;
+      })() + '</ol>';
     }).join("");
   }
   ["fil", "hf", "ipc"].forEach(function(s){

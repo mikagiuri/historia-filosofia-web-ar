@@ -353,3 +353,10 @@ document.querySelectorAll(".courses [data-view]").forEach(card => {
     else window.prompt("انسخوا الرابط:", b.dataset.url);
   }));
 })();
+
+/* (11-10) menú de idioma 🌐 de las webs publicadas (lo pone tools/seo_lib.js langButton): se cierra al tocar fuera o con Escape */
+(function(){
+  const menu = () => document.getElementById("langmenu");
+  document.addEventListener("click", e => { const d = menu(); if (d && d.open && !d.contains(e.target)) d.open = false; });
+  document.addEventListener("keydown", e => { const d = menu(); if (e.key === "Escape" && d && d.open){ d.open = false; d.querySelector("summary").focus(); } });
+})();
