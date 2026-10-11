@@ -807,6 +807,13 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 @media (min-width: 880px) and (max-width: 1099px) {
   .bar-in:has(.langbtn) { gap: 10px; }
   .bar-in:has(.langbtn) .theme { width: 34px; height: 34px; }
+  /* (12-10) con el grupo «Historia» (siete grupos) tampoco cabía: grupos más estrechos */
+  #tabs .navgroup { padding: 7px 7px; gap: 4px; font-size: .88rem; }
+}
+@media (min-width: 880px) and (max-width: 999px) {
+  #tabs .navgroup::after { display: none; }
+  #tabs .navgroup { padding: 6px 5px; font-size: .85rem; }
+  .bar-in:has(.langbtn) { gap: 6px; }
 }
 @media (min-width: 761px) and (max-width: 879px) {
   /* ---- Cabecera con menú ☰ ---- */
