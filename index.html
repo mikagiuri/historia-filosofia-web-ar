@@ -52,9 +52,17 @@
           <button data-view="reto">تحدٍّ</button>
           <button data-view="parejas">أزواج</button>
           <button data-view="glosario">مسرد المصطلحات</button>
-          <button data-view="ilustres">أعلام</button>
           <button data-view="citas">أقوال</button>
           <button data-view="adagios">المأثورات</button>
+        </div>
+      </div>
+      <div class="navsec">
+        <span class="navgroup" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">التاريخ</span>
+        <div class="navmenu">
+          <button data-view="ilustres">أعلام</button>
+          <button data-view="epocas">العصور</button>
+          <button data-view="cronogramas">الجداول الزمنية</button>
+          <button data-view="genealogias">الأنساب الفكرية</button>
           <button data-view="polemicas">سجالات</button>
           <button data-view="perseguidos">المضطهَدون</button>
           <button data-view="comunidades">الجماعات</button>
@@ -79,8 +87,6 @@
           <button data-view="infografias">إنفوغرافيك</button>
           <button data-view="galeria">معرض الصور</button>
           <button data-view="mapas">خرائط المفاهيم</button>
-          <button data-view="cronogramas">الجداول الزمنية</button>
-          <button data-view="genealogias">الأنساب الفكرية</button>
           <button data-view="esquemas">خطاطات</button>
         </div>
       </div>
@@ -281,7 +287,7 @@
 
   <!-- ILUSTRES -->
   <section class="view" id="ilustres">
-    <p class="eyebrow">مرجع</p>
+    <p class="eyebrow">التاريخ</p>
     <h1 class="title">أعلام</h1>
     <p class="lead">سير المفكرين الذين يرد ذكرهم في الدروس، من فلاسفة ما قبل سقراط إلى اليوم: من كانوا، وماذا فكروا، وفي أي المواضيع ندرسهم. صفّوا حسب <strong>العصر</strong> أو ابحثوا بالاسم أو بالعمل أو بالفكرة.</p>
     <div class="filterbar" id="ilufilter" role="group" aria-label="تصفية الأعلام"></div>
@@ -307,10 +313,18 @@
     <div id="duelobox"></div>
   </section>
 
+  <section class="view" id="epocas">
+    <!-- (12-10) Índice de las fichas de época (epocas_fichas.js), que antes solo se abrían desde Ilustres; cada tarjeta lleva el cosmos de su época. -->
+    <p class="eyebrow">التاريخ</p>
+    <h1 class="title">العصور</h1>
+    <p class="lead">سبع بطاقات، من اليونان القديمة إلى اليوم: ما الذي تغيّر في كل عصر في المجتمع والسياسة والعلم والفن والفكر، وكيف كان يُتصوَّر الكون.</p>
+    <div id="epocasbox"></div>
+  </section>
+
   <section class="view" id="polemicas">
     <!-- (11-10) Polémicas: pensadores coetáneos que se enfrentaron cara a cara, por cartas, con libros o desde escuelas rivales
          (polemicas.js + polemicasview.js). Solo Bachillerato: la web de ESO no la lleva (build_eso.js). -->
-    <p class="eyebrow">للمراجعة</p>
+    <p class="eyebrow">التاريخ</p>
     <h1 class="title">سجالات: وجهًا لوجه</h1>
     <p class="lead">فلاسفة عاشوا في الزمن نفسه وتواجهوا حقًّا. اختاروا مع مَن أنتم، وقدّموا سببكم، وانظروا إلى أقوى حجة للطرف الآخر.</p>
     <div class="filterbar" id="polemicasfilter" role="group" aria-label="تصفية السجالات"></div>
@@ -320,7 +334,7 @@
   <section class="view" id="perseguidos">
     <!-- (11-10) Perseguidos por sus ideas y Comunidades de filósofos: fichas (perseguidos.js, comunidades.js + casosview.js, casos.css).
          Solo Bachillerato: la web de ESO no las lleva (build_eso.js). -->
-    <p class="eyebrow">للمراجعة</p>
+    <p class="eyebrow">التاريخ</p>
     <h1 class="title">مضطهَدون بسبب أفكارهم</h1>
     <p class="lead">فلاسفة وعلماء كلّفتهم طريقة تفكيرهم حياتهم أو حريتهم أو وطنهم.</p>
     <div class="filterbar" id="perseguidosfilter" role="group" aria-label="تصفية المضطهَدين"></div>
@@ -328,7 +342,7 @@
   </section>
 
   <section class="view" id="comunidades">
-    <p class="eyebrow">للمراجعة</p>
+    <p class="eyebrow">التاريخ</p>
     <h1 class="title">جماعات الفلاسفة</h1>
     <p class="lead">مدارس وحلقات ومجموعات من المفكرين، والأماكن التي كانوا يجتمعون فيها: حدائق، وجمنازيومات، وبيوت، وقاعات.</p>
     <div class="filterbar" id="comunidadesfilter" role="group" aria-label="تصفية الجماعات"></div>
@@ -398,7 +412,7 @@
   </section>
 
   <section class="view" id="cronogramas">
-    <p class="eyebrow">مرئيات</p>
+    <p class="eyebrow">التاريخ</p>
     <h1 class="title">الجداول الزمنية</h1>
     <p class="lead">المحور الزمني للمقرر (العصور والأحداث والمؤلفون) والخطوط الزمنية في كتاب تاريخ الفلسفة: حياة المفكرين وعصور كل محور على محور من السنوات.</p>
     <div class="crono-filter" id="cronofilter" role="group" aria-label="التصفية حسب المحور"></div>
@@ -407,7 +421,7 @@
   </section>
 
   <section class="view" id="genealogias">
-    <p class="eyebrow">مرئيات</p>
+    <p class="eyebrow">التاريخ</p>
     <h1 class="title">الأنساب الفكرية</h1>
     <p class="lead">الخطوط الكبرى للفكر عبر التاريخ، مثل خريطة المترو: كل تقليد خط، ومحطاته هي المفكرون الذين يواصلونه، بحسب ترتيب عيشهم. وحيث يشترك خطان في مفكر توجد محطة تبديل؛ وبالأحمر، التعارضات الأساسية. تُظهر الجداول الزمنية من عاش في الفترة نفسها؛ وتُظهر الأنساب الفكرية كيف تنتقل الأفكار من واحد إلى آخر. انقروا على اسم لرؤية بطاقته.</p>
     <div id="geneabox"></div>

@@ -2670,3 +2670,13 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 #ilustres .ilu-epoca .ilu-sec p, #ilustres .ilu-epoca .ilu-sec li{font-size:1rem;line-height:1.65;max-width:70ch}
 #ilustres .ilu-epoca .ilu-sec ul{padding-inline-start:1.2em;margin:0}
 
+/* (12-10) Vista «Épocas»: tarjetas de las fichas de época con su color y el dibujo de su cosmos */
+#epocas [data-b="ant"]{--e:var(--e-ant)} #epocas [data-b="med"]{--e:var(--e-med)} #epocas [data-b="ren"]{--e:var(--e-ren)}
+#epocas [data-b="mod"]{--e:var(--e-mod)} #epocas [data-b="ilu"]{--e:var(--e-ilu)} #epocas [data-b="con"]{--e:var(--e-con)}
+#epocasbox{display:grid;gap:18px;max-width:860px}
+#epocas .epo-card{border:1px solid var(--line);border-top:4px solid var(--e);border-radius:var(--radius);background:var(--surface);padding:16px 20px}
+#epocas .epo-card h2{margin:0;font-size:1.25rem} #epocas .epo-card h2 a{color:inherit;text-decoration:none} #epocas .epo-card h2 a:hover{text-decoration:underline}
+#epocas .ilu-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--e);margin-inline-end:8px;vertical-align:2px}
+#epocas .ilu-life{margin:4px 0 0;color:var(--muted)} #epocas .figwrap{margin:12px 0} #epocas .epo-ir{margin:0}
+[dir="rtl"] #epocas .epo-arr{display:inline-block;transform:scaleX(-1)}
+

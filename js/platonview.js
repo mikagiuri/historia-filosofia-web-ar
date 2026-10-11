@@ -124,7 +124,7 @@ const REP_EVENTS = [
     threat:"إذا أنتجت المدينة أكثر من حاجتها (الفائض ≥ 40% من السكان)، يعمّ الرخاء.",
     effect:()=>{ return (repProd()-repPop()) >= repPop()*0.4 ? { d:2, msg:"فائض: +2." } : { d:0, msg:"لا فائض يُذكر." }; } },
   // — Atenas y su historia (contexto de Platón y Aristóteles) —
-  { id:"delos", name:"الحلف الديلي", src:"Historia", img:"ev-delos",
+  { id:"delos", name:"الحلف الديلي", src:"التاريخ", img:"ev-delos",
     threat:"مع أسطول قوي (المحاربون ≥ المنتجون ÷ 2,5)، يدفع الحلفاء الجزية؛ وإلا فإنهم يتمردون.",
     effect:()=>{ return repNGeff() >= rep.t.E.n/2.5 ? { d:2, msg:"جزية الحلفاء: +2." } : { d:-1, msg:"الحلفاء يتمردون: −1." }; } },
   { id:"esparta", name:"غزو إسبرطة", src:"حرب البيلوبونيز", img:"ev-esparta",
@@ -133,7 +133,7 @@ const REP_EVENTS = [
   { id:"socrates", name:"محاكمة سقراط", src:"الدفاع", img:"ev-socrates",
     threat:"تحاكم المدينة أحكم رجالها. إذا لم يوجد حارس حكيم تمامًا (SJ 5)، تُدينه.",
     effect:()=>{ return rep.t.Z.max>=5 ? { d:1, msg:"الحكمة تبرّئه: +1." } : { d:-2, msg:"يُدينون أحكم الناس: −2." }; } },
-  { id:"pericles", name:"طموح بريكليس", src:"Historia", img:"ev-pericles",
+  { id:"pericles", name:"طموح بريكليس", src:"التاريخ", img:"ev-pericles",
     threat:"زعيم لامع يباشر أعمالًا عظيمة. مع حرّاس معتدلين (متوسط الاعتدال ≥4,5) يكون عصرًا ذهبيًا؛ وبلا اعتدال تقع الغطرسة (hybris).",
     effect:()=>{ const tavg=rep.t.Z.t/Math.max(1,rep.t.Z.n); return tavg>=4.5 ? { d:2, msg:"العصر الذهبي لبريكليس: +2." } : { d:-2, msg:"طموح مفرط (hybris): −2." }; } },
   { id:"sofistas", name:"صعود السفسطائيين", src:"Gorgias", img:"ev-sofistas",

@@ -357,6 +357,22 @@ window.addEventListener("hashchange", () => {
   if (location.hash === "#ilustres" && document.querySelector("#ilubox .ilu-ficha")) renderIluList();
 });
 
+/* (12-10) Vista «Épocas» (grupo «Historia» del menú): índice de las fichas de época, cada una con el dibujo de su
+   cosmos (el primer diagrama de su campo «ciencia») y el enlace a la ficha completa (#ilustres/epoca-<k>). */
+function renderEpocas(){
+  const box = document.getElementById("epocasbox");
+  if (!box || typeof EPOCAS_FICHAS === "undefined") return;
+  box.innerHTML = Object.keys(EPOCAS_FICHAS).map(k => {
+    const f = EPOCAS_FICHAS[k], blk = f.block || k, m = (f.ciencia || "").match(/<div class="figwrap diag">[\s\S]*?<\/figure><\/div>/);
+    return '<article class="epo-card" data-b="' + blk + '">' +
+      '<h2><i class="ilu-dot" data-b="' + blk + '" aria-hidden="true"></i><a href="#ilustres/epoca-' + k + '">' + iluEsc(iluNombreFicha(k)) + '</a></h2>' +
+      (f.anos ? '<p class="ilu-life">' + iluEsc(f.anos) + '</p>' : '') + (m ? m[0] : '') +
+      '<p class="epo-ir"><a class="btn ghost" href="#ilustres/epoca-' + k + '">' + ILU_EPO.ver + ' <span class="epo-arr" aria-hidden="true">›</span></a></p></article>';
+  }).join("");
+}
+function loadEpocas(){ renderEpocas(); }
+
 renderIluControls();
 renderIluList();
+renderEpocas();
 try { iluInjectTheory(); } catch (e){}   // la primera unidad ya está pintada al cargar theoryview.js
