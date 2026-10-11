@@ -238,7 +238,7 @@ function esqCruces(sv, cruces){
     }
     const path = document.createElementNS(NS, "path");
     path.setAttribute("d", d); path.setAttribute("marker-end", "url(#esqx" + _mid + ")");
-    const t = document.createElementNS(NS, "text"); t.setAttribute("x", lx); t.setAttribute("y", ly); t.textContent = c.rel;
+    const t = document.createElementNS(NS, "text"); t.setAttribute("x", lx); t.setAttribute("و", ly); t.textContent = c.rel;
     layer.appendChild(path); layer.appendChild(t);
   });
   sv.appendChild(layer);
@@ -250,17 +250,17 @@ function esqCruces(sv, cruces){
   }).filter(function (b){ return b.x2 - b.x1 > 2; });
   function choca(b){ return ocupados.some(function (o){ return b.x < o.x2 && b.x + b.width > o.x1 && b.y < o.y2 && b.y + b.height > o.y1; }); }
   layer.querySelectorAll("text").forEach(function (t){
-    const y0 = +t.getAttribute("y"), pasos = [0, -22, 22, -44, 44, -66, 66];
+    const y0 = +t.getAttribute("و"), pasos = [0, -22, 22, -44, 44, -66, 66];
     for (let k = 0; k < pasos.length; k++){
-      t.setAttribute("y", y0 + pasos[k]);
+      t.setAttribute("و", y0 + pasos[k]);
       const b = t.getBBox(); if (!choca({ x: b.x - 4, y: b.y - 2, width: b.width + 8, height: b.height + 4 })) break;
-      if (k === pasos.length - 1) t.setAttribute("y", y0);
+      if (k === pasos.length - 1) t.setAttribute("و", y0);
     }
     const b = t.getBBox(); ocupados.push({ x1: b.x - 4, y1: b.y - 2, x2: b.x + b.width + 4, y2: b.y + b.height + 2 });
   });
   layer.querySelectorAll("text").forEach(function (t){         /* fondo de la etiqueta */
     const b = t.getBBox(), r = document.createElementNS(NS, "rect");
-    r.setAttribute("x", b.x - 4); r.setAttribute("y", b.y - 2); r.setAttribute("width", b.width + 8); r.setAttribute("height", b.height + 4); r.setAttribute("rx", 4);
+    r.setAttribute("x", b.x - 4); r.setAttribute("و", b.y - 2); r.setAttribute("width", b.width + 8); r.setAttribute("height", b.height + 4); r.setAttribute("rx", 4);
     layer.insertBefore(r, t); maxX = Math.max(maxX, b.x + b.width + 8);
   });
   if (maxX > vb.x + vb.width){ vb.width = maxX - vb.x; sv.setAttribute("width", vb.width); sv.style.maxWidth = "none"; }

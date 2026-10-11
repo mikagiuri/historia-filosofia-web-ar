@@ -244,12 +244,12 @@ const EsqGrid = (function (){
         if ((mx + nx - gw / 2) ** 2 + (my + ny - gh / 2) ** 2 > (mx - nx - gw / 2) ** 2 + (my - ny - gh / 2) ** 2){ nx = -nx; ny = -ny; }
         const path = document.createElementNS(NS, "path");
         path.setAttribute("d", "M" + p[0] + "," + p[1] + " Q" + (mx + nx) + "," + (my + ny) + " " + q[0] + "," + q[1]); path.setAttribute("marker-end", "url(#" + mid + "x)");
-        const t = document.createElementNS(NS, "text"); t.setAttribute("x", mx + nx / 2); t.setAttribute("y", my + ny / 2); t.textContent = x.rel;
+        const t = document.createElementNS(NS, "text"); t.setAttribute("x", mx + nx / 2); t.setAttribute("و", my + ny / 2); t.textContent = x.rel;
         g.appendChild(path); g.appendChild(t);
       });
       grid.appendChild(sx);
       g.querySelectorAll("text").forEach(function (t){ const b = t.getBBox(), r = document.createElementNS(NS, "rect");
-        r.setAttribute("x", b.x - 4); r.setAttribute("y", b.y - 2); r.setAttribute("width", b.width + 8); r.setAttribute("height", b.height + 4); g.insertBefore(r, t); });
+        r.setAttribute("x", b.x - 4); r.setAttribute("و", b.y - 2); r.setAttribute("width", b.width + 8); r.setAttribute("height", b.height + 4); g.insertBefore(r, t); });
     }
   }
   drawArrows.n = 0;

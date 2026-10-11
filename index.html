@@ -55,12 +55,13 @@
           <button data-view="ilustres">أعلام</button>
           <button data-view="citas">أقوال</button>
           <button data-view="adagios">المأثورات</button>
+          <button data-view="polemicas">سجالات</button>
         </div>
       </div>
       <div class="navsec">
         <span class="navgroup" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">ألعاب</span>
         <div class="navmenu">
-          <a class="gamelink" href="media/juego_duelo_de_razones_ar.html#hf" target="_blank" rel="noopener">مبارزة الحجج ↗</a>
+          <button data-view="duelo">مبارزة الحجج</button>
           <button data-view="eudaimonia">السعادة (Eudaimonía)</button>
           <button data-view="republica">الجمهورية</button>
           <button data-view="rayuela">حجلة فلسفية</button>
@@ -293,6 +294,25 @@
     <p class="lead">عبارات مشهورة من الفلسفة، من العصور القديمة إلى اليوم: لكل واحدة <strong>مؤلفها</strong> و<strong>عملها</strong>. صفّوا حسب <strong>العصر</strong>.</p>
     <div class="filterbar" id="citasfilter" role="group" aria-label="تصفية الأقوال حسب العصر"></div>
     <div id="citasbody"></div>
+  </section>
+
+  <section class="view" id="duelo">
+    <!-- (11-10) Duelo de razones: antes juego aparte (media/juego_duelo_de_razones*.html, cinco copias); ahora sección (duelo.js + dueloview.js).
+         En todas las webs: cada una muestra los debates de su nivel (eso | fil | hf). -->
+    <p class="eyebrow">ألعاب</p>
+    <h1 class="title">مبارزة الحجج</h1>
+    <div class="due-top"><button type="button" class="due-proybtn" id="dueproy">وضع العرض</button></div>
+    <div id="duelobox"></div>
+  </section>
+
+  <section class="view" id="polemicas">
+    <!-- (11-10) Polémicas: pensadores coetáneos que se enfrentaron cara a cara, por cartas, con libros o desde escuelas rivales
+         (polemicas.js + polemicasview.js). Solo Bachillerato: la web de ESO no la lleva (build_eso.js). -->
+    <p class="eyebrow">للمراجعة</p>
+    <h1 class="title">سجالات: وجهًا لوجه</h1>
+    <p class="lead">فلاسفة عاشوا في الزمن نفسه وتواجهوا حقًّا. اختاروا مع مَن أنتم، وقدّموا سببكم، وانظروا إلى أقوى حجة للطرف الآخر.</p>
+    <div class="filterbar" id="polemicasfilter" role="group" aria-label="تصفية السجالات"></div>
+    <div id="polemicasbox"></div>
   </section>
 
   <section class="view" id="adagios">
@@ -543,6 +563,7 @@
       <h2>مصطلحات الترجمات</h2>
       <ul>
         <li>الباسكية: تُتَّخذ قرارات المصطلحات بالرجوع إلى <em>Euskaltzaindiaren Hiztegia</em> (معجم الأكاديمية الملكية للغة الباسكية)، ويُذكر هنا رابط كل استشارة. 11-10-2026: كلمة «época» بمعنى الحقبة التاريخية تُترجم «aro» (<a href="https://www.euskaltzaindia.eus/index.php?option=com_hiztegianbilatu&amp;task=bilaketa&amp;Itemid=1693&amp;lang=eu&amp;query=aro" target="_blank" rel="noopener">aro</a>، المعنى 4: كل قسم من الأقسام التي يُقسَّم إليها الزمن التاريخي)، لا «garai» (<a href="https://www.euskaltzaindia.eus/index.php?option=com_hiztegianbilatu&amp;task=bilaketa&amp;Itemid=1693&amp;lang=eu&amp;query=garai" target="_blank" rel="noopener">garai</a>، مدة زمنية بوجه عام)؛ و«falacia» (المغالطة) تُترجم «falazia» (<a href="https://www.euskaltzaindia.eus/index.php?option=com_hiztegianbilatu&amp;task=bilaketa&amp;Itemid=1693&amp;lang=eu&amp;query=falazia" target="_blank" rel="noopener">falazia</a>)، لا «faltsukeria» التي تعني «الكذب».</li>
+        <li>الباسكية، 12-10-2026: «libre albedrío» (الإرادة الحرة) تُترجم «borondate askea» (<a href="https://www.euskaltzaindia.eus/index.php?option=com_hiztegianbilatu&amp;task=bilaketa&amp;Itemid=1693&amp;lang=eu&amp;query=borondate" target="_blank" rel="noopener">borondate</a>، المعنى 1: القدرة على الإرادة، وعلى فعل الشيء أو تركه أو الاختيار بحرية)، وهي الصيغة التي يستعملها الموقع من قبل.</li>
       </ul>
       <!-- NOTAS-ARETE-INICIO -->
       <h2>ملاحظات ومراجع حسب المواضيع</h2>
@@ -967,6 +988,7 @@
         <li>استكشاف «القلب الحجري»: أعمال غويا ولوترپورغ وتورنر ودومييه وهوبنر وكولفيتس وغيرهم، ورسوم من تلك الحقبة، من Wikimedia Commons في الملك العام أو برخصة CC0 (National Gallery de Londres, National Gallery of Art de Washington, Statens Museum for Kunst، وغيرها).</li>
         <li>صور فوتوغرافية من Unsplash.</li>
         <li>رسوم مولّدة بالذكاء الاصطناعي (Gemini وNano Banana من Google، وFLUX).</li>
+        <li>الإنفوغرافيك من إعداد ذاتي، أُنجز بمساعدة أدوات الذكاء الاصطناعي وراجعه الأستاذ.</li>
       </ul>
       <h2>أفلام ومسلسلات وفيديوهات</h2>
       <ul>
@@ -978,10 +1000,15 @@
         <li>Mermaid وMarkmap (رخصة MIT) للخطاطات والخرائط.</li>
         <li>خطوط Spectral وIBM Plex وFraunces (رخصة SIL Open Font License).</li>
       </ul>
+      <h2>الترخيص</h2>
+      <ul>
+        <li>تُنشر المواد المُعدّة ذاتيًا في هذا الموقع (النصوص والأنشطة والاختبارات والخطاطات والإنفوغرافيك) بموجب رخصة <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.ar" rel="license">المشاع الإبداعي: نَسب المُصنَّف - غير تجاري - الترخيص بالمثل 4.0 دولي (CC BY-NC-SA 4.0)</a>: يجوز نسخها وتكييفها مع ذكر مصدرها، ولأغراض غير تجارية، ومشاركتها بالرخصة نفسها.</li>
+        <li>تُستثنى من هذه الرخصة نصوص امتحان PAU، والترجمات التي نشرتها دور النشر، والصور والنصوص المملوكة لأطراف أخرى، إذ تحتفظ برخصها الخاصة المبيّنة في هذه الصفحة وفي كل إشارة إلى المصدر.</li>
+      </ul>
     </article>
   </section>
 </main>
-<footer class="wrap sitefoot"><a href="#mapa">خريطة الموقع</a> · <a href="#fuentes">المصادر والتنبيه</a></footer>
+<footer class="wrap sitefoot"><a href="#mapa">خريطة الموقع</a> · <a href="#fuentes">المصادر والتنبيه</a> · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license">CC BY-NC-SA 4.0</a></footer>
 
 <script src="js/store.js"></script>
 <script src="js/data.js"></script>
@@ -1044,6 +1071,10 @@
 <script src="js/nudosview.js"></script>
 <script src="js/adagios.js"></script>
 <script src="js/adagiosview.js"></script>
+<script src="js/polemicas.js"></script>
+<script src="js/polemicasview.js"></script>
+<script src="js/duelo.js"></script>
+<script src="js/dueloview.js"></script>
 <script src="js/juego_aristoteles.js"></script>
 <script src="js/aristotelesview.js"></script>
 <script src="js/platonview.js"></script>

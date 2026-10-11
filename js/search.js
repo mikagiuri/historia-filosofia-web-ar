@@ -16,7 +16,7 @@
      fold(): minúsculas y sin acentos, CONSERVANDO la longitud (carácter a carácter), para poder localizar
      la coincidencia en el texto original y recortar el fragmento. norm(): la antigua, por si se necesita. */
   var ACC = { "á":"a","à":"a","ä":"a","â":"a","ã":"a","é":"e","è":"e","ë":"e","ê":"e","í":"i","ì":"i","ï":"i","î":"i",
-    "ó":"o","ò":"o","ö":"o","ô":"o","õ":"o","ú":"u","ù":"u","ü":"u","û":"u","ñ":"n","ç":"c","ý":"y" };
+    "ó":"o","ò":"o","ö":"o","ô":"o","õ":"o","ú":"u","ù":"u","ü":"u","û":"u","ñ":"n","ç":"c","ý":"و" };
   function fold(s){ return (s == null ? "" : String(s)).toLowerCase().replace(/[áàäâãéèëêíìïîóòöôõúùüûñçý]/g, function(c){ return ACC[c] || c; }); }
   var _tmp = null;
   function textOf(n){   /* texto de un elemento: entidades decodificadas y un espacio entre bloques contiguos */
@@ -154,6 +154,10 @@
     /* citas */
     if (typeof CITAS !== "undefined" && CITAS && document.getElementById("citas")) CITAS.forEach(function(c){
       if (c && c.c) add(out, { type: "اقتباس", label: strip(c.c), meta: c.a || "", go: "citas", arg: null, text: strip(c.o || ""), find: strip(c.c).slice(0, 60) });
+    });
+    /* polémicas (11-10) */
+    if (typeof POLEMICAS !== "undefined" && POLEMICAS && document.getElementById("polemicas")) POLEMICAS.forEach(function(p){
+      add(out, { type: "سجال", label: p.a + " / " + p.b, meta: p.fechas, go: "polemicas", arg: p.id, text: strip(p.pregunta + " " + p.contexto + " " + p.tesis_a + " " + p.tesis_b) });
     });
     /* adagios (09-10) */
     if (typeof ADAGIOS !== "undefined" && ADAGIOS && document.getElementById("adagios")) ADAGIOS.forEach(function(a){

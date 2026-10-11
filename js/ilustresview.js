@@ -162,6 +162,10 @@ function iluRelaciones(p){
       .map(o => o.find(id => id !== p.id)).filter(id => ILUSTRES[id]);
     if (op.length) out.push('<li><span class="ilu-rel-op">' + ILU_REL.frente + '</span> ' + op.map(id => iluLink(id)).join(" · ") + '</li>');
   }
+  {   /* (11-10) sus polémicas con coetáneos (polemicasview.js): enlazan a #polemicas/<id> */
+    const pol = typeof window.polDe === "function" ? window.polDe(p.id) : "";
+    if (pol) out.push(pol);
+  }
   let deb = "";
   if (typeof GEN_TESIS !== "undefined" && GEN_TESIS){
     const de = {}; (GEN_TESIS.tesis || []).forEach(t => { de[t.id] = t.ilustre; });

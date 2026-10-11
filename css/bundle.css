@@ -2277,6 +2277,162 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 #adagios .adg-guia p{ margin-block:.5rem }
 
 
+/* ==== css/polemicas.css ==== */
+/* «Polémicas: cara a cara» (11-10, Bachillerato): pensadores coetáneos que se enfrentaron (polemicasview.js) */
+#polemicas .pol-criterio{ color:var(--muted); font-size:.95rem; margin:.4rem 0 .2rem }
+#polemicas .pol-cuenta{ color:var(--muted); font-size:.85rem; margin:.2rem 0 0 }
+#polemicas .pol-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(min(18rem, 100%), 1fr)); gap:12px; margin-top:12px }
+#polemicas .pol-card{ display:flex; flex-direction:column; gap:.35rem; text-align:start; font:inherit; color:var(--ink); cursor:pointer;
+  background:var(--surface); border:1px solid var(--line); border-inline-start:4px solid var(--e, var(--accent)); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow) }
+#polemicas .pol-card:hover, #polemicas .pol-card:focus-visible{ border-color:var(--e, var(--accent)) }
+#polemicas .pol-quien{ font-family:var(--serif, Georgia, serif); font-size:1.12rem; font-weight:600; line-height:1.3 }
+.pol-vs{ color:var(--e, var(--accent)); font-weight:400; margin:0 .15em }
+#polemicas .pol-meta{ font-size:.82rem; color:var(--muted) }
+#polemicas .pol-preg{ font-size:.95rem; line-height:1.45 }
+#polemicas .pol-nav{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; margin:.4rem 0 .8rem }
+#polemicas .pol-ficha{ background:var(--surface); border:1px solid var(--line); border-top:4px solid var(--e, var(--accent)); border-radius:12px; padding:18px 20px; box-shadow:var(--shadow); line-height:1.55 }
+#polemicas .pol-tit{ font-family:var(--serif, Georgia, serif); margin:.2rem 0 .4rem; line-height:1.25 }
+#polemicas .pol-pregunta{ font-size:1.12rem; font-weight:600; margin:.2rem 0 .8rem }
+#polemicas .pol-k{ font-weight:600; color:var(--e, var(--accent)); margin:.6rem 0 .2rem }
+#polemicas .pol-sec p{ margin:.2rem 0 }
+#polemicas .pol-lados{ display:grid; grid-template-columns:repeat(auto-fit, minmax(min(16rem, 100%), 1fr)); gap:12px; margin:.8rem 0 }
+#polemicas .pol-lado{ background:var(--surface-2); border-radius:10px; padding:12px 14px }
+#polemicas .pol-lado h3{ margin:0 0 .2rem; font-size:1.05rem }
+#polemicas .pol-lado p{ margin:.2rem 0 }
+#polemicas .pol-cita{ margin:.5rem 0 0; padding:0 0 0 .7rem; border-inline-start:3px solid var(--e, var(--accent)); font-family:var(--serif, Georgia, serif) }
+#polemicas .pol-cita cite{ display:block; font:normal .82rem var(--sans, inherit); color:var(--muted) }
+#polemicas .pol-ilu{ font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:3px }
+#polemicas .pol-ilu:hover{ color:var(--accent); text-decoration-style:solid }
+#polemicas .pol-ilus{ font-size:.85rem; font-weight:400 }
+#polemicas .pol-act{ border:1px dashed var(--e, var(--accent)); border-radius:10px; padding:12px 14px; margin:1rem 0 }
+#polemicas .pol-act h3{ margin:0 0 .3rem }
+#polemicas .pol-ayuda{ color:var(--muted); font-size:.9rem; margin:0 0 .5rem }
+#polemicas .pol-elige{ display:flex; flex-wrap:wrap; gap:8px; margin:.3rem 0 .5rem }
+#polemicas .pol-op{ font:inherit; background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:999px; padding:.35rem .9rem; cursor:pointer }
+#polemicas .pol-op[aria-pressed="true"]{ background:var(--e, var(--accent)); border-color:var(--e, var(--accent)); color:#fff }
+#polemicas .pol-op:disabled:not([aria-pressed="true"]){ opacity:.5; cursor:default }
+#polemicas .pol-lbl{ display:block; font-size:.9rem; margin:.4rem 0 .2rem }
+#polemicas .pol-act textarea{ width:100%; box-sizing:border-box; font:inherit; padding:.5rem .6rem; border:1px solid var(--line); border-radius:8px; background:var(--surface); color:var(--ink) }
+#polemicas .pol-npal{ font-size:.8rem; color:var(--muted); margin:.1rem 0 .4rem }
+#polemicas .pol-btn{ font:inherit; font-weight:600; background:var(--accent); color:var(--on-accent, #fff); border:0; border-radius:999px; padding:.4rem 1rem; cursor:pointer; margin-top:.3rem }
+#polemicas .pol-btn:disabled{ opacity:.45; cursor:default }
+#polemicas .pol-otro{ background:var(--surface-2); border-radius:8px; padding:.5rem .8rem; margin:.6rem 0 }
+#polemicas .pol-otro p{ margin:.25rem 0 }
+#polemicas .pol-trucos{ background:var(--surface-2); border-radius:8px; padding:.5rem .8rem; margin-top:.8rem }
+#polemicas .pol-temas{ display:flex; flex-wrap:wrap; gap:.35rem; align-items:center; margin-top:1rem; font-size:.88rem }
+#polemicas .pol-tema{ font:inherit; font-size:.82rem; background:none; border:1px solid var(--line); border-radius:999px; padding:.15rem .6rem; color:var(--ink); cursor:pointer;
+  max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+#polemicas .pol-tema:hover{ border-color:var(--accent); color:var(--accent) }
+#polemicas .pol-fuentes{ margin-top:.8rem; font-size:.88rem }
+#polemicas .pol-fuentes ul{ margin:.2rem 0 0; padding-inline-start:1.2rem }
+/* Genealogías: modo «Cara a cara» */
+#genealogias .pol-gen-lead{ color:var(--muted); margin:.4rem 0 .6rem }
+#genealogias .pol-gen-ep{ border-inline-start:4px solid var(--e, var(--accent)); padding-inline-start:12px; margin:0 0 14px }
+#genealogias .pol-gen-ep h3{ margin:0 0 .3rem; color:var(--e, var(--accent)); font-size:1rem }
+#genealogias .pol-gen-ep ol{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px }
+#genealogias .pol-gen-a{ display:block; width:100%; text-align:start; font:inherit; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:.45rem .7rem; cursor:pointer }
+#genealogias .pol-gen-a:hover{ border-color:var(--e, var(--accent)) }
+#genealogias .pol-gen-f{ font-size:.8rem; color:var(--muted); margin-inline-end:.3rem }
+#genealogias .pol-gen-p{ display:block; font-size:.88rem; color:var(--muted); margin-top:.1rem }
+
+
+/* ==== css/duelo.css ==== */
+/* «Duelo de razones» (11-10: de juego aparte a sección; dueloview.js). Mismo diseño que el juego original, con los colores y
+   el tema claro/oscuro de la web (--surface, --line, --ok, --bad…). «Modo proyector»: pantalla completa y letra grande. */
+#duelo{ --due-warn:#b5691a; --due-disp:var(--serif); }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) #duelo{ --due-warn:#e2a15a; } }
+:root[data-theme="dark"] #duelo{ --due-warn:#e2a15a; }
+#duelo .due-top{ display:flex; justify-content:flex-end; margin:.2rem 0 .6rem }
+#duelo .due-proybtn{ font:600 .85rem var(--sans); background:transparent; border:1px solid var(--line); border-radius:10px; padding:6px 12px; color:var(--muted); cursor:pointer }
+#duelo .due-proybtn:hover{ border-color:var(--accent); color:var(--accent) }
+#duelobox{ max-width:760px; margin:0 auto }
+#duelo .due-btn{ border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:12px; padding:12px 16px; font:600 1rem var(--sans);
+  cursor:pointer; width:100%; text-align:start; transition:transform .08s, border-color .15s, background .15s }
+#duelo .due-btn:hover{ border-color:var(--accent) }
+#duelo .due-btn:active{ transform:translateY(1px) }
+#duelo .due-btn:focus-visible{ outline:3px solid var(--accent); outline-offset:2px }
+#duelo .due-btn:disabled{ opacity:.5; cursor:default }
+#duelo .due-primary{ background:var(--accent); border-color:var(--accent); color:var(--on-accent, #fff); text-align:center }
+#duelo .due-center{ text-align:center }
+#duelo .due-intro{ background:var(--surface); border:1px solid var(--line); border-radius:20px; padding:26px 22px; box-shadow:var(--shadow) }
+#duelo .due-eyebrow{ font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:600 }
+#duelo .due-h1{ font-family:var(--due-disp); font-size:clamp(1.8rem, 6vw, 2.6rem); margin:6px 0 10px; line-height:1.05 }
+#duelo .due-lede{ color:var(--muted); font-size:1.02rem; max-width:56ch; margin:0 auto }
+#duelo .due-rules{ display:grid; gap:10px; margin:22px 0; text-align:start }
+#duelo .due-rule{ display:flex; gap:12px; align-items:flex-start; background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:12px 14px }
+#duelo .due-n{ font-family:var(--due-disp); font-weight:800; color:var(--accent); font-size:1.3rem; line-height:1; min-width:1.2em }
+#duelo .due-rule p{ margin:0; font-size:.95rem }
+#duelo .due-niveles{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin:0 0 10px }
+#duelo .due-elige{ font-weight:600; margin:4px 0 8px }
+#duelo .due-pick{ display:grid; gap:10px; margin-top:6px }
+#duelo .due-sides{ display:block; color:var(--muted); font-weight:500; font-size:.82rem; margin-top:3px }
+#duelo .due-pie{ margin:18px 0 0; text-align:center; font-size:.82rem; color:var(--muted) }
+#duelo .due-hud{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; flex-wrap:wrap }
+#duelo .due-temple{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:6px 12px; text-align:center; min-width:92px }
+#duelo .due-who{ font-size:.64rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+#duelo .due-dots{ font-size:1.05rem; letter-spacing:2px; line-height:1.2; color:var(--ok) }
+#duelo .due-temple.low{ border-color:var(--bad) } #duelo .due-temple.low .due-who, #duelo .due-temple.low .due-dots{ color:var(--bad) }
+#duelo .due-turnlbl{ font-size:.82rem; color:var(--muted); font-weight:600 }
+#duelo .due-turnlbl b{ color:var(--ink); font-family:var(--due-disp) }
+#duelo .due-meter-wrap{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:12px }
+#duelo .due-meter-top{ display:flex; justify-content:space-between; gap:8px; font-size:.72rem; font-weight:600; color:var(--muted); margin-bottom:6px }
+#duelo .due-you{ color:var(--ok) } #duelo .due-cpu{ color:var(--bad) }
+#duelo .due-meter{ height:12px; border-radius:999px; background:color-mix(in srgb, var(--bad) 35%, var(--surface-2)); overflow:hidden; position:relative }
+#duelo .due-fill{ height:100%; background:var(--ok); border-radius:999px; transition:width .5s ease }
+#duelo .due-mid{ position:absolute; inset-inline-start:50%; top:-3px; bottom:-3px; width:2px; background:var(--line) }
+#duelo .due-topic{ background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:10px 14px; margin-bottom:12px; font-size:.9rem }
+#duelo .due-topic b{ font-family:var(--due-disp) }
+#duelo .due-you-side{ color:var(--ok); font-weight:600 }
+#duelo .due-thread{ display:flex; flex-direction:column; gap:10px; margin-bottom:14px; max-height:46vh; overflow-y:auto; padding:2px }
+#duelo .due-bubble{ max-width:88%; padding:11px 14px; border-radius:14px; font-size:.98rem; line-height:1.4 }
+#duelo .due-nm{ font-size:.64rem; letter-spacing:.08em; text-transform:uppercase; font-weight:700; margin-bottom:3px; opacity:.85 }
+#duelo .due-bubble.cpu{ align-self:flex-start; background:var(--surface-2); border:1px solid var(--line); border-end-start-radius:4px }
+#duelo .due-bubble.cpu .due-nm{ color:var(--bad) }
+#duelo .due-bubble.you{ align-self:flex-end; background:color-mix(in srgb, var(--ok) 14%, var(--surface)); border:1px solid color-mix(in srgb, var(--ok) 40%, var(--line)); border-end-end-radius:4px }
+#duelo .due-bubble.you .due-nm{ color:var(--ok) }
+#duelo .due-bubble.latest{ box-shadow:0 0 0 2px color-mix(in srgb, var(--bad) 45%, transparent) }
+#duelo .due-phase{ display:inline-flex; align-items:center; gap:7px; font-size:.82rem; font-weight:600; color:var(--accent);
+  background:color-mix(in srgb, var(--accent) 12%, transparent); border-radius:999px; padding:5px 12px; margin-bottom:10px }
+#duelo .due-phase.hot{ color:var(--bad); background:color-mix(in srgb, var(--bad) 13%, transparent) }
+#duelo .due-choices{ display:grid; gap:10px }
+#duelo .due-comodines{ grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); margin-top:10px }
+#duelo .due-sigue{ margin-top:12px }
+#duelo .due-choice{ line-height:1.3 }
+#duelo .due-choice small{ display:block; color:var(--muted); font-weight:500; font-size:.82rem; margin-top:3px }
+#duelo .due-grid-fal{ grid-template-columns:1fr 1fr }
+@media (max-width:470px){ #duelo .due-grid-fal{ grid-template-columns:1fr } }
+#duelo .due-a{ border-color:var(--bad) } #duelo .due-a:hover{ background:color-mix(in srgb, var(--bad) 10%, transparent) }
+#duelo .due-b{ border-color:var(--accent) } #duelo .due-b:hover{ background:color-mix(in srgb, var(--accent) 10%, transparent) }
+#duelo .due-carta{ font-family:var(--due-disp); font-weight:600 }
+#duelo .due-pips{ font-size:.8rem; letter-spacing:1px; color:var(--accent); font-weight:700 }
+#duelo .due-back{ background:transparent; border:none; color:var(--muted); font:600 .85rem var(--sans); padding:4px 2px; margin-top:8px; cursor:pointer }
+#duelo .due-fb{ border-radius:16px; padding:16px; margin-top:4px; border:1px solid var(--line); background:var(--surface); box-shadow:var(--shadow) }
+#duelo .due-fb.win{ border-color:var(--ok); background:color-mix(in srgb, var(--ok) 9%, var(--surface)) }
+#duelo .due-fb.lose{ border-color:var(--bad); background:color-mix(in srgb, var(--bad) 9%, var(--surface)) }
+#duelo .due-fb.mid{ border-color:var(--due-warn) }
+#duelo .due-head{ font-family:var(--due-disp); font-weight:800; font-size:1.1rem; display:flex; align-items:center; gap:8px }
+#duelo .due-fb.win .due-head{ color:var(--ok) } #duelo .due-fb.lose .due-head{ color:var(--bad) } #duelo .due-fb.mid .due-head{ color:var(--due-warn) }
+#duelo .due-body{ margin-top:7px }
+#duelo .due-tec{ color:var(--muted) }
+#duelo .due-desmonta{ margin-top:8px; font-size:.92rem; background:var(--surface-2); border-radius:10px; padding:9px 12px }
+#duelo .due-desmonta b{ color:var(--accent) }
+#duelo .due-schop{ margin-top:8px; font-size:.82rem; color:var(--muted) } #duelo .due-schop b{ color:var(--due-warn) }
+#duelo .due-delta{ font-weight:700; font-family:var(--due-disp) } #duelo .due-delta.pos{ color:var(--ok) } #duelo .due-delta.neg{ color:var(--bad) }
+#duelo .due-verdict{ font-family:var(--due-disp); font-weight:800; font-size:2rem; margin:6px 0 }
+#duelo .due-verdict.win{ color:var(--ok) } #duelo .due-verdict.lose{ color:var(--bad) } #duelo .due-verdict.tie{ color:var(--due-warn) }
+#duelo .due-fin{ margin-top:18px }
+#duelo .due-fade{ animation:duefade .25s ease }
+@keyframes duefade{ from{ opacity:0; transform:translateY(6px) } to{ opacity:1; transform:none } }
+@media (prefers-reduced-motion:reduce){ #duelo .due-fade{ animation:none } }
+/* modo proyector: la sección ocupa la pantalla y la letra crece (se lee desde el fondo del aula) */
+#duelo.due-proy{ background:var(--bg); overflow:auto; padding:2vh 3vw; font-size:1.35rem }
+#duelo.due-proy > :not(.due-top):not(#duelobox){ display:none }
+#duelo.due-proy #duelobox{ max-width:min(1100px, 94vw) }
+#duelo.due-proy .due-btn{ font-size:1.25rem; padding:16px 20px }
+#duelo.due-proy .due-thread{ max-height:52vh }
+#duelo.due-proy .due-bubble{ font-size:1.3rem }
+
+
 /* ==== css/retratos.css ==== */
 /* ===== Retratos de museo integrados en la teoría ===== usa los tokens de styles.css ===== */
 .museo-strip{ margin:2.4rem 0 .5rem; padding-top:1.2rem; border-top:1px solid var(--line); }

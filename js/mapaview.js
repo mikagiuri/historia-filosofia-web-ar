@@ -30,6 +30,8 @@ const MAPA_DESC = {
   ilustres: "سِيَر المفكرين وبطاقات كل حقبة.",
   citas: "أقوال مشهورة للفلاسفة، مع شرحها.",
   adagios: "مأثورات كلاسيكية باللاتينية واليونانية، مع قصتها.",
+  duelo: "مناظرة ضد الحاسوب: اكشفوا مغالطاته أو ردّوا بحجج أقوى، دون أن تفقدوا رباطة جأشكم.",
+  polemicas: "مفكرون عاشوا في الزمن نفسه وتواجهوا: اختاروا مع مَن أنتم ولماذا.",
   mundo: "لو كان القسم هو العالم: معطيات الكوكب في قسمكم.",
   camino: "قصص تختارون فيها ما تفعلون وترون النتائج.",
   eudaimonia: "لعبة عن السعادة عند أرسطو.",
@@ -63,7 +65,7 @@ const MAPA_DESC = {
   signos: "دورة في لغة الإشارة."
 };
 /* cuántos elementos tiene cada sección (si su colección está cargada en esta web) */
-const MAPA_CUENTA = { tarjetas: "DECKS", cuestionarios: "QUIZZES", glosario: "GLOSARIO", ilustres: "ILUSTRES", citas: "CITAS", adagios: "ADAGIOS",
+const MAPA_CUENTA = { tarjetas: "DECKS", cuestionarios: "QUIZZES", glosario: "GLOSARIO", ilustres: "ILUSTRES", citas: "CITAS", adagios: "ADAGIOS", polemicas: "POLEMICAS",
   infografias: "INFOGRAFIAS", mapas: "MAPS", esquemas: "ESQUEMAS", cronogramas: "CRONOGRAMAS", genealogias: "GENEALOGIAS", lecturas: "LECTURAS",
   galeria: "GALERIA", dilemas: "DILEMAS", disertaciones: "DISERTACIONES", nudos: "NUDOS", pistas: "PISTAS", materiales: "MATERIALS" };
 function mapaG(name){ try { return (0, eval)("typeof " + name + " !== 'undefined' ? " + name + " : undefined"); } catch (e){ return undefined; } }
