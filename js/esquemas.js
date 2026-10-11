@@ -1,5 +1,12 @@
 // Generado por web_i18n/i18n_rebuild.js (ar) a partir de web/js/esquemas.js. No editar a mano: editar la memoria tm/ar.json y regenerar.
 const ESQUEMAS = {
+ "AP-REL-01": {
+  "subject": "hf",
+  "block": "A",
+  "tema": "أفلاطون",
+  "title": "أفلاطون: دورة انحطاط أشكال الحكم",
+  "mermaid": "flowchart TD\n  n0[\"أفلاطون: دورة انحطاط أشكال الحكم\"]:::axis\n  a[\"الأرستقراطية: يحكم الفلاسفة\"]:::key\n  a2[\"تُعلي من شأن العقل والخير\"]\n  b[\"التيموقراطية: يحكم المحاربون\"]:::key\n  b2[\"تُعلي من شأن الشرف\"]\n  c[\"الأوليغارشية: يحكم الأغنياء\"]:::key\n  c2[\"تُعلي من شأن المال\"]\n  d[\"الديمقراطية: يحكم الجميع\"]:::key\n  d2[\"تُعلي من شأن الحرية بلا حدود\"]\n  e[\"الطغيان: يحكم واحد لنفسه\"]:::key\n  e2[\"عبدٌ لرغباته\"]\n  n0 --> a\n  a -->|\"تُهمَل التربية\"| b\n  b -->|\"تتراكم الثروات\"| c\n  c -->|\"يثور الفقراء\"| d\n  d -->|\"الفوضى تطلب مُخلِّصًا\"| e\n  a --- a2\n  b --- b2\n  c --- c2\n  d --- d2\n  e --- e2\nclassDef axis fill:#1f5d5a,color:#fff,stroke:#1f5d5a;\nclassDef key fill:#9a6a22,color:#fff,stroke:#9a6a22;"
+ },
  "AA-REL-02": {
   "subject": "hf",
   "block": "A",

@@ -61,6 +61,18 @@ const RETRATOS = [
   "page": "https://commons.wikimedia.org/wiki/File:Aspasia_Canini.png"
  },
  {
+  "slug": "alcibiades",
+  "name": "ألكيبيادس",
+  "aliases": [
+   "ألكيبيادس"
+  ],
+  "file": "media/retratos/museo/alcibiades.jpg",
+  "title": "Academische studie naar prent buste van Alcibiades 1806 Dominique Cool",
+  "artist": "Dominique Cools / After Alexandre Chaponnier",
+  "license": "CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Academische_studie_naar_prent,_buste_van_Alcibiades,_1806,_Dominique_Cools,_Musea_Brugge,_0014.GRO0007.27.II.jpg"
+ },
+ {
   "slug": "alejandro",
   "name": "الإسكندر الأكبر",
   "aliases": [

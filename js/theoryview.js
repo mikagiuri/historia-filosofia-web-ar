@@ -282,7 +282,26 @@ function tvEulerSvg(spec){
     return '<circle cx="' + x + '" cy="' + y + '" r="5" class="tve-p"/><text x="' + (lx != null ? lx : x) + '" y="' + (ly != null ? ly : y + 24) + '" text-anchor="middle" class="tvv-t tve-pt">' + esc(nom) + "</text>"; }).join("");
   return '<svg viewBox="' + (o.vb || "0 0 300 200") + '" role="img" aria-hidden="true">' + circ + puntos + marca("x", "✕", "tvv-x") + marca("q", "?", "tvv-x tve-q") + "</svg>";
 }
+/* (11-10) Diagramas lineales de Leibniz (h. 1686): <figure class="tv-venn" data-lineas="S:50-230:50-160|P:160-330:230-330">.
+   Cada clase es un segmento «etiqueta:desde-hasta[:tramos de puntos a-b,c-d]» en una caja de 380 de ancho; el tramo
+   de puntos es la parte que puede existir o no. Mismo dibujo que el Taller de Leibniz (leibnizview.js, lzLin). */
+function tvLineasSvg(spec){
+  const L = spec.split("|").filter(Boolean).map(r => { const [t, ab, pts] = r.split(":"), [a, b] = ab.split("-").map(Number);
+    return { t, a, b, p: (pts || "").split(",").filter(Boolean).map(x => x.split("-").map(Number)) }; });
+  const h = 40;
+  let s = '<svg viewBox="0 0 380 ' + (L.length * h + 16) + '" role="img" aria-hidden="true">';
+  L.forEach((r, i) => {
+    const y = 26 + i * h, cortes = [r.a];
+    r.p.forEach(p => cortes.push(p[0], p[1])); cortes.push(r.b);
+    s += '<text x="18" y="' + (y + 8) + '" class="tvv-t">' + r.t.replace(/[&<>]/g, "") + "</text>";
+    for (let k = 0; k < cortes.length; k += 2) if (cortes[k + 1] > cortes[k]) s += '<line x1="' + cortes[k] + '" y1="' + y + '" x2="' + cortes[k + 1] + '" y2="' + y + '" class="tvl-seg"/>';
+    r.p.forEach(p => { s += '<line x1="' + p[0] + '" y1="' + y + '" x2="' + p[1] + '" y2="' + y + '" class="tvl-seg tvl-puntos"/>'; });
+    s += '<line x1="' + r.a + '" y1="' + (y - 9) + '" x2="' + r.a + '" y2="' + (y + 9) + '" class="tvl-tope"/><line x1="' + r.b + '" y1="' + (y - 9) + '" x2="' + r.b + '" y2="' + (y + 9) + '" class="tvl-tope"/>';
+  });
+  return s + "</svg>";
+}
 function tvVennFiguras(root){
+  root.querySelectorAll("figure.tv-venn[data-lineas]").forEach(f => { if (!f.querySelector("svg")) f.insertAdjacentHTML("afterbegin", tvLineasSvg(f.dataset.lineas)); });
   root.querySelectorAll("figure.tv-venn[data-venn]").forEach(f => { if (!f.querySelector("svg")) f.insertAdjacentHTML("afterbegin", tvVennSvg(f.dataset.venn)); });
   root.querySelectorAll("figure.tv-venn[data-euler]").forEach(f => { if (!f.querySelector("svg")) f.insertAdjacentHTML("afterbegin", tvEulerSvg(f.dataset.euler)); });
 }
@@ -290,7 +309,7 @@ document.head.insertAdjacentHTML("beforeend",
   '<style>.tv-venns{display:grid;grid-template-columns:repeat(auto-fill,minmax(10.5rem,1fr));gap:.8rem;margin:1rem 0}.tv-venn{margin:0;text-align:center}.tv-venn svg{width:100%;max-width:17rem;display:block;margin:0 auto}' +
   '.tv-venn figcaption{font-size:.86rem;color:var(--muted);margin-top:.25rem;line-height:1.35}.tvv-u{fill:none;stroke:var(--line);stroke-width:1.5}.tvv-c{fill:none;stroke:var(--ink);stroke-width:2}' +
   '.tvv-sel{fill:var(--fil,var(--accent));fill-opacity:.45}.tvv-vac{fill:var(--muted);fill-opacity:.5}.tvv-t{font:700 24px var(--sans);fill:var(--ink)}.tvv-tu{font-size:16px;fill:var(--muted)}.tvv-x{font:700 30px var(--sans);fill:var(--bad,#b3261e)}' +
-  '.tve-0{fill:var(--fil,var(--accent));fill-opacity:.16}.tve-1{fill:var(--ink);fill-opacity:.06}.tve-2{fill:var(--ok,#2f7a4d);fill-opacity:.12}.tve-q{fill:var(--muted)}.tve-p{fill:var(--ink)}.tve-pt{font-size:18px;font-weight:600}.tv-f{white-space:nowrap}</style>');
+  '.tve-0{fill:var(--fil,var(--accent));fill-opacity:.16}.tve-1{fill:var(--ink);fill-opacity:.06}.tve-2{fill:var(--ok,#2f7a4d);fill-opacity:.12}.tve-q{fill:var(--muted)}.tve-p{fill:var(--ink)}.tve-pt{font-size:18px;font-weight:600}.tv-f{white-space:nowrap}.tvl-seg{stroke:var(--fil,var(--accent));stroke-width:7;stroke-linecap:butt}.tvl-puntos{stroke-dasharray:3 6;stroke-width:5}.tvl-tope{stroke:var(--ink);stroke-width:2}</style>');
 
 /* (07-10) apartados con número estable: «#teoria/<clave>/<n>» (o «<clave>§<n>») abre el tema en su n-ésimo <h2>
    original, aunque el tema se lea por páginas; cada apartado lleva un «§» con su enlace. */

@@ -2,7 +2,7 @@
 /* ===== Taller de Leibniz (08-10, Bachillerato) =====
    Vista #leibniz. Textos en leibniz.js (LEIBNIZ). Tres piezas interactivas: la rueda escalonada (SVG),
    la multiplicación con manivela y carro, el hexagrama como número binario y los números característicos
-   (divisibilidad). Enlace profundo: #leibniz/maquina|binario|alfabeto|tratados|diagramas|calculemos|reverso|newton|voltaire. */
+   (divisibilidad). Enlace profundo: #leibniz/maquina|binario|alfabeto|tratados|diagramas|calculo|calculemos|reverso|newton|voltaire. */
 
 const LZ_TXT = {   /* textos de interfaz: cadenas enteras (así las traduce web_i18n/ui/<lang>.json) */
   cifra: "الأسنان المتعشقة: {n}", ruedaAria: "موضع العجلة الصغيرة", circulos: "مخطط الدوائر", lineas: "مخطط الخطوط",
@@ -14,12 +14,36 @@ const LZ_TXT = {   /* textos de interfaz: cadenas enteras (así las traduce web_
   faltan: "ما زالت تنقص دورات في هذا الموضع.",
   numero: "العدد", sujeto: "الموضوع", predicado: "المحمول", frase: "«كل {s} هو {p}»",
   verdad: "صحيح: {s} ÷ {p} = {c}، بلا باقٍ.", falso: "خطأ: القسمة {s} ÷ {p} غير تامة (الباقي {r}).",
-  vale: "{t} = {n}"
+  vale: "{t} = {n}",
+  rectN: "المستطيلات: {n}", rectSuma: "مجموع المساحات: {s}", rectExacta: "المساحة المضبوطة: ∫ x² dx = 1/3 ≈ {e}", rectAria: "عدد المستطيلات",
+  serieN: "الحدود المجموعة: {n}", serieSuma: "4 × (1 − 1/3 + 1/5 − …) = {s}", serieErr: "الفرق عن π = {e}", serieAria: "عدد الحدود"
 };
 const lzT = (k, v) => String(LZ_TXT[k] || k).replace(/\{(\w+)\}/g, (_, x) => (v && v[x] != null ? v[x] : ""));
 const lzBox = () => document.getElementById("leibnizbox");
 const lzCita = (c, pie) => '<blockquote class="lz-cita"><p>' + c + "</p><footer>" + pie + "</footer></blockquote>";
 const lzPs = a => (Array.isArray(a) ? a : [a]).map(p => "<p>" + p + "</p>").join("");
+
+/* --- (11-10) cálculo: suma de rectángulos bajo y = x² y serie de Leibniz --- */
+const lzNum = (x, k) => x.toLocaleString(document.documentElement.lang || "es", { minimumFractionDigits: k, maximumFractionDigits: k });
+function lzRectSvg(n){
+  const W = 380, H = 230, x0 = 30, y0 = 205, w = 320, h = 185, X = t => x0 + t * w, Y = t => y0 - t * h;
+  let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" class="lz-svg" role="img" aria-label="' + lzT("rectN", { n }) + '">';
+  for (let k = 1; k <= n; k++){ const a = (k - 1) / n, b = k / n; s += '<rect x="' + X(a) + '" y="' + Y(b * b) + '" width="' + (X(b) - X(a)) + '" height="' + (y0 - Y(b * b)) + '" class="lz-rect"/>'; }
+  let p = "M" + X(0) + "," + Y(0); for (let i = 1; i <= 80; i++){ const t = i / 80; p += " L" + X(t) + "," + Y(t * t); }
+  s += '<path d="' + p + '" class="lz-curva"/><line x1="' + x0 + '" y1="' + y0 + '" x2="' + (x0 + w + 10) + '" y2="' + y0 + '" class="lz-eje"/><line x1="' + x0 + '" y1="' + y0 + '" x2="' + x0 + '" y2="' + (y0 - h - 10) + '" class="lz-eje"/>' +
+    '<text x="' + X(1) + '" y="' + (y0 + 18) + '" text-anchor="middle" class="lz-lab">1</text><text x="' + X(0) + '" y="' + (y0 + 18) + '" text-anchor="middle" class="lz-lab">0</text><text x="' + (X(1) - 6) + '" y="' + (Y(1) - 6) + '" text-anchor="end" class="lz-lab">y = x²</text>';
+  return s + "</svg>";
+}
+function lzCalcRender(){
+  const el = document.getElementById("lz-rect"); if (!el) return;
+  const n = +el.querySelector('[name="lz-r"]').value; let sum = 0;
+  for (let k = 1; k <= n; k++) sum += (k / n) * (k / n) / n;
+  el.querySelector(".lz-rectfig").innerHTML = lzRectSvg(n);
+  el.querySelector(".lz-rectres").innerHTML = lzT("rectN", { n }) + " · " + lzT("rectSuma", { s: lzNum(sum, 4) }) + "<br>" + lzT("rectExacta", { e: lzNum(1 / 3, 4) });
+  const se = document.getElementById("lz-serie"), m = +se.querySelector('[name="lz-t"]').value; let p = 0;
+  for (let k = 0; k < m; k++) p += (k % 2 ? -1 : 1) / (2 * k + 1);
+  se.querySelector(".lz-serieres").innerHTML = lzT("serieN", { n: m }) + "<br>" + lzT("serieSuma", { s: lzNum(4 * p, 6) }) + "<br>" + lzT("serieErr", { e: lzNum(Math.abs(Math.PI - 4 * p), 6) });
+}
 
 /* --- la rueda escalonada: nueve dientes de longitud 1…9; la rueda pequeña en la posición k engancha k --- */
 function lzRuedaSvg(k){
@@ -171,6 +195,14 @@ function lzRender(){
     '<p class="lz-dgfrase" aria-live="polite"></p><div class="lz-dgpar"><figure><figcaption>' + G.circulos + '</figcaption><div class="lz-dgc"></div></figure>' +
     "<figure><figcaption>" + G.lineas + '</figcaption><div class="lz-dgl"></div></figure></div></div><p>' + G.puente + "</p></section>" +
 
+    '<section class="lz-sec" id="lz-calculo"><h2>' + L.calculo.titulo + "</h2>" +
+    L.calculo.partes.map(p => "<h3>" + p.h + "</h3>" + lzPs(p.texto)).join("") +
+    '<div class="lz-pieza" id="lz-rect"><h3>' + L.calculo.rectTit + "</h3><p>" + L.calculo.rectTxt + '</p><div class="lz-rectfig"></div>' +
+    '<input type="range" min="1" max="60" value="4" name="lz-r" aria-label="' + lzT("rectAria") + '"><p class="lz-cifra lz-rectres" aria-live="polite"></p></div>' +
+    '<div class="lz-pieza" id="lz-serie"><h3>' + L.calculo.serieTit + "</h3><p>" + L.calculo.serieTxt + "</p>" +
+    '<input type="range" min="1" max="500" value="5" name="lz-t" aria-label="' + lzT("serieAria") + '"><p class="lz-cifra lz-serieres" aria-live="polite"></p></div>' +
+    '<p class="lz-cuidado">' + L.calculo.cuidado + "</p></section>" +
+
     '<section class="lz-sec" id="lz-calculemos"><h2>' + K.titulo + "</h2>" + lzCita(K.cita, K.citaPie) + "<p>" + K.texto + "</p>" +
     "<h3>" + K.lineaTit + '</h3><ol class="lz-crono">' + L.linea.map(x => '<li><span class="lz-y">' + x.y + "</span><span>" + x.t + "</span></li>").join("") + "</ol>" +
     "<h3>" + L.molino.titulo + "</h3><p>" + L.molino.texto + "</p>" + lzCita(L.molino.cita, L.molino.citaPie) + "</section>" +
@@ -218,6 +250,9 @@ function lzRender(){
 
   document.getElementById("lz-diag").addEventListener("click", e => { const b = e.target.closest(".lz-chip"); if (b) lzDiagRender(b.dataset.id); });
   lzDiagRender("A");
+
+  ["lz-rect", "lz-serie"].forEach(id => document.getElementById(id).addEventListener("input", lzCalcRender));
+  lzCalcRender();
 
   document.getElementById("lz-alfa").addEventListener("change", lzAlfaRender);
   lzAlfaRender();
