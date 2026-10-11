@@ -81,7 +81,7 @@ function casCrono(x){
 }
 function casEtapas(x){
   return (x.etapas || []).length ? '<div class="cas-sec"><p class="cas-k">' + casT("etapas") + '</p><ol class="cas-etapas">' +
-    x.etapas.map(e => '<li><p class="cas-et-n">' + casEsc(e.n) + ' <span class="cas-et-a">' + casEsc(e.a) + '</span></p><p class="cas-et-q">' + casEsc(e.q) + '</p><p>' + casEsc(e.d) + '</p></li>').join("") + '</ol></div>' : "";
+    x.etapas.map(e => '<li><p class="cas-et-n">' + casEsc(e.nom) + ' <span class="cas-et-a">' + casEsc(e.a) + '</span></p><p class="cas-et-q">' + casEsc(e.q) + '</p><p>' + casEsc(e.d) + '</p></li>').join("") + '</ol></div>' : "";
 }
 function casDetalle(v, x){
   const box = document.getElementById(v + "box"); if (!box) return;
