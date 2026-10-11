@@ -571,6 +571,18 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 .diag .dg-g{fill:var(--surface-2);stroke:var(--line)} .diag .dg-b{fill:var(--surface);stroke:var(--line)}
 .diag .dg-l{fill:none;stroke:var(--muted);stroke-width:1.4} .diag .dg-mk{fill:var(--muted)}
 
+/* (11-10) Mapa de la web (#mapa, js/mapaview.js) */
+#mapa .mapa-cols{ display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap:1rem 1.6rem; margin:.4rem 0 1.6rem; }
+#mapa .mapa-grupo h3{ margin:.2rem 0 .4rem; font-size:1rem; color:var(--muted, inherit); text-transform:uppercase; letter-spacing:.04em; }
+#mapa .mapa-lista, #mapa .mapa-temas{ margin:0; padding-left:1.1rem; }
+#mapa .mapa-lista li, #mapa .mapa-temas li{ margin:.35rem 0; }
+#mapa .mapa-a{ background:none; border:0; padding:0; font:inherit; color:var(--accent); cursor:pointer; text-align:start; text-decoration:underline; text-underline-offset:2px; }
+#mapa .mapa-n{ font-size:.8rem; color:var(--muted, inherit); }
+#mapa .mapa-d{ display:block; font-size:.88rem; color:var(--muted, inherit); }
+#mapa .mapa-sub{ display:block; font-size:.88rem; margin-top:.2rem; }
+#mapa .mapa-exp summary{ cursor:pointer; font-size:.88rem; color:var(--muted, inherit); }
+#mapa .mapa-exp ul{ margin:.2rem 0 .4rem; padding-left:1rem; font-size:.92rem; }
+
 
 /* ==== css/mobile.css ==== */
 /* ===== Capa móvil (mobile-first overrides) — Aula de Filosofía =====
@@ -1076,6 +1088,8 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 #cronogramas .eje-per-btn{ background:none; border:0; padding:0; font:inherit; color:inherit; cursor:pointer; text-align:start; }
 #cronogramas .eje-per-btn span{ font-weight:400; }
 #cronogramas .eje-per-btn:hover{ text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; }
+/* (11-10) fichas de época al pie de cada cronograma */
+#cronogramas .crono-epocas{ margin:.8rem 0 0; font-size:.9rem; }
 
 
 /* ==== css/genealogias.css ==== */

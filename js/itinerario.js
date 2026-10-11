@@ -24,7 +24,7 @@
     temas: "المواضيع", exploraciones: "استكشافات", unidades: "الوحدات", tema: "الموضوع {n}", unidad: "الوحدة {n}",
     seguir: "لمواصلة هذا الموضوع", tarjetas: "بطاقات", cuestionarios: "اختبارات", infografias: "إنفوغرافيك", mapas: "خرائط المفاهيم",
     esquemas: "خطاطات", lecturas: "قراءات", comentarios: "شروح النصوص", dilemas: "معضلات أخلاقية", pistas: "تلميحات متدرجة", conceptos: "المفاهيم",
-    nTarjetas: "{n} بطاقات", nPreguntas: "{n} أسئلة", anterior: "الموضوع السابق", siguienteTema: "الموضوع التالي", anexos: "استكشافات", epoca: "الحقبة", volverTema: "العودة إلى الموضوع",
+    nTarjetas: "{n} بطاقات", nPreguntas: "{n} أسئلة", anterior: "الموضوع السابق", siguienteTema: "الموضوع التالي", anexos: "استكشافات", epoca: "الحقبة", epocaDe: "الحقبة: {e}", volverTema: "العودة إلى الموضوع",
     infografia: "إنفوغرافيك", mapa: "خريطة", esquema: "خطاطة", lectura: "قراءة", dilema: "معضلة", comentario: "شرح",
     pau: "مسار PAU", pauLead: "استعدوا لـ PAU بالترتيب: أولًا كيف هو الامتحان، ثم كل تمرين، وفي النهاية التدرب حسب المواضيع.",
     pau1: "كيف هو الامتحان", pau2: "التمرين 1 · شرح النص", pau3: "التمرين 2 · المقالة الفلسفية",
@@ -160,6 +160,23 @@
     var Gl = G("GLOSARIO"); if (!Array.isArray(Gl) || !view("glosario")) return [];
     return Gl.filter(function(g){ return g && g.subject === subject && g.t && gloTema(g) === tema; }).map(function(g){ return { t: strip(g.t), def: strip(g.def) }; });
   }
+  /* (11-10) fichas de época (epocas_fichas.js, vista Ilustres): la de un tema de HF (con / con2 por temasHF) y, en
+     Filosofía 1.º, las de las teorías con contenido histórico (EPOCA_FIL). Se enlazan al pie de la teoría, en la tira
+     «De este tema» de Tarjetas, Cuestionarios, Lecturas e Infografías, en el Glosario y en Cronogramas. */
+  var EPOCA_FIL = { "fil-presocraticos": ["ant"], "fil-spinoza-sistema": ["mod"], "fil-marxismos": ["con", "con2"], "fil-t6": ["con", "con2"], "fil-grandes-preguntas": "*" };
+  function epocaFicha(subject, tema){
+    var EF = G("EPOCAS_FICHAS"); if (!EF || subject !== "hf" || typeof tema !== "number") return null;
+    var porTema = Object.keys(EF).filter(function(k){ return (EF[k].temasHF || []).indexOf(tema) >= 0; })[0];
+    var epo = porTema || (window.Epocas && window.Epocas.epocaDeTema ? window.Epocas.epocaDeTema(tema) : null);
+    return epo && EF[epo] ? epo : null;
+  }
+  function epocasDeTeoria(key, subject, tema){
+    var EF = G("EPOCAS_FICHAS"); if (!EF || !view("ilustres")) return [];
+    var m = EPOCA_FIL[key]; if (m) return (m === "*" ? Object.keys(EF) : m).filter(function(k){ return EF[k]; });
+    var e = epocaFicha(subject, tema); return e ? [e] : [];
+  }
+  function nombreEpoca(k){ return typeof iluNombreFicha === "function" ? iluNombreFicha(k) : k; }
+  function epocaItem(k){ return { go: "ilustres", arg: "epoca-" + k, label: t("epocaDe", { e: nombreEpoca(k) }) }; }
   /* pasos (para la tira de una línea de Tarjetas, Cuestionarios y Clases) */
   function itinerario(subject, tema){
     var pre = function(arr, key){ return arr.map(function(r){ r.label = t(key) + " · " + r.label; return r; }); };
@@ -183,7 +200,7 @@
   }
   function btn(x, cls){ return '<button class="' + (cls || "itin-lnk") + '" type="button" data-igo="' + esc(x.go) + '" data-iarg="' + esc(x.arg) + '">' + esc(x.label) + (x.size ? ' <i>' + esc(x.size) + '</i>' : '') + '</button>'; }
   /* Tira de UNA línea «De este tema» (Tarjetas, Cuestionarios, Clases): un enlace por paso o por tipo de repaso. */
-  function stripHtml(pasos, here){
+  function stripHtml(pasos, here, extra){
     var hereIdx = hereIndex(pasos, here), out = [];
     pasos.forEach(function(p, i){
       if (i === hereIdx) return;
@@ -192,6 +209,7 @@
         p.items.forEach(function(x){ var tipo = x.label.split(" · ")[0]; if (seen[tipo]) return; seen[tipo] = 1; out.push({ go: x.go, arg: x.arg, label: tipo }); });
       } else out.push({ go: p.items[0].go, arg: p.items[0].arg, label: (p.short || p.label) + (p.items.length > 1 ? " (" + p.items.length + ")" : "") });
     });
+    if (extra) out = out.concat(extra);
     if (!out.length) return "";
     return '<div class="toolrow related-row itin-strip"><span class="flabel" style="align-self:center">' + esc(t("deEsteTema")) + '</span>' +
       out.map(function(x){ return '<button class="btn" type="button" data-igo="' + esc(x.go) + '" data-iarg="' + esc(x.arg) + '">' + esc(x.label) + '</button>'; }).join(" ") + '</div>';
@@ -267,9 +285,7 @@
     if (!esAnexo(T[key])) row(t("anexos"), Object.keys(T).filter(function(k){ return T[k].subject === subject && esAnexo(T[k]) && T[k].temaN === tema; })
       .map(function(k){ return { go: "teoria", arg: k, label: strip(T[k].title).replace(/^(Exploración|Esplorazioa|Exploration|Anexo|Eranskina|Annexe|Annex|Appendix)\s*-\s*/, "") }; }));
     /* (10-10) ficha de la época del tema (epocas_fichas.js, vista Ilustres), si existe */
-    var EF = G("EPOCAS_FICHAS"), epo = subject === "hf" && window.Epocas && window.Epocas.epocaDeTema ? window.Epocas.epocaDeTema(tema) : null;
-    if (EF && subject === "hf"){ var porTema = Object.keys(EF).filter(function(k){ return (EF[k].temasHF || []).indexOf(tema) >= 0; })[0]; if (porTema) epo = porTema; }   // (Fase 3) con / con2
-    if (EF && epo && EF[epo] && view("ilustres")) row(t("epoca"), [{ go: "ilustres", arg: "epoca-" + epo, label: typeof iluNombreFicha === "function" ? iluNombreFicha(epo) : epo }]);
+    row(t("epoca"), epocasDeTeoria(key, subject, tema).map(function(k){ return { go: "ilustres", arg: "epoca-" + k, label: nombreEpoca(k) }; }));   // (11-10) con / con2 y Filosofía 1.º
     /* tema anterior / siguiente, en el orden de la materia; desde un anexo, solo «Volver al tema» */
     var ks = temasDe(subject), i = ks.indexOf(key), prev = i > 0 ? ks[i - 1] : null, next = i >= 0 && i < ks.length - 1 ? ks[i + 1] : null;
     if (i < 0 && esAnexo(T[key])) prev = ks.filter(function(k){ return !T[k].sigla && temaOf("teoria", k, T[k]) === tema; })[0] || null;
@@ -295,13 +311,13 @@
   }
   function renderDeck(k){
     var host = document.getElementById("itin-tarjetas"), tm = itemTema("tarjetas", k); if (!host) return;
-    var pasos = tm && tm.tema != null ? itinerario(tm.subject, tm.tema) : [];
-    host.innerHTML = pasos.length > 1 ? stripHtml(pasos, { go: "tarjetas", arg: k }) : "";
+    var pasos = tm && tm.tema != null ? itinerario(tm.subject, tm.tema) : [], ep = tm && view("ilustres") ? epocaFicha(tm.subject, tm.tema) : null;
+    host.innerHTML = pasos.length > 1 || ep ? stripHtml(pasos, { go: "tarjetas", arg: k }, ep ? [epocaItem(ep)] : null) : "";
   }
   function renderQuiz(k){
     var host = document.getElementById("itin-quiz"), tm = itemTema("cuestionarios", k); if (!host) return;
-    var pasos = tm && tm.tema != null ? itinerario(tm.subject, tm.tema) : [];
-    host.innerHTML = pasos.length > 1 ? stripHtml(pasos, { go: "cuestionarios", arg: k }) : "";
+    var pasos = tm && tm.tema != null ? itinerario(tm.subject, tm.tema) : [], ep = tm && view("ilustres") ? epocaFicha(tm.subject, tm.tema) : null;
+    host.innerHTML = pasos.length > 1 || ep ? stripHtml(pasos, { go: "cuestionarios", arg: k }, ep ? [epocaItem(ep)] : null) : "";
   }
   function renderClase(k){
     var root = document.getElementById("clases-root"), idx = coll("CLASES_IDX"); if (!root || !idx) return;
@@ -447,5 +463,5 @@
     if (G("quizKey") != null) renderQuiz(G("quizKey"));
   } catch (e){}
 
-  window.Itinerario = { itinerario: itinerario, temaOf: temaOf, go: go };
+  window.Itinerario = { itinerario: itinerario, temaOf: temaOf, go: go, epocaFicha: epocaFicha, gloTema: gloTema, temasDe: temasDe, esAnexo: esAnexo };
 })();

@@ -98,6 +98,12 @@
       return parts.join(" · "); });
     addAll(typeof PAU !== "undefined" ? PAU : null, "pau", function(i){ return i.title; }, function(i){ return i.kick || "PAU"; }, "PAU");
     addAll(typeof ILUSTRES !== "undefined" ? ILUSTRES : null, "ilustres", function(i){ return i.name; }, function(i){ return i.dates + (i.role ? " · " + i.role : ""); }, "علَم", function(i){ return [i.idea, i.bio, i.anecdota].filter(Boolean).join(" · "); });
+    /* (11-10) fichas de época (epocas_fichas.js): se abren en Ilustres («epoca-<clave>») */
+    if (typeof EPOCAS_FICHAS !== "undefined" && EPOCAS_FICHAS && typeof iluNombreFicha === "function" && document.getElementById("ilustres")){
+      var EFI = {}; Object.keys(EPOCAS_FICHAS).forEach(function(k){ EFI["epoca-" + k] = EPOCAS_FICHAS[k]; });
+      addAll(EFI, "ilustres", function(i){ var k = Object.keys(EPOCAS_FICHAS).find(function(x){ return EPOCAS_FICHAS[x] === i; }); return iluNombreFicha(k); }, function(i){ return i.anos || ""; }, "العصر",
+        function(i){ return [i.abre, i.social, i.politico, i.ciencia, i.arte, i.pensamiento, i.rupturas].filter(Boolean).join(" · "); });
+    }
     addAll(typeof CLASES_IDX !== "undefined" ? CLASES_IDX : null, "clases", function(i){ return i.label; }, function(i){ return i.meta; }, "Clase");
 
     /* (3) texto completo */

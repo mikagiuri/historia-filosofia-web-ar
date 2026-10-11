@@ -76,7 +76,22 @@ function drawCrono(){
   const span = (c.type === "timeline" && c.start != null && c.end != null) ? (cronoYear(c.start) + " – " + cronoYear(c.end)) : "";
   box.innerHTML = '<div class="crono-card"><div class="crono-h"><h2 class="crono-title">' + cronoTitle(c) + '</h2>' +
     (span ? '<span class="crono-span">' + span + '</span>' : '') + '</div>' +
-    (c.type === "timeline" ? cronoSvg(c) : cronoEpochs(c)) + '</div>';
+    (c.type === "timeline" ? cronoSvg(c) : cronoEpochs(c)) + cronoFichasHtml(c) + '</div>';
+}
+/* (11-10) al pie de cada cronograma, la ficha (o fichas) de época que le corresponden (epocas_fichas.js, en Ilustres):
+   por el código (A-GRECIA, B-MED…) o por el tema de HF de su unidad (A9, B2, C5…); el A1 recorre toda la historia. */
+const CRONO_FICHAS = { "A1-OS": "*", "A-GRECIA": ["ant"], "B-MED": ["med"], "B-REN": ["ren"], "B-MOD": ["mod"], "B-ILU": ["ilu"], "C-XIX": ["con"], "C-XX": ["con2"],
+  "B2": ["med"], "B7": ["ilu"], "C5": ["con", "con2"], "C8": ["con", "con2"], "C9": ["ilu", "con", "con2"] };
+const CRONO_EPOCA_TIT = "بطاقات الحقب";
+function cronoFichasHtml(c){
+  if (typeof EPOCAS_FICHAS === "undefined" || typeof iluNombreFicha !== "function" || !document.getElementById("ilustres")) return "";
+  const code = c.code || "", pref = Object.keys(CRONO_FICHAS).find(p => code.indexOf(p + "-") === 0);
+  let ks = pref ? CRONO_FICHAS[pref] : null;
+  if (ks === "*") ks = Object.keys(EPOCAS_FICHAS);
+  if (!ks){ const It = window.Itinerario, n = It && It.gloTema ? It.gloTema({ subject: "hf", unidad: code.split("-")[0] }) : null, e = typeof n === "number" ? It.epocaFicha("hf", n) : null; ks = e ? [e] : []; }
+  ks = ks.filter(k => EPOCAS_FICHAS[k]);
+  if (!ks.length) return "";
+  return '<p class="crono-epocas"><b>' + CRONO_EPOCA_TIT + ':</b> ' + ks.map(k => '<button type="button" class="ilu-rel-a" data-eje-epoca="' + k + '">' + escapeCrono(iluNombreFicha(k)) + '</button>').join(" · ") + '</p>';
 }
 
 function cronoSvg(c){

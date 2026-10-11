@@ -457,6 +457,14 @@
 
   <!-- FUENTES Y AVISO (07-10): en todas las webs, enlazada desde el pie. data-web = webs publicadas que
        llevan esa fuente (student_lib.filterFuentes quita las demás); la web maestra las muestra todas. -->
+  <!-- (11-10) MAPA DE LA WEB: se rellena desde js/mapaview.js con el menú de cada build -->
+  <section class="view" id="mapa">
+    <p class="eyebrow">التوجيه</p>
+    <h1 class="title">خريطة الموقع</h1>
+    <p class="lead">كل ما في هذا الموقع، بنفس ترتيب القائمة، ومواضيع كل مادة. انقروا على أي اسم للانتقال إليه.</p>
+    <div id="mapabox"></div>
+  </section>
+
   <section class="view" id="fuentes">
     <p class="eyebrow">تنبيه</p>
     <h1 class="title">المصادر والتنبيه</h1>
@@ -482,7 +490,7 @@
         <li>استكشاف «اسبينوزا: الفلسفة نسقًا» (الفلسفة السنة الأولى باكالوريا، الموضوع 1؛ تاريخ الفلسفة، الموضوع 15): مقاطع المربعات «اسبينوزا ضد…» (<em>الأخلاق</em> I, ملحق؛ II, 35, شرح؛ III, مقدمة؛ IV, 45, شرح؛ الرسالة 56؛ <em>Tratado teológico-político</em>, المقدمة؛ <em>Tratado político</em> I, 1) هي صيغ من إعدادنا عن الأصل اللاتيني؛ أما باقي جمل اسبينوزا القصيرة (<em>الأخلاق</em> II, 7؛ IV, 67؛ V, 42؛ <em>Tratado teológico-político</em>, 20) فهي ترجمات حرفية من إعدادنا عن الأصل اللاتيني.</li>
         <li>استكشاف «الماركسيات وأثر ماركس في العلوم» (الفلسفة، السنة الأولى، الموضوع 6؛ تاريخ الفلسفة، الموضوع 21): من إعدادنا؛ تم التحقق من المؤلفات والتواريخ في الطبعات المرجعية وفي <em>Stanford Encyclopedia of Philosophy</em>. مداخلة بوريس هيسن (لندن، 1931) وقضية ليسينكو وفافيلوف، وفق دراسات تاريخ العلم السوفياتي.</li>
         <li>Ilustres: السير من إعدادنا. تذكر كل نادرة مصدرها (القديم أو الحديث)، وتحمل علامة «حسب التقليد» حين تكون أسطورة أو مشكوكًا في نسبتها. والجمل المقتبسة في السير والنوادر من ترجمتنا عن الأصل، باستثناء جمل المؤلفين الذين كتبوا بالإسبانية.</li>
-        <li>بطاقات الحقب (أعلام): من إعدادنا. تم التحقق من التواريخ والمؤلفات والمعطيات في <em>Stanford Encyclopedia of Philosophy</em> و<em>Encyclopaedia Britannica</em> والطبعات المرجعية لكل مؤلف؛ واقتباس كانط من <em>ما هو التنوير؟</em> (1784).</li>
+        <li>بطاقات الحقب (أعلام): من إعدادنا. تم التحقق من التواريخ والمؤلفات والمعطيات في <em>Stanford Encyclopedia of Philosophy</em> و<em>Encyclopaedia Britannica</em> والطبعات المرجعية لكل مؤلف؛ واقتباس كانط من <em>ما هو التنوير؟</em> (1784). قسم «الفن» (11-10): إ. هـ. غومبريتش، <em>قصة الفن</em>؛ ف. تاتاركيفيتش، <em>تاريخ علم الجمال</em> (Historia de la estética)؛ إ. بانوفسكي، <em>العمارة القوطية والفكر المدرسي</em> (Arquitectura gótica y pensamiento escolástico) (1951)؛ و. بنيامين، <em>العمل الفني في عصر إعادة إنتاجه تقنيًّا</em> (1936)؛ أ. دانتو، «The Artworld» (1964)؛ تواريخ الأعمال من بطاقات متحف البرادو والمتاحف الفاتيكانية و<em>Encyclopaedia Britannica</em>.</li>
         <li>ورشة لايبنتز، «حساب التفاضل والتكامل: لايبنتز يبتكر الرمزين ∫ و d»: إعداد خاص. التواريخ والمعطيات تم التحقق منها في J. J. O'Connor و E. F. Robertson، <a href="https://mathshistory.st-andrews.ac.uk/Biographies/Leibniz/" target="_blank" rel="noopener">«Gottfried Wilhelm von Leibniz»</a>، MacTutor (مخطوطا 29 أكتوبر و 21 نونبر 1675؛ <em>Nova methodus</em>، 1684؛ أول ∫ مطبوعة، 1686)؛ وفي إعادة بناء <em>Supplementum geometriae dimensoriae</em> (1693) وشبهه ببارو (M. Nauenberg، «Barrow and Leibniz on the fundamental theorem of the calculus»، arXiv:1111.6145)؛ وفي Babbage، <em>Passages from the Life of a Philosopher</em> (1864)، الفصل IV، فيما يخص الجمعية التحليلية؛ وفي M. Katz وآخرين حول المقادير اللامتناهية في الصغر بوصفها «تخييلات مفيدة» (رسالة إلى ماسون، 1716). كلمة «التكامل» (ياكوب برنولي، 1690) واتفاق 1696 مع يوهان برنولي، وفق كتب تاريخ الترميز الرياضي.</li>
         <li>ورشة لايبنتز: نصوص من إعدادنا؛ وقد تم التحقق من الاقتباسات والمعطيات في C. I. Gerhardt (ed.), <em>Die philosophischen Schriften von G. W. Leibniz</em>, vol. VII («لنحسب» calculemus)، وفي <em>Monadología</em> (§ 17)، وفي رسالة Joachim Bouvet إلى لايبنتز بتاريخ 4 نونبر 1701، وفي النسخة المحفوظة من آلة الحساب (مكتبة هانوفر).</li>
         <li>قراءات مناظرات «مبارزة الحجج» (أفلاطون وديكارت واسبينوزا ولا ميتري وكانط وهيغل وفيشته): صيغ من إعدادنا ومختصرة، وليست ترجمات حرفية؛ والجمل الموضوعة بين علامتي اقتباس تلخّص المقطع. والاختيار والأدلة من إعدادنا.</li>
@@ -969,7 +977,7 @@
     </article>
   </section>
 </main>
-<footer class="wrap sitefoot"><a href="#fuentes">المصادر والتنبيه</a></footer>
+<footer class="wrap sitefoot"><a href="#mapa">خريطة الموقع</a> · <a href="#fuentes">المصادر والتنبيه</a></footer>
 
 <script src="js/store.js"></script>
 <script src="js/data.js"></script>
@@ -1068,6 +1076,7 @@
 <script src="js/search.js"></script>
 <script src="js/resume.js"></script>
 <script src="js/itinerario.js"></script>
+<script src="js/mapaview.js"></script>
 <script src="js/epocas.js"></script>
 <script src="js/compacto.js"></script>
 <script src="js/nav_toc.js"></script>

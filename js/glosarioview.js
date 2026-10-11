@@ -150,12 +150,15 @@ function renderGloGrids(){
 
 /* (10-10) Al pie de cada término, los pensadores que nombra (campo «ilustre», tools/build_glosario_ilustres.js),
    con enlace a su ficha de Ilustres; solo los que están en esta web. */
-const GLO_ILU = "مفكرون";
+const GLO_ILU = "مفكرون", GLO_EPOCA = "العصر";
 function gloIlustres(g){
   if (typeof ILUSTRES === "undefined" || !ILUSTRES) return "";
   const ids = (g.ilustre || []).filter(id => ILUSTRES[id]);
-  if (!ids.length) return "";
-  return '<div class="glo-ilu"><b>' + GLO_ILU + '</b> ' + ids.map(id => '<button type="button" data-glo-ilu="' + gloEsc(id) + '">' + gloEsc(ILUSTRES[id].name) + '</button>').join(" · ") + '</div>';
+  /* (11-10) la ficha de época del tema de HF del término (epocas_fichas.js), si está en esta web */
+  const It = window.Itinerario, n = g.subject === "hf" && It && It.gloTema && It.epocaFicha ? It.gloTema(g) : null;
+  const ep = typeof n === "number" && typeof iluNombreFicha === "function" && document.getElementById("ilustres") ? It.epocaFicha("hf", n) : null;
+  return (ids.length ? '<div class="glo-ilu"><b>' + GLO_ILU + '</b> ' + ids.map(id => '<button type="button" data-glo-ilu="' + gloEsc(id) + '">' + gloEsc(ILUSTRES[id].name) + '</button>').join(" · ") + '</div>' : "") +
+    (ep ? '<div class="glo-ilu"><b>' + GLO_EPOCA + '</b> <button type="button" data-glo-ilu="epoca-' + ep + '">' + gloEsc(iluNombreFicha(ep)) + '</button></div>' : "");
 }
 
 function renderGloList(){

@@ -129,6 +129,12 @@ function relatedFor(key, self){
   if (typeof DILEMAS !== "undefined" && Array.isArray(DILEMAS) && self !== "dilemas"){
     for (const d of DILEMAS) if (d && d.debate && d.debate.unidad === key) out.push({ go: "dilemas", arg: d.id, label: "المعضلة: " + d.titulo });
   }
+  /* (11-10) ficha de la época del tema (HF), en Ilustres */
+  if (src && window.Itinerario && window.Itinerario.epocaFicha && document.getElementById("ilustres") && typeof iluNombreFicha === "function"){
+    const tn = (TEMA_ALIAS[key] != null ? TEMA_ALIAS[key] : (typeof src.temaN === "number" ? src.temaN : (String(src.tema || "").match(/(?:Tema|Thème|Topic|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/) || []).slice(1).find(Boolean)));
+    const ep = tn != null ? window.Itinerario.epocaFicha(src.subject, +tn) : null;
+    if (ep) out.push({ go: "ilustres", arg: "epoca-" + ep, label: TV_EPOCA_DE.replace("{e}", iluNombreFicha(ep)) });
+  }
   return out;
 }
 
@@ -139,8 +145,10 @@ function relatedStripHtml(key, self){
     rel.map(r => '<button class="btn" data-go="' + r.go + '" data-arg="' + r.arg + '">' + r.label + '</button>').join(" ") + '</div>';
 }
 
+const TV_EPOCA_DE = "الحقبة: {e}";
 function goRelated(go, arg){
   if (typeof show === "function") show(go);
+  if (go === "ilustres" && typeof loadIlustre === "function"){ loadIlustre(arg); return; }
   if (go === "cuestionarios" && typeof loadQuiz === "function") loadQuiz(arg);
   else if (go === "lecturas" && typeof loadLectura === "function") loadLectura(arg);
   else if (go === "infografias" && typeof loadInfografia === "function") loadInfografia(arg);
