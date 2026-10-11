@@ -38,6 +38,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Xenophanes in Thomas Stanley History of Philosophy · Unknown authorUnknown author · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Xenophanes_in_Thomas_Stanley_History_of_Philosophy.jpg"
  },
+ "confucio": {
+  "f": "media/retratos/ilustres/confucio.jpg",
+  "pie": "Confucius Tang Dynasty · Wu Daozi (atribuido), 685-758 · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Confucius_Tang_Dynasty.jpg"
+ },
  "heraclito": {
   "f": "media/retratos/museo2/heraclito.jpg",
   "pie": "Bust of Heraclitus, 'The Weeping Philosopher' LACMA M.83.4 · Vienna Porcelain Manufactory (Austria, Vienna, active 18th century), Johann Christoph Ludwig Lücke (Germany, active V... · Public Domain"
@@ -114,6 +119,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Aristotle Altemps Inv8575 · After Lysippos · Public Domain",
   "page": "https://commons.wikimedia.org/wiki/File:Aristotle_Altemps_Inv8575.jpg"
  },
+ "mencio": {
+  "f": "media/retratos/ilustres/mencio.jpg",
+  "pie": "Mencius · Pintor chino anónimo · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Mencius.jpg"
+ },
  "pirron": {
   "f": "media/retratos/museo2/pirron.jpg",
   "pie": "Pyrrho Heliensis - Illustrium philosophorum et sapientum effigies ab eorum numistatibus extractae · Girolamo Olgiati · Public Domain"
@@ -139,6 +149,16 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/museo/seneca.jpg",
   "pie": "Bust of Pseudo Seneca MET DP359039 · Peter Paul Rubens · CC0",
   "page": "https://commons.wikimedia.org/wiki/File:Bust_of_Pseudo-Seneca_MET_DP359039.jpg"
+ },
+ "epicteto": {
+  "f": "media/retratos/citas/epicteto.jpg",
+  "pie": "Epictetus from L. Annaei Senecae philosophi Opera, 1605, title page detail · Theodoor Galle · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Epictetus_from_L._Annaei_Senecae_philosophi_Opera,_1605,_title_page_detail.png"
+ },
+ "marco_aurelio": {
+  "f": "media/retratos/museo/marco-aurelio.jpg",
+  "pie": "Head Marcus Aurelius archmus Heraklion · Jebulon · CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Head_Marcus_Aurelius_archmus_Heraklion.jpg"
  },
  "tertuliano": {
   "f": "media/retratos/ilustres/tertuliano.jpg",
@@ -227,6 +247,10 @@ const ILUSTRES_RETRATOS = {
   "pie": "Portrait john calvin reverse · Portrait_john_calvin.jpg: Anonymous · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Portrait_john_calvin_reverse.jpg"
  },
+ "montaigne": {
+  "f": "media/retratos/museo2/montaigne.jpg",
+  "pie": "Michel de Montaigne, Portrait from Tietz edition (1753) · Engraving by J. C. G. Fritzsch · Public Domain"
+ },
  "francis_bacon": {
   "f": "media/retratos/museo2/bacon.jpg",
   "pie": "British (English) School - Portrait of an Unknown Man (called 'Sir Francis Bacon, 1561–1626, Viscount St Albans') - 1210310 - National Trust · anonymous · Public Domain"
@@ -262,6 +286,10 @@ const ILUSTRES_RETRATOS = {
  "isabel": {
   "f": "media/retratos/museo2/isabel-bohemia.jpg",
   "pie": "Princess Elisabeth of the Palatinate · Gerard van Honthorst · Public Domain"
+ },
+ "pascal": {
+  "f": "media/retratos/museo2/pascal.jpg",
+  "pie": "BOYER 2034 - -Blaise Pascal- - Portrait de Mr Pascal fait par mon pere · Public Domain"
  },
  "spinoza": {
   "f": "media/retratos/museo/spinoza.jpg",
@@ -485,6 +513,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Etienne Cabet (1849) · Charles Marville · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Etienne_Cabet_(1849).jpg"
  },
+ "schopenhauer": {
+  "f": "media/retratos/museo/schopenhauer.jpg",
+  "pie": "Arthur Schopenhauer by J Sch fer 1859b · Johann Schäfer · Public Domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Arthur_Schopenhauer_by_J_Sch%C3%A4fer,_1859b.jpg"
+ },
  "heine": {
   "f": "media/retratos/ilustres/heine.jpg",
   "pie": "Heinrich Heine-Oppenheim · Moritz Daniel Oppenheim · Public domain",
@@ -537,6 +570,10 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/buchner.jpg",
   "pie": "Georg Büchner · Philipp August Joseph Hoffmann (1807 bis 1883) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Georg_B%C3%BCchner.png"
+ },
+ "kierkegaard": {
+  "f": "media/retratos/museo2/kierkegaard.jpg",
+  "pie": "Kierkegaard portrait · Luplau Janssen · Public Domain"
  },
  "boole": {
   "f": "media/retratos/ilustres/boole.jpg",

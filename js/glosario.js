@@ -3466,7 +3466,8 @@ const GLOSARIO = [
   "tema": "نيتشه",
   "def": "عند شوبنهاور، لا يوجد في أعماق الواقع عقل شفاف، بل دافع بلا غاية عقلانية ورغبة لا تشبع.",
   "ilustre": [
-   "nietzsche"
+   "nietzsche",
+   "schopenhauer"
   ]
  },
  {
