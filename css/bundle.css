@@ -2040,6 +2040,25 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 #logicabox .lg-regla.lg-medio{ border-left-color:#d95f02; }
 #logicabox .lg-nof{ margin:.3rem 0; padding-left:1.1rem; } #logicabox .lg-nof li{ margin:.25rem 0; }
 #logicabox .lg-panel > h3{ margin:1rem 0 .4rem; }
+/* (12-10) leyes de conjuntos: cada lado como «diagrama ∪ diagrama = diagrama», y los cinco casos de Euler */
+#logica .lg-co-h{ font-size:1rem; margin:1rem 0 .3rem }
+#logica .lg-co-ec{ display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:.25rem; margin:.3rem 0 .8rem }
+#logica .lg-co-ec .tv-venn{ flex:1 1 4rem; max-width:12rem; min-width:0 }
+#logica .lg-co-op{ font:700 1.4rem var(--sans); color:var(--ink); flex:0 0 auto }
+#logica .lg-co-pats{ position:absolute; width:0; height:0; overflow:hidden }
+#logica .lg-co-p1{ fill:var(--hf) }
+#logica .lg-co-p2{ fill:var(--ipc) }
+#logica .lg-op1 .tvv-sel, #logica .tvv-h1{ fill:url(#lgCoH1); fill-opacity:1 }
+#logica .lg-op2 .tvv-sel, #logica .tvv-h2{ fill:url(#lgCoH2); fill-opacity:1 }
+#logica .lg-res .tvv-sel{ fill:var(--accent) }
+#logica .lg-eu-casos{ display:grid; grid-template-columns:repeat(auto-fill,minmax(14rem,1fr)); gap:.7rem; margin:.6rem 0 }
+#logica .lg-eu-caso{ border:1px solid var(--line); border-inline-start:4px solid var(--ok); border-radius:var(--radius); padding:.5rem .6rem }
+#logica .lg-eu-caso.lg-eu-no{ border-inline-start-color:var(--bad) }
+#logica .lg-eu-caso h4{ margin:0 0 .3rem; font-size:.95rem }
+#logica .lg-eu-par{ display:grid; grid-template-columns:1fr 1fr; gap:.4rem }
+#logica .lg-eu-v{ margin:.3rem 0 0; font-weight:700 }
+#logica .lg-eu-si .lg-eu-v{ color:var(--ok) }
+#logica .lg-eu-no .lg-eu-v{ color:var(--bad) }
 
 
 /* ==== css/leibniz.css ==== */

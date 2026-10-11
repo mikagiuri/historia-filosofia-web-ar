@@ -267,7 +267,8 @@ function tvVennSvg(spec){
     [...r].forEach((b, j) => { if (b === "1") g = '<g clip-path="url(#' + id + "c" + j + ')">' + g + "</g>"; });
     return g;
   };
-  const zonas = lista("sel").map(r => region(r, "tvv-sel")).join("") + lista("vac").map(r => region(r, "tvv-vac")).join("");
+  const zonas = lista("sel").map(r => region(r, "tvv-sel")).join("") + lista("vac").map(r => region(r, "tvv-vac")).join("") +
+    lista("h1").map(r => region(r, "tvv-h1")).join("") + lista("h2").map(r => region(r, "tvv-h2")).join("");   /* (12-10) rayados del Rincón de lógica */
   const xs = lista("x").map(x => { const ps = x.split("|").map(r => G.cen[r]).filter(Boolean); if (!ps.length) return "";
     const px = ps.reduce((a, p) => a + p[0], 0) / ps.length, py = ps.reduce((a, p) => a + p[1], 0) / ps.length;
     return '<text x="' + px + '" y="' + (py + 7) + '" text-anchor="middle" class="tvv-x">✕</text>'; }).join("");

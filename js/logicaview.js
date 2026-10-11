@@ -83,6 +83,17 @@ const LOG_TXT = {
   coIguales: "العبارتان تعطيان المنطقة نفسها: إنهما متكافئتان.", coDistintas: "المنطقتان لا تتطابقان: العبارتان غير متكافئتين. انظروا إلى المناطق التي تختلفان فيها.",
   coLeyes: "قوانين للتجربة:", coConm: "التبادل", coAsoc: "التجميع", coDM1: "دي مورغان (1)", coDM2: "دي مورغان (2)", coDist: "التوزيع", coDist2: "التوزيع (2)", coComp: "المتمم", coDif: "الفرق", coTrampa: "عبارة ليست قانونًا",
   coErrCar: "لا أفهم الرمز «{c}».", coErrFalta: "ينقص شيء في العبارة.", coErrParen: "ينقص إغلاق قوس.", coErrVacia: "اكتبوا عبارة.",
+  /* (12-10) construcción a la vista y comprobación con Euler */
+  coCompara: "النتيجتان، الواحدة بجانب الأخرى",
+  coRayas: "يُبنى كل طرف أمام أعينكم. المجموعة الأولى مخطَّطة هكذا ⟋، والثانية هكذا ⟍، والنتيجة ملوَّنة وفوقها التخطيطان معًا: في التقاطع (∩) يتقاطع التخطيطان؛ وفي الاتحاد (∪) يكفي واحد منهما؛ وفي الفرق (−) الأول وحده؛ والمتمم (ᶜ) هو ما يبقى بلا تخطيط.",
+  coEuBtn: "التحقق في حالات أويلر الخمس", coEuOcultar: "إخفاء حالات أويلر",
+  coEuIntro: "مخطط أويلر لا يرسم إلا المناطق الموجودة في حالة بعينها. مع مجموعتين هناك خمس حالات ممكنة، ويجب أن يصدق القانون في الخمس كلها: الرسم الواحد يوضّح القانون لكنه لا يبرهنه. أما مخطط فن فيضم كل المناطق في آن واحد.",
+  coEuSep: "منفصلتان", coEuCorte: "متقاطعتان", coEuAB: "A داخل B", coEuBA: "B داخل A", coEuIg: "A وB متساويتان",
+  coEuSi: "تتطابقان", coEuNo: "لا تتطابقان",
+  coEuTodos: "تتطابقان في الحالات الخمس: المساواة تصدق على أي مجموعتين، كما يُظهر مخطط فن.",
+  coEuFalla: "لا تتطابقان في {n} من الحالات الخمس، فهي إذن ليست قانونًا.",
+  coEuTrampa: "انتبهوا: في حالة «{c}» تتطابقان فعلًا. ومن لم يرسم إلا هذه الحالة لظنّ أنها قانون.",
+  coEuTres: "التحقق بمخطط أويلر يكون بمجموعتين (A وB): مع ثلاث مجموعات تكثر الحالات الممكنة. وللمجموعات الثلاث، مخطط فن هو الذي يبرهن.",
   coDifieren: "المناطق التي تختلفان فيها", coUnivVacio: "U = المجموعة الشاملة: كل ما نتحدث عنه. يدلّ اللون على المنطقة الناتجة.",
   /* (09-10) guía larga y sencilla de cada pestaña, plegada bajo la introducción */
   guiaTit: "دليل: كيف يُستعمل ولماذا",
@@ -530,16 +541,111 @@ const LOG_CO_EJ = [["A ∪ B", "B ∪ A", "coConm"], ["(A ∪ B) ∪ C", "A ∪ 
   ["A ∩ (B ∪ C)", "(A ∩ B) ∪ (A ∩ C)", "coDist"], ["A ∪ (B ∩ C)", "(A ∪ B) ∩ (A ∪ C)", "coDist2"], ["A ∪ Aᶜ", "U", "coComp"], ["A − B", "A ∩ Bᶜ", "coDif"], ["(A ∪ B)ᶜ", "Aᶜ ∪ Bᶜ", "coTrampa"]];
 const LOG_CO_TECLAS = ["A", "B", "C", "∪", "∩", "−", "ᶜ", "(", ")", "U", "∅"];
 function logCoRegiones(m, n){ const out = []; for (let r = 0; r < (1 << n); r++) if (m & (1 << r)) out.push([...Array(n)].map((_, j) => (r >> j) & 1).join("")); return out.join(","); }
+/* (12-10) Cada lado se construye a la vista: «diagrama ∪ diagrama = diagrama» (petición del profesor: no basta poner
+   dos veces el mismo diagrama; hacen falta los tres para llegar a la conclusión). Y la comprobación en los cinco casos
+   de Euler con dos conjuntos: un dibujo de Euler ilustra una ley, pero solo los cinco juntos la comprueban. */
+function logCoArbol(s){
+  const tk = logCoTokens(s); let i = 0;
+  const peek = () => tk[i] && tk[i].k;
+  const expr = () => { let a = term(); while (peek() === "or" || peek() === "dif"){ const k = tk[i++].k; a = { k, a, b: term() }; } return a; };
+  const term = () => { let a = fac(); while (peek() === "and"){ i++; a = { k: "and", a, b: fac() }; } return a; };
+  const fac = () => { let a = atom(); while (peek() === "c"){ i++; a = { k: "c", a }; } return a; };
+  const atom = () => {
+    const x = tk[i]; if (!x) throw new Error(logT("coErrFalta"));
+    if (x.k === "var" || x.k === "U" || x.k === "0"){ i++; return x; }
+    if (x.k === "("){ i++; const e = expr(); if (peek() !== ")") throw new Error(logT("coErrParen")); i++; return e; }
+    throw new Error(logT("coErrFalta"));
+  };
+  const t = expr(); if (i < tk.length) throw new Error(logT("coErrFalta"));
+  return t;
+}
+const LOG_CO_OP = { or: "∪", and: "∩", dif: "−" };
+function logCoTxt(n, dentro){
+  if (n.k === "var") return "ABC"[n.j];
+  if (n.k === "U") return "U";
+  if (n.k === "0") return "∅";
+  if (n.k === "c"){ const a = logCoTxt(n.a, false); return (n.a.k === "var" || n.a.k === "U" || n.a.k === "0" ? a : "(" + a + ")") + "ᶜ"; }
+  const s = logCoTxt(n.a, true) + " " + LOG_CO_OP[n.k] + " " + logCoTxt(n.b, true);
+  return dentro ? "(" + s + ")" : s;
+}
+function logCoMask(n){
+  if (n.k === "var"){ let m = 0; for (let r = 0; r < 8; r++) if (r & (1 << n.j)) m |= 1 << r; return m; }
+  if (n.k === "U") return 255;
+  if (n.k === "0") return 0;
+  if (n.k === "c") return ~logCoMask(n.a) & 255;
+  const a = logCoMask(n.a), b = logCoMask(n.b);
+  return n.k === "or" ? a | b : n.k === "and" ? a & b : a & ~b & 255;
+}
+/* una «ecuación de diagramas» por lado: operando, operación, operando, =, resultado (cada uno con su color) */
+function logCoEcuacion(arbol, n, nom, titulo){
+  const todo = (1 << (1 << n)) - 1;
+  const reg = nodo => logCoRegiones(logCoMask(nodo) & todo, n);
+  /* los operandos van rayados (/ el primero, \ el segundo); el resultado, de color y con los dos rayados encima, para que se vea de dónde sale */
+  const fig = (nodo, cls, h1, h2) => '<figure class="tv-venn lg-co-fig ' + cls + '">' + tvVennSvg("c=" + nom + ";sel=" + reg(nodo) + (h1 ? ";h1=" + reg(h1) : "") + (h2 ? ";h2=" + reg(h2) : "")) + "<figcaption>" + logEsc(logCoTxt(nodo, false)) + "</figcaption></figure>";
+  const op = t => '<span class="lg-co-op" aria-hidden="true">' + t + "</span>";
+  let fila;
+  if (arbol.k === "or" || arbol.k === "and" || arbol.k === "dif") fila = fig(arbol.a, "lg-op1") + op(LOG_CO_OP[arbol.k]) + fig(arbol.b, "lg-op2") + op("=") + fig(arbol, "lg-res", arbol.a, arbol.b);
+  else if (arbol.k === "c") fila = op("(") + fig(arbol.a, "lg-op1") + op(")ᶜ") + op("=") + fig(arbol, "lg-res", arbol.a);
+  else fila = fig(arbol, "lg-res");
+  return '<h3 class="lg-co-h">' + logEsc(titulo) + "</h3>" + '<div class="lg-co-ec">' + fila + "</div>";
+}
+/* Euler con dos conjuntos: las cinco relaciones posibles; cada una dibuja solo las regiones que existen */
+const LOG_EU_CASOS = [
+  ["coEuSep", [[88, 98, 56], [212, 98, 56]], [[40, 34], [260, 34]]],
+  ["coEuCorte", [[118, 98, 64], [182, 98, 64]], [[56, 34], [244, 34]]],
+  ["coEuAB", [[128, 112, 40], [150, 98, 82]], [[128, 98], [244, 30]]],
+  ["coEuBA", [[150, 98, 82], [172, 112, 40]], [[56, 30], [172, 98]]],
+  ["coEuIg", [[150, 98, 70], [150, 98, 70]], [[150, 70], [150, 70]]]
+];
+let logEuN = 0;
+function logEulerSvg(caso, m){
+  const [, C, E] = caso, id = "lgeu" + (++logEuN), W = 300, H = 190;
+  const circ = (j, extra) => '<circle cx="' + C[j][0] + '" cy="' + C[j][1] + '" r="' + C[j][2] + '"' + (extra || "") + "/>";
+  let defs = "<defs>" + C.map((_, j) => '<clipPath id="' + id + "c" + j + '">' + circ(j) + "</clipPath>").join("");
+  let zonas = "";
+  for (let r = 0; r < 4; r++){
+    if (!(m & (1 << r))) continue;
+    const dentro = [0, 1].filter(j => r & (1 << j)), fuera = [0, 1].filter(j => !(r & (1 << j))), mid = id + "m" + r;
+    defs += '<mask id="' + mid + '"><rect width="' + W + '" height="' + H + '" fill="#fff"/>' + fuera.map(j => circ(j, ' fill="#000"')).join("") + "</mask>";
+    let g = '<rect x="6" y="6" width="' + (W - 12) + '" height="' + (H - 12) + '" class="tvv-sel" mask="url(#' + mid + ')"/>';
+    dentro.forEach(j => { g = '<g clip-path="url(#' + id + "c" + j + ')">' + g + "</g>"; });
+    zonas += g;
+  }
+  const igual = caso[0] === "coEuIg";
+  const etq = igual ? '<text x="150" y="104" text-anchor="middle" class="tvv-t">A = B</text>'
+    : ["A", "B"].map((t, j) => '<text x="' + E[j][0] + '" y="' + E[j][1] + '" text-anchor="middle" class="tvv-t">' + t + "</text>").join("");
+  return '<svg viewBox="0 0 300 190" role="img" aria-hidden="true">' + defs + '</defs><rect x="6" y="6" width="288" height="178" rx="4" class="tvv-u"/><text x="14" y="26" class="tvv-t tvv-tu">U</text>' + zonas + C.map((_, j) => circ(j, ' class="tvv-c"')).join("") + etq + "</svg>";
+}
+function logCoEuler(a, b, n){
+  if (n === 3) return '<p class="lg-nota">' + logT("coEuTres") + "</p>";
+  const ma = logCoMask(a) & 15, mb = logCoMask(b) & 15;
+  /* regiones que hay en cada caso (bit r: 0 fuera, 1 solo A, 2 solo B, 3 A y B), en el orden de LOG_EU_CASOS: separados (sin región 3), se cortan (todas), A dentro de B (sin 1), B dentro de A (sin 2), iguales (sin 1 ni 2) */
+  const ex = [7, 15, 13, 11, 9];
+  let ok = 0, unoBien = null;
+  const cartas = LOG_EU_CASOS.map((c, i) => {
+    const e = ex[i], va = ma & e, vb = mb & e, si = va === vb; if (si){ ok++; if (!unoBien) unoBien = logT(c[0]); }
+    const f = (m, t) => '<figure class="tv-venn lg-co-fig lg-res">' + logEulerSvg(c, m) + "<figcaption>" + logEsc(t) + "</figcaption></figure>";
+    return '<div class="lg-eu-caso ' + (si ? "lg-eu-si" : "lg-eu-no") + '"><h4>' + logT(c[0]) + '</h4><div class="lg-eu-par">' + f(va, logCoTxt(a, false)) + f(vb, logCoTxt(b, false)) + '</div><p class="lg-eu-v">' + (si ? "✓ " + logT("coEuSi") : "✗ " + logT("coEuNo")) + "</p></div>";
+  }).join("");
+  const resumen = ok === 5 ? logT("coEuTodos") : logT("coEuFalla", { n: 5 - ok }) + (unoBien ? " " + logT("coEuTrampa", { c: unoBien }) : "");
+  return '<p class="lg-nota">' + logT("coEuIntro") + '</p><div class="lg-eu-casos">' + cartas + '</div><p class="lg-veredicto ' + (ok === 5 ? "lg-tautologia" : "lg-contradiccion") + '">' + resumen + "</p>";
+}
 function logConjHtml(){
-  let a, b;
-  try { a = logCoEval(LOG.co.izq); b = logCoEval(LOG.co.der); } catch (err){ return '<p class="lg-error">' + logEsc(err.message) + "</p>"; }
+  let a, b, ta, tb;
+  try { a = logCoEval(LOG.co.izq); b = logCoEval(LOG.co.der); ta = logCoArbol(LOG.co.izq); tb = logCoArbol(LOG.co.der); } catch (err){ return '<p class="lg-error">' + logEsc(err.message) + "</p>"; }
   if (typeof tvVennSvg !== "function") return "";
   const n = a.usaC || b.usaC ? 3 : 2, nom = n === 3 ? "A,B,C" : "A,B", todo = (1 << (1 << n)) - 1, ma = a.m & todo, mb = b.m & todo, iguales = ma === mb;
-  const fig = (m, tit) => '<figure class="tv-venn">' + tvVennSvg("c=" + nom + ";sel=" + logCoRegiones(m, n)) + "<figcaption>" + logEsc(tit) + "</figcaption></figure>";
-  return '<div class="tv-venns">' + fig(ma, LOG.co.izq) + fig(mb, LOG.co.der) + "</div>" +
+  const fig = (m, tit, cls) => '<figure class="tv-venn' + (cls ? " lg-co-fig " + cls : "") + '">' + tvVennSvg("c=" + nom + ";sel=" + logCoRegiones(m, n)) + "<figcaption>" + logEsc(tit) + "</figcaption></figure>";
+  const pat = (id, rot, cls) => '<pattern id="' + id + '" patternUnits="userSpaceOnUse" width="9" height="9" patternTransform="rotate(' + rot + ')"><rect width="3.2" height="9" class="' + cls + '"/></pattern>';
+  return '<svg class="lg-co-pats" width="0" height="0" aria-hidden="true" focusable="false"><defs>' + pat("lgCoH1", 45, "lg-co-p1") + pat("lgCoH2", -45, "lg-co-p2") + "</defs></svg>" +
+    '<p class="lg-nota">' + logT("coRayas") + "</p>" +
+    logCoEcuacion(ta, n, nom, logT("coIzq")) + logCoEcuacion(tb, n, nom, logT("coDer")) +
+    '<h3 class="lg-co-h">' + logT("coCompara") + '</h3><div class="lg-co-ec">' + fig(ma, LOG.co.izq, "lg-res") + '<span class="lg-co-op" aria-hidden="true">' + (iguales ? "=" : "≠") + "</span>" + fig(mb, LOG.co.der, "lg-res") + "</div>" +
     '<p class="lg-veredicto ' + (iguales ? "lg-tautologia" : "lg-contradiccion") + '">' + logT(iguales ? "coIguales" : "coDistintas") + "</p>" +
     (iguales ? "" : '<div class="tv-venns">' + fig((ma ^ mb) & todo, logT("coDifieren")) + "</div>") +
-    '<p class="lg-nota">' + logT("coUnivVacio") + "</p>";
+    '<p class="lg-nota">' + logT("coUnivVacio") + "</p>" +
+    '<p><button type="button" class="btn ghost" data-lg="euler" aria-expanded="' + !!LOG.co.euler + '">' + logT(LOG.co.euler ? "coEuOcultar" : "coEuBtn") + "</button></p>" +
+    (LOG.co.euler ? logCoEuler(ta, tb, n) : "");
 }
 function logRenderConjuntos(){
   const tecl = id => '<div class="lg-teclas" data-para="' + id + '">' + LOG_CO_TECLAS.map(k => '<button type="button" class="chip" data-tecla="' + k + '">' + k + "</button>").join("") + "</div>";
@@ -602,6 +708,7 @@ function logWire(){
     if (b.dataset.var){ LOG.circ[b.dataset.var] = !LOG.circ[b.dataset.var]; logRefrescar("lg-circ"); return; }
     if (b.dataset.lg === "borrar"){ LOG.formula = ""; logRender(); const i = document.getElementById("lg-f"); if (i) i.focus(); return; }
     if (b.dataset.lg === "circuito"){ LOG.tab = "puertas"; logRender(); const c = document.getElementById("lg-circ"); if (c) c.scrollIntoView({ block: "center" }); return; }
+    if (b.dataset.lg === "euler"){ LOG.co.euler = !LOG.co.euler; logRefrescar("lg-co"); return; }
     if (b.dataset.lg === "arg"){ logRefrescar("lg-arg"); }
   });
   box.addEventListener("keydown", ev => { const p = ev.target.closest(".lg-pin"); if (p && (ev.key === "Enter" || ev.key === " ")){ ev.preventDefault(); p.dispatchEvent(new MouseEvent("click", { bubbles: true })); } });
