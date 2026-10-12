@@ -406,8 +406,11 @@
         }
         gr.ks.forEach(function(k){
           var n = temaOf("teoria", k, T[k]), extra = !!THEORY_EXTRA[k], anexo = extra && typeof T[k].temaN === "number";   /* anexos: «Exploración - …», sin «Tema N» */
+          /* (12-10, rediseño Lote 1 · F4) el ampliado que ya declara su tema en el rótulo («Filosofía · Tema 1»,
+             presocráticos; «Filosofía · Tema 5», helenismo) va sangrado bajo su tema y NO repite la ficha «Tema N» */
+          var declaraN = extra && !anexo && temaNum(T[k]) != null;
           var li = '<li' + (extra ? ' class="temas-extra"' : '') + ga + '><button type="button" data-igo="teoria" data-iarg="' + esc(k) + '">' +
-            (T[k].sigla ? '<span class="temas-n">' + esc(T[k].sigla) + '</span>' : typeof n === "number" && !anexo ? '<span class="temas-n">' + esc(t("tema", { n: n })) + '</span>' : '') + '<span class="temas-t">' + esc(anexo ? strip(T[k].title).replace(/^[^\s-]+ - /, "") : strip(T[k].title)) + '</span>' + (anexo && T[k].clase ? '<span class="temas-anexo">في القسم</span>' : '') + '</button></li>';
+            (T[k].sigla ? '<span class="temas-n">' + esc(T[k].sigla) + '</span>' : typeof n === "number" && !anexo && !declaraN ? '<span class="temas-n">' + esc(t("tema", { n: n })) + '</span>' : '') + '<span class="temas-t">' + esc(anexo ? strip(T[k].title).replace(/^[^\s-]+ - /, "") : strip(T[k].title)) + '</span>' + (anexo && T[k].clase ? '<span class="temas-anexo">في القسم</span>' : '') + '</button></li>';
           if (anexo) exp.push(li);
           else { if (!extra) flush(); out += li; }
         });

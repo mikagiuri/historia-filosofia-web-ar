@@ -135,8 +135,16 @@ function igMarkup(d){
 /* ---- vista (chips + escenario) ---- */
 let igKey = Object.keys(INFOGRAFIAS)[0];
 let igSubject = "all", igBloque = "all";
+let igAmb = "all";   // (12-10) 1.º: fila «Ámbito»
 const IG_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة", ipc: "التفكير النقدي" };
 const IG_BLOCKS = { A: "القديمة", B: "الوسيطة والحديثة", C: "المعاصرة" };
+/* (12-10) criterio del profesor: en 1.º Infografías criba por ámbito filosófico (orden del curso). Las de 1.º no
+   llevan campo tema: ámbito por clave (EDITABLE: una infografía nueva de 1.º se apunta aquí). Mismo criterio que IG_TEMA en itinerario.js. */
+const IG_AMBS = { int: "مدخل", ant: "الأنثروبولوجيا", con: "المعرفة", met: "ميتافيزيقا", log: "المنطق", eti: "الأخلاق", pol: "السياسة", est: "علم الجمال" };
+const IG_AMB_ORDEN = ["int", "ant", "con", "met", "log", "eti", "pol", "est"];
+const IG_AMB = { "fil-t1": "int", "fil-ramas": "int", "fil-mito-logos": "int", "fil-t2": "ant", "fil-natur-cultura": "ant", "fil-cuerpo-mente": "ant",
+  "fil-t3": "con", "fil-posverdad": "con", "fil-conocer": "con", "fil-t4": "log", "fil-t5": "eti", "fil-t6": "pol", "fil-t7": "est", "fil-metafisica": "met" };
+function igEsFil(){ return typeof SUBJECTS !== "undefined" && !!SUBJECTS.fil && !SUBJECTS.hf; }
 
 function renderIgFilter(){
   const box = document.getElementById("igfilter");
@@ -150,12 +158,23 @@ function renderIgFilter(){
       return '<button class="fbtn" data-block="' + b + '" aria-pressed="' + (b === igBloque) + '">' +
         (b === "all" ? "كل المحاور" : IG_BLOCKS[b]) + '</button>'; }).join("");
   }
+  let ambBtns = "";   // (12-10) 1.º: criba por ámbito, en el orden del curso
+  if (igEsFil()){
+    const amb = IG_AMB_ORDEN.filter(function (r){ return Object.keys(INFOGRAFIAS).some(function (k){ return INFOGRAFIAS[k].subject === "fil" && IG_AMB[k] === r; }); });
+    if (igAmb !== "all" && amb.indexOf(igAmb) < 0) igAmb = "all";
+    ambBtns = ["all"].concat(amb).map(function (b){
+      return '<button class="fbtn" data-amb="' + b + '" aria-pressed="' + (b === igAmb) + '">' +
+        (b === "all" ? "الكل" : IG_AMBS[b]) + '</button>'; }).join("");
+  }
   box.innerHTML = '<div class="fgroup"><span class="flabel">المادة</span>' + subjBtns + '</div>' +
-    (blockBtns ? '<div class="fgroup"><span class="flabel">المحور</span>' + blockBtns + '</div>' : '');
+    (blockBtns ? '<div class="fgroup"><span class="flabel">المحور</span>' + blockBtns + '</div>' : '') +
+    (ambBtns ? '<div class="fgroup"><span class="flabel">المجال</span>' + ambBtns + '</div>' : '');
   box.querySelectorAll("[data-subj]").forEach(function (b){ b.addEventListener("click", function (){
     igSubject = b.dataset.subj; if (igSubject !== "hf") igBloque = "all"; renderIgFilter(); renderIgChips(); }); });
   box.querySelectorAll("[data-block]").forEach(function (b){ b.addEventListener("click", function (){
     igBloque = b.dataset.block; renderIgFilter(); renderIgChips(); }); });
+  box.querySelectorAll("[data-amb]").forEach(function (b){ b.addEventListener("click", function (){
+    igAmb = b.dataset.amb; renderIgFilter(); renderIgChips(); }); });
 }
 
 function renderIgChips(){
@@ -165,6 +184,7 @@ function renderIgChips(){
     var d = e[1];
     if (igSubject !== "all" && d.subject !== igSubject) return false;
     if (igSubject === "hf" && igBloque !== "all" && d.block !== igBloque) return false;
+    if (igEsFil() && igAmb !== "all" && IG_AMB[e[0]] !== igAmb) return false;
     return true;
   });
   box.innerHTML = entries

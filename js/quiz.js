@@ -18,6 +18,10 @@ function quizShuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ 
 
 const QUIZ_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة", ipc: "التفكير النقدي" };
 const QUIZ_BLOCKS = { A: "المحور A · القديمة", B: "المحور B · الوسيطة والحديثة", C: "المحور C · المعاصرة" };
+/* (12-10) criterio del profesor: en 1.º la fila «Tema» nombra el ÁMBITO filosófico; el código T1… va al tooltip
+   y la cabecera de grupo. En HF y en la web local, como antes. */
+const QUIZ_RAMAS = { T1: "مدخل", T2: "الأنثروبولوجيا", T3: "المعرفة", M: "ميتافيزيقا", T4: "المنطق", T5: "الأخلاق", T6: "السياسة", T7: "علم الجمال" };
+function quizEsFil(){ return typeof SUBJECTS !== "undefined" && !!SUBJECTS.fil && !SUBJECTS.hf; }
 
 /* Clasificador de temas: temas de cada materia (en orden) y tema de cada cuestionario.
    Al añadir un cuestionario a QUIZZES, añadir aquí su clave; si falta, sale en «Otros». */
@@ -164,7 +168,7 @@ function renderQuizFilter(){
     if (!temas.includes(quizTema)) quizTema = "all";
     temaBtns = ["all"].concat(temas).map(t =>
       '<button class="fbtn" data-tema="' + t + '" aria-pressed="' + (t === quizTema) + '" title="' + (t === "all" ? "Todos los temas" : quizTemaEtq(t)) + '">' +
-      (t === "all" ? "الكل" : quizTemaNum(t) ? t : quizTemaEtq(t)) + '</button>'
+      (t === "all" ? "الكل" : (quizEsFil() && QUIZ_RAMAS[t]) ? QUIZ_RAMAS[t] : quizTemaNum(t) ? t : quizTemaEtq(t)) + '</button>'
     ).join("");
   }
   box.innerHTML = '<div class="fgroup"><span class="flabel">المادة</span>' + subjBtns + '</div>' +
@@ -199,7 +203,8 @@ function renderQuizChips(){
     /* agrupados por tema, con su título; dentro de cada tema: banco ampliado, breve, libro */
     box.innerHTML = quizTemasVisibles().filter(t => quizTema === "all" || t === quizTema).map(t => {
       const del = entries.filter(([k]) => quizTemaDe(k) === t).sort((a, b) => quizTipo(a[0]) - quizTipo(b[0]));
-      return del.length ? '<div class="quiz-tema"><span class="flabel">' + (quizTemaNum(t) ? t + " · " : "") + quizTemaEtq(t) + '</span><div class="quiz-tema-chips">' + del.map(chip).join("") + '</div></div>' : "";
+      const cab = (quizEsFil() && QUIZ_RAMAS[t] ? QUIZ_RAMAS[t] + " · " : quizTemaNum(t) ? t + " · " : "") + quizTemaEtq(t);   // (12-10) 1.º: «Ámbito · título»
+      return del.length ? '<div class="quiz-tema"><span class="flabel">' + cab + '</span><div class="quiz-tema-chips">' + del.map(chip).join("") + '</div></div>' : "";
     }).join("");
   }
   box.querySelectorAll("[data-quiz]").forEach(b => b.addEventListener("click", () => loadQuiz(b.dataset.quiz)));

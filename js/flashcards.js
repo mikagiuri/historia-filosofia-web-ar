@@ -8,12 +8,22 @@ let flipped = false;
 let deckSubject = "all";
 let deckBlock = "all";
 let deckTipo = "all";   // (29-09) «conceptos» | «frases» (barajas con tipo:"frases")
-const known = store.get("aula-known", {});
+let deckTema = "all";   // (12-10) 1.º: desplegable por tema (ámbito)
 
 const cardEl = document.getElementById("card");
 
 const DECK_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة", ipc: "التفكير النقدي" };
 const DECK_BLOCKS = { A: "المحور A · القديمة", B: "المحور B · الوسيطة والحديثة", C: "المحور C · المعاصرة" };
+/* (12-10) criterio del profesor: en 1.º Tarjetas se elige PRIMERO el tema en un desplegable (no una fila de
+   veinte barajas); cada tema del curso es su ámbito. En HF y en la web local no hay desplegable (27 temas: demasiados).
+   EDITABLE: una baraja nueva de 1.º se apunta aquí con su ámbito. */
+const DECK_AMBS = { int: "مدخل", ant: "الأنثروبولوجيا", con: "المعرفة", met: "ميتافيزيقا", log: "المنطق", eti: "الأخلاق", pol: "السياسة", est: "علم الجمال" };
+const DECK_AMB_ORDEN = ["int", "ant", "con", "met", "log", "eti", "pol", "est"];
+const DECK_AMB = { "fil-que-es": "int", "fil-ramas": "int", "fil-caracteristicas": "int", "fil-metodo": "int", "fil-saberes": "int", "fil-presocraticos": "int",
+  "fil-ser-humano": "ant", "fil-mente": "ant", "fil-concepciones": "ant", "fil-identidad": "ant",
+  "fil-conocer": "con", "fil-verdad": "con", "fil-ciencia": "con", "fil-posverdad": "con",
+  "fil-metafisica": "met", "fil-logica": "log", "fil-etica": "eti", "fil-helenismo": "eti", "fil-politica": "pol", "fil-arte": "est" };
+function deckEsFil(){ return typeof SUBJECTS !== "undefined" && !!SUBJECTS.fil && !SUBJECTS.hf; }
 
 const DECK_TIPOS = { conceptos: "المفاهيم", frases: "أقوال" };
 const deckEsFrases = d => d.tipo === "frases";
@@ -46,9 +56,25 @@ function renderDeckFilter(){
       (b === "all" ? "كل المحاور" : DECK_BLOCKS[b]) + '</button>'
     ).join("");
   }
-  box.innerHTML = (tipoBtns ? '<div class="fgroup"><span class="flabel">النوع</span>' + tipoBtns + '</div>' : '') +
+  let temaSel = "";   // (12-10) 1.º: el tema (ámbito) primero, en un desplegable
+  if (deckEsFil()){
+    const temas = DECK_AMB_ORDEN.filter(r => Object.keys(DECKS).some(k => DECKS[k].subject === "fil" && DECK_AMB[k] === r));
+    if (deckTema !== "all" && !temas.includes(deckTema)) deckTema = "all";
+    temaSel = '<div class="fgroup"><span class="flabel">الموضوع</span><select id="decktema" aria-label="تصفية حسب الموضوع">' +
+      '<option value="all">الكل</option>' + temas.map(r => '<option value="' + r + '"' + (r === deckTema ? " selected" : "") + '>' + DECK_AMBS[r] + '</option>').join("") + '</select></div>';
+  }
+  box.innerHTML = temaSel +
+    (tipoBtns ? '<div class="fgroup"><span class="flabel">النوع</span>' + tipoBtns + '</div>' : '') +
     '<div class="fgroup"><span class="flabel">المادة</span>' + subjBtns + '</div>' +
     (blockBtns ? '<div class="fgroup"><span class="flabel">المحور</span>' + blockBtns + '</div>' : '');
+  const sel = document.getElementById("decktema");
+  if (sel) sel.addEventListener("change", () => {
+    deckTema = sel.value;
+    renderDeckChips();
+    /* si la baraja abierta no es del tema elegido, abrir la primera de ese tema (si solo hay una, directo) */
+    const ks = Object.keys(DECKS).filter(k => DECKS[k].subject === "fil" && deckOk(DECKS[k]) && DECK_AMB[k] === deckTema);
+    if (deckTema !== "all" && ks.length && !ks.includes(deckKey)) loadDeck(ks[0]);
+  });
   box.querySelectorAll("[data-subj]").forEach(b => b.addEventListener("click", () => {
     deckSubject = b.dataset.subj;
     if (deckSubject !== "hf") deckBlock = "all";
@@ -69,6 +95,7 @@ function renderDeckChips(){
     if (deckSubject !== "all" && d.subject !== deckSubject) return false;
     if (deckSubject === "hf" && deckBlock !== "all" && d.block !== deckBlock) return false;
     if (deckBlock !== "all" && window.Epocas && window.Epocas.soloTodos("tarjetas", k)) return false;   // (30-09) temas 1-2 de HF: solo con «Todos los bloques» (epocas.js)
+    if (deckEsFil() && deckTema !== "all" && DECK_AMB[k] !== deckTema) return false;   // (12-10) 1.º: por tema
     if (!deckOk(d)) return false;
     return true;
   });

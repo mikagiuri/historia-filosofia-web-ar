@@ -11,6 +11,24 @@ const ILU_EPOCAS = [
 ];
 const ILU_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة" };
 let iluSubject = "all", iluEpoca = "all", iluQuery = "";
+let iluAmb = "all";   // (12-10) 1.º: fila «Ámbito»
+/* (12-10) criterio del profesor: en la web de 1.º Ilustres criba por ÁMBITO filosófico (los años y la época
+   siguen en cada ficha —«aunque incluyamos la información temporal»—). En HF y en la web local sigue por época.
+   Ámbito = el de los temas de teoría que cita la ficha (temaN o el rótulo, ya traducido en las webs). */
+const ILU_AMBS = { int: "مدخل", ant: "الأنثروبولوجيا", con: "المعرفة", met: "ميتافيزيقا", log: "المنطق", eti: "الأخلاق", pol: "السياسة", est: "علم الجمال" };
+const ILU_AMB_ORDEN = ["int", "ant", "con", "met", "log", "eti", "pol", "est"];
+function iluEsFil(){ return typeof SUBJECTS !== "undefined" && !!SUBJECTS.fil && !SUBJECTS.hf; }
+function iluRamas(p){
+  const s = new Set(), MAP = { 1: "int", 2: "ant", 3: "con", 4: "log", 5: "eti", 6: "pol", 7: "est" };
+  for (const k of p.temas || []){
+    if (typeof THEORY === "undefined" || !THEORY[k]) continue;
+    const t = THEORY[k], T = String(t.tema || "");
+    const mm = /(?:Tema|Thème|Topic|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/.exec(T);
+    const n = typeof t.temaN === "number" ? t.temaN : (/·\s*M(?:\s|$|\()/.test(T) ? 3.5 : (mm ? +(mm[1] || mm[2]) : null));
+    if (n === 3.5) s.add("met"); else if (MAP[n]) s.add(MAP[n]);
+  }
+  return [...s];
+}
 
 function iluFold(s){ return (s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
 function iluEsc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
@@ -47,7 +65,8 @@ function iluFiltered(){
   const q = iluFold(iluQuery);
   return iluList().filter(p => {
     if (iluSubject !== "all" && !(p.subjects || []).includes(iluSubject)) return false;
-    if (iluEpoca !== "all" && p.block !== iluEpoca) return false;
+    if (!iluEsFil() && iluEpoca !== "all" && p.block !== iluEpoca) return false;
+    if (iluEsFil() && iluAmb !== "all" && !iluRamas(p).includes(iluAmb)) return false;
     if (q && !iluFold([p.name, p.role, p.idea, (p.obras || []).join(" "), p.bio, p.anecdota].join(" ")).includes(q)) return false;
     return true;
   });
@@ -64,10 +83,25 @@ function renderIluControls(){
   const epBtns = [["all", "الكل"]].concat(ILU_EPOCAS).map(e =>
     '<button class="fbtn" data-iep="' + e[0] + '" aria-pressed="' + (e[0] === iluEpoca) + '">' +
     (e[0] === "all" ? "" : '<i class="ilu-dot" data-b="' + e[0] + '" aria-hidden="true"></i>') + e[1] + '</button>').join("");
+  let ambBtns = "";   // (12-10) 1.º: ámbito en lugar de época
+  if (iluEsFil()){
+    const vis = iluList().filter(p => (p.subjects || []).includes("fil"));
+    const amb = ILU_AMB_ORDEN.filter(r => vis.some(p => iluRamas(p).includes(r)));
+    if (iluAmb !== "all" && !amb.includes(iluAmb)) iluAmb = "all";
+    ambBtns = ["all"].concat(amb).map(b =>
+      '<button class="fbtn" data-iamb="' + b + '" aria-pressed="' + (b === iluAmb) + '">' +
+      (b === "all" ? "الكل" : ILU_AMBS[b]) + '</button>').join("");
+  }
   box.innerHTML =
     (present.length > 1 ? '<div class="fgroup"><span class="flabel">المادة</span>' + subjBtns + '</div>' : '') +
-    '<div class="fgroup"><span class="flabel">العصر</span>' + epBtns + '</div>' +
+    (ambBtns ? '<div class="fgroup"><span class="flabel">المجال</span>' + ambBtns + '</div>'
+             : '<div class="fgroup"><span class="flabel">العصر</span>' + epBtns + '</div>') +
     '<div class="ilu-tools"><input class="ilu-search" id="ilusearch" type="search" placeholder="ابحثوا عن مفكر أو عمل أو فكرة…" autocomplete="off" aria-label="البحث في الأعلام"></div>';
+  box.querySelectorAll("[data-iamb]").forEach(b => b.addEventListener("click", () => {
+    iluAmb = b.dataset.iamb;
+    box.querySelectorAll("[data-iamb]").forEach(x => x.setAttribute("aria-pressed", x.dataset.iamb === iluAmb));
+    renderIluList();
+  }));
   box.querySelectorAll("[data-isub]").forEach(b => b.addEventListener("click", () => {
     iluSubject = b.dataset.isub;
     box.querySelectorAll("[data-isub]").forEach(x => x.setAttribute("aria-pressed", x.dataset.isub === iluSubject));

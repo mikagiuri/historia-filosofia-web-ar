@@ -30,14 +30,39 @@ const polT = (k, v) => String(POL_TXT[k] || k).replace(/\{(\w+)\}/g, (_, x) => (
 const POL_EPOCAS = ["ant", "med", "ren", "mod", "ilu", "con"];
 const POL_VIAS = [["cara", "🗣️"], ["cartas", "✉️"], ["libros", "📚"], ["escuelas", "🏛️"]];
 const POL_MIN = 12;
-let polEp = "all", polVia = "all", polSel = null, POL_ESTADO = {};
+let polEp = "all", polVia = "all", polAmb = "all", polSel = null, POL_ESTADO = {};
 function polEsc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 function polBox(){ return document.getElementById("polemicasbox"); }
 function polIcono(v){ const x = POL_VIAS.find(p => p[0] === v); return x ? x[1] : ""; }
 function polHayIlu(id){ return typeof ILUSTRES !== "undefined" && ILUSTRES[id] && typeof loadIlustre === "function"; }
 function polHayTema(k){ return typeof THEORY !== "undefined" && THEORY[k]; }
+/* (12-10, rediseño Lote 1 · F2) una polémica solo se ve si esta web tiene alguno de sus temas:
+   en 1.º quedan las 27 con algún «fil-…»; las 7 que solo tocan temas de HF ni se listan ni se enlazan.
+   En HF (34) y en la web local del profesor (todas las materias) no cambia nada. */
+function polVisible(p){ return (p.temas || []).some(polHayTema); }
+/* (12-10) criterio del profesor: en la web de 1.º Polémicas criba por ÁMBITO filosófico en vez de por época
+   (la asignatura va por problemas; las fechas y la época siguen en cada tarjeta y ficha). En HF y en la web
+   local el selector sigue por época y vía. */
+const POL_RAMAS = { int: "مدخل", ant: "الأنثروبولوجيا", con: "المعرفة", met: "ميتافيزيقا", log: "المنطق", eti: "الأخلاق", pol: "السياسة", est: "علم الجمال" };
+const POL_RAMA_ORDEN = ["int", "ant", "con", "met", "log", "eti", "pol", "est"];
+function polEsFil(){ return typeof SUBJECTS !== "undefined" && !!SUBJECTS.fil && !SUBJECTS.hf; }
+function polRamas(p){
+  const s = new Set(), MAP = { 1: "int", 2: "ant", 3: "con", 4: "log", 5: "eti", 6: "pol", 7: "est" };
+  for (const k of p.temas || []){
+    if (typeof THEORY === "undefined" || !THEORY[k]) continue;
+    const t = THEORY[k], T = String(t.tema || "");   // nº tema declarado: temaN (anexos) o el rótulo (ya traducido en las webs EU/FR/EN/AR)
+    const mm = /(?:Tema|Thème|Topic|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/.exec(T);
+    const n = typeof t.temaN === "number" ? t.temaN : (/·\s*M(?:\s|$|\()/.test(T) ? 3.5 : (mm ? +(mm[1] || mm[2]) : null));
+    if (n === 3.5) s.add("met"); else if (MAP[n]) s.add(MAP[n]);
+  }
+  return [...s];
+}
 function polPal(s){ return (String(s).trim().match(/\S+/g) || []).length; }
-function polLista(){ return (typeof POLEMICAS === "undefined" ? [] : POLEMICAS).filter(p => (polEp === "all" || p.pol_epoca === polEp) && (polVia === "all" || p.pol_via === polVia)); }
+function polLista(){
+  let ls = (typeof POLEMICAS === "undefined" ? [] : POLEMICAS).filter(polVisible).filter(p => (polEp === "all" || p.pol_epoca === polEp) && (polVia === "all" || p.pol_via === polVia));
+  if (polEsFil() && polAmb !== "all") ls = ls.filter(p => polRamas(p).includes(polAmb));   // (12-10) 1.º: por ámbito
+  return ls;
+}
 /* nombre de un bando con enlace a Ilustres si hay ficha (y solo uno: si el bando son varios, se enlaza cada nombre aparte en la línea de debajo) */
 function polBando(p, lado){
   const ids = (p["ilu_" + lado] || []).filter(polHayIlu), nom = p[lado];
@@ -49,8 +74,18 @@ function polFiltro(){
   /* en una ficha, fuera el filtro; vaciándolo, compacto.js tampoco pinta su línea plegada del móvil (no empuja el texto) */
   if (polSel){ f.hidden = true; f.innerHTML = ""; return; }
   f.hidden = false;
+  if (polEsFil()){   // (12-10) 1.º: filas «Ámbito» y «Vía» (la época no filtra; está en cada tarjeta)
+    const visibles = typeof POLEMICAS === "undefined" ? [] : POLEMICAS.filter(polVisible);
+    const amb = POL_RAMA_ORDEN.filter(r => visibles.some(p => polRamas(p).includes(r)));
+    if (polAmb !== "all" && !amb.includes(polAmb)) polAmb = "all";
+    f.innerHTML = '<div class="fgroup"><span class="flabel">المجال</span>' +
+      ["all"].concat(amb).map(b => '<button type="button" class="fbtn" data-pol-amb="' + b + '" aria-pressed="' + (b === polAmb) + '">' + (b === "all" ? polT("todas") : POL_RAMAS[b]) + '</button>').join("") + '</div>' +
+      '<div class="fgroup"><span class="flabel">' + polT("via") + '</span>' +
+      [["all", ""]].concat(POL_VIAS).map(v => '<button type="button" class="fbtn" data-pol-via="' + v[0] + '" aria-pressed="' + (v[0] === polVia) + '">' + (v[1] ? v[1] + " " : "") + polT(v[0] === "all" ? "todas" : v[0]) + '</button>').join("") + '</div>';
+    return;
+  }
   f.innerHTML = '<div class="fgroup"><span class="flabel">' + polT("epoca") + '</span>' +
-    ["all"].concat(POL_EPOCAS).filter(e => e === "all" || POLEMICAS.some(p => p.pol_epoca === e)).map(e => '<button type="button" class="fbtn" data-pol-ep="' + e + '" aria-pressed="' + (e === polEp) + '">' + polT(e === "all" ? "todas" : e) + '</button>').join("") + '</div>' +
+    ["all"].concat(POL_EPOCAS).filter(e => e === "all" || (typeof POLEMICAS === "undefined" ? [] : POLEMICAS).filter(polVisible).some(p => p.pol_epoca === e)).map(e => '<button type="button" class="fbtn" data-pol-ep="' + e + '" aria-pressed="' + (e === polEp) + '">' + polT(e === "all" ? "todas" : e) + '</button>').join("") + '</div>' +
     '<div class="fgroup"><span class="flabel">' + polT("via") + '</span>' +
     [["all", ""]].concat(POL_VIAS).map(v => '<button type="button" class="fbtn" data-pol-via="' + v[0] + '" aria-pressed="' + (v[0] === polVia) + '">' + (v[1] ? v[1] + " " : "") + polT(v[0] === "all" ? "todas" : v[0]) + '</button>').join("") + '</div>';
 }
@@ -117,7 +152,7 @@ function polDetalle(p){
 function polMateria(){ return typeof SUBJECTS !== "undefined" && SUBJECTS.hf && document.getElementById("hf") ? "hf" : "fil"; }
 function polAbrir(id, sinScroll){
   const p = (typeof POLEMICAS === "undefined" ? [] : POLEMICAS).find(x => x.id === id);
-  if (!p){ polSel = null; polFiltro(); polRenderLista(); return; }
+  if (!p || !polVisible(p)){ polSel = null; polFiltro(); polRenderLista(); return; }   // (12-10, F2) el enlace a una polémica oculta lleva a la lista
   polSel = id; polFiltro(); polDetalle(p);
   if (typeof setDeepHash === "function") setDeepHash("polemicas", id);
   if (!sinScroll) window.scrollTo(0, 0);
@@ -140,6 +175,7 @@ document.addEventListener("click", e => {
   if (enIlu){ (window.show || show)("polemicas"); polAbrir(enIlu.dataset.pol); return; }
   if (!t.closest("#polemicas")) return;
   const ep = t.closest("[data-pol-ep]"); if (ep){ polEp = ep.dataset.polEp; polFiltro(); polRenderLista(); return; }
+  const amb = t.closest("[data-pol-amb]"); if (amb){ polAmb = amb.dataset.polAmb; polFiltro(); polRenderLista(); return; }
   const vi = t.closest("[data-pol-via]"); if (vi){ polVia = vi.dataset.polVia; polFiltro(); polRenderLista(); return; }
   if (t.closest("[data-pol-back]")){ polVolver(); return; }
   const c = t.closest("[data-pol]"); if (c){ polAbrir(c.dataset.pol); return; }
@@ -172,7 +208,7 @@ function polRedibujar(foco){
 function polGenea(){
   if (typeof POLEMICAS === "undefined") return "";
   return '<div class="pol-gen"><p class="pol-gen-lead">' + polT("generaLead") + '</p>' + POL_EPOCAS.map(ep => {
-    const ls = POLEMICAS.filter(p => p.pol_epoca === ep); if (!ls.length) return "";
+    const ls = POLEMICAS.filter(polVisible).filter(p => p.pol_epoca === ep); if (!ls.length) return "";
     return '<div class="pol-gen-ep" data-ep="' + ep + '"><h3>' + polT(ep) + '</h3><ol>' + ls.map(p =>
       '<li><button type="button" class="pol-gen-a" data-pol="' + p.id + '"><span class="pol-gen-f">' + polEsc(p.fechas) + '</span> <strong>' + polEsc(p.a) + '</strong> <span class="pol-vs" aria-hidden="true">⚔</span> <strong>' + polEsc(p.b) + '</strong> <span class="pol-gen-v" aria-hidden="true">' + polIcono(p.pol_via) + '</span><span class="pol-gen-p">' + polEsc(p.pregunta) + '</span></button></li>').join("") + '</ol></div>';
   }).join("") + '</div>';
@@ -181,7 +217,7 @@ window.polGenea = polGenea;
 /* ---- Ilustres: las polémicas de un pensador (las pinta ilustresview.js si existe polDe) ---- */
 function polDe(id){
   if (typeof POLEMICAS === "undefined") return "";
-  const ls = POLEMICAS.filter(p => (p.ilu_a || []).includes(id) || (p.ilu_b || []).includes(id));
+  const ls = POLEMICAS.filter(polVisible).filter(p => (p.ilu_a || []).includes(id) || (p.ilu_b || []).includes(id));   // (12-10, F2) Ilustres no enlaza polémicas ocultas
   if (!ls.length) return "";
   return '<li><span class="ilu-rel-op">' + polT("enIlustres") + '</span> ' + ls.map(p => {
     const otro = (p.ilu_a || []).includes(id) ? p.b : p.a;
