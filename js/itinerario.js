@@ -120,7 +120,7 @@
   function keysOf(go_, subject, tema){
     var c = coll(COLL[go_]); if (!c || !view(go_)) return [];
     var out = Object.keys(c).filter(function(k){ var o = c[k]; return o && o.subject === subject && temaOf(go_, k, o) === tema; });
-    if (go_ === "cuestionarios" && fn("quizTipo")) out.sort(function(a, b){ return quizTipo(a) - quizTipo(b); });   // breve, banco, libro
+    if (go_ === "cuestionarios" && fn("quizTipo")) out.sort(function(a, b){ return quizTipo(a) - quizTipo(b); });   // banco, breve, libro
     if (go_ === "tarjetas") out = out.filter(function(k){ return c[k].tipo !== "frases"; });
     return out;
   }

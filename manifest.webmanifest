@@ -1,9 +1,9 @@
 {
   "name": "تاريخ الفلسفة · السنة الثانية",
   "short_name": "تاريخ الفلسفة",
-  "description": "El taller de filosofía en una página: teoría, materiales, esquemas, tarjetas, mapas y juegos.",
-  "lang": "es",
-  "dir": "ltr",
+  "description": "ورشة الفلسفة في صفحة واحدة: الدروس، الموارد التعليمية، الخطاطات، البطاقات، الخرائط والألعاب.",
+  "lang": "ar",
+  "dir": "rtl",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

@@ -95,7 +95,7 @@ function renderEsqFilter(){
   /* solo los bloques que tienen esquemas en esta web (en la de 1.º no salen Antigua/Moderna/…) */
   const have = ["A", "B", "C", "F1"].filter(function (b){ return Object.keys(ESQUEMAS).some(function (k){ return ESQUEMAS[k].block === b; }); });
   /* (12-10, rediseño Lote 3 · H5) «Esquema del tema» con cambio grafo ⇄ texto */
-  const toggle = '<button class="fbtn esq-toggle" type="button" title="' + 'Ver como texto (Resúmenes)' + '">' + 'اعرض كنص' + '</button>';
+  const toggle = '<button class="fbtn esq-toggle" type="button" title="' + 'اعرض كنص (ملخصات)' + '">' + 'اعرض كنص' + '</button>';
   if (have.length < 2){ box.innerHTML = toggle; esqBlock = "all"; }
   else {
     if (esqBlock !== "all" && have.indexOf(esqBlock) < 0) esqBlock = have[0];

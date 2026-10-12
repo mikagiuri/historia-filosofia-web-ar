@@ -126,7 +126,7 @@ function renderParStart(){
         '<input type="file" id="parHistFile" accept="application/json,.json" style="display:none"></div>' +
       '<div class="par-hist-list">' +
         hist.map(r => '<div class="par-hist-item"><span class="par-hist-badge">' + (r.emoji || "🧩") + '</span> ' +
-          '<b>' + escPar((r.blockName || "").split(" · ")[0] || "Bloque " + (r.block || "")) + '</b> · ' +
+          '<b>' + escPar((r.blockName || PAR_BLOCK_NAME[r.block] || "").split(" · ")[0] || "Bloque " + (r.block || "")) + '</b> · ' +
           '<span class="par-hist-score">' + (r.score || 0) + ' pts</span> · ' +
           (r.pairs || PAR_N) + ' parejas · ' + (r.errors || 0) + ((r.errors === 1) ? ' error' : ' errores') + ' · ' + (r.secs || 0) + ' s' +
           (r.record ? ' · 🎉 récord' : '') +

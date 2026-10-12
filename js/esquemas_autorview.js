@@ -73,7 +73,7 @@ function renderEAFilter(){
     Object.keys(EA_FMTS).map(function (f){
       return '<button class="fbtn" data-ef="' + f + '" aria-pressed="' + (f === eaFmt) + '">' + EA_FMTS[f] + '</button>'; }).join("") + '</div>' +
     /* (12-10, rediseño Lote 3 · H5) «Esquema del tema» con cambio grafo ⇄ texto */
-    '<button class="fbtn ea-toggle" type="button" title="' + 'Ver como grafo (Esquemas)' + '">' + 'اعرض كمخطط' + '</button>';
+    '<button class="fbtn ea-toggle" type="button" title="' + 'اعرض كمخطط (خطاطات)' + '">' + 'اعرض كمخطط' + '</button>';
   box.querySelectorAll("[data-eb]").forEach(function (b){ b.addEventListener("click", function (){
     eaBlock = b.dataset.eb; renderEAFilter(); renderEABody(); }); });
   box.querySelectorAll("[data-ef]").forEach(function (b){ b.addEventListener("click", function (){
