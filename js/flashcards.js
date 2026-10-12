@@ -9,6 +9,7 @@ let deckSubject = "all";
 let deckBlock = "all";
 let deckTipo = "all";   // (29-09) «conceptos» | «frases» (barajas con tipo:"frases")
 let deckTema = "all";   // (12-10) 1.º: desplegable por tema (ámbito)
+const known = store.get("aula-known", {});   // (v205) restaurada: la borró c88748f5 y «Ya la sé»/progreso dejaron de funcionar
 
 const cardEl = document.getElementById("card");
 
