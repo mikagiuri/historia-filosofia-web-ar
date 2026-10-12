@@ -94,14 +94,20 @@ function renderEsqFilter(){
   if (!box) return;
   /* solo los bloques que tienen esquemas en esta web (en la de 1.º no salen Antigua/Moderna/…) */
   const have = ["A", "B", "C", "F1"].filter(function (b){ return Object.keys(ESQUEMAS).some(function (k){ return ESQUEMAS[k].block === b; }); });
-  if (have.length < 2){ box.innerHTML = ""; esqBlock = "all"; return; }
-  if (esqBlock !== "all" && have.indexOf(esqBlock) < 0) esqBlock = have[0];
-  box.innerHTML = '<div class="fgroup"><span class="flabel">المحور</span>' +
-    ["all"].concat(have).map(function (b){
-      return '<button class="fbtn" data-eb="' + b + '" aria-pressed="' + (b === esqBlock) + '">' +
-        (b === "all" ? "الكل" : ESQ_BLOCKS[b]) + '</button>'; }).join("") + '</div>';
+  /* (12-10, rediseño Lote 3 · H5) «Esquema del tema» con cambio grafo ⇄ texto */
+  const toggle = '<button class="fbtn esq-toggle" type="button" title="' + 'Ver como texto (Resúmenes)' + '">' + 'اعرض كنص' + '</button>';
+  if (have.length < 2){ box.innerHTML = toggle; esqBlock = "all"; }
+  else {
+    if (esqBlock !== "all" && have.indexOf(esqBlock) < 0) esqBlock = have[0];
+    box.innerHTML = '<div class="fgroup"><span class="flabel">المحور</span>' +
+      ["all"].concat(have).map(function (b){
+        return '<button class="fbtn" data-eb="' + b + '" aria-pressed="' + (b === esqBlock) + '">' +
+          (b === "all" ? "الكل" : ESQ_BLOCKS[b]) + '</button>'; }).join("") + '</div>' + toggle;
+  }
   box.querySelectorAll("[data-eb]").forEach(function (b){ b.addEventListener("click", function (){
     esqBlock = b.dataset.eb; renderEsqFilter(); renderEsqChips(); }); });
+  const tog = box.querySelector(".esq-toggle");
+  if (tog) tog.addEventListener("click", function (){ if (typeof window.show === "function") window.show("esqautor"); });
 }
 
 function renderEsqChips(){

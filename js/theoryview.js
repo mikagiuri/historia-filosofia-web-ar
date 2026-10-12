@@ -4,6 +4,7 @@
 let theoryKey = Object.keys(THEORY)[0];
 let theorySubject = "all";
 let theoryBlock = "all";
+let theoryShowAnexos = false;   /* (12-10, rediseño) las exploraciones salen ocultas por defecto */
 
 const THEORY_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة", ipc: "التفكير النقدي" };
 const THEORY_BLOCKS = { A: "المحور A · القديمة", B: "المحور B · الوسيطة والحديثة", C: "المحور C · المعاصرة" };
@@ -56,9 +57,19 @@ function renderTheoryChips(){
     if (theoryBlock !== "all" && window.Epocas && window.Epocas.soloTodos("teoria", k)) return false;   // (30-09) temas 1-2 de HF: solo con «Todos los bloques» (epocas.js)
     return true;
   });
-  box.innerHTML = entries
-    .map(([k, t]) => '<button class="chip" data-th="' + k + '" aria-pressed="' + (k === theoryKey) + '">' + t.title + '</button>').join("");
+  /* (12-10, rediseño) las exploraciones (anexos: con `temaN`) van aparte y ocultas por defecto;
+     el alumno las muestra con el botón «Exploraciones (n)» */
+  const temas = entries.filter(([k, t]) => typeof t.temaN !== "number");
+  const anexos = entries.filter(([k, t]) => typeof t.temaN === "number");
+  const chip = ([k, t]) => '<button class="chip" data-th="' + k + '" aria-pressed="' + (k === theoryKey) + '">' + t.title + '</button>';
+  const anexoHtml = anexos.length
+    ? '<div class="theory-anexos"><button type="button" class="fbtn" data-ttexp aria-expanded="' + (theoryShowAnexos ? "true" : "false") + '">' + "استكشافات" + ' (' + anexos.length + ')' + '</button>' +
+      '<div class="theory-anexos-list"' + (theoryShowAnexos ? '' : ' hidden') + '>' + anexos.map(chip).join("") + '</div></div>'
+    : "";
+  box.innerHTML = temas.map(chip).join("") + anexoHtml;
   box.querySelectorAll("[data-th]").forEach(b => b.addEventListener("click", () => loadTheory(b.dataset.th)));
+  const tg = box.querySelector("[data-ttexp]");
+  if (tg) tg.addEventListener("click", () => { theoryShowAnexos = !theoryShowAnexos; renderTheoryChips(); });
 }
 
 /* Mapa curado: infografía de autor → nº de tema del currículo de HF.

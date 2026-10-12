@@ -54,6 +54,9 @@ const QUIZ_TEMA = {
 };
 /* Orden dentro de un tema: banco ampliado, cuestionario breve, libro, léxico. */
 function quizTipo(k){ return /-banco$/.test(k) ? 0 : /^ltfh-/.test(k) ? 2 : /^lex-/.test(k) ? 3 : 1; }
+/* (12-10, rediseño Lote 3 · H4) serie del cuestionario: «autor» = Del libro (ltfh-*) y sueltos de autor
+   (hf25, plat-antro, makro-descartes) → van al filtro «Por autor», fuera de los temas. */
+function quizSerie(k){ return /^ltfh-/.test(k) || k === "hf25" || k === "plat-antro" || k === "makro-descartes" ? "autor" : /^lex-/.test(k) ? "lex" : /-banco$/.test(k) ? "banco" : "repaso"; }
 
 /* ===== Test de léxico (05-10) =====
    Un cuestionario por tema generado del glosario (GLOSARIO, glosario.js; se carga después de este
@@ -144,9 +147,12 @@ function quizEnFiltro(k, q, conTema){
 /* Temas con algún cuestionario en la materia (y el bloque) elegidos, en el orden de QUIZ_TEMAS. */
 function quizTemasVisibles(){
   const hay = new Set(Object.entries(QUIZZES).filter(([k, q]) => quizEnFiltro(k, q, false)).map(([k]) => quizTemaDe(k)));
-  return Object.keys(QUIZ_TEMAS[quizSubject] || {}).concat("otros").filter(t => hay.has(t));
+  const temas = Object.keys(QUIZ_TEMAS[quizSubject] || {}).concat("otros").filter(t => hay.has(t));
+  /* (12-10, Lote 3 · H4) «Por autor» aparece si hay cuestionarios Del libro o de autor en esta web */
+  const hayAutor = Object.entries(QUIZZES).some(([k, q]) => quizEnFiltro(k, q, false) && quizSerie(k) === "autor");
+  return hayAutor ? temas.concat("autor") : temas;
 }
-function quizTemaEtq(t){ return t === "otros" ? "أخرى" : (QUIZ_TEMAS[quizSubject] || {})[t] || t; }
+function quizTemaEtq(t){ return t === "otros" ? "أخرى" : t === "autor" ? "حسب المؤلف" : (QUIZ_TEMAS[quizSubject] || {})[t] || t; }
 const quizTemaNum = t => /^T\d+$/.test(t);
 
 function renderQuizFilter(){
@@ -196,11 +202,17 @@ function renderQuizFilter(){
 
 function renderQuizChips(){
   const box = document.getElementById("quizchips");
-  const entries = Object.entries(QUIZZES).filter(([k, q]) => quizEnFiltro(k, q, true));
+  const allEntries = Object.entries(QUIZZES).filter(([k, q]) => quizEnFiltro(k, q, true));
   const chip = ([k, q]) => `<button class="chip" data-quiz="${k}" aria-pressed="${k === quizKey}">${q.name}</button>`;
-  if (quizSubject === "all") box.innerHTML = entries.map(chip).join("");
+  if (quizSubject === "all"){ box.innerHTML = allEntries.map(chip).join(""); }
+  else if (quizTema === "autor"){
+    /* (12-10, Lote 3 · H4) «Por autor»: Del libro + sueltos de autor, ordenados por nombre */
+    const aut = allEntries.filter(([k]) => quizSerie(k) === "autor").sort((a, b) => a[1].name.localeCompare(b[1].name));
+    box.innerHTML = aut.length ? '<div class="quiz-tema"><span class="flabel">' + quizTemaEtq("autor") + '</span><div class="quiz-tema-chips">' + aut.map(chip).join("") + '</div></div>' : "";
+  }
   else {
-    /* agrupados por tema, con su título; dentro de cada tema: banco ampliado, breve, libro */
+    /* agrupados por tema, con su título; dentro de cada tema: banco ampliado, breve y léxico (el «Del libro» va a «Por autor») */
+    const entries = allEntries.filter(([k]) => quizSerie(k) !== "autor");
     box.innerHTML = quizTemasVisibles().filter(t => quizTema === "all" || t === quizTema).map(t => {
       const del = entries.filter(([k]) => quizTemaDe(k) === t).sort((a, b) => quizTipo(a[0]) - quizTipo(b[0]));
       const cab = (quizEsFil() && QUIZ_RAMAS[t] ? QUIZ_RAMAS[t] + " · " : quizTemaNum(t) ? t + " · " : "") + quizTemaEtq(t);   // (12-10) 1.º: «Ámbito · título»

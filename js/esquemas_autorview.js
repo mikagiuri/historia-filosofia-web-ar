@@ -71,12 +71,16 @@ function renderEAFilter(){
         (b === "all" ? "الكل" : EA_BLOCKS[b]) + '</button>'; }).join("") + '</div>') +
     '<div class="fgroup"><span class="flabel">الصيغة</span>' +
     Object.keys(EA_FMTS).map(function (f){
-      return '<button class="fbtn" data-ef="' + f + '" aria-pressed="' + (f === eaFmt) + '">' + EA_FMTS[f] + '</button>'; }).join("") + '</div>';
+      return '<button class="fbtn" data-ef="' + f + '" aria-pressed="' + (f === eaFmt) + '">' + EA_FMTS[f] + '</button>'; }).join("") + '</div>' +
+    /* (12-10, rediseño Lote 3 · H5) «Esquema del tema» con cambio grafo ⇄ texto */
+    '<button class="fbtn ea-toggle" type="button" title="' + 'Ver como grafo (Esquemas)' + '">' + 'اعرض كمخطط' + '</button>';
   box.querySelectorAll("[data-eb]").forEach(function (b){ b.addEventListener("click", function (){
     eaBlock = b.dataset.eb; renderEAFilter(); renderEABody(); }); });
   box.querySelectorAll("[data-ef]").forEach(function (b){ b.addEventListener("click", function (){
     eaFmt = b.dataset.ef; try { localStorage.setItem("eaFmt", eaFmt); } catch (e) {}
     renderEAFilter(); renderEABody(); }); });
+  const tog = box.querySelector(".ea-toggle");
+  if (tog) tog.addEventListener("click", function (){ if (typeof window.show === "function") window.show("esquemas"); });
 }
 
 function renderEABody(){

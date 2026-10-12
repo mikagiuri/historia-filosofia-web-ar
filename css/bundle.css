@@ -150,6 +150,10 @@ table.week tr:last-child td{border-bottom:0}
 
 /* Selectores de herramienta */
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}
+/* (12-10, rediseño) exploraciones plegadas en la tira de temas de Teoría */
+#theorychips .theory-anexos{flex-basis:100%;margin-top:4px}
+#theorychips .theory-anexos-list{margin-top:8px;display:flex;flex-wrap:wrap;gap:8px}
+#theorychips .theory-anexos-list[hidden]{display:none}
 .chips .quiz-tema{flex:1 1 100%;display:grid;gap:6px}
 .quiz-tema-chips{display:flex;gap:8px;flex-wrap:wrap}
 .chip{background:var(--surface);border:1px solid var(--line);color:var(--muted);padding:8px 14px;border-radius:999px;font-size:.9rem;font-weight:500}
@@ -532,6 +536,8 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 /* Anexos dados en clase: mini-etiqueta «En clase» */
 .theory-head .en-clase{display:inline-block;margin-inline-start:.5rem;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--on-accent,#fff);background:var(--accent);border-radius:999px;padding:3px 10px;vertical-align:middle}
 .temas-anexo{display:inline-block;margin-inline-start:.4rem;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:1px 7px}
+/* (12-10, rediseño Lote 3 · H0) insignia «Lectura PAU» en los temas de HF con lectura de la prueba */
+.temas-pau{display:inline-block;margin-inline-start:.4rem;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#7a5c12;background:#ffe9a8;border:1px solid #e5c35c;border-radius:999px;padding:1px 8px}
 
 /* Cuentos: botón de descarga de la ficha de trabajo (PDF B/N). */
 .cuento-dl{margin:.6rem 0 0}
