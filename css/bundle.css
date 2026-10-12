@@ -17,6 +17,7 @@
   --e-ant:#8F6600; --e-med:#8A4B84; --e-ren:#B83220; --e-mod:#0A76A0; --e-ilu:#5B4FC4; --e-con:#267A5B;
   /* ramas (30-09): un color por rama en Filosofía 1.º (js/epocas.js), igual que las épocas en HF */
   --r-ant:#B0672B; --r-con:#2B6CB0; --r-log:#6D5BA6; --r-eti:#3E8A5B; --r-pol:#C0392B; --r-est:#B04A8A;
+  scroll-padding-top:80px;   /* (proto-menu-3) la ficha arranca arriba, sin quedar bajo la cabecera fija */
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
@@ -668,7 +669,7 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
   /* Las 19 pestañas: menú desplegable en vez de apilarse en 6 filas ---- */
   #tabs {
     display: none; position: absolute; top: calc(100% + 8px); inset-inline-start: 0; inset-inline-end: 0;
-    flex-direction: column; gap: 2px; max-height: 72vh; overflow-y: auto;
+    flex-direction: column; flex-wrap: nowrap; gap: 2px; max-height: 72vh; overflow-y: auto;
     background: var(--surface); border: 1px solid var(--line);
     border-radius: 14px; box-shadow: var(--shadow); padding: 8px; z-index: 60;
   }
@@ -842,7 +843,7 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
   .navtoggle:hover { border-color: var(--accent); }
   #tabs {
     display: none; position: absolute; top: calc(100% + 8px); inset-inline-start: 0; inset-inline-end: 0;
-    flex-direction: column; gap: 2px; max-height: 72vh; overflow-y: auto;
+    flex-direction: column; flex-wrap: nowrap; gap: 2px; max-height: 72vh; overflow-y: auto;
     background: var(--surface); border: 1px solid var(--line);
     border-radius: 14px; box-shadow: var(--shadow); padding: 8px; z-index: 60;
   }
@@ -901,6 +902,14 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 @keyframes loadbar { from { background-position: -40% 0; } to { background-position: 140% 0; } }
 @media (prefers-reduced-motion: reduce) { .loadbar.on { animation: none; background-size: 100% 100%; } }
 @media (max-width: 400px) { .bar-in:has(.langmenu) .brand .owl { display: none; } }   /* (11-10) ver el botón de idioma */
+
+/* (proto-menu-3 · opción F) subapartados plegados dentro del desplegable */
+#tabs .navfold-head::after { content: " \25B8"; font-size: 10px; opacity: .65; }
+#tabs .navfold.open > .navfold-head::after { content: " \25BE"; }
+#tabs .navfold-body { display: none; padding-inline-start: 8px; }
+#tabs .navfold.open > .navfold-body { display: block; }
+
+a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 
 /* hf: una sola materia → sin filtro de materia. */
 .fgroup:has([data-subj]), .fgroup:has([data-sa]) { display: none; }

@@ -81,3 +81,19 @@
     closeMenu(); if (back) t.focus();
   });
 })();
+
+/* (proto-menu-3 · opción F) subapartados plegados (Historia/Juegos/Debatir): se abren hacia abajo;
+   ratón, dedo y teclado (Esc cierra). */
+(function () {
+  document.querySelectorAll(".navfold-head").forEach(function (head) {
+    const fold = head.closest(".navfold");
+    head.addEventListener("click", function (e) {
+      e.stopPropagation();
+      const open = fold.classList.toggle("open");
+      head.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    head.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { fold.classList.remove("open"); head.setAttribute("aria-expanded", "false"); head.focus(); }
+    });
+  });
+})();
