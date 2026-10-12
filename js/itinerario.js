@@ -25,6 +25,7 @@
     seguir: "لمواصلة هذا الموضوع", tarjetas: "بطاقات", cuestionarios: "اختبارات", infografias: "إنفوغرافيك", mapas: "خرائط المفاهيم",
     esquemas: "خطاطات", lecturas: "قراءات", comentarios: "شروح النصوص", dilemas: "معضلات أخلاقية", pistas: "تلميحات متدرجة", conceptos: "المفاهيم",
     nTarjetas: "{n} بطاقات", nPreguntas: "{n} أسئلة", anterior: "الموضوع السابق", siguienteTema: "الموضوع التالي", anexos: "استكشافات", epoca: "الحقبة", epocaDe: "الحقبة: {e}", volverTema: "العودة إلى الموضوع",
+    blEstudiar: "للمراجعة", blPau: "استعدّ للـ PAU", blPensar: "فكّر واكتب", blAmpliar: "تعمّق",
     infografia: "إنفوغرافيك", mapa: "خريطة", esquema: "خطاطة", lectura: "قراءة", dilema: "معضلة", comentario: "شرح",
     pau: "مسار PAU", pauLead: "استعدوا لـ PAU بالترتيب: أولًا كيف هو الامتحان، ثم كل تمرين، وفي النهاية التدرب حسب المواضيع.",
     pau1: "كيف هو الامتحان", pau2: "التمرين 1 · شرح النص", pau3: "التمرين 2 · المقالة الفلسفية",
@@ -267,25 +268,32 @@
 
   /* ---------- final de cada tema de Teoría ---------- */
   function finHtml(subject, tema, key){
-    var T = coll("THEORY"), teoria = items("teoria", subject, tema), rows = [];
-    var row = function(label, arr){ if (arr.length) rows.push('<div class="fin-row"><span class="fin-l">' + esc(label) + '</span><div class="fin-links">' + arr.map(function(x){ return btn(x); }).join("") + '</div></div>'); };
-    row(t("tarjetas"), items("tarjetas", subject, tema));
-    row(t("cuestionarios"), items("cuestionarios", subject, tema));
-    row(t("infografias"), items("infografias", subject, tema));
-    row(t("mapas"), items("mapas", subject, tema));
-    row(t("esquemas"), items("esquemas", subject, tema));
-    row(t("lecturas"), items("lecturas", subject, tema));
-    row(t("comentarios"), items("comentario", subject, tema));
-    row(t("dilemas"), dilemasDe(teoria.map(function(x){ return x.arg; })));
-    row(t("pistas"), pistasDe(teoria.map(function(x){ return x.arg; })));
+    var T = coll("THEORY"), teoria = items("teoria", subject, tema);
+    var piloto = (subject === "hf" && tema === 6) || (subject === "fil" && tema === 5);
+    var row = function(label, arr){ return arr.length ? '<div class="fin-row"><span class="fin-l">' + esc(label) + '</span><div class="fin-links">' + arr.map(function(x){ return btn(x); }).join("") + '</div></div>' : ""; };
     var cs = conceptosDe(subject, tema);
-    if (cs.length) rows.push('<div class="fin-row"><span class="fin-l">' + esc(t("conceptos")) + '</span><div class="fin-links">' +
-      cs.map(function(c){ return '<button class="itin-term" type="button" data-igo="glosario" data-iarg="' + esc(c.t) + '" title="' + esc(c.def) + '">' + esc(c.t) + '</button>'; }).join("") + '</div></div>');
+    var conceptosHtml = cs.length ? '<div class="fin-row"><span class="fin-l">' + esc(t("conceptos")) + '</span><div class="fin-links">' +
+      cs.map(function(c){ return '<button class="itin-term" type="button" data-igo="glosario" data-iarg="' + esc(c.t) + '" title="' + esc(c.def) + '">' + esc(c.t) + '</button>'; }).join("") + '</div></div>' : "";
     /* (07-10) anexos de este tema: fuera de la secuencia, aquí y en el índice de temas */
-    if (!esAnexo(T[key])) row(t("anexos"), Object.keys(T).filter(function(k){ return T[k].subject === subject && esAnexo(T[k]) && T[k].temaN === tema; })
-      .map(function(k){ return { go: "teoria", arg: k, label: strip(T[k].title).replace(/^(Exploración|Esplorazioa|Exploration|Anexo|Eranskina|Annexe|Annex|Appendix)\s*-\s*/, "") }; }));
-    /* (10-10) ficha de la época del tema (epocas_fichas.js, vista Ilustres), si existe */
-    row(t("epoca"), epocasDeTeoria(key, subject, tema).map(function(k){ return { go: "ilustres", arg: "epoca-" + k, label: nombreEpoca(k) }; }));   // (11-10) con / con2 y Filosofía 1.º
+    var anexosArr = !esAnexo(T[key]) ? Object.keys(T).filter(function(k){ return T[k].subject === subject && esAnexo(T[k]) && T[k].temaN === tema; })
+      .map(function(k){ return { go: "teoria", arg: k, label: strip(T[k].title).replace(/^(Exploración|Esplorazioa|Exploration|Anexo|Eranskina|Annexe|Annex|Appendix)\s*-\s*/, "") }; }) : [];
+    var epocaArr = epocasDeTeoria(key, subject, tema).map(function(k){ return { go: "ilustres", arg: "epoca-" + k, label: nombreEpoca(k) }; });   // (11-10) con / con2 y Filosofía 1.º
+    var P = { tarjetas: row(t("tarjetas"), items("tarjetas", subject, tema)), cuestionarios: row(t("cuestionarios"), items("cuestionarios", subject, tema)),
+      infografias: row(t("infografias"), items("infografias", subject, tema)), mapas: row(t("mapas"), items("mapas", subject, tema)),
+      esquemas: row(t("esquemas"), items("esquemas", subject, tema)), lecturas: row(t("lecturas"), items("lecturas", subject, tema)),
+      comentario: row(t("comentarios"), items("comentario", subject, tema)), dilemas: row(t("dilemas"), dilemasDe(teoria.map(function(x){ return x.arg; }))),
+      pistas: row(t("pistas"), pistasDe(teoria.map(function(x){ return x.arg; }))), conceptos: conceptosHtml, anexos: row(t("anexos"), anexosArr), epoca: row(t("epoca"), epocaArr) };
+    /* (12-10, rediseño Lote 2 · piloto) HF T6 (Platón) y Filosofía 1.º T5 (Ética) reorganizan la caja en tres bloques */
+    var rowsHtml;
+    if (piloto){
+      var blk = function(titulo, arr){ var inner = arr.filter(Boolean).join(""); return inner ? '<div class="fin-bloque"><h3>' + esc(titulo) + '</h3>' + inner + '</div>' : ""; };
+      var amp = function(titulo, arr){ var inner = arr.filter(Boolean).join(""); return inner ? '<details class="fin-bloque fin-amp"><summary>' + esc(titulo) + '</summary>' + inner + '</details>' : ""; };
+      rowsHtml = blk(t("blEstudiar"), [P.tarjetas, P.cuestionarios, P.infografias, P.mapas, P.esquemas, P.conceptos, P.epoca]) +
+        (subject === "hf" ? blk(t("blPau"), [P.lecturas, P.comentario]) : blk(t("blPensar"), [P.lecturas, P.dilemas, P.pistas])) +
+        (subject === "hf" ? amp(t("blAmpliar"), [P.anexos, P.dilemas, P.pistas]) : amp(t("blAmpliar"), [P.anexos]));
+    } else {
+      rowsHtml = [P.tarjetas, P.cuestionarios, P.infografias, P.mapas, P.esquemas, P.lecturas, P.comentario, P.dilemas, P.pistas, P.conceptos, P.anexos, P.epoca].filter(Boolean).join("");
+    }
     /* tema anterior / siguiente, en el orden de la materia; desde un anexo, solo «Volver al tema» */
     var ks = temasDe(subject), i = ks.indexOf(key), prev = i > 0 ? ks[i - 1] : null, next = i >= 0 && i < ks.length - 1 ? ks[i + 1] : null;
     if (i < 0 && esAnexo(T[key])) prev = ks.filter(function(k){ return !T[k].sigla && temaOf("teoria", k, T[k]) === tema; })[0] || null;
@@ -294,9 +302,9 @@
       var tn = temaOf("teoria", k, T[k]), lab = (T[k].sigla ? T[k].sigla + " · " : typeof tn === "number" ? t("tema", { n: tn }) + " · " : "") + strip(T[k].title);
       return '<button class="fin-pn-card' + cls + '" type="button" data-igo="teoria" data-iarg="' + esc(k) + '"><span class="kick">' + esc(kick) + '</span><b>' + esc(lab) + '</b></button>';
     };
-    if (!rows.length && !prev && !next) return "";
+    if (!rowsHtml && !prev && !next) return "";
     return '<section class="itin-fin" style="--c:' + (SUBJ_COLOR[subject] || "var(--accent)") + '" aria-label="' + esc(t("seguir")) + '">' +
-      (rows.length ? '<h2>' + esc(t("seguir")) + '</h2>' + rows.join("") : '') +
+      (rowsHtml ? '<h2>' + esc(t("seguir")) + '</h2>' + rowsHtml : '') +
       '<div class="fin-pager">' + card(prev, "‹ " + t(i < 0 && esAnexo(T[key]) ? "volverTema" : "anterior"), "") + card(next, t("siguienteTema") + " ›", " fin-next") + '</div></section>';
   }
   function itemTema(go_, key){ var c = coll(COLL[go_]), o = c && c[key]; return o ? { subject: o.subject, tema: temaOf(go_, key, o) } : null; }

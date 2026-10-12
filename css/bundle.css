@@ -495,6 +495,14 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 .fin-pn-card .kick{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--muted)}
 .fin-pn-card b{font-family:var(--serif);font-weight:600;font-size:1rem;line-height:1.25}
 @media(max-width:600px){.fin-row{flex-direction:column;gap:4px}.fin-l{padding-top:0}.fin-pager{grid-template-columns:1fr}.fin-pn-card.fin-next{text-align:start;align-items:flex-start}}
+/* (12-10, rediseño Lote 2 · piloto) los tres bloques de la caja «Para seguir con este tema» */
+.fin-bloque{margin:16px 0 0}
+.fin-bloque>h3{font-size:.8rem;letter-spacing:.05em;text-transform:uppercase;font-weight:700;color:var(--c,var(--accent));margin:0 0 8px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+.fin-bloque.fin-amp>summary{font-size:.8rem;letter-spacing:.05em;text-transform:uppercase;font-weight:700;color:var(--c,var(--accent));margin:0 0 8px;padding:6px 12px;border:1px dashed var(--line);border-radius:999px;cursor:pointer;list-style:none;width:fit-content}
+.fin-bloque.fin-amp>summary::-webkit-details-marker{display:none}
+.fin-bloque.fin-amp>summary::before{content:"▸ "}
+.fin-bloque.fin-amp[open]>summary::before{content:"▾ "}
+.fin-bloque.fin-amp[open]>summary{color:var(--ink);border-color:var(--c,var(--accent))}
 /* «Cómo se juega»: una línea al abrir cada juego */
 .howto{display:flex;gap:10px;align-items:flex-start;margin:0 0 16px;padding:10px 14px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line-soft);
   font-family:var(--sans);font-size:.92rem;color:var(--ink);line-height:1.45;max-width:70ch}
