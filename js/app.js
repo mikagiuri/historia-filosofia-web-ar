@@ -15,8 +15,9 @@ function show(id){
      desplegables. Al hacerlo, se reactiva el resaltado del grupo (regla :has de mobile.css)
      y el del botón (styles.css), que antes eran código muerto porque solo se marcaban
      los hijos directos de la barra. */
+  const entry = (typeof commuteEntry === "function") ? commuteEntry(id) : id;
   tabs.querySelectorAll("button[data-view]").forEach(b =>
-    b.setAttribute("aria-current", b.dataset.view === id ? "true" : "false"));
+    b.setAttribute("aria-current", b.dataset.view === entry ? "true" : "false"));
   /* deep-linking: refleja la vista en la URL (enlace compartible; persiste al refrescar).
      Conserva el argumento profundo (#vista/arg): solo reescribe el hash cuando cambia la
      vista, para no borrar la clave del tema/cuestionario abierto al hacer show(). */

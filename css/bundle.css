@@ -622,6 +622,13 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 .tablewrap, .weekwrap, .medialist { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 .theory img, .fig img, .figimg { max-width: 100%; height: auto; }
 
+/* Conmutadores (13-10): fila de botones que reúne varias vistas del mismo grupo, en la zona de
+   filtros, sin empujar el contenido. Usa el estilo de los filtros (.fgroup/.fbtn de styles.css);
+   al ser hermano del .filterbar (no hijo) no lo borra el repintado de la vista. En RTL se lee bien
+   (flex con direcciones lógicas). */
+.view > .comm { margin: 14px 0 0; }
+.view > .comm + .filterbar, .view > .comm + .crono-filter { margin-top: 10px; }
+
 /* ===== Escritorio (≥880px): los grupos son menús desplegables ("cajones"),
    no una barra plana de 19 botones. Reutiliza el estado .navsec.open que ya
    gestiona mobile.js (clic en el encabezado abre/cierra, uno cada vez).
@@ -629,6 +636,8 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
    en dos filas y para casar con el layout a 2 columnas de Teoría (min-880). ===== */
 @media (min-width: 880px) {
   #tabs .navsec { position: relative; display: inline-flex; align-items: center; }
+  /* separador (--line) entre las pestañas imprescindibles y las auxiliares (Historia, Juegos) */
+  #tabs .navsec.navsplit { border-inline-start: 1px solid var(--line); padding-inline-start: 10px; margin-inline-start: 8px; }
   #tabs .navgroup {
     display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none;
     font-size: .92rem; font-weight: 600; color: var(--muted); margin: 0;

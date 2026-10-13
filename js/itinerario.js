@@ -445,18 +445,23 @@
     var v = document.getElementById(id); if (!v || !v.classList.contains("view")) return;
     var old = v.querySelector(":scope > .crumbs"); if (old) old.remove();
     if (LANDING[id]) return;
-    var tabId = id;   /* la vista «teoria» se abre desde el botón «Teoría» de su materia (#hf o #fil) */
-    if (id === "teoria"){ var TT = G("THEORY"), kk = G("theoryKey"), ss = TT && kk != null && TT[kk] && TT[kk].subject;
-      tabId = (ss && document.querySelector('#tabs button[data-view="' + ss + '"]')) ? ss : (["hf", "fil"].filter(function(x){ return document.querySelector('#tabs button[data-view="' + x + '"]'); })[0] || id); }
+    // (13-10) conmutadores: si la vista es un modo de un grupo, la miga usa la ENTRADA del grupo
+    // como sección y añade el modo (p. ej. «Practicar › Cuestionarios › Contrarreloj»).
+    var entry = (typeof commuteEntry === "function") ? commuteEntry(id) : id;
+    var mode = (typeof commuteLabel === "function" && entry !== id) ? commuteLabel(id) : "";
+    var tabId = entry;   /* la vista «teoria» se abre desde el botón «Teoría» de su materia (#hf o #fil) */
+    if (entry === "teoria"){ var TT = G("THEORY"), kk = G("theoryKey"), ss = TT && kk != null && TT[kk] && TT[kk].subject;
+      tabId = (ss && document.querySelector('#tabs button[data-view="' + ss + '"]')) ? ss : (["hf", "fil"].filter(function(x){ return document.querySelector('#tabs button[data-view="' + x + '"]'); })[0] || entry); }
     var btn_ = document.querySelector('#tabs button[data-view="' + tabId + '"]'), h1 = v.querySelector("h1.title, h1");
-    var secLabel = btn_ ? strip(btn_.textContent) : h1 ? strip(h1.textContent) : id;
+    var secLabel = btn_ ? strip(btn_.textContent) : h1 ? strip(h1.textContent) : entry;
     var grp = btn_ && btn_.closest(".navsec"), gl = grp && grp.querySelector(".navgroup") ? strip(grp.querySelector(".navgroup").textContent) : "";
-    var item = crumbItem(id);
-    /* (12-10) sin «Inicio» (ya no existe): «Grupo › Sección › [elemento abierto]» */
+    var item = mode ? "" : crumbItem(id);
+    /* (12-10) sin «Inicio» (ya no existe): «Grupo › Sección › [modo o elemento abierto]» */
     var parts = [];
     if (gl) parts.push(esc(gl));
     parts.push(esc(secLabel));
-    if (item) parts.push(esc(item));
+    if (mode) parts.push(esc(mode));
+    else if (item) parts.push(esc(item));
     var html = parts.map(function(p, i){ return '<span' + (i === parts.length - 1 ? ' aria-current="page"' : '') + '>' + p + '</span>'; }).join('<span class="crumb-sep" aria-hidden="true">›</span>');
     var nav = document.createElement("nav"); nav.className = "crumbs"; nav.setAttribute("aria-label", t("ariaCrumbs")); nav.innerHTML = html;
     v.insertBefore(nav, v.firstChild);
