@@ -6,13 +6,19 @@
 const PAR_N = 6;                 // parejas por ronda
 /* «Cómo se juega» (29-09): una línea al abrir el juego; cadena entera para que la traduzca ui/<lang>.json */
 const PAR_HOWTO = { como: "طريقة اللعب:", txt: "انقروا على مصطلح ثم على تعريفه (أو العكس). ست أزواج في كل جولة، ضد الساعة: أصيبوا تباعًا لتجمعوا التتابع." };
-const PAR_BLOCK_NAME = { A: "المحور A · القديمة والوسيطة", B: "المحور B · الحديثة", C: "المحور C · المعاصرة" };
-/* Grupo de un término: el bloque (glosario de HF, A/B/C) o, si no lo tiene, el tema (glosario de
-   Filosofía 1.º: "Filosofía · Tema 1", "Taller de argumentación"…). Así el juego funciona en las
-   dos webs con el glosario de cada una. */
-function parGroupOf(g){ return g.bloque || g.tema || ""; }
-function parGroupName(b){ return PAR_BLOCK_NAME[b] || String(b).replace(/^Pensamiento crítico · /, ""); }
-function parGroupShort(b){ return PAR_BLOCK_NAME[b] ? PAR_BLOCK_NAME[b].split(" · ")[0] : String(b).replace(/^(Filosofía|Pensamiento crítico) · /, ""); }
+const PAR_EPOCAS = { ant: "القديمة", med: "الوسيطة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
+/* (12-10) grupo de un término de HF = su época (vía gloTema, como el Glosario); en 1.º/ESO, el tema. */
+function parEpocaOf(g){
+  if (g.subject !== "hf") return null;
+  if (window.Itinerario && window.Itinerario.gloTema && window.Epocas && window.Epocas.epocaDeTema){
+    var n = window.Itinerario.gloTema(g);
+    if (typeof n === "number") return window.Epocas.epocaDeTema(n);
+  }
+  return ({ A: "ant", B: "medmod", C: "con" })[g.bloque] || null;
+}
+function parGroupOf(g){ return (g.subject === "hf" ? parEpocaOf(g) : (g.tema || "")) || ""; }
+function parGroupName(b){ return PAR_EPOCAS[b] || String(b).replace(/^Pensamiento crítico · /, ""); }
+function parGroupShort(b){ return PAR_EPOCAS[b] || String(b).replace(/^(Filosofía|Pensamiento crítico) · /, ""); }
 
 const par = { block: null, pairs: [], sel: null, matched: null, errors: 0, score: 0, streak: 0, t0: 0, tick: null };
 
@@ -126,7 +132,7 @@ function renderParStart(){
         '<input type="file" id="parHistFile" accept="application/json,.json" style="display:none"></div>' +
       '<div class="par-hist-list">' +
         hist.map(r => '<div class="par-hist-item"><span class="par-hist-badge">' + (r.emoji || "🧩") + '</span> ' +
-          '<b>' + escPar((r.blockName || PAR_BLOCK_NAME[r.block] || "").split(" · ")[0] || "Bloque " + (r.block || "")) + '</b> · ' +
+          '<b>' + escPar((r.blockName || PAR_EPOCAS[r.block] || "Bloque " + (r.block || ""))) + '</b> · ' +
           '<span class="par-hist-score">' + (r.score || 0) + ' pts</span> · ' +
           (r.pairs || PAR_N) + ' parejas · ' + (r.errors || 0) + ((r.errors === 1) ? ' error' : ' errores') + ' · ' + (r.secs || 0) + ' s' +
           (r.record ? ' · 🎉 récord' : '') +
@@ -135,7 +141,7 @@ function renderParStart(){
   ) : '';
   box.innerHTML = '<div class="par-wrap">' +
     '<p class="howto"><span><b>' + PAR_HOWTO.como + '</b> ' + PAR_HOWTO.txt + '</span></p>' +
-    '<div class="par-pick"><span class="flabel">' + (present.some(b => PAR_BLOCK_NAME[b]) ? "المحور" : "الموضوع") + '</span>' + picks + '</div>' +
+    '<div class="par-pick"><span class="flabel">' + (present.some(b => PAR_EPOCAS[b]) ? "العصر" : "الموضوع") + '</span>' + picks + '</div>' +
     '<button class="par-play" id="parPlay"><span>🧩</span><span><b>Jugar</b> · اربطوا ' + PAR_N + ' مصطلحات بتعريفاتها</span></button>' +
     bestPanel + histPanel +
     '</div>';

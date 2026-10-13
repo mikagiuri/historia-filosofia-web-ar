@@ -7,19 +7,7 @@ let theoryBlock = "all";
 let theoryShowAnexos = false;   /* (12-10, rediseño) las exploraciones salen ocultas por defecto */
 
 const THEORY_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة", ipc: "التفكير النقدي" };
-const THEORY_BLOCKS = { A: "المحور A · القديمة", B: "المحور B · الوسيطة والحديثة", C: "المحور C · المعاصرة" };
-
-function blockOf(t){
-  if (t.sigla) return t.sigla.charAt(0);   /* (07-10) AP/AA: temas sin número; la sigla empieza por su bloque */
-  /* «Tema 19» en castellano; «19. gaia» en euskera (antes, en la web vasca, el filtro de bloque vaciaba la lista) */
-  const m = (t.tema || "").match(/(?:Tema|Thème|Topic|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/);   /* también «Thème N» (francés), «Topic N» (inglés) y «الموضوع N» (árabe) */
-  if (!m && typeof t.temaN !== "number") return null;   /* anexos: sin «Tema N» en el nombre, con temaN */
-  const n = typeof t.temaN === "number" ? t.temaN : +(m[1] || m[2]);
-  if (n >= 1 && n <= 10) return "A";
-  if (n >= 11 && n <= 17) return "B";
-  if (n >= 18 && n <= 27) return "C";
-  return null;
-}
+const THEORY_EPOCAS = { ant: "القديمة", med: "الوسيطة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
 
 function renderTheoryFilter(){
   const box = document.getElementById("theoryfilter");
@@ -29,21 +17,21 @@ function renderTheoryFilter(){
   ).join("");
   let blockBtns = "";
   if (theorySubject === "hf"){
-    blockBtns = ["all", "A", "B", "C"].map(b =>
-      '<button class="fbtn" data-block="' + b + '" aria-pressed="' + (b === theoryBlock) + '">' +
-      (b === "all" ? "كل المحاور" : THEORY_BLOCKS[b]) + '</button>'
+    blockBtns = ["all", "ant", "med", "mod", "ilu", "con"].map(b =>
+      '<button class="fbtn" data-era="' + b + '" aria-pressed="' + (b === theoryBlock) + '">' +
+      (b === "all" ? "الكل" : THEORY_EPOCAS[b]) + '</button>'
     ).join("");
   }
   box.innerHTML = '<div class="fgroup"><span class="flabel">المادة</span>' + subjBtns + '</div>' +
-    (blockBtns ? '<div class="fgroup"><span class="flabel">المحور</span>' + blockBtns + '</div>' : '');
+    (blockBtns ? '<div class="fgroup"><span class="flabel">العصر</span>' + blockBtns + '</div>' : '');
   box.querySelectorAll("[data-subj]").forEach(b => b.addEventListener("click", () => {
     theorySubject = b.dataset.subj;
     if (theorySubject !== "hf") theoryBlock = "all";
     renderTheoryFilter();
     renderTheoryChips();
   }));
-  box.querySelectorAll("[data-block]").forEach(b => b.addEventListener("click", () => {
-    theoryBlock = b.dataset.block;
+  box.querySelectorAll("[data-era]").forEach(b => b.addEventListener("click", () => {
+    theoryBlock = b.dataset.era;
     renderTheoryFilter();
     renderTheoryChips();
   }));
@@ -53,8 +41,7 @@ function renderTheoryChips(){
   const box = document.getElementById("theorychips");
   const entries = Object.entries(THEORY).filter(([k, t]) => {
     if (theorySubject !== "all" && t.subject !== theorySubject) return false;
-    if (theorySubject === "hf" && theoryBlock !== "all" && blockOf(t) !== theoryBlock) return false;
-    if (theoryBlock !== "all" && window.Epocas && window.Epocas.soloTodos("teoria", k)) return false;   // (30-09) temas 1-2 de HF: solo con «Todos los bloques» (epocas.js)
+    if (theorySubject === "hf" && theoryBlock !== "all" && window.Epocas && window.Epocas.epocaDe("teoria", k, t) !== theoryBlock) return false;
     return true;
   });
   /* (12-10, rediseño) las exploraciones (anexos: con `temaN`) van aparte y ocultas por defecto;
@@ -345,9 +332,11 @@ function loadTheory(k){
   if (tk){
     let cambia = false;
     if (theorySubject !== "all" && tk.subject && theorySubject !== tk.subject){ theorySubject = tk.subject; theoryBlock = "all"; cambia = true; }
-    const bk = blockOf(tk);
-    if (theorySubject === "hf" && theoryBlock !== "all" && bk && bk !== theoryBlock){ theoryBlock = bk; cambia = true; }
-    if (theoryBlock !== "all" && window.Epocas && window.Epocas.soloTodos("teoria", k)){ theoryBlock = "all"; cambia = true; }   // tema introductorio: se ve con «Todos»
+    if (theorySubject === "hf" && theoryBlock !== "all" && window.Epocas){
+      const bk = window.Epocas.epocaDe("teoria", k, tk);
+      if (THEORY_EPOCAS[bk]){ if (bk !== theoryBlock){ theoryBlock = bk; cambia = true; } }
+      else { theoryBlock = "all"; cambia = true; }   // introductorios (int) y sin época concreta: «Todos»
+    }
     if (cambia && document.getElementById("theoryfilter")) renderTheoryFilter();
   }
   renderTheoryChips();

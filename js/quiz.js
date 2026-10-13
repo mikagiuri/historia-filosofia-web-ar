@@ -17,7 +17,7 @@ let quizReviewing = false;  // true si repasamos solo los fallos (no toca la mej
 function quizShuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
 const QUIZ_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة", ipc: "التفكير النقدي" };
-const QUIZ_BLOCKS = { A: "المحور A · القديمة", B: "المحور B · الوسيطة والحديثة", C: "المحور C · المعاصرة" };
+const QUIZ_EPOCAS = { ant: "القديمة", med: "الوسيطة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
 /* (12-10) criterio del profesor: en 1.º la fila «Tema» nombra el ÁMBITO filosófico; el código T1… va al tooltip
    y la cabecera de grupo. En HF y en la web local, como antes. */
 const QUIZ_RAMAS = { T1: "مدخل", T2: "الأنثروبولوجيا", T3: "المعرفة", M: "ميتافيزيقا", T4: "المنطق", T5: "الأخلاق", T6: "السياسة", T7: "علم الجمال" };
@@ -139,8 +139,7 @@ function lexMontar(){
 function quizTemaDe(k){ const m = QUIZ_TEMAS[QUIZZES[k].subject] || {}; return m[QUIZ_TEMA[k]] ? QUIZ_TEMA[k] : "otros"; }
 function quizEnFiltro(k, q, conTema){
   if (quizSubject !== "all" && q.subject !== quizSubject) return false;
-  if (quizSubject === "hf" && quizBlock !== "all" && q.block !== quizBlock) return false;
-  if (quizBlock !== "all" && window.Epocas && window.Epocas.soloTodos("cuestionarios", k)) return false;   // (30-09) temas 1-2 de HF: solo con «Todos los bloques» (epocas.js)
+  if (quizSubject === "hf" && quizBlock !== "all" && window.Epocas && window.Epocas.epocaDe("cuestionarios", k, q) !== quizBlock) return false;
   if (conTema && quizTema !== "all" && quizTemaDe(k) !== quizTema) return false;
   return true;
 }
@@ -163,9 +162,9 @@ function renderQuizFilter(){
   ).join("");
   let blockBtns = "";
   if (quizSubject === "hf"){
-    blockBtns = ["all", "A", "B", "C"].map(b =>
-      '<button class="fbtn" data-block="' + b + '" aria-pressed="' + (b === quizBlock) + '">' +
-      (b === "all" ? "كل المحاور" : QUIZ_BLOCKS[b]) + '</button>'
+    blockBtns = ["all", "ant", "med", "mod", "ilu", "con"].map(b =>
+      '<button class="fbtn" data-era="' + b + '" aria-pressed="' + (b === quizBlock) + '">' +
+      (b === "all" ? "الكل" : QUIZ_EPOCAS[b]) + '</button>'
     ).join("");
   }
   let temaBtns = "";
@@ -178,7 +177,7 @@ function renderQuizFilter(){
     ).join("");
   }
   box.innerHTML = '<div class="fgroup"><span class="flabel">المادة</span>' + subjBtns + '</div>' +
-    (blockBtns ? '<div class="fgroup"><span class="flabel">المحور</span>' + blockBtns + '</div>' : '') +
+    (blockBtns ? '<div class="fgroup"><span class="flabel">العصر</span>' + blockBtns + '</div>' : '') +
     (temaBtns ? '<div class="fgroup"><span class="flabel">الموضوع</span>' + temaBtns + '</div>' : '');
   box.querySelectorAll("[data-subj]").forEach(b => b.addEventListener("click", () => {
     quizSubject = b.dataset.subj;
@@ -187,8 +186,8 @@ function renderQuizFilter(){
     renderQuizFilter();
     renderQuizChips();
   }));
-  box.querySelectorAll("[data-block]").forEach(b => b.addEventListener("click", () => {
-    quizBlock = b.dataset.block;
+  box.querySelectorAll("[data-era]").forEach(b => b.addEventListener("click", () => {
+    quizBlock = b.dataset.era;
     quizTema = "all";
     renderQuizFilter();
     renderQuizChips();
@@ -223,7 +222,7 @@ function renderQuizChips(){
 }
 
 function loadQuiz(k){ quizKey = k;
-  if (quizBlock !== "all" && window.Epocas && window.Epocas.soloTodos("cuestionarios", k)){ quizBlock = "all"; if (document.getElementById("quizfilter")) renderQuizFilter(); } quizReviewing = false; quizPool = QUIZZES[k].lex ? (QUIZZES[k].items = lexItems(k)) : QUIZZES[k].items; renderQuizChips(); startQuizRun(); }
+  if (quizBlock !== "all" && window.Epocas && window.Epocas.epocaDe("cuestionarios", k, QUIZZES[k]) !== quizBlock){ quizBlock = "all"; if (document.getElementById("quizfilter")) renderQuizFilter(); } quizReviewing = false; quizPool = QUIZZES[k].lex ? (QUIZZES[k].items = lexItems(k)) : QUIZZES[k].items; renderQuizChips(); startQuizRun(); }
 function startQuizRun(){ qpos = 0; qscore = 0; qdone = false; quizFailed = []; quizOrder = quizShuffle(quizPool.map((_, i) => i)); drawQuiz(); }
 
 function drawQuiz(){

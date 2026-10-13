@@ -2,9 +2,9 @@
 /* ===== Vista de lecturas ===== depende de: lecturas.js ===== */
 
 let lecturaKey = Object.keys(LECTURAS)[0];
-let lecturaBlock = "A";  /* bloque concreto por defecto, nunca «Todos los bloques» */
+let lecturaBlock = "ant";  /* época concreta por defecto, nunca «Todos» */
 
-const LECTURA_BLOCKS = { A: "المحور A · القديمة", B: "المحور B · الوسيطة والحديثة", C: "المحور C · المعاصرة" };
+const LECTURA_EPOCAS = { ant: "القديمة", med: "الوسيطة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
 
 /* (12-10) criterio del profesor: en la web de 1.º el selector de Lecturas criba por ÁMBITO filosófico
    (la asignatura se organiza por problemas, no por periodos); solo se muestran los ámbitos que tienen
@@ -19,16 +19,6 @@ function lecRama(t){
   const m = T.match(/(?:Tema|Thème|Topic|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/);
   const n = m ? +(m[1] || m[2]) : null;
   return n ? ({ 1: "int", 2: "ant", 3: "con", 4: "log", 5: "eti", 6: "pol", 7: "est" }[n] || "int") : "int";
-}
-
-function blockOf(t){   /* misma función que en theoryview.js (esta, cargada después, es la que vale) */
-  const m = (t.tema || "").match(/(?:Tema|Thème|Topic|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/);   /* «Tema 19» / euskera «19. gaia» / francés «Thème 19» / inglés «Topic 19» / árabe «الموضوع 19» */
-  if (!m && typeof t.temaN !== "number") return null;   /* anexos: sin «Tema N» en el nombre, con temaN */
-  const n = typeof t.temaN === "number" ? t.temaN : +(m[1] || m[2]);
-  if (n >= 1 && n <= 10) return "A";
-  if (n >= 11 && n <= 17) return "B";
-  if (n >= 18 && n <= 27) return "C";
-  return null;
 }
 
 function renderLecturaFilter(){
@@ -47,13 +37,13 @@ function renderLecturaFilter(){
     }));
     return;
   }
-  const blockBtns = ["all", "A", "B", "C"].map(b =>
-    '<button class="fbtn" data-block="' + b + '" aria-pressed="' + (b === lecturaBlock) + '">' +
-    (b === "all" ? "كل المحاور" : LECTURA_BLOCKS[b]) + '</button>'
+  const blockBtns = ["all", "ant", "med", "mod", "ilu", "con"].map(b =>
+    '<button class="fbtn" data-era="' + b + '" aria-pressed="' + (b === lecturaBlock) + '">' +
+    (b === "all" ? "الكل" : LECTURA_EPOCAS[b]) + '</button>'
   ).join("");
-  box.innerHTML = '<div class="fgroup"><span class="flabel">المحور</span>' + blockBtns + '</div>';
-  box.querySelectorAll("[data-block]").forEach(b => b.addEventListener("click", () => {
-    lecturaBlock = b.dataset.block;
+  box.innerHTML = '<div class="fgroup"><span class="flabel">العصر</span>' + blockBtns + '</div>';
+  box.querySelectorAll("[data-era]").forEach(b => b.addEventListener("click", () => {
+    lecturaBlock = b.dataset.era;
     renderLecturaFilter();
     renderLecturaChips();
   }));
@@ -63,7 +53,7 @@ function renderLecturaChips(){
   const box = document.getElementById("lecturachips");
   const fil = lecEsFil();
   const entries = Object.entries(LECTURAS).filter(([k, t]) =>
-    lecturaBlock === "all" || (fil ? lecRama(t) === lecturaBlock : blockOf(t) === lecturaBlock)
+    lecturaBlock === "all" || (fil ? lecRama(t) === lecturaBlock : (window.Epocas && window.Epocas.epocaDe("lecturas", k, t) === lecturaBlock))
   );
   box.innerHTML = entries
     .map(([k, t]) => '<button class="chip" data-lec="' + k + '" aria-pressed="' + (k === lecturaKey) + '">' + t.title + '</button>').join("");

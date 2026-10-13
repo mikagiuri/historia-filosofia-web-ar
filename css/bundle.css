@@ -2733,3 +2733,41 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #epocas .ilu-life{margin:4px 0 0;color:var(--muted)} #epocas .figwrap{margin:12px 0} #epocas .epo-ir{margin:0}
 [dir="rtl"] #epocas .epo-arr{display:inline-block;transform:scaleX(-1)}
 
+
+/* ==== css/guia.css ==== */
+/* ===== Guía «Cómo usar la web» (#guia, guiaview.js · 13-10-2026) ===== */
+#guia .guia-idx{ display:flex; flex-wrap:wrap; align-items:center; gap:.35rem .9rem; margin:1rem 0 1.4rem; padding:.7rem 1rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); }
+#guia .guia-idx a{ color:var(--accent); text-decoration:none; font-size:.92rem; }
+#guia .guia-idx a:hover{ text-decoration:underline; }
+#guia .guia-sel{ margin:.8rem 0 0; }
+#guia .guia-pdf{ margin:0 0 1.6rem; }
+#guia .guia-body{ max-width:46rem; }
+#guia .guia-body > p{ line-height:1.65; }
+#guia .guia-h{ font-size:1.45rem; margin:2.4rem 0 .8rem; padding-bottom:.35rem; border-bottom:2px solid var(--accent); scroll-margin-top:80px; }
+#guia .guia-fig{ margin:1rem 0 1.4rem; }
+#guia .guia-fig img{ display:block; width:100%; height:auto; border:1px solid var(--line); border-radius:10px; box-shadow:var(--shadow); background:var(--surface); }
+#guia .guia-fig.guia-menu img{ max-width:15rem; }
+#guia .guia-fig.guia-movil img{ max-width:15rem; }
+#guia .guia-fig figcaption{ margin-top:.45rem; font-size:.85rem; color:var(--muted); }
+#guia .guia-tip, #guia .guia-warn{ margin:1rem 0; padding:.75rem 1rem; border-radius:10px; background:var(--surface); line-height:1.55; }
+#guia .guia-tip{ border-inline-start:4px solid var(--accent); }
+#guia .guia-warn{ border-inline-start:4px solid var(--bad); background:var(--bad-bg); }
+#guia .guia-list{ display:grid; gap:.55rem; margin:.8rem 0 1.2rem; }
+#guia .guia-row{ display:grid; grid-template-columns:minmax(9rem, 12rem) 1fr; gap:.3rem 1rem; align-items:baseline; }
+#guia .guia-go{ font:inherit; font-weight:600; color:var(--accent); background:none; border:0; padding:0; cursor:pointer; text-align:start; text-decoration:underline; text-underline-offset:3px; }
+#guia .guia-go:hover{ color:var(--accent-2); }
+#guia .guia-d{ line-height:1.55; }
+#guia .guia-steps{ list-style:none; counter-reset:paso; padding:0; margin:1rem 0; display:grid; gap:.7rem; }
+#guia .guia-steps li{ counter-increment:paso; position:relative; padding-inline-start:2.6rem; line-height:1.5; }
+#guia .guia-steps li::before{ content:counter(paso); position:absolute; inset-inline-start:0; top:0; width:1.8rem; height:1.8rem; border-radius:50%; display:grid; place-items:center; background:var(--accent); color:var(--on-accent); font-weight:700; font-size:.9rem; }
+#guia .guia-steps li strong{ display:block; }
+#guia .guia-steps li span{ color:var(--muted); }
+#guia .guia-abrir{ font:inherit; font-size:.85rem; margin-top:.2rem; padding:0; border:0; background:none; color:var(--accent); cursor:pointer; text-decoration:underline; text-underline-offset:3px; display:block; }
+.guia-pie{ margin:2rem 0 0; padding-top:1rem; border-top:1px solid var(--line-soft); font-size:.92rem; }
+.guia-pie a{ color:var(--accent); }
+@media (max-width:560px){
+  #guia .guia-row{ grid-template-columns:1fr; gap:.1rem; }
+  /* la cabecera del móvil ya lleva buscador, menú, idioma y tema: el «?» no cabe; a la guía se llega desde el pie de la ficha */
+  #helpbtn{ display:none; }
+}
+

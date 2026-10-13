@@ -4,10 +4,24 @@
    textual limpio, imprimible. Complementa la vista "خطاطات" (grafos mermaid). */
 
 let eaBlock = "all";
-const EA_BLOCKS = { A: "القديمة", B: "الوسيطة والحديثة", C: "المعاصرة", F1: "الفلسفة 1" };
+const EA_EPOCAS = { ant: "القديمة", med: "الوسيطة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
+/* (12-10) etiquetas de bloque (A/B/C/F1), solo para la tabla «Sinóptica» por ejes (esquemas_ejes.js) */
+const EA_BLOQUE_LABEL = { A: "القديمة", B: "الوسيطة والحديثة", C: "المعاصرة", F1: "الفلسفة 1" };
 /* (12-10) HF (ESQUEMAS_AUTOR) y Filosofía 1.º (RESUMENES_FIL): cada web publicada trae solo los suyos; la del profesor, los dos */
 const EA_LIST = (typeof ESQUEMAS_AUTOR !== "undefined" ? ESQUEMAS_AUTOR : []).concat(typeof RESUMENES_FIL !== "undefined" ? RESUMENES_FIL : []);
-const EA_HAS = ["A", "B", "C", "F1"].filter(function (b){ return EA_LIST.some(function (e){ return e.block === b; }); });
+/* (12-10) época del resumen de HF por su título (tema), no por el bloque. El introductorio («Métodos y herramientas
+   del filósofo», T1-T2) va a «int» (solo con «Todos»). EDITABLE: un resumen nuevo se apunta aquí. */
+const EA_EPOCA_TITULO = {
+  "Métodos y herramientas del filósofo": "int",
+  "El nacimiento de la filosofía en Grecia": "ant", "Presocráticos: la búsqueda del arché": "ant", "Los sofistas y Sócrates": "ant",
+  "Platón y Aristóteles": "ant", "Antropología clásica: la psique": "ant", "El debate ético": "ant", "El debate político": "ant", "Las escuelas helenísticas": "ant",
+  "La filosofía medieval": "med", "الإيمان والعقل": "med",
+  "El Renacimiento": "mod", "العقلانية والتجريبية": "mod", "El debate moderno sobre la sustancia": "mod", "El contrato social": "mod", "Utilitarismo, liberalismo y capitalismo": "mod",
+  "La Ilustración: razón y derechos": "ilu", "La filosofía crítica de Kant": "ilu", "Ética: Kant frente al utilitarismo": "ilu",
+  "فلاسفة الارتياب": "con", "La crítica del capitalismo": "con", "Nietzsche y la postmodernidad": "con", "La filosofía del lenguaje": "con", "الوجودية": "con", "Simone de Beauvoir: el feminismo": "con"
+};
+function eaEpoca(e){ return e.subject === "hf" ? (EA_EPOCA_TITULO[e.title] || null) : null; }
+const EA_HAS = ["ant", "med", "mod", "ilu", "con"].filter(function (b){ return EA_LIST.some(function (e){ return eaEpoca(e) === b; }); });
 /* (07-10) formato: esquema (listas), tabla por autor o tabla sinóptica del bloque (una fila por autor) */
 let eaFmt = "esq";
 try { const f = localStorage.getItem("eaFmt"); if (f === "tab" || f === "sin") eaFmt = f; } catch (e) {}
@@ -65,17 +79,17 @@ function eaEsc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").r
 function renderEAFilter(){
   const box = document.getElementById("eafilter");
   if (!box) return;
-  box.innerHTML = (EA_HAS.length < 2 ? '' : '<div class="fgroup"><span class="flabel">المحور</span>' +
+  box.innerHTML = (EA_HAS.length < 2 ? '' : '<div class="fgroup"><span class="flabel">العصر</span>' +
     ["all"].concat(EA_HAS).map(function (b){
-      return '<button class="fbtn" data-eb="' + b + '" aria-pressed="' + (b === eaBlock) + '">' +
-        (b === "all" ? "الكل" : EA_BLOCKS[b]) + '</button>'; }).join("") + '</div>') +
+      return '<button class="fbtn" data-era="' + b + '" aria-pressed="' + (b === eaBlock) + '">' +
+        (b === "all" ? "الكل" : EA_EPOCAS[b]) + '</button>'; }).join("") + '</div>') +
     '<div class="fgroup"><span class="flabel">الصيغة</span>' +
     Object.keys(EA_FMTS).map(function (f){
       return '<button class="fbtn" data-ef="' + f + '" aria-pressed="' + (f === eaFmt) + '">' + EA_FMTS[f] + '</button>'; }).join("") + '</div>' +
     /* (12-10, rediseño Lote 3 · H5) «Esquema del tema» con cambio grafo ⇄ texto */
     '<button class="fbtn ea-toggle" type="button" title="' + 'اعرض كمخطط (خطاطات)' + '">' + 'اعرض كمخطط' + '</button>';
-  box.querySelectorAll("[data-eb]").forEach(function (b){ b.addEventListener("click", function (){
-    eaBlock = b.dataset.eb; renderEAFilter(); renderEABody(); }); });
+  box.querySelectorAll("[data-era]").forEach(function (b){ b.addEventListener("click", function (){
+    eaBlock = b.dataset.era; renderEAFilter(); renderEABody(); }); });
   box.querySelectorAll("[data-ef]").forEach(function (b){ b.addEventListener("click", function (){
     eaFmt = b.dataset.ef; try { localStorage.setItem("eaFmt", eaFmt); } catch (e) {}
     renderEAFilter(); renderEABody(); }); });
@@ -86,7 +100,7 @@ function renderEAFilter(){
 function renderEABody(){
   const box = document.getElementById("eabody");
   if (!box) return;
-  const list = EA_LIST.filter(function (e){ return eaBlock === "all" || e.block === eaBlock; });
+  const list = EA_LIST.filter(function (e){ return eaBlock === "all" || eaEpoca(e) === eaBlock; });
   /* ítems: texto (formato antiguo) u objeto {t, d, a, c} (desde el 25-09, sacados de los esquemas v2) */
   function item(i){
     if (typeof i === "string") return '<li>' + eaEsc(i) + '</li>';
@@ -97,16 +111,16 @@ function renderEABody(){
   /* Sinóptica: una fila por autor/tema del bloque (o de todos), columnas comunes */
   /* (08-10) con ejes comunes (esquemas_ejes.js): una tabla por bloque, una fila por tema y una columna por eje */
   if (eaFmt === "sin" && typeof EA_EJES !== "undefined" && typeof ESQUEMAS_AUTOR !== "undefined" && eaBlock !== "F1"){
-    box.innerHTML = ["A", "B", "C"].filter(function (b){ return (eaBlock === "all" || eaBlock === b) && EA_EJES[b]; }).map(function (b){
+    box.innerHTML = ["A", "B", "C"].filter(function (b){ return EA_EJES[b]; }).map(function (b){
       const E = EA_EJES[b];
-      return '<article class="easchema"><h2>' + eaEsc(EA_BLOCKS[b]) + '</h2><div class="ea-tw"><table class="ea-tab ea-sin ea-ejes"><thead><tr><th>الموضوع</th>' +
+      return '<article class="easchema"><h2>' + eaEsc(EA_BLOQUE_LABEL[b]) + '</h2><div class="ea-tw"><table class="ea-tab ea-sin ea-ejes"><thead><tr><th>الموضوع</th>' +
         E.ejes.map(function (x){ return '<th>' + eaEsc(x) + '</th>'; }).join("") + '</tr></thead><tbody>' +
         E.filas.map(function (f){
           const sch = ESQUEMAS_AUTOR[f.i] || {};
           return '<tr><td>' + eaEsc(sch.title || "") + '</td>' + f.c.map(function (x){ return '<td>' + eaEsc(x) + '</td>'; }).join("") + '</tr>';
         }).join("") + '</tbody></table></div></article>';
     }).join("") + (eaBlock === "all" && list.some(function (e){ return e.block === "F1"; }) ?
-      '<h2>' + eaEsc(EA_BLOCKS.F1) + '</h2>' + sinGen(list.filter(function (e){ return e.block === "F1"; })) : '');
+      '<h2>' + eaEsc(EA_BLOQUE_LABEL.F1) + '</h2>' + sinGen(list.filter(function (e){ return e.block === "F1"; })) : '');
     eaIlu();
     return;
   }

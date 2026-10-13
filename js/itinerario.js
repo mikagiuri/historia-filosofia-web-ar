@@ -445,14 +445,31 @@
     var v = document.getElementById(id); if (!v || !v.classList.contains("view")) return;
     var old = v.querySelector(":scope > .crumbs"); if (old) old.remove();
     if (LANDING[id]) return;
-    var btn_ = document.querySelector('#tabs button[data-view="' + id + '"]'), h1 = v.querySelector("h1.title, h1");
+    var tabId = id;   /* la vista «teoria» se abre desde el botón «Teoría» de su materia (#hf o #fil) */
+    if (id === "teoria"){ var TT = G("THEORY"), kk = G("theoryKey"), ss = TT && kk != null && TT[kk] && TT[kk].subject;
+      tabId = (ss && document.querySelector('#tabs button[data-view="' + ss + '"]')) ? ss : (["hf", "fil"].filter(function(x){ return document.querySelector('#tabs button[data-view="' + x + '"]'); })[0] || id); }
+    var btn_ = document.querySelector('#tabs button[data-view="' + tabId + '"]'), h1 = v.querySelector("h1.title, h1");
     var secLabel = btn_ ? strip(btn_.textContent) : h1 ? strip(h1.textContent) : id;
     var grp = btn_ && btn_.closest(".navsec"), gl = grp && grp.querySelector(".navgroup") ? strip(grp.querySelector(".navgroup").textContent) : "";
-    var home = homeId(), html = home ? '<a href="#' + esc(home) + '" data-crumb="' + esc(home) + '">' + esc(t("inicio")) + '</a>' : "";
-    if (gl) html += (html ? '<span class="crumb-sep" aria-hidden="true">›</span>' : '') + '<span>' + esc(gl) + '</span>';
-    html += (html ? '<span class="crumb-sep" aria-hidden="true">›</span>' : '') + '<span aria-current="page">' + esc(secLabel) + '</span>';
+    var item = crumbItem(id);
+    /* (12-10) sin «Inicio» (ya no existe): «Grupo › Sección › [elemento abierto]» */
+    var parts = [];
+    if (gl) parts.push(esc(gl));
+    parts.push(esc(secLabel));
+    if (item) parts.push(esc(item));
+    var html = parts.map(function(p, i){ return '<span' + (i === parts.length - 1 ? ' aria-current="page"' : '') + '>' + p + '</span>'; }).join('<span class="crumb-sep" aria-hidden="true">›</span>');
     var nav = document.createElement("nav"); nav.className = "crumbs"; nav.setAttribute("aria-label", t("ariaCrumbs")); nav.innerHTML = html;
     v.insertBefore(nav, v.firstChild);
+  }
+  /* (12-10) título del elemento abierto: el tema actual en Teoría; el resto de vistas no añaden crumb */
+  function crumbItem(id){
+    if (id === "teoria"){
+      var m = /^#teoria\/([\w-]+)/.exec(location.hash || "");   /* enlace profundo: el tema exacto, no el primero */
+      var k = m ? m[1] : G("theoryKey");
+      var T = G("THEORY");
+      if (k != null && T && T[k]) return T[k].title;
+    }
+    return null;
   }
   document.addEventListener("click", function(e){
     var a = e.target.closest && e.target.closest("[data-crumb]"); if (!a) return;
@@ -460,7 +477,7 @@
   });
   if (fn("show")){
     var origShow = window.show;
-    window.show = function(id){ origShow.apply(this, arguments); try { crumbs(id); renderPau(id); } catch (e){} };
+    window.show = function(id){ origShow.apply(this, arguments); try { crumbs(id); renderPau(id); } catch (e){}; if (id === "teoria") setTimeout(function(){ try { crumbs("teoria"); } catch (e){} }, 0); };
   }
   var active = document.querySelector(".view.active"); if (active) crumbs(active.id);
 

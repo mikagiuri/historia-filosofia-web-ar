@@ -9,7 +9,7 @@ let mapSubject = "all", mapBlock = "all";
 let mapAmb = "all";   // (12-10) 1.º: fila «Ámbito»
 
 const MAP_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة", ipc: "التفكير النقدي" };
-const MAP_BLOCKS = { A: "القديمة", B: "الوسيطة والحديثة", C: "المعاصرة" };
+const MAP_EPOCAS = { ant: "القديمة", med: "الوسيطة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
 /* (12-10) criterio del profesor: en 1.º Mapas criba por ámbito filosófico (orden del curso). Los dos mapas de 1.º
    sin número en el rótulo van con Conocimiento (EDITABLE: mapas nuevos de 1.º sin «Tema N», apuntarlos aquí). */
 const MAP_AMBS = { int: "مدخل", ant: "الأنثروبولوجيا", con: "المعرفة", met: "ميتافيزيقا", log: "المنطق", eti: "الأخلاق", pol: "السياسة", est: "علم الجمال" };
@@ -24,13 +24,6 @@ function mapAmbOf(k, m){
   const n = mm ? +(mm[1] || mm[2]) : null;
   return ({ 1: "int", 2: "ant", 3: "con", 4: "log", 5: "eti", 6: "pol", 7: "est" })[n] || null;
 }
-/* Bloque de cada mapa de HF (los de Filosofía 1.º no llevan bloque). */
-const MAP_BLOCK = {
-  "map-presocraticos":"A","map-sofistas-socrates":"A","map-platon":"A","map-aristoteles":"A","map-helenismo":"A","map-etica-clasica":"A","map-politica-clasica":"A",
-  "map-san-agustin":"B","map-medieval":"B","map-renacimiento":"B","map-descartes":"B","map-sustancias-modernas":"B","map-contrato-social":"B","map-utilitarismo-liberalismo":"B","map-kant":"B","map-critica-razon-pura":"B","map-ilustracion-modernidad":"B",
-  "map-nietzsche":"C","map-hegel":"C","map-ideologia":"C","map-maestros-sospecha":"C","map-critica-capitalismo":"C","map-postmodernidad":"C","map-filosofia-lenguaje":"C","map-existencialismo":"C","map-feminismo-beauvoir":"C"
-};
-
 function renderMapFilter(){
   const box = document.getElementById("mapfilter");
   if (!box) return;
@@ -39,9 +32,9 @@ function renderMapFilter(){
     (s === "all" ? "الكل" : MAP_SUBJECTS[s]) + '</button>').join("");
   let blockBtns = "";
   if (mapSubject === "hf"){
-    blockBtns = ["all", "A", "B", "C"].map(b =>
-      '<button class="fbtn" data-block="' + b + '" aria-pressed="' + (b === mapBlock) + '">' +
-      (b === "all" ? "كل المحاور" : MAP_BLOCKS[b]) + '</button>').join("");
+    blockBtns = ["all", "ant", "med", "mod", "ilu", "con"].map(b =>
+      '<button class="fbtn" data-era="' + b + '" aria-pressed="' + (b === mapBlock) + '">' +
+      (b === "all" ? "الكل" : MAP_EPOCAS[b]) + '</button>').join("");
   }
   let ambBtns = "";   // (12-10) 1.º: criba por ámbito, en el orden del curso
   if (mapEsFil()){
@@ -52,15 +45,15 @@ function renderMapFilter(){
       (b === "all" ? "الكل" : MAP_AMBS[b]) + '</button>').join("");
   }
   box.innerHTML = '<div class="fgroup"><span class="flabel">المادة</span>' + subjBtns + '</div>' +
-    (blockBtns ? '<div class="fgroup"><span class="flabel">المحور</span>' + blockBtns + '</div>' : '') +
+    (blockBtns ? '<div class="fgroup"><span class="flabel">العصر</span>' + blockBtns + '</div>' : '') +
     (ambBtns ? '<div class="fgroup"><span class="flabel">المجال</span>' + ambBtns + '</div>' : '');
   box.querySelectorAll("[data-subj]").forEach(b => b.addEventListener("click", () => {
     mapSubject = b.dataset.subj;
     if (mapSubject !== "hf") mapBlock = "all";
     renderMapFilter(); renderMapChips();
   }));
-  box.querySelectorAll("[data-block]").forEach(b => b.addEventListener("click", () => {
-    mapBlock = b.dataset.block;
+  box.querySelectorAll("[data-era]").forEach(b => b.addEventListener("click", () => {
+    mapBlock = b.dataset.era;
     renderMapFilter(); renderMapChips();
   }));
   box.querySelectorAll("[data-amb]").forEach(b => b.addEventListener("click", () => {
@@ -73,7 +66,7 @@ function renderMapChips(){
   const box = document.getElementById("mapchips");
   const entries = Object.entries(MAPS).filter(([k, m]) => {
     if (mapSubject !== "all" && m.subject !== mapSubject) return false;
-    if (mapSubject === "hf" && mapBlock !== "all" && MAP_BLOCK[k] !== mapBlock) return false;
+    if (mapSubject === "hf" && mapBlock !== "all" && window.Epocas && window.Epocas.epocaDe("mapas", k, m) !== mapBlock) return false;
     if (mapEsFil() && mapAmb !== "all" && mapAmbOf(k, m) !== mapAmb) return false;
     return true;
   });

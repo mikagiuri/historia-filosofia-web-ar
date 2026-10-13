@@ -14,7 +14,7 @@ const known = store.get("aula-known", {});   // (v205) restaurada: la borró c88
 const cardEl = document.getElementById("card");
 
 const DECK_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة", ipc: "التفكير النقدي" };
-const DECK_BLOCKS = { A: "المحور A · القديمة", B: "المحور B · الوسيطة والحديثة", C: "المحور C · المعاصرة" };
+const DECK_EPOCAS = { ant: "القديمة", med: "الوسيطة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
 /* (12-10) criterio del profesor: en 1.º Tarjetas se elige PRIMERO el tema en un desplegable (no una fila de
    veinte barajas); cada tema del curso es su ámbito. En HF y en la web local no hay desplegable (27 temas: demasiados).
    EDITABLE: una baraja nueva de 1.º se apunta aquí con su ámbito. */
@@ -32,7 +32,7 @@ const deckOk = d => deckTipo === "all" || (deckTipo === "frases") === deckEsFras
 /* primera baraja que cumple materia, bloque y tipo (la usa también navctx.js) */
 function deckFirstKey(sub, block){
   return Object.keys(DECKS).find(k => { const d = DECKS[k];
-    return (sub === "all" || d.subject === sub) && (!block || block === "all" || (d.block === block && !(window.Epocas && window.Epocas.soloTodos("tarjetas", k)))) && deckOk(d); });
+    return (sub === "all" || d.subject === sub) && (!block || block === "all" || (window.Epocas && window.Epocas.epocaDe("tarjetas", k, d) === block)) && deckOk(d); });
 }
 function setDeckTipo(t){
   deckTipo = DECK_TIPOS[t] ? t : "all";
@@ -52,9 +52,9 @@ function renderDeckFilter(){
   ).join("");
   let blockBtns = "";
   if (deckSubject === "hf"){
-    blockBtns = ["all", "A", "B", "C"].map(b =>
-      '<button class="fbtn" data-block="' + b + '" aria-pressed="' + (b === deckBlock) + '">' +
-      (b === "all" ? "كل المحاور" : DECK_BLOCKS[b]) + '</button>'
+    blockBtns = ["all", "ant", "med", "mod", "ilu", "con"].map(b =>
+      '<button class="fbtn" data-era="' + b + '" aria-pressed="' + (b === deckBlock) + '">' +
+      (b === "all" ? "الكل" : DECK_EPOCAS[b]) + '</button>'
     ).join("");
   }
   let temaSel = "";   // (12-10) 1.º: el tema (ámbito) primero, en un desplegable
@@ -67,7 +67,7 @@ function renderDeckFilter(){
   box.innerHTML = temaSel +
     (tipoBtns ? '<div class="fgroup"><span class="flabel">النوع</span>' + tipoBtns + '</div>' : '') +
     '<div class="fgroup"><span class="flabel">المادة</span>' + subjBtns + '</div>' +
-    (blockBtns ? '<div class="fgroup"><span class="flabel">المحور</span>' + blockBtns + '</div>' : '');
+    (blockBtns ? '<div class="fgroup"><span class="flabel">العصر</span>' + blockBtns + '</div>' : '');
   const sel = document.getElementById("decktema");
   if (sel) sel.addEventListener("change", () => {
     deckTema = sel.value;
@@ -83,8 +83,8 @@ function renderDeckFilter(){
     renderDeckChips();
   }));
   box.querySelectorAll("[data-tipo]").forEach(b => b.addEventListener("click", () => setDeckTipo(b.dataset.tipo)));
-  box.querySelectorAll("[data-block]").forEach(b => b.addEventListener("click", () => {
-    deckBlock = b.dataset.block;
+  box.querySelectorAll("[data-era]").forEach(b => b.addEventListener("click", () => {
+    deckBlock = b.dataset.era;
     renderDeckFilter();
     renderDeckChips();
   }));
@@ -94,8 +94,7 @@ function renderDeckChips(){
   const box = document.getElementById("deckchips");
   const entries = Object.entries(DECKS).filter(([k, d]) => {
     if (deckSubject !== "all" && d.subject !== deckSubject) return false;
-    if (deckSubject === "hf" && deckBlock !== "all" && d.block !== deckBlock) return false;
-    if (deckBlock !== "all" && window.Epocas && window.Epocas.soloTodos("tarjetas", k)) return false;   // (30-09) temas 1-2 de HF: solo con «Todos los bloques» (epocas.js)
+    if (deckSubject === "hf" && deckBlock !== "all" && window.Epocas && window.Epocas.epocaDe("tarjetas", k, d) !== deckBlock) return false;
     if (deckEsFil() && deckTema !== "all" && DECK_AMB[k] !== deckTema) return false;   // (12-10) 1.º: por tema
     if (!deckOk(d)) return false;
     return true;
@@ -107,7 +106,7 @@ function renderDeckChips(){
 
 function loadDeck(k){
   deckKey = k;
-  if (deckBlock !== "all" && window.Epocas && window.Epocas.soloTodos("tarjetas", k)){ deckBlock = "all"; if (document.getElementById("deckfilter")) renderDeckFilter(); }
+  if (deckBlock !== "all" && window.Epocas && window.Epocas.epocaDe("tarjetas", k, DECKS[k]) !== deckBlock){ deckBlock = "all"; if (document.getElementById("deckfilter")) renderDeckFilter(); }
   order = DECKS[k].cards.map((_, i) => i);
   pos = 0; flipped = false;
   renderDeckChips();

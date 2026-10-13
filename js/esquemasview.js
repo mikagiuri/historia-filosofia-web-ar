@@ -5,9 +5,9 @@
    standalone). Se re-dibuja al cambiar de tema claro/oscuro. */
 
 let esqKey = Object.keys(ESQUEMAS)[0];
-let esqBlock = ["A", "B", "C"].find(function (b){ return Object.keys(ESQUEMAS).some(function (k){ return ESQUEMAS[k].block === b; }); }) || "all";  /* bloque concreto por defecto, nunca «Todos» */
+let esqBlock = "all";  /* (12-10) época; abre con «Todos» (epocas.js carga después de esta vista) */
 let _mid = 0, _esqTheme = null;
-const ESQ_BLOCKS = { A: "القديمة", B: "الوسيطة والحديثة", C: "المعاصرة", F1: "الفلسفة 1" };
+const ESQ_EPOCAS = { ant: "القديمة", med: "الوسيطة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
 /* Suma los esquemas de Filosofía 1.º (grupo «F1», datos en esquemas_fil.js) al objeto ESQUEMAS. */
 if (typeof ESQUEMAS !== "undefined" && typeof ESQUEMAS_FIL !== "undefined") Object.assign(ESQUEMAS, ESQUEMAS_FIL);
 
@@ -92,20 +92,20 @@ function esqInit(){
 function renderEsqFilter(){
   const box = document.getElementById("esqfilter");
   if (!box) return;
-  /* solo los bloques que tienen esquemas en esta web (en la de 1.º no salen Antigua/Moderna/…) */
-  const have = ["A", "B", "C", "F1"].filter(function (b){ return Object.keys(ESQUEMAS).some(function (k){ return ESQUEMAS[k].block === b; }); });
+  /* solo las épocas que tienen esquemas de HF en esta web (los de 1.º, bloque F1, salen con «Todos») */
+  const have = ["ant", "med", "mod", "ilu", "con"].filter(function (b){ return Object.keys(ESQUEMAS).some(function (k){ var e = ESQUEMAS[k]; return e.subject === "hf" && window.Epocas && window.Epocas.epocaDe("esquemas", k, e) === b; }); });
   /* (12-10, rediseño Lote 3 · H5) «Esquema del tema» con cambio grafo ⇄ texto */
   const toggle = '<button class="fbtn esq-toggle" type="button" title="' + 'اعرض كنص (ملخصات)' + '">' + 'اعرض كنص' + '</button>';
   if (have.length < 2){ box.innerHTML = toggle; esqBlock = "all"; }
   else {
     if (esqBlock !== "all" && have.indexOf(esqBlock) < 0) esqBlock = have[0];
-    box.innerHTML = '<div class="fgroup"><span class="flabel">المحور</span>' +
+    box.innerHTML = '<div class="fgroup"><span class="flabel">العصر</span>' +
       ["all"].concat(have).map(function (b){
-        return '<button class="fbtn" data-eb="' + b + '" aria-pressed="' + (b === esqBlock) + '">' +
-          (b === "all" ? "الكل" : ESQ_BLOCKS[b]) + '</button>'; }).join("") + '</div>' + toggle;
+        return '<button class="fbtn" data-era="' + b + '" aria-pressed="' + (b === esqBlock) + '">' +
+          (b === "all" ? "الكل" : ESQ_EPOCAS[b]) + '</button>'; }).join("") + '</div>' + toggle;
   }
-  box.querySelectorAll("[data-eb]").forEach(function (b){ b.addEventListener("click", function (){
-    esqBlock = b.dataset.eb; renderEsqFilter(); renderEsqChips(); }); });
+  box.querySelectorAll("[data-era]").forEach(function (b){ b.addEventListener("click", function (){
+    esqBlock = b.dataset.era; renderEsqFilter(); renderEsqChips(); }); });
   const tog = box.querySelector(".esq-toggle");
   if (tog) tog.addEventListener("click", function (){ if (typeof window.show === "function") window.show("esqautor"); });
 }
@@ -113,8 +113,8 @@ function renderEsqFilter(){
 function renderEsqChips(){
   const box = document.getElementById("esqchips");
   if (!box) return;
-  /* (30-09) temas 1-2 de HF (introductorios): solo con «Todos» (epocas.js) */
-  const entries = Object.entries(ESQUEMAS).filter(function (e){ return esqBlock === "all" || (e[1].block === esqBlock && !(window.Epocas && window.Epocas.soloTodos("esquemas", e[0]))); });
+  /* (30-09) temas 1-2 de HF (introductorios) y los esquemas de 1.º (F1): solo con «Todos» (epocas.js) */
+  const entries = Object.entries(ESQUEMAS).filter(function (e){ return esqBlock === "all" || (window.Epocas && window.Epocas.epocaDe("esquemas", e[0], e[1]) === esqBlock); });
   box.innerHTML = entries.map(function (e){
     return '<button class="chip" data-eq="' + e[0] + '" aria-pressed="' + (e[0] === esqKey) + '">' + e[1].title + '</button>'; }).join("");
   box.querySelectorAll("[data-eq]").forEach(function (b){ b.addEventListener("click", function (){ loadEsq(b.dataset.eq); }); });
@@ -319,15 +319,16 @@ function drawEsq(){
 function loadEsq(k){
   if (!(k in ESQUEMAS)) return;
   esqKey = k;
-  /* el filtro de bloque sigue al esquema abierto (enlace profundo, buscador…) */
-  if (esqBlock !== "all" && ESQUEMAS[k].block && ESQUEMAS[k].block !== esqBlock){ esqBlock = ESQUEMAS[k].block; renderEsqFilter(); }
-  if (esqBlock !== "all" && window.Epocas && window.Epocas.soloTodos("esquemas", k)){ esqBlock = "all"; renderEsqFilter(); }
+  /* el filtro de época sigue al esquema abierto (enlace profundo, buscador…) */
+  if (esqBlock !== "all" && window.Epocas){ const bk = window.Epocas.epocaDe("esquemas", k, ESQUEMAS[k]); if (ESQ_EPOCAS[bk]){ if (bk !== esqBlock){ esqBlock = bk; renderEsqFilter(); } } else { esqBlock = "all"; renderEsqFilter(); } }
   renderEsqChips();
   drawEsq();
 }
 
 renderEsqFilter();
 renderEsqChips();
+/* (12-10) epocas.js carga DESPUÉS de esta vista: re-renderizar el filtro para que salgan las épocas presentes */
+document.addEventListener("DOMContentLoaded", function(){ renderEsqFilter(); });
 /* El dibujo inicial se dispara al abrir la vista Esquemas (js/lazy_libs.js inyecta
    mermaid entonces). Aquí solo se dibuja ya si mermaid estuviera presente, para no
    arrancar el bucle de reintento cuando la carga es perezosa. */

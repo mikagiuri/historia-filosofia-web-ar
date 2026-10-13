@@ -1,25 +1,27 @@
 "use strict";
 /* ===== Vista de recursos ===== depende de: media.js ===== */
 
-let mediaBlock = "A";  /* bloque concreto por defecto, nunca «Todos los bloques» */
-const MEDIA_BLOCKS = { A: "المحور A · القديمة", B: "المحور B · الوسيطة والحديثة", C: "المحور C · المعاصرة" };
+let mediaBlock = "ant";  /* época concreta por defecto, nunca «Todos» */
+const MEDIA_EPOCAS = { ant: "القديمة", med: "الوسيطة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
 
-function mediaBlockOf(t){
-  if (t >= 1 && t <= 10) return "A";
-  if (t >= 11 && t <= 17) return "B";
-  if (t >= 18 && t <= 27) return "C";
-  return null;
+function mediaEpoca(t){
+  if (t >= 3 && t <= 10) return "ant";
+  if (t >= 11 && t <= 12) return "med";
+  if (t >= 13 && t <= 17) return "mod";
+  if (t >= 18 && t <= 20) return "ilu";
+  if (t >= 21 && t <= 27) return "con";
+  return null;   /* temas 1-2 introductorios: solo con «Todos» */
 }
 
 function renderMediaFilter(){
   const box = document.getElementById("mediafilter");
-  const btns = ["all", "A", "B", "C"].map(b =>
-    '<button class="fbtn" data-block="' + b + '" aria-pressed="' + (b === mediaBlock) + '">' +
-    (b === "all" ? "كل المحاور" : MEDIA_BLOCKS[b]) + '</button>'
+  const btns = ["all", "ant", "med", "mod", "ilu", "con"].map(b =>
+    '<button class="fbtn" data-era="' + b + '" aria-pressed="' + (b === mediaBlock) + '">' +
+    (b === "all" ? "الكل" : MEDIA_EPOCAS[b]) + '</button>'
   ).join("");
-  box.innerHTML = '<div class="fgroup"><span class="flabel">المحور</span>' + btns + '</div>';
-  box.querySelectorAll("[data-block]").forEach(b => b.addEventListener("click", () => {
-    mediaBlock = b.dataset.block;
+  box.innerHTML = '<div class="fgroup"><span class="flabel">العصر</span>' + btns + '</div>';
+  box.querySelectorAll("[data-era]").forEach(b => b.addEventListener("click", () => {
+    mediaBlock = b.dataset.era;
     renderMediaFilter();
     renderMediaList();
   }));
@@ -27,7 +29,7 @@ function renderMediaFilter(){
 
 function renderMediaList(){
   const box = document.getElementById("medialist");
-  const temas = MEDIA_TEMAS.filter(e => mediaBlock === "all" || mediaBlockOf(e.t) === mediaBlock);
+  const temas = MEDIA_TEMAS.filter(e => mediaBlock === "all" || mediaEpoca(e.t) === mediaBlock);
   box.innerHTML = temas.map(e => {
     const v = e.v.map(x => '<li class="m-v">🎬 ' + x + '</li>').join("");
     const i = e.i.map(x => {

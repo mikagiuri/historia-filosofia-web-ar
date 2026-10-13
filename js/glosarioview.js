@@ -6,11 +6,20 @@
    mayúsculas ni acentos. Estilos propios inyectados una vez (usan las variables de
    tema de styles.css, así que respetan claro/oscuro). */
 
-const GLO_BLOCKS = { A: "القديمة", B: "الوسيطة والحديثة", C: "المعاصرة" };
+const GLO_EPOCAS = { ant: "القديمة", med: "الوسيطة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
+/* (12-10) época de un término de HF por su tema (Itinerario.gloTema, vía la unidad del libro); fil/ipc no tienen época */
+function gloEpoca(g){
+  if (g.subject !== "hf") return null;
+  if (window.Itinerario && window.Itinerario.gloTema && window.Epocas && window.Epocas.epocaDeTema){
+    var n = window.Itinerario.gloTema(g);
+    if (typeof n === "number") return window.Epocas.epocaDeTema(n);
+  }
+  return ({ A: "ant", B: "med", C: "con" }[g.bloque] || null);   /* respaldo si Itinerario aún no ha cargado */
+}
 const GLO_SUBJECTS = { hf: "تاريخ الفلسفة", fil: "الفلسفة 1", ipc: "التفكير النقدي" };
 /* materias con términos en ESTE glosario (cada web de alumnado trae solo la suya) */
 function gloPresent(){ return ["hf", "fil", "ipc"].filter(s => GLOSARIO.some(g => g.subject === s)); }
-let gloSubject = "hf", gloBloque = "A", gloArea = "all", gloQuery = "";  /* materia y bloque concretos por defecto, nunca «Todos» */
+let gloSubject = "hf", gloBloque = "ant", gloArea = "all", gloQuery = "";  /* materia y época concretas por defecto, nunca «Todos» */
 
 const GLO_CSS = `
 #glosario #glogrids{margin:6px 0 14px}
@@ -83,15 +92,15 @@ function renderGloControls(){
   const subjBtns = ["all"].concat(present).map(s =>
     '<button class="fbtn" data-sub="' + s + '" aria-pressed="' + (s === gloSubject) + '">' +
     (s === "all" ? "الكل" : GLO_SUBJECTS[s]) + '</button>').join("");
-  const blkBtns = ["all", "A", "B", "C"].map(b =>
-    '<button class="fbtn" data-blk="' + b + '" aria-pressed="' + (b === gloBloque) + '">' +
-    (b === "all" ? "الكل" : GLO_BLOCKS[b]) + '</button>').join("");
+  const blkBtns = ["all", "ant", "med", "mod", "ilu", "con"].map(b =>
+    '<button class="fbtn" data-era="' + b + '" aria-pressed="' + (b === gloBloque) + '">' +
+    (b === "all" ? "الكل" : GLO_EPOCAS[b]) + '</button>').join("");
   const areaOpts = ['<option value="all">كل المجالات</option>']
     .concat(areas.map(a => '<option value="' + a + '">' + a + '</option>')).join("");
   box.innerHTML =
     (present.length > 1 ? '<div class="fgroup"><span class="flabel">المادة</span>' + subjBtns + '</div>' : '') +
     (gloSubject === "hf" || (gloSubject === "all" && present.includes("hf"))
-      ? '<div class="fgroup"><span class="flabel">المحور</span>' + blkBtns + '</div>'
+      ? '<div class="fgroup"><span class="flabel">العصر</span>' + blkBtns + '</div>'
       : '') +
     '<div class="glotools">' +
       '<input class="glosearch" id="glosearch" type="search" placeholder="ابحثوا عن مصطلح أو تعريف…" autocomplete="off" aria-label="البحث في المسرد">' +
@@ -103,9 +112,9 @@ function renderGloControls(){
     if (gloSubject !== "hf") gloArea = "all";
     renderGloControls(); renderGloList();
   }));
-  box.querySelectorAll("[data-blk]").forEach(b => b.addEventListener("click", () => {
-    gloBloque = b.dataset.blk;
-    box.querySelectorAll("[data-blk]").forEach(x => x.setAttribute("aria-pressed", x.dataset.blk === gloBloque));
+  box.querySelectorAll("[data-era]").forEach(b => b.addEventListener("click", () => {
+    gloBloque = b.dataset.era;
+    box.querySelectorAll("[data-era]").forEach(x => x.setAttribute("aria-pressed", x.dataset.era === gloBloque));
     renderGloList();
   }));
   const sel = document.getElementById("gloarea");
@@ -169,7 +178,7 @@ function renderGloList(){
   const q = gloFold(gloQuery), present = gloPresent();
   const rows = GLOSARIO.filter(g => {
     if (gloSubject !== "all" && g.subject !== gloSubject) return false;
-    if ((gloSubject === "hf" || gloSubject === "all") && present.includes("hf") && gloBloque !== "all" && g.bloque && g.bloque !== gloBloque) return false;
+    if ((gloSubject === "hf" || gloSubject === "all") && present.includes("hf") && gloBloque !== "all" && g.bloque && gloEpoca(g) !== gloBloque) return false;
     if (gloArea !== "all" && g.area !== gloArea) return false;
     if (q && !gloFold(g.t + " " + g.def + " " + g.area + " " + (g.et || "").replace(/\*/g, "")).includes(q)) return false;
     return true;
@@ -180,7 +189,7 @@ function renderGloList(){
   list.innerHTML = rows.map(g => {
     const term = gloHi(gloEsc(g.t), gloQuery);
     const def = gloHi(gloBold(gloEsc(g.def)), gloQuery);
-    const tag = (g.area ? g.area : "") + (g.bloque ? " · " + (GLO_BLOCKS[g.bloque] || g.bloque) : "");
+    const tag = (g.area ? g.area : "") + (g.bloque ? " · " + (GLO_EPOCAS[gloEpoca(g)] || g.bloque) : "");
     const abre = g.et && q && !gloFold(g.t + " " + g.def + " " + g.area).includes(q);   // lo buscado está solo en la raíz
     const ety = g.et ? '<div class="ety"' + (abre ? "" : " hidden") + "><b>" + GLO_ETY + "</b> " + gloIt(gloHi(gloEsc(g.et), gloQuery)) + "</div>" : "";
     const btn = g.et ? '<button type="button" class="glo-root" aria-expanded="' + !!abre + '" aria-label="' + GLO_ETY_BTN + '" title="' + GLO_ETY_BTN + '">λ</button>' : "";

@@ -18,7 +18,9 @@
    · lo mantiene al día con un MutationObserver (las vistas repintan sus chips con innerHTML).
    Pensamiento crítico no tiene épocas ni ramas: no se toca. Sin textos. */
 (function(){
-  var EPOCAS = [["int", 1, 2], ["ant", 3, 10], ["med", 11, 12], ["ren", 13, 13], ["mod", 14, 17], ["ilu", 18, 20], ["con", 21, 27]];
+  /* (12-10) cinco épocas para el filtro de HF: Antigua 3-10 · Medieval 11-12 · Moderna 13-17 (el Renacimiento, T13,
+     va con Moderna) · Ilustración 18-20 · Contemporánea 21-27; T1-T2 introductorios (gris, solo con «Todos»). */
+  var EPOCAS = [["int", 1, 2], ["ant", 3, 10], ["med", 11, 12], ["mod", 13, 17], ["ilu", 18, 20], ["con", 21, 27]];
   function epocaDeTema(n){ for (var i = 0; i < EPOCAS.length; i++) if (n >= EPOCAS[i][1] && n <= EPOCAS[i][2]) return EPOCAS[i][0]; return null; }
   /* bloques de HF: B abarca de la Edad Media a la Ilustración y se pinta a dos tonos («medmod») */
   var BLOQUE_EP = { A: "ant", B: "medmod", C: "con" };
@@ -35,6 +37,7 @@
     if (!It || !o) return { ep: null, rama: null };
     var n = It.temaOf(go, key, o);
     if (typeof n !== "number"){
+      if (o.subject === "hf" && o.epoca) return { ep: o.epoca, rama: null };   // (12-10) frases repartidas por época propia
       if (o.subject === "hf" && BLOQUE_EP[o.block]) return { ep: BLOQUE_EP[o.block], rama: null };   // sin tema: el color de su bloque
       return { ep: null, rama: null };
     }
@@ -52,7 +55,7 @@
   function setEp(el, ep){ if (ep){ if (el.getAttribute("data-ep") !== ep) el.setAttribute("data-ep", ep); } else if (el.hasAttribute("data-ep")) el.removeAttribute("data-ep"); }
   /* etiquetas de filtro: atributo → época (los bloques solo en HF: en Filosofía 1.º no hay bloques) */
   var CITA_EP = { antigua: "ant", medieval: "med", moderna: "mod", contemporanea: "con" };
-  var CRONO_EP = { A: "ant", B: "mod", C: "con" };   // Cronogramas: A Antigua y medieval · B Moderna · C Contemporánea
+  var CRONO_EP = { ant: "ant", med: "med", mod: "mod", ilu: "ilu", con: "con" };   // Cronogramas: épocas («all» y el eje, sin color)
   function markFilters(){
     document.querySelectorAll(".fbtn[data-block], .fbtn[data-eb], .fbtn[data-gb], .fbtn[data-blk]").forEach(function(el){
       setEp(el, BLOQUE_EP[el.getAttribute("data-block") || el.getAttribute("data-eb") || el.getAttribute("data-gb") || el.getAttribute("data-blk")]);
@@ -60,6 +63,8 @@
     document.querySelectorAll(".cbtn[data-cblock]").forEach(function(el){ setEp(el, CRONO_EP[el.getAttribute("data-cblock")]); });
     document.querySelectorAll(".fbtn[data-ce]").forEach(function(el){ setEp(el, CITA_EP[el.getAttribute("data-ce")]); });
     document.querySelectorAll(".fbtn[data-iep]").forEach(function(el){ var e = el.getAttribute("data-iep"); setEp(el, e === "all" ? null : e); });
+    /* (12-10) filtro por época de HF (data-era = ant/med/mod/ilu/con) */
+    document.querySelectorAll(".fbtn[data-era]").forEach(function(el){ var e = el.getAttribute("data-era"); setEp(el, e === "all" ? null : e); });
     /* temas de Cuestionarios (T1…T27): solo con Historia de la Filosofía elegida */
     var hf = G("quizSubject") === "hf";
     document.querySelectorAll(".fbtn[data-tema]").forEach(function(el){
@@ -81,7 +86,7 @@
   }
   function schedule(){ if (pending) return; pending = true; setTimeout(refresh, 0); }
   new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true });
-  window.Epocas = { epocaDeTema: epocaDeTema, EPOCAS: EPOCAS, soloTodos: soloTodos };
+  window.Epocas = { epocaDeTema: epocaDeTema, EPOCAS: EPOCAS, soloTodos: soloTodos, epocaDe: function(go, key, o){ return colorDe(go, key, o).ep; } };
   window.Ramas = { ramaDeTema: ramaDeTema, RAMAS: RAMAS };
   /* las vistas pintaron sus chips antes de cargar este módulo: repintarlas para que apliquen soloTodos */
   function repaint(){

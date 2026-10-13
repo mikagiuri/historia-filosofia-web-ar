@@ -3,20 +3,24 @@
    Renderiza cada cronograma del libro (LTFH, euskera) como línea de tiempo SVG:
    carriles con rango de años (vidas/periodos) sobre un eje temporal, o secuencia de épocas. */
 
-let cronoBlock = null;      // A / B / C / "otros"
+let cronoBlock = null;      // EJE_ID / "all" / época (ant|med|mod|ilu|con)
 let cronoId = null;
+let cronoEjeEpoch = null;   // (12-10) época con la que se filtra el eje por años (null = todas)
 /* Título descriptivo: usa el override de cronogramas_titulos.js si existe, si no el del dato. */
 function cronoTitle(c){ return (typeof CRONO_TITULOS !== "undefined" && CRONO_TITULOS[c.id]) || c.title; }
 
-function cronoOf(code){ const ch = (code || "").trim().charAt(0).toUpperCase(); return "ABC".includes(ch) ? ch : "·"; }
+/* (12-10) época de cada cronograma del libro por su código (periodo/autores). Los de apertura (A1-OS «Viaje
+   histórico», A2-OS «métodos») abarcan todas las épocas y van a «Todos» (int); el resto, a su época. */
+const CRONO_EPOCH = { "A1-OS": "int", "A2-OS": "int", "A-GRECIA": "ant", "A9": "ant", "B-MED": "med", "B-REN": "mod", "B-MOD": "mod", "B-ILU": "ilu", "B2": "med", "B7": "ilu", "C-XIX": "con", "C-XX": "con", "C5": "con", "C7": "con", "C8": "con", "C9": "con", "C10": "con" };
+function cronoEpochOf(c){ const code = (c && c.code) || ""; for (const p of Object.keys(CRONO_EPOCH)) if (code.indexOf(p + "-") === 0 || code === p) return CRONO_EPOCH[p]; return "int"; }
 /* (24-09) el eje cronológico del curso (eje_cronologico.js, solo HF) va primero y es la portada de la sección */
 const EJE_ID = "eje";
 function hasEje(){ return typeof EJE_CRONOLOGICO !== "undefined"; }
-function cronoBlocksPresent(){ return (hasEje() ? [EJE_ID] : []).concat([...new Set(CRONOGRAMAS.map(c => cronoOf(c.code)))]); }
-function cronoList(block){ return CRONOGRAMAS.filter(c => cronoOf(c.code) === block); }
+function cronoBlocksPresent(){ return (hasEje() ? [EJE_ID, "all"] : ["all"]).concat([...new Set(CRONOGRAMAS.map(c => cronoEpochOf(c)).filter(e => e !== "int"))]); }
+function cronoList(block){ return block === "all" ? CRONOGRAMAS : CRONOGRAMAS.filter(c => cronoEpochOf(c) === block); }
 
-const CRONO_BLOCK_NAME = { A: "المحور A · القديمة والوسيطة", B: "المحور B · الحديثة", C: "المحور C · المعاصرة", "·": "أخرى" };
-function cronoBlockName(b){ return b === EJE_ID ? EJE_CRONOLOGICO.txt.filtro : CRONO_BLOCK_NAME[b]; }
+const CRONO_EPOCH_NAMES = { ant: "القديمة", med: "الوسيطة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
+function cronoBlockName(b){ return b === EJE_ID ? EJE_CRONOLOGICO.txt.filtro : (b === "all" ? "الكل" : CRONO_EPOCH_NAMES[b]); }
 
 /* ---------- año → texto (a.C. = antes de Cristo) ----------
    (24-09) el formato va en una plantilla para que el diccionario de interfaz pueda
@@ -45,15 +49,10 @@ function renderCronoFilter(){
   const box = document.getElementById("cronofilter"); if (!box) return;
   const present = cronoBlocksPresent();
   if (!present.includes(cronoBlock)) cronoBlock = present[0];
-  box.innerHTML = '<span class="flabel">المحور</span>' + present.map(b =>
+  box.innerHTML = '<span class="flabel">العصر</span>' + present.map(b =>
     '<button class="cbtn' + (b === EJE_ID ? ' cbtn-eje' : '') + '" data-cblock="' + b + '" aria-pressed="' + (b === cronoBlock) + '">' +
     (b === EJE_ID ? '<span aria-hidden="true">★ </span>' : '') + escapeCrono(cronoBlockName(b)) + '</button>').join("");
-  // los clics pasan por loadCrono para que el enlace #cronogramas/<clave> siga a la selección
-  box.querySelectorAll("[data-cblock]").forEach(b => b.addEventListener("click", () => {
-    const k = b.dataset.cblock;
-    if (k === EJE_ID) loadCrono(EJE_ID);
-    else { const l = cronoList(k); if (l.length) loadCrono(l[0].id); }
-  }));
+  box.querySelectorAll("[data-cblock]").forEach(b => b.addEventListener("click", () => cronoSelect(b.dataset.cblock)));
 }
 
 function renderCronoChips(){
@@ -70,7 +69,7 @@ function renderCronoChips(){
 /* ---------- dibujo ---------- */
 function drawCrono(){
   const box = document.getElementById("cronobox"); if (!box) return;
-  if (cronoBlock === EJE_ID){ box.innerHTML = ejeCard(EJE_CRONOLOGICO); return; }
+  if (cronoBlock === EJE_ID){ box.innerHTML = ejeCard(EJE_CRONOLOGICO, cronoEjeEpoch ? CRONO_EJE_YEARS[cronoEjeEpoch] : null); return; }
   const c = CRONOGRAMAS.find(x => x.id === cronoId);
   if (!c){ box.innerHTML = '<p class="lead">اختاروا جدولًا زمنيًا.</p>'; return; }
   const span = (c.type === "timeline" && c.start != null && c.end != null) ? (cronoYear(c.start) + " – " + cronoYear(c.end)) : "";
@@ -355,18 +354,40 @@ document.addEventListener("click", e => {
   const b = e.target.closest && e.target.closest("[data-eje-epoca]"); if (!b) return;
   (window.show || show)("ilustres"); loadIlustre("epoca-" + b.dataset.ejeEpoca);
 });
-function ejeCard(E){
-  return '<div class="crono-card eje-card"><div class="crono-h"><h2 class="crono-title">' + escapeCrono(E.title) + '</h2>' +
-    '<span class="crono-span eje-sub">' + escapeCrono(E.sub) + '</span></div>' +
-    '<div class="eje-scroll">' + ejeSvg(E) + '</div>' +
-    (E.txt.desliza ? '<p class="eje-hint" aria-hidden="true">' + escapeCrono(E.txt.desliza) + '</p>' : '') + ejeGrid(E) + '</div>';
+/* (12-10) límites en años de cada época (de epocas_fichas.js): Antigua -600..476 · Medieval 476..1492 ·
+   Moderna 1492..1680 (Renacimiento + s. XVII) · Ilustración 1680..1800 · Contemporánea 1800..hoy (2100 como tope). */
+const CRONO_EJE_YEARS = { ant: [-600, 476], med: [476, 1492], mod: [1492, 1680], ilu: [1680, 1800], con: [1800, 2100] };
+function ejeFiltered(E, range){
+  if (!range) return E;
+  const [a, b] = range;
+  const keep = E.periods.map(p => p.end >= a && p.start <= b);
+  return { ...E, periods: E.periods.filter((_, i) => keep[i]), events: E.events.filter((_, i) => keep[i]) };
+}
+function ejeCard(E, range){
+  const F = ejeFiltered(E, range);
+  const a0 = EJE.AX0, a1 = EJE.AX1;
+  if (range){ EJE.AX0 = range[0]; EJE.AX1 = range[1]; }
+  const html = '<div class="crono-card eje-card"><div class="crono-h"><h2 class="crono-title">' + escapeCrono(F.title) + '</h2>' +
+    '<span class="crono-span eje-sub">' + escapeCrono(F.sub) + '</span></div>' +
+    '<div class="eje-scroll">' + ejeSvg(F) + '</div>' +
+    (F.txt.desliza ? '<p class="eje-hint" aria-hidden="true">' + escapeCrono(F.txt.desliza) + '</p>' : '') + ejeGrid(F) + '</div>';
+  EJE.AX0 = a0; EJE.AX1 = a1;
+  return html;
 }
 
+/* (12-10) selección por época («Todos» o una de las cinco) o por el eje del curso */
+function cronoSelect(ep){
+  cronoBlock = ep;
+  cronoEjeEpoch = (ep === EJE_ID || ep === "all") ? null : ep;
+  if (ep === EJE_ID){ cronoId = null; }
+  else { const l = cronoList(ep); cronoId = l.length ? l[0].id : null; }
+  renderCronoFilter(); renderCronoChips(); drawCrono();
+}
 /* Enlace profundo: #cronogramas/eje o #cronogramas/<id de cronograma> (Classroom, QR). */
 function loadCrono(k){
   if (typeof CRONOGRAMAS === "undefined") return;
-  if (k === EJE_ID && hasEje()) cronoBlock = EJE_ID;
-  else { const c = CRONOGRAMAS.find(x => x.id === k); if (!c) return; cronoBlock = cronoOf(c.code); cronoId = k; }
+  if (k === EJE_ID && hasEje()) cronoBlock = EJE_ID, cronoId = null, cronoEjeEpoch = null;
+  else { const c = CRONOGRAMAS.find(x => x.id === k); if (!c) return; cronoBlock = cronoEpochOf(c); cronoId = k; cronoEjeEpoch = null; }
   renderCronoFilter(); renderCronoChips(); drawCrono();
 }
 
