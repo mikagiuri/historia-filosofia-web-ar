@@ -982,7 +982,9 @@
     </article>
   </section>
 </main>
-<footer class="wrap sitefoot"><a href="#mapa">خريطة الموقع</a> · <a href="#fuentes">المصادر والتنبيه</a> · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license">CC BY-NC-SA 4.0</a></footer>
+<footer class="wrap sitefoot"><a href="#mapa">خريطة الموقع</a> · <a href="#fuentes">المصادر والتنبيه</a> · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license">CC BY-NC-SA 4.0</a><span class="sitefoot-ver" translate="no"></span></footer>
+<script>/* Versión publicada en el pie, leída de sw.js (VERSION), para no tener que cambiarla a mano (17-10-2026) */
+(function(){var s=document.querySelector(".sitefoot-ver");if(!s||!window.fetch)return;fetch("sw.js",{cache:"no-cache"}).then(function(r){return r.ok?r.text():"";}).then(function(t){var m=/VERSION\s*=\s*"(v\d+)/.exec(t);if(m)s.textContent=" · "+m[1];}).catch(function(){});})();</script>
 
 <script src="js/store.js"></script>
 <script src="js/data.js"></script>
