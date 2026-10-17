@@ -212,7 +212,7 @@ function logArgHtml(){
 }
 const LOG_EJ_F = [["(p → q) ∧ p → q", "mp"], ["¬(p ∧ q) ↔ ¬p ∨ ¬q", "demorgan"], ["p ∨ ¬p", "tercero"], ["p ∧ ¬p", "nocontra"]];
 const LOG_EJ_A = [["p → q; p", "q", "mp"], ["p → q; ¬q", "¬p", "mt"], ["p → q; q", "p", "ac"], ["p ∨ q; ¬p", "q", "sd"], ["p → q; q → r", "p → r", "sh"]];
-const LOG_TECLAS = ["p", "q", "r", "s", "¬", "∧", "∨", "→", "↔", "(", ")"];
+const LOG_TECLAS = ["p", "q", "r", "s", "t", "¬",   /* t (17-10): el ejercicio de Mónica con cinco letras; logTokens ya admitía p-t */ "∧", "∨", "→", "↔", "(", ")"];
 function logTeclado(id){ return '<div class="lg-teclas" data-para="' + id + '">' + LOG_TECLAS.map(k => '<button type="button" class="chip" data-tecla="' + k + '">' + k + "</button>").join("") + "</div>"; }
 function logRenderTablas(){
   return '<div class="lg-panel"><label class="lg-label" for="lg-f">' + logT("formula") + '</label><p class="lg-nota">' + logT("ayudaFormula") + '</p>' +
