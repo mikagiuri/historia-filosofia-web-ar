@@ -195,7 +195,7 @@ const GALERIA_EPOCAS = [
  {
   "f": "media/galeria_museo/epocas/revolucion_cientifica_1660_engraving_Scenographia_Systematis_Copernicani.jpg",
   "t": "الثورة العلمية",
-  "pie": "Latin: Scenographia Systematis Copernicani The Copernican System title QS:P1476,la:\"Scenographia Systematis Copernicani\" label QS:Lla,\"Scenographia Systematis Copernicani\" label QS:Len,\"The Copernican System\" label QS:Lla,\"Scenographia Systematis Copernicani\" · Unknown author Unknown author · 1660 date QS:P571,+1660-00-00T00:00:00Z/9 · PD · Wikimedia Commons",
+  "pie": "Latin: Scenographia Systematis Copernicani The Copernican System title QS:P1476,la:\"Scenographia Systematis Copernicani\" label QS:Lla,\"Scenographia Systematis Copernicani\" label QS:Len,\"The Copernican System\" label QS:Lla,\"Scenographia Systematis Copernicani\" · Unknown author · 1660 date QS:P571,+1660-00-00T00:00:00Z/9 · PD · Wikimedia Commons",
   "bloque": "B",
   "unidad": "Contexto histórico · museo (dominio público)",
   "ia": false
@@ -219,7 +219,7 @@ const GALERIA_EPOCAS = [
  {
   "f": "media/galeria_museo/epocas/revolucion_industrial_Lantern_Slide_Cross_Section_of_Watt_s_Rotative_Double_Acting_Condens.jpg",
   "t": "الثورة الصناعية",
-  "pie": "Lantern Slide - Cross-Section of Watt's Rotative Double-Acting Condensing Steam Engine, Birmingham, England, circa 1782 · Unknown author Unknown author · 2016-03-17 00:49:33 · PD · Wikimedia Commons",
+  "pie": "Lantern Slide - Cross-Section of Watt's Rotative Double-Acting Condensing Steam Engine, Birmingham, England, circa 1782 · Unknown author · 2016-03-17 00:49:33 · PD · Wikimedia Commons",
   "bloque": "B",
   "unidad": "Contexto histórico · museo (dominio público)",
   "ia": false
@@ -299,7 +299,7 @@ const GALERIA_EPOCAS = [
  {
   "f": "media/galeria_museo/epocas/sospecha_xix_Barricade_place_Vendome_Commune_Paris_1871.jpg",
   "t": "القرن 19 والارتياب",
-  "pie": "Barricade place Vendome Commune Paris 1871 · Unknown author Unknown author · 1871 · PD · Wikimedia Commons",
+  "pie": "Barricade place Vendome Commune Paris 1871 · Unknown author · 1871 · PD · Wikimedia Commons",
   "bloque": "C",
   "unidad": "Contexto histórico · museo (dominio público)",
   "ia": false
@@ -339,7 +339,7 @@ const GALERIA_EPOCAS = [
  {
   "f": "media/galeria_museo/epocas/ilustracion_Encyclop_die_ou_Dictionnaire_raisonn_des_sciences_des_arts_et_des_m_tiers_fron.jpg",
   "t": "الأنوار",
-  "pie": "Encyclopédie, ou Dictionnaire raisonné des sciences, des arts et des métiers frontispice titre 1751 · Unknown author Unknown author · 1751 · PD · Wikimedia Commons",
+  "pie": "Encyclopédie, ou Dictionnaire raisonné des sciences, des arts et des métiers frontispice titre 1751 · Unknown author · 1751 · PD · Wikimedia Commons",
   "bloque": "C",
   "unidad": "Contexto histórico · museo (dominio público)",
   "ia": false

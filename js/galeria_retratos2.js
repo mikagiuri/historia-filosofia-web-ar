@@ -138,7 +138,7 @@ const GALERIA_RETRATOS2 = [
  {
   "f": "media/retratos/museo2/adam-smith.jpg",
   "t": "Adam Smith",
-  "pie": "Adam Smith The Muir portrait · Unknown authorUnknown author · Public Domain · Wikimedia Commons",
+  "pie": "Adam Smith The Muir portrait · Unknown author · Public Domain · Wikimedia Commons",
   "bloque": "B",
   "unidad": "Retrato · museo (dominio público)",
   "ia": false
@@ -146,7 +146,7 @@ const GALERIA_RETRATOS2 = [
  {
   "f": "media/retratos/museo2/anselmo.jpg",
   "t": "أنسلم الكانتربري",
-  "pie": "AnselmCanterbury2 · Unknown authorUnknown author · Public Domain · Wikimedia Commons",
+  "pie": "AnselmCanterbury2 · Unknown author · Public Domain · Wikimedia Commons",
   "bloque": "B",
   "unidad": "Retrato · museo (dominio público)",
   "ia": false
@@ -186,7 +186,7 @@ const GALERIA_RETRATOS2 = [
  {
   "f": "media/retratos/museo2/ockham.jpg",
   "t": "غيوم الأوكامي",
-  "pie": "William of Occam - Sketch - Frater Occham iste, 1341 · Unknown authorUnknown author · Public Domain · Wikimedia Commons",
+  "pie": "William of Occam - Sketch - Frater Occham iste, 1341 · Unknown author · Public Domain · Wikimedia Commons",
   "bloque": "B",
   "unidad": "Retrato · museo (dominio público)",
   "ia": false
@@ -194,7 +194,7 @@ const GALERIA_RETRATOS2 = [
  {
   "f": "media/retratos/museo2/hobbes.jpg",
   "t": "هوبز",
-  "pie": "Portrait of Thomas Hobbes Malmesburiensis (4670898) · Unknown authorUnknown author · Public Domain · Wikimedia Commons",
+  "pie": "Portrait of Thomas Hobbes Malmesburiensis (4670898) · Unknown author · Public Domain · Wikimedia Commons",
   "bloque": "B",
   "unidad": "Retrato · museo (dominio público)",
   "ia": false
@@ -333,7 +333,7 @@ const GALERIA_RETRATOS2 = [
  {
   "f": "media/retratos/museo2/husserl.jpg",
   "t": "Husserl",
-  "pie": "Edmund Husserl (Jewish influence in modern thought, 1929) · Unknown authorUnknown author · Public Domain · Wikimedia Commons",
+  "pie": "Edmund Husserl (Jewish influence in modern thought, 1929) · Unknown author · Public Domain · Wikimedia Commons",
   "bloque": "C",
   "unidad": "Retrato · museo (dominio público)",
   "ia": false
@@ -365,7 +365,7 @@ const GALERIA_RETRATOS2 = [
  {
   "f": "media/retratos/museo2/weil.jpg",
   "t": "Simone Weil",
-  "pie": "Simone Weil (1909-1943) portrait · AnonymousUnknown author · Public Domain · Wikimedia Commons",
+  "pie": "Simone Weil (1909-1943) portrait · Unknown author · Public Domain · Wikimedia Commons",
   "bloque": "C",
   "unidad": "Retrato · museo (dominio público)",
   "ia": false

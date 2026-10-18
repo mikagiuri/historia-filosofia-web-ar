@@ -549,6 +549,11 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 #fuentes details[open]>summary{border-bottom:1px solid var(--line-soft);margin-bottom:.3rem}
 #fuentes h3.notas-apartado{font-size:1rem;margin:.9rem 0 .3rem}
 #fuentes details li{overflow-wrap:anywhere;font-size:.95rem}
+/* (18-10) Fuentes › Terminología: tabla de una consulta de euskera; en móvil cada fila se apila como ficha */
+#fuentes table.term-tabla{border-collapse:collapse;width:100%;font-size:.9rem;margin:.5rem 0 .9rem}
+#fuentes table.term-tabla th,#fuentes table.term-tabla td{padding:6px 8px;border-bottom:1px solid var(--line-soft);text-align:start;vertical-align:top;overflow-wrap:break-word}
+#fuentes table.term-tabla thead th{font-family:var(--sans);font-weight:600;font-size:.82rem}
+@media (max-width:640px){#fuentes table.term-tabla thead{display:none}#fuentes table.term-tabla tr{display:block;border-bottom:1px solid var(--line);padding:.35rem 0}#fuentes table.term-tabla td{display:block;border:0;padding:2px 0}}
 #fuentes .nota-origen{color:var(--muted);font-size:.88em}
 /* ===== Estantería de libros en la teoría (09-10, anexo hf-marx-biblioteca) ===== */
 .estanteria{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:6px 18px;margin:18px 0 26px;padding:14px 14px 4px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2)}

@@ -77,7 +77,7 @@ const GALERIA_PENSAR = [
   "t": "بطة أم أرنب؟ (1892)",
   "pie": "الصورة نفسها وقراءتان: نرى ما نتوقع أن نراه.",
   "license": "ملكية عامة",
-  "artist": "فنان مجهول",
+  "artist": "مؤلف مجهول",
   "page": "https://commons.wikimedia.org/wiki/File:Kaninchen_und_Ente.png"
  },
  {

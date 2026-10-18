@@ -13,7 +13,7 @@ const GALERIA_TEMAS2 = [
  {
   "f": "media/galeria_museo/temas2/helenismo_Venus_de_Milo_Louvre_Ma399_n7.jpg",
   "t": "الإسكندر والعصر الهلنستي",
-  "pie": "Venus de Milo Louvre Ma399 n7 · Unknown artistUnknown artist · PD · Wikimedia Commons",
+  "pie": "Venus de Milo Louvre Ma399 n7 · Unknown author · PD · Wikimedia Commons",
   "bloque": "A",
   "unidad": "Contexto histórico · museo (dominio público)",
   "ia": false
@@ -217,7 +217,7 @@ const GALERIA_TEMAS2 = [
  {
   "f": "media/galeria_museo/temas2/reforma_Martin_Seger_Das_hond_zwen_Schweytzer_Bauren_gemacht_1522_Titel.jpg",
   "t": "الإصلاح البروتستانتي",
-  "pie": "Martin Seger Das hond zwen Schweytzer Bauren gemacht 1522 Titel · Unknown authorUnknown author · 1522 · PD · Wikimedia Commons",
+  "pie": "Martin Seger Das hond zwen Schweytzer Bauren gemacht 1522 Titel · Unknown author · 1522 · PD · Wikimedia Commons",
   "bloque": "B",
   "unidad": "Contexto histórico · museo (dominio público)",
   "ia": false
@@ -273,7 +273,7 @@ const GALERIA_TEMAS2 = [
  {
   "f": "media/galeria_museo/temas2/feminismo_1908_Suffragette_meeting_at_Caxton_Hall_2.jpg",
   "t": "الحركة النسوية",
-  "pie": "1908 Suffragette meeting at Caxton Hall 2 · Unknown authorUnknown author · 1908-01-01 · PD · Wikimedia Commons",
+  "pie": "1908 Suffragette meeting at Caxton Hall 2 · Unknown author · 1908-01-01 · PD · Wikimedia Commons",
   "bloque": "C",
   "unidad": "Contexto histórico · museo (dominio público)",
   "ia": false
@@ -435,7 +435,7 @@ const GALERIA_TEMAS2 = [
  {
   "f": "media/galeria_museo/temas2/psicoanalisis_Wien_Burgtheater_um_1900.jpg",
   "t": "التحليل النفسي · فيينا 1900",
-  "pie": "Wien Burgtheater um 1900 · Unknown authorUnknown author · between 1890 and 1905date QS:P,+1500-00- · PD · Wikimedia Commons",
+  "pie": "Wien Burgtheater um 1900 · Unknown author · between 1890 and 1905date QS:P,+1500-00- · PD · Wikimedia Commons",
   "bloque": "C",
   "unidad": "Contexto histórico · museo (dominio público)",
   "ia": false
@@ -451,7 +451,7 @@ const GALERIA_TEMAS2 = [
  {
   "f": "media/galeria_museo/temas2/psicoanalisis_19061220_wien_karntnerstrasse.jpg",
   "t": "التحليل النفسي · فيينا 1900",
-  "pie": "19061220 wien karntnerstrasse · Unknown authorUnknown author · 1900 · PD · Wikimedia Commons",
+  "pie": "19061220 wien karntnerstrasse · Unknown author · 1900 · PD · Wikimedia Commons",
   "bloque": "C",
   "unidad": "Contexto histórico · museo (dominio público)",
   "ia": false

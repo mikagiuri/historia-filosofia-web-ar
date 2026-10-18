@@ -156,7 +156,7 @@ const GALERIA_EXTRA3 = [
  {
   "f": "media/galeria_museo/extra3/habermas.jpg",
   "t": "Habermas",
-  "pie": "Jürgen Habermas, Protestbewegung und Hochschulreform 1969 · Unknown authorUnknown author · 1969 · Public domain · Wikimedia Commons",
+  "pie": "Jürgen Habermas, Protestbewegung und Hochschulreform 1969 · Unknown author · 1969 · Public domain · Wikimedia Commons",
   "bloque": "C",
   "unidad": "Retrato · museo (dominio público)",
   "ia": false
