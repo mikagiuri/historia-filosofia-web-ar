@@ -339,7 +339,7 @@ const VIDEOS_EU = [
   "dur": "9:06",
   "ilustre": [],
   "temas": [
-   "hf-capitalismo"
+   "hf-silicon-valley"
   ]
  },
  {
@@ -380,7 +380,8 @@ const VIDEOS_EU = [
   "dur": "6:07",
   "ilustre": [],
   "temas": [
-   "hf-siglo21"
+   "hf-siglo21",
+   "hf-silicon-valley"
   ]
  },
  {
@@ -390,7 +391,8 @@ const VIDEOS_EU = [
   "dur": "4:21",
   "ilustre": [],
   "temas": [
-   "hf-siglo21"
+   "hf-siglo21",
+   "hf-silicon-valley"
   ]
  }
 ];
