@@ -616,6 +616,10 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 .cru-enl.cru-acuerdo b{ color:var(--ok); } .cru-enl.cru-desacuerdo b{ color:var(--bad); }
 .cru-links{ margin:.35rem 0 0; line-height:1.7; }
 .cru-nota{ margin:.35rem 0 0; font-size:.82rem; color:var(--muted); }
+/* (18-10, P-062) registro de uso por grupo: línea discreta al final de la ficha de la materia (js/uso.js) */
+.uso-linea{margin:28px 0 0;padding-top:12px;border-top:1px solid var(--line-soft);font-size:.85rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.uso-linea .uso-l{font-weight:600}
+.uso-linea .fbtn{font-size:.8rem}
 
 
 /* ==== css/mobile.css ==== */

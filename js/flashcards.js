@@ -145,6 +145,8 @@ document.getElementById("fcknown").addEventListener("click", () => {
   const kk = deckKey + ":" + order[pos];
   known[kk] = !known[kk]; if (!known[kk]) delete known[kk];
   store.set("aula-known", known); drawCard();
+  /* (18-10, P-062) registro de uso por grupo: cuántas tarjetas de esta baraja tiene marcadas como sabidas */
+  if (window.Uso) Uso.ev("tarjetas", { clave: deckKey, marcadas: order.filter(i => known[deckKey + ":" + i]).length, total: order.length });
 });
 document.addEventListener("keydown", e => {
   if (!document.getElementById("tarjetas").classList.contains("active")) return;

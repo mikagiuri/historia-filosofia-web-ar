@@ -177,6 +177,8 @@ function renderRetoResult(){
   const prev = bestMap[reto.title] || 0;
   const record = reto.score > prev;
   if (record){ bestMap[reto.title] = reto.score; store.set("aula-reto-best", bestMap); }
+  /* (18-10, P-062) registro de uso por grupo: solo números (el título del reto es texto y no se envía) */
+  if (window.Uso) Uso.ev("reto", { aciertos: reto.correct, total: n, puntos: reto.score });
   retoBox().innerHTML =
     '<div class="reto-wrap"><div class="reto-result">' +
       '<div class="reto-badge">' + emoji + '</div>' +

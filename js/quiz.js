@@ -235,6 +235,8 @@ function drawQuiz(){
       const bestMap = store.get("aula-best", {});
       const prevBest = bestMap[quizKey] || 0;
       if (qscore > prevBest){ bestMap[quizKey] = qscore; store.set("aula-best", bestMap); }
+      /* (18-10, P-062) registro de uso por grupo: solo si existe y el alumno lo ha activado; las falladas, por su número en el cuestionario */
+      if (window.Uso) Uso.ev("cuestionario", { clave: quizKey, aciertos: qscore, total: total, falladas: quizFailed.map(it => quiz.items.indexOf(it)).filter(i => i >= 0) });
       bestLine = `<p class="best">أفضل نتيجة في هذا المتصفح: ${Math.max(prevBest, qscore)} / ${total}</p>`;
     }
     const reviewBtn = quizFailed.length
