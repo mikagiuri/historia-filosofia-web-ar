@@ -214,6 +214,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Cabeza de Carnéades (Gliptoteca de Múnich, copia romana) · Autor desconocido (foto: Bibi Saint-Pol) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Head_Karneades_Glyptothek_Munich.jpg"
  },
+ "ciceron": {
+  "f": "media/retratos/ilustres/ciceron.jpg",
+  "pie": "Marco Tulio Cicerón · Busto romano (mediados del siglo I d. C.), Museos Capitolinos; foto de Wilfredo Rodríguez · CC0 (Siglo I d. C.)",
+  "page": "https://commons.wikimedia.org/wiki/File:M._Tullius_Cicero,_Capitoline_Museum,_Rome.jpg"
+ },
  "seneca": {
   "f": "media/retratos/museo/seneca.jpg",
   "pie": "Bust of Pseudo Seneca MET DP359039 · Peter Paul Rubens · CC0",
@@ -252,6 +257,10 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/museo/hipatia.jpg",
   "pie": "Hypatia Charles William Mitchell · Charles William Mitchell · Public Domain",
   "page": "https://commons.wikimedia.org/wiki/File:Hypatia_(Charles_William_Mitchell).jpg"
+ },
+ "boecio": {
+  "f": "media/retratos/museo2/boecio.jpg",
+  "pie": "Boethius, Consolatio philosophiae (French) · Boethius · Public Domain"
  },
  "isidoro": {
   "f": "media/retratos/ilustres/isidoro.jpg",
@@ -300,6 +309,11 @@ const ILUSTRES_RETRATOS = {
  "maimonides": {
   "f": "media/retratos/museo2/maimonides.jpg",
   "pie": "Maimonides bas-relief in the U.S. House of Representatives chamber cropped · Sculpture by Brenda Putnam; photo by the Architect of the Capitol · Public Domain"
+ },
+ "buenaventura": {
+  "f": "media/retratos/ilustres/buenaventura.jpg",
+  "pie": "Buenaventura · Francisco de Zurbarán, Exposición del cuerpo de san Buenaventura (Museo del Louvre) · Dominio público (1629 (retrato imaginario))",
+  "page": "https://commons.wikimedia.org/wiki/File:Francisco_de_Zurbar%C3%A1n_007.jpg"
  },
  "roger_bacon": {
   "f": "media/retratos/ilustres/roger_bacon.jpg",
@@ -592,6 +606,16 @@ const ILUSTRES_RETRATOS = {
   "pie": "Friedrich Heinrich Jacobi portrait · Unidentified painter · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Friedrich_Heinrich_Jacobi_portrait.jpg"
  },
+ "paley": {
+  "f": "media/retratos/ilustres/paley.jpg",
+  "pie": "William Paley · George Romney · Dominio público (Antes de 1802)",
+  "page": "https://commons.wikimedia.org/wiki/File:William_Paley_by_George_Romney.jpg"
+ },
+ "condorcet": {
+  "f": "media/retratos/ilustres/condorcet.jpg",
+  "pie": "Nicolas de Condorcet · Anónimo (Museo Carnavalet, París, P1668) · Dominio público (entre 1743 y 1794)",
+  "page": "https://commons.wikimedia.org/wiki/File:Anonymous_-_Portrait_de_Marie_Jean_Antoine_Nicolas_de_Caritat,_marquis_de_Condorcet_(1743-1794),_philosophe,_math%C3%A9maticien_et_homme_politique._-_P1668_-_Mus%C3%A9e_Carnavalet.jpg"
+ },
  "lamarck": {
   "f": "media/retratos/ilustres/lamarck.jpg",
   "pie": "Jean-Baptiste de Lamarck · Charles Thévenin · Public domain",
@@ -851,6 +875,11 @@ const ILUSTRES_RETRATOS = {
  "freud": {
   "f": "media/retratos/museo2/freud.jpg",
   "pie": "Sigmund Freud, bust portrait, facing front LCCN2010651703 · Miscellaneous Items in High Demand, PPOC, Library of Congress · Public Domain"
+ },
+ "zetkin": {
+  "f": "media/retratos/ilustres/zetkin.jpg",
+  "pie": "Clara Zetkin · Autor desconocido (Congreso Internacional de Protección Obrera, Zúrich) · Dominio público (1897)",
+  "page": "https://commons.wikimedia.org/wiki/File:Clara_Zetkin_(cropped).jpg"
  },
  "bergson": {
   "f": "media/galeria_museo/spinoza_universal/bergson.jpg",

@@ -84,7 +84,9 @@
      y comparten los recursos de los temas 6 y 7. */
   var SIGLA_TEMA = { AP: 6, AA: 7, M: 3.5 }, SIGLA_ORDEN = { AP: 5.1, AA: 5.2, M: 3.5 };  /* M: metafísica de Filosofía 1.º, entre T3 y T4 */
   function esAnexo(o){ return !!o && typeof o.temaN === "number"; }
-  var THEORY_EXTRA = { "fil-presocraticos": 1, "fil-comunidades-perseguidos": 1, "hf-comunidades-perseguidos": 1, "fil-helenismo": 5, "hf-descartes-makro": 14, "hf-platon-superficie": 6, "hf-descartes-simulacion": 14, "hf-platon-agustin": 11, "hf-platon-prejuicio": 6, "hf-montaigne-ensayos": 13, "hf-renacimiento-magia": 13, "fil-spinoza-sistema": 1, "fil-grandes-preguntas": 1, "fil-marxismos": 6, "hf-marxismos": 21, "hf-spinoza-sistema": 15, "hf-kant-juicios": 19, "hf-kant-poetas": 19, "hf-marx-biblioteca": 21, "hf-spinoza-universal": 15, "hf-corazon-piedra": 21, "hf-aristoteles-arabe": 12, "hf-verdad-no-contradice": 12, "hf-islam-ideas": 12, "hf-toledo-traductores": 12, "hf-judios-andalus": 12, "hf-beefs": 2, "hf-euskal-herria": 1 };
+  var THEORY_EXTRA = { "fil-presocraticos": 1, "fil-comunidades-perseguidos": 1, "hf-comunidades-perseguidos": 1, "fil-helenismo": 5, "hf-descartes-makro": 14, "hf-platon-superficie": 6, "hf-descartes-simulacion": 14, "hf-platon-agustin": 11, "hf-platon-prejuicio": 6, "hf-montaigne-ensayos": 13, "hf-renacimiento-magia": 13, "fil-spinoza-sistema": 1, "fil-grandes-preguntas": 1, "fil-marxismos": 6, "hf-marxismos": 21, "hf-spinoza-sistema": 15, "hf-kant-juicios": 19, "hf-kant-poetas": 19, "hf-marx-biblioteca": 21, "hf-spinoza-universal": 15, "hf-corazon-piedra": 21, "hf-aristoteles-arabe": 12, "hf-verdad-no-contradice": 12, "hf-islam-ideas": 12, "hf-toledo-traductores": 12, "hf-judios-andalus": 12, "hf-beefs": 2, "hf-euskal-herria": 1, "fil-montaigne-ensayos": 1 };
+  /* (18-10) un anexo que no está en la lista va a su tema por su temaN (antes salía suelto al principio de la ficha) */
+  function extraDe(key, o){ return THEORY_EXTRA[key] || (esAnexo(o) ? o.temaN : 0); }
   /* unidades del curso de 2.º ESO («Clases») → tema */
   var CLASES_TEMA = { 1: "pensar", 2: "falacias", 3: "argumentar", 4: "falacias", 5: "falacias", 6: "medios", 7: "dialogo", 8: "sesgos", 9: "medios", 10: "pensar",
     11: "dialogo", 12: "grupo", 13: "huella", 14: "argumentar", 19: "huella", 20: "medios" };
@@ -100,7 +102,7 @@
   function temaOf(go_, key, o){
     if (o && o.subject === "ipc") return ipcTema(key);
     switch (go_){
-      case "teoria": return THEORY_EXTRA[key] || (o && o.sigla ? SIGLA_TEMA[o.sigla] || null : temaNum(o));
+      case "teoria": return extraDe(key, o) || (o && o.sigla ? SIGLA_TEMA[o.sigla] || null : temaNum(o));
       case "tarjetas": return DECK_TEMA[key] || null;
       case "cuestionarios": { var Q = coll("QUIZ_TEMA"), m = Q && Q[key] && String(Q[key]).match(/^T(\d+)$/); return m ? +m[1] : (Q && Q[key] === "M" ? 3.5 : null); }
       case "mapas": return MAP_TEMA[key] || null;
@@ -164,7 +166,7 @@
   /* (11-10) fichas de época (epocas_fichas.js, vista Ilustres): la de un tema de HF (con / con2 por temasHF) y, en
      Filosofía 1.º, las de las teorías con contenido histórico (EPOCA_FIL). Se enlazan al pie de la teoría, en la tira
      «De este tema» de Tarjetas, Cuestionarios, Lecturas e Infografías, en el Glosario y en Cronogramas. */
-  var EPOCA_FIL = { "fil-presocraticos": ["ant"], "fil-spinoza-sistema": ["mod"], "fil-marxismos": ["con", "con2"], "fil-t6": ["con", "con2"], "fil-grandes-preguntas": "*" };
+  var EPOCA_FIL = { "fil-presocraticos": ["ant"], "fil-spinoza-sistema": ["mod"], "fil-montaigne-ensayos": ["ren"], "fil-marxismos": ["con", "con2"], "fil-t6": ["con", "con2"], "fil-grandes-preguntas": "*" };
   function epocaFicha(subject, tema){
     var EF = G("EPOCAS_FICHAS"); if (!EF || subject !== "hf" || typeof tema !== "number") return null;
     var porTema = Object.keys(EF).filter(function(k){ return (EF[k].temasHF || []).indexOf(tema) >= 0; })[0];
@@ -243,7 +245,7 @@
        y desde la lista de temas de la ficha (conAnexos) */
     var ks = Object.keys(T).filter(function(k){ return T[k].subject === subject && (conAnexos || !esAnexo(T[k])); });
     var orden = function(k){ return T[k].sigla ? SIGLA_ORDEN[T[k].sigla] || 0 : temaOf("teoria", k, T[k]) || 0; };
-    if (subject !== "ipc") ks.sort(function(a, b){ return (orden(a) - orden(b)) || ((THEORY_EXTRA[a] ? 1 : 0) - (THEORY_EXTRA[b] ? 1 : 0)); });
+    if (subject !== "ipc") ks.sort(function(a, b){ return (orden(a) - orden(b)) || ((extraDe(a, T[a]) ? 1 : 0) - (extraDe(b, T[b]) ? 1 : 0)); });
     return ks;
   }
 
@@ -400,6 +402,8 @@
       if (!groups.length || last !== g){ groups.push({ g: g, ks: [] }); last = g; }
       groups[groups.length - 1].ks.push(k);
     });
+    /* (18-10, orden del profesor) HF empieza por el Tema 3: la Introducción (temas 1-2) y lo que no tenga época, al final */
+    if (subject === "hf") groups = groups.filter(function(gr){ return gr.g && gr.g !== "int"; }).concat(groups.filter(function(gr){ return gr.g === "int"; }), groups.filter(function(gr){ return !gr.g; }));
     return '<div class="sec-head"><h2 class="sec">' + esc(t("temas")) + '</h2></div>' + groups.map(function(gr){
       return (gr.g ? '<h3 class="temas-b" data-' + grpAttr + '="' + esc(gr.g) + '">' + esc((grpNames && grpNames[gr.g]) || gr.g) + '</h3>' : '') + '<ol class="itin-temas" style="--c:' + (SUBJ_COLOR[subject] || "var(--accent)") + '">' + (function(){
         /* (11-10) las exploraciones de cada tema van plegadas en «Exploraciones (n)», al final de lo de ese tema */
@@ -410,7 +414,7 @@
           exp = [];
         }
         gr.ks.forEach(function(k){
-          var n = temaOf("teoria", k, T[k]), extra = !!THEORY_EXTRA[k], anexo = extra && typeof T[k].temaN === "number";   /* anexos: «Exploración - …», sin «Tema N» */
+          var n = temaOf("teoria", k, T[k]), extra = !!extraDe(k, T[k]), anexo = extra && typeof T[k].temaN === "number";   /* anexos: «Exploración - …», sin «Tema N» */
           /* (12-10, rediseño Lote 1 · F4) el ampliado que ya declara su tema en el rótulo («Filosofía · Tema 1»,
              presocráticos; «Filosofía · Tema 5», helenismo) va sangrado bajo su tema y NO repite la ficha «Tema N» */
           var declaraN = extra && !anexo && temaNum(T[k]) != null;

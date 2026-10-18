@@ -9,11 +9,14 @@ const GEN_T = { lineas: "الخطوط", todas: "الكل", ninguna: "لا شيء
   none: "لا يوجد أي خط مفعّل: انقروا على خط لرؤيته.", hint: "اسحبوا للتنقل عبر التاريخ ←",
   mLineas: "مخطط الخطوط", mTesis: "شبكة الأطروحات", mVR: "أخضر أم أحمر؟", mCara: "وجهًا لوجه",
   ruta: "مساركم في الحجلة: {n} مفكرين على {m} خطوط. تظهر الخطوط التي سافرتم عليها (وفيها اثنان على الأقل من مفكريكم)، ويتبع الخط المنقّط ترتيب رحلتكم.",
-  quitarRuta: "إزالة المسار" };   // (09-10) modos: plano, red de tesis y ejercicio (genealogias_tesisview.js)
+  quitarRuta: "إزالة المسار", plano: "مخطط", planoGeneral: "التقاليد الكبرى" };   // (09-10) modos: plano, red de tesis y ejercicio (genealogias_tesisview.js)
 const GEN_EPOCAS = [["ant", "القديمة"], ["med", "الوسيطة"], ["ren", "عصر النهضة"], ["mod", "الحديثة"], ["ilu", "الأنوار"], ["con", "المعاصرة"]];
 /* (30-09) al entrar, solo dos líneas activas (con todas a la vez el plano abruma); «Todas» sigue a un clic */
 const GEN_DEFECTO = ["idea", "dual"];
-function genDefecto(){ return new Set(typeof GENEALOGIAS === "undefined" ? [] : GENEALOGIAS.lineas.filter(l => !GEN_DEFECTO.includes(l.id)).map(l => "l:" + l.id)); }
+/* (18-10) plano activo: "" = el general (GENEALOGIAS); si no, uno de GENEALOGIAS_PLANOS, que se ve entero al entrar */
+let genPlano = "";
+function genG(){ if (genPlano && typeof GENEALOGIAS_PLANOS !== "undefined"){ const p = GENEALOGIAS_PLANOS.find(x => x.id === genPlano); if (p) return p; } return GENEALOGIAS; }
+function genDefecto(){ if (genPlano) return new Set(); return new Set(typeof GENEALOGIAS === "undefined" ? [] : GENEALOGIAS.lineas.filter(l => !GEN_DEFECTO.includes(l.id)).map(l => "l:" + l.id)); }
 let genHidden = genDefecto();
 let genModo = "lineas";   // "lineas" | "tesis" | "verde-roja"
 /* (11-10) «Tu recorrido en el metro»: los pensadores de un viaje de la Rayuela, en el orden del viaje (#genealogias/ruta/id,id…) */
@@ -27,8 +30,17 @@ function genModos(){
 function genEsc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 function genPerson(id){ return typeof ILUSTRES !== "undefined" && ILUSTRES[id] ? ILUSTRES[id] : null; }
 
+/* (18-10) selector de plano: el general y los temáticos */
+function genPlanos(){
+  if (typeof GENEALOGIAS_PLANOS === "undefined" || !GENEALOGIAS_PLANOS.length) return "";
+  const p = genPlano ? GENEALOGIAS_PLANOS.find(x => x.id === genPlano) : null;
+  return '<div class="fgroup gen-planos" role="group" aria-label="' + GEN_T.plano + '"><span class="flabel">' + GEN_T.plano + '</span>' +
+    [["", GEN_T.planoGeneral]].concat(GENEALOGIAS_PLANOS.map(x => [x.id, x.name])).map(([k, l]) =>
+      '<button type="button" class="fbtn" data-gplano="' + k + '" aria-pressed="' + (genPlano === k) + '">' + genEsc(l) + "</button>").join("") + "</div>" +
+    (p && p.desc ? '<p class="gen-hint">' + genEsc(p.desc) + "</p>" : "");
+}
 function genLegend(){
-  const G = GENEALOGIAS;
+  const G = genG();
   return '<div class="gen-legend" role="group" aria-label="' + GEN_T.lineas + '"><span class="flabel">' + GEN_T.lineas + '</span>' +
     G.lineas.map(l => '<button type="button" class="gen-leg" data-gfil="l:' + l.id + '" aria-pressed="' + !genHidden.has("l:" + l.id) + '" title="' + genEsc(l.desc) + '">' +
       '<i style="background:' + l.color + '"></i><span>' + genEsc(l.name) + '</span></button>').join("") +
@@ -39,7 +51,7 @@ function genLegend(){
 }
 
 function genSvg(){
-  const G = GENEALOGIAS;
+  const G = genG();
   const lines = G.lineas.filter(l => !genHidden.has("l:" + l.id))
     .map(l => Object.assign({}, l, { ilustre: l.ilustre.filter(genPerson).sort((a, b) => genPerson(a).born - genPerson(b).born) }))
     .filter(l => l.ilustre.length);
@@ -122,16 +134,19 @@ function drawGenea(){
   }
   const keep = box.querySelector(".gen-scroll"), sl = keep ? keep.scrollLeft : 0;
   const rutaInfo = genRuta ? (function(){
-    const ls = GENEALOGIAS.lineas.filter(l => !genHidden.has("l:" + l.id) && l.ilustre.some(id => genRuta.includes(id)));
+    const ls = genG().lineas.filter(l => !genHidden.has("l:" + l.id) && l.ilustre.some(id => genRuta.includes(id)));
     return '<p class="gen-rutainfo">' + GEN_T.ruta.replace("{n}", genRuta.filter(id => ls.some(l => l.ilustre.includes(id))).length).replace("{m}", ls.length) +
       ' <button type="button" class="btn ghost" data-gruta="off">' + GEN_T.quitarRuta + '</button></p>';
   })() : "";
-  box.innerHTML = genModos() + rutaInfo + genLegend() + '<p class="gen-hint">' + GEN_T.hint + '</p><div class="gen-scroll">' + genSvg() + '</div>';
+  box.innerHTML = genModos() + genPlanos() + rutaInfo + genLegend() + '<p class="gen-hint">' + GEN_T.hint + '</p><div class="gen-scroll">' + genSvg() + '</div>';
   const sc = box.querySelector(".gen-scroll"); if (sc) sc.scrollLeft = sl;
 }
 /* enlace profundo #genealogias/<línea>: solo esa línea visible; #genealogias/tesis y #genealogias/verde-roja: los otros modos */
 function loadGenea(k){
   if (typeof GENEALOGIAS === "undefined") return;
+  /* (18-10) #genealogias/plano/<id>: un plano temático entero */
+  const mp = /^plano\/([\w-]+)$/.exec(k || "");
+  if (mp && typeof GENEALOGIAS_PLANOS !== "undefined" && GENEALOGIAS_PLANOS.some(x => x.id === mp[1])){ genPlano = mp[1]; genRuta = null; genModo = "lineas"; genHidden = genDefecto(); drawGenea(); return; }
   if (k === "tesis" || k === "verde-roja" || (k === "cara-a-cara" && typeof window.polGenea === "function")){ genModo = k; drawGenea(); return; }
   /* (11-10) #genealogias/tesis/<id>: la Red de tesis con esa tesis abierta (enlaces desde Nudos y Rayuela) */
   const mt = /^tesis\/([\w-]+)$/.exec(k || "");
@@ -143,14 +158,14 @@ function loadGenea(k){
   /* (11-10) #genealogias/ruta/id,id…: recorrido de la Rayuela; solo las líneas que lo tocan */
   const mr = /^ruta\/([\w,-]+)$/.exec(k || "");
   if (mr){
-    genRuta = mr[1].split(",").filter(genPerson);
+    genRuta = mr[1].split(",").filter(genPerson); genPlano = "";
     genModo = "lineas"; genHidden = new Set();
     /* las líneas con al menos dos pensadores del viaje (las que de verdad has recorrido); si no hay ninguna, las que toquen uno */
     const n = l => l.ilustre.filter(id => genRuta.includes(id)).length, min = GENEALOGIAS.lineas.some(l => n(l) >= 2) ? 2 : 1;
     GENEALOGIAS.lineas.forEach(l => { if (n(l) < min) genHidden.add("l:" + l.id); });
     drawGenea(); return;
   }
-  genRuta = null;
+  genRuta = null; genPlano = "";
   genModo = "lineas";
   genHidden = new Set();
   if (k && GENEALOGIAS.lineas.some(l => l.id === k)) GENEALOGIAS.lineas.forEach(l => { if (l.id !== k) genHidden.add("l:" + l.id); });
@@ -161,13 +176,15 @@ function loadGenea(k){
 document.addEventListener("click", e => {
   const m = e.target.closest && e.target.closest("#geneabox [data-gmodo]");
   if (m){ genModo = m.dataset.gmodo; drawGenea(); if (typeof setDeepHash === "function") setDeepHash("genealogias", genModo === "lineas" ? "" : genModo); const again = document.querySelector('#geneabox [data-gmodo="' + genModo + '"]'); if (again) again.focus(); return; }
+  const pl = e.target.closest && e.target.closest("#geneabox [data-gplano]");
+  if (pl){ genPlano = pl.dataset.gplano; genRuta = null; genHidden = genDefecto(); drawGenea(); if (typeof setDeepHash === "function") setDeepHash("genealogias", genPlano ? "plano/" + genPlano : ""); const again = document.querySelector('#geneabox [data-gplano="' + genPlano + '"]'); if (again) again.focus(); return; }
   const q = e.target.closest && e.target.closest("#geneabox [data-gruta]");
   if (q){ genRuta = null; genHidden = genDefecto(); drawGenea(); if (typeof setDeepHash === "function") setDeepHash("genealogias", ""); return; }
   const b = e.target.closest && e.target.closest("#geneabox [data-gfil]");
   if (b){
     const k = b.dataset.gfil;
-    if (k === "l:all") GENEALOGIAS.lineas.forEach(l => genHidden.delete("l:" + l.id));
-    else if (k === "l:none") GENEALOGIAS.lineas.forEach(l => genHidden.add("l:" + l.id));
+    if (k === "l:all") genG().lineas.forEach(l => genHidden.delete("l:" + l.id));
+    else if (k === "l:none") genG().lineas.forEach(l => genHidden.add("l:" + l.id));
     else genHidden.has(k) ? genHidden.delete(k) : genHidden.add(k);
     drawGenea();
     const again = document.querySelector('#geneabox [data-gfil="' + k + '"]'); if (again) again.focus();

@@ -366,3 +366,159 @@ const GENEALOGIAS = {
   }
  ]
 };
+const GENEALOGIAS_PLANOS = [
+ {
+  "id": "dios",
+  "name": "براهين وجود الله",
+  "desc": "كيف انتقلت الحجج حول الله من مفكر إلى آخر، من أفلاطون إلى القرن 20، ومن هاجمها.",
+  "lineas": [
+   {
+    "id": "mov",
+    "name": "الطريق الأول: الحركة",
+    "color": "#e0a526",
+    "desc": "كل ما يتحرك يحرّكه غيره، والسلسلة لا يمكن أن تكون لا متناهية: هناك محرّك أول.",
+    "ilustre": [
+     "platon",
+     "aristoteles",
+     "averroes",
+     "maimonides",
+     "tomas"
+    ]
+   },
+   {
+    "id": "cau",
+    "name": "الطريق الثاني: السبب",
+    "color": "#3fa7c9",
+    "desc": "لا شيء سببٌ لنفسه، ومن دون سبب أول لما وُجد أي سبب: هناك سبب أول.",
+    "ilustre": [
+     "aristoteles",
+     "avicena",
+     "tomas",
+     "duns_escoto",
+     "ockham"
+    ]
+   },
+   {
+    "id": "con",
+    "name": "الطريق الثالث: الإمكان",
+    "color": "#7b61d9",
+    "desc": "ما يمكن ألا يوجد يحتاج إلى شيء آخر ليوجد: هناك موجود واجب بذاته.",
+    "ilustre": [
+     "avicena",
+     "maimonides",
+     "tomas",
+     "leibniz",
+     "copleston"
+    ]
+   },
+   {
+    "id": "gra",
+    "name": "الطريق الرابع: الدرجات",
+    "color": "#b44fc4",
+    "desc": "إذا كانت هناك أشياء أكثر أو أقل خيرًا وحقيقةً، فهناك حد أقصى هو مقياسها وسببها.",
+    "ilustre": [
+     "platon",
+     "agustin",
+     "boecio",
+     "anselmo",
+     "tomas"
+    ]
+   },
+   {
+    "id": "ord",
+    "name": "الطريق الخامس: النظام",
+    "color": "#2e9e6b",
+    "desc": "الأشياء التي لا معرفة لها تعمل من أجل غاية، كالسهم الذي يوجّهه الرامي: هناك عقلٌ ينظّم الطبيعة.",
+    "ilustre": [
+     "ciceron",
+     "tomas",
+     "paley"
+    ]
+   },
+   {
+    "id": "ont",
+    "name": "الحجة الأنطولوجية",
+    "color": "#d95f02",
+    "desc": "من مفهوم الله وحده، «ما لا يمكن التفكير في شيء أعظم منه»، يُفترض أن يلزم أنه موجود.",
+    "ilustre": [
+     "anselmo",
+     "descartes",
+     "leibniz"
+    ]
+   },
+   {
+    "id": "kal",
+    "name": "علم الكلام: للعالم بداية",
+    "color": "#9a7b5f",
+    "desc": "للعالم بداية، وكل ما يبدأ في الوجود له سبب.",
+    "ilustre": [
+     "al_kindi",
+     "al_ghazali",
+     "buenaventura"
+    ]
+   },
+   {
+    "id": "cri",
+    "name": "النقّاد",
+    "color": "#6e6e78",
+    "desc": "الذين شكّكوا في قدرة العقل على البرهنة على وجود الله.",
+    "ilustre": [
+     "hume",
+     "kant",
+     "darwin",
+     "russell"
+    ]
+   }
+  ],
+  "op": [
+   {
+    "ilustre": [
+     "anselmo",
+     "tomas"
+    ]
+   },
+   {
+    "ilustre": [
+     "tomas",
+     "buenaventura"
+    ]
+   },
+   {
+    "ilustre": [
+     "avicena",
+     "averroes"
+    ]
+   },
+   {
+    "ilustre": [
+     "al_ghazali",
+     "averroes"
+    ]
+   },
+   {
+    "ilustre": [
+     "descartes",
+     "kant"
+    ]
+   },
+   {
+    "ilustre": [
+     "hume",
+     "paley"
+    ]
+   },
+   {
+    "ilustre": [
+     "paley",
+     "darwin"
+    ]
+   },
+   {
+    "ilustre": [
+     "russell",
+     "copleston"
+    ]
+   }
+  ]
+ }
+];

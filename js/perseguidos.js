@@ -135,7 +135,9 @@ const PERSEGUIDOS = [
  },
  {
   "id": "boecio",
-  "cas_ilu": [],
+  "cas_ilu": [
+   "boecio"
+  ],
   "nombre": "بوثيوس",
   "fechas": "فيرونا وبافيا، 523-524",
   "cas_epoca": "med",
@@ -643,7 +645,9 @@ const PERSEGUIDOS = [
  },
  {
   "id": "condorcet",
-  "cas_ilu": [],
+  "cas_ilu": [
+   "condorcet"
+  ],
   "nombre": "نيكولا دي كوندورسيه",
   "fechas": "باريس وبورغ لا رين، 1793-1794",
   "cas_epoca": "ilu",
