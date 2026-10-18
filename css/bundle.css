@@ -2620,6 +2620,7 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 
 /* listado */
 #ilustres .ilu-era{font-size:1.15rem;margin:26px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--e);color:var(--ink)}
+#ilustres .ilu-letra{border-bottom-color:var(--line)}   /* (18-10) orden alfabético: la letra no es una época */
 #ilustres .ilu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
 #ilustres .ilu-card{display:flex;gap:12px;align-items:center;text-align:start;padding:10px 12px;border:1px solid var(--line);border-inline-start:3px solid var(--e);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow);font:inherit;color:var(--ink);transition:border-color .15s, transform .15s}
 #ilustres .ilu-card:hover{border-color:var(--e);transform:translateY(-1px)}

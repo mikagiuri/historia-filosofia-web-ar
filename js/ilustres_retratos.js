@@ -114,6 +114,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Aristippus · Gottlieb Friedrich Riegel (1724–1784) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Aristippus.jpg"
  },
+ "arquitas": {
+  "f": "media/retratos/ilustres/arquitas.jpg",
+  "pie": "Busto llamado «Arquitas» (Museo Arqueológico de Nápoles; identificación tradicional) · Copia romana (foto: Marie-Lan Nguyen) · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Archytas_of_Tarentum_MAN_Napoli_Inv5607.jpg"
+ },
  "platon": {
   "f": "media/retratos/museo/platon.jpg",
   "pie": "Plato bust · Jpergrc · CC0",
@@ -133,6 +138,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/mencio.jpg",
   "pie": "Mencius · Pintor chino anónimo · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Mencius.jpg"
+ },
+ "teofrasto": {
+  "f": "media/retratos/ilustres/teofrasto.jpg",
+  "pie": "Busto de Teofrasto (Villa Albani, copia romana) · Autor desconocido · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Bust_of_Theophrastus_from_Villa_Albani.png"
  },
  "pirron": {
   "f": "media/retratos/museo2/pirron.jpg",
@@ -154,6 +164,11 @@ const ILUSTRES_RETRATOS = {
  "crisipo": {
   "f": "media/retratos/museo2/crisipo.jpg",
   "pie": "Academische studie naar sculptuur, buste van Chrysippos, 1826, Johannes du Burck, Musea Brugge, 0016.GRO0187.II · Johannes du Burck · CC0"
+ },
+ "carneades": {
+  "f": "media/retratos/ilustres/carneades.jpg",
+  "pie": "Cabeza de Carnéades (Gliptoteca de Múnich, copia romana) · Autor desconocido (foto: Bibi Saint-Pol) · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Head_Karneades_Glyptothek_Munich.jpg"
  },
  "seneca": {
   "f": "media/retratos/museo/seneca.jpg",
@@ -217,6 +232,16 @@ const ILUSTRES_RETRATOS = {
   "pie": "St thomas aquinas · Carlo Crivelli · Public Domain",
   "page": "https://commons.wikimedia.org/wiki/File:St-thomas-aquinas.jpg"
  },
+ "llull": {
+  "f": "media/retratos/ilustres/llull.jpg",
+  "pie": "Ramon Llull (h. 1620, retrato póstumo) · Francisco Ribalta · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Francisco_Ribalta_-_Ramon_Llull_-_Google_Art_Project.jpg"
+ },
+ "dante": {
+  "f": "media/retratos/ilustres/dante.jpg",
+  "pie": "Retrato de Dante (1495, póstumo) · Sandro Botticelli · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Portrait_de_Dante.jpg"
+ },
  "duns_escoto": {
   "f": "media/retratos/museo2/duns-escoto.jpg",
   "pie": "Portraits of Alberto Magno and Duns Scoto. Painted circa 1508-1510 · Aspertini, Amico (1474/1475-1552) · Public Domain"
@@ -224,6 +249,11 @@ const ILUSTRES_RETRATOS = {
  "ockham": {
   "f": "media/retratos/museo2/ockham.jpg",
   "pie": "William of Occam - Sketch - Frater Occham iste, 1341 · Public Domain"
+ },
+ "nicolas_cusa": {
+  "f": "media/retratos/ilustres/nicolas_cusa.jpg",
+  "pie": "Nicolás de Cusa (h. 1480, detalle) · Maestro de la Vida de la Virgen · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Nicholas_of_Cusa.jpg"
  },
  "leonardo": {
   "f": "media/retratos/ilustres/leonardo.jpg",
@@ -380,9 +410,19 @@ const ILUSTRES_RETRATOS = {
   "pie": "Portada de su Aesthetica (1750), la obra que fundó la estética (no se conoce ningún retrato de Baumgarten) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Aesthetica.png"
  },
+ "helvetius": {
+  "f": "media/retratos/ilustres/helvetius.jpg",
+  "pie": "Claude-Adrien Helvétius (grabado, 1772) · Augustin de Saint-Aubin, según Louis-Michel van Loo · CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Portrait_of_Claude_Adrien_Helv%C3%A9tius_(1715-1771)_MET_DP828958.jpg"
+ },
  "dalembert": {
   "f": "media/retratos/museo2/dalembert.jpg",
   "pie": "Jean le Rond d'Alembert. Line engraving. Wellcome V0000121 · Wellcome Collection · CC BY 4.0"
+ },
+ "holbach": {
+  "f": "media/retratos/ilustres/holbach.jpg",
+  "pie": "Paul Heinrich Dietrich, barón d'Holbach · Alexander Roslin (1785) · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Paul_Heinrich_Dietrich_Baron_d'Holbach_Roslin.jpg"
  },
  "smith": {
   "f": "media/retratos/museo2/adam-smith.jpg",
@@ -407,6 +447,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/hamann.jpg",
   "pie": "Johann Georg Hamann Portrait · Paul Ortwin Rave, Das Geistige Deutschland im Bildnis: Das Jahrhundert Goethes, Berlin 1949 · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Johann_Georg_Hamann_Portrait.jpg"
+ },
+ "jefferson": {
+  "f": "media/retratos/ilustres/jefferson.jpg",
+  "pie": "Official Presidential portrait of Thomas Jefferson (by Rembrandt Peale, 1800) · Rembrandt Peale · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Official_Presidential_portrait_of_Thomas_Jefferson_(by_Rembrandt_Peale,_1800).jpg"
  },
  "jacobi": {
   "f": "media/retratos/ilustres/jacobi.jpg",
@@ -436,6 +481,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/goethe.jpg",
   "pie": "Goethe (Stieler 1828) · Joseph Karl Stieler · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Goethe_(Stieler_1828).jpg"
+ },
+ "hamilton": {
+  "f": "media/retratos/ilustres/hamilton.jpg",
+  "pie": "Alexander Hamilton (1792) (recorte: busto) · John Trumbull · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Google_Arts_Project_-_Alexander_Hamilton_(1792_portrait)_by_John_Trumbull.jpg"
  },
  "godwin": {
   "f": "media/retratos/ilustres/godwin.jpg",
@@ -476,6 +526,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/fichte.jpg",
   "pie": "Johann Gottlieb Fichte by Friedrich Bury · Albrecht Fürchtegott Schultheiß · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Johann_Gottlieb_Fichte_by_Friedrich_Bury.jpg"
+ },
+ "malthus": {
+  "f": "media/retratos/ilustres/malthus.jpg",
+  "pie": "Thomas Robert Malthus · John Linnell · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Thomas_Robert_Malthus.jpg"
  },
  "schleiermacher": {
   "f": "media/retratos/ilustres/schleiermacher.jpg",
@@ -741,8 +796,8 @@ const ILUSTRES_RETRATOS = {
  },
  "horkheimer": {
   "f": "media/retratos/ilustres/horkheimer.jpg",
-  "pie": "AdornoHorkheimerHabermasbyJeremyJShapiro2 (recorte: Horkheimer) · Jeremy J. Shapiro · CC BY-SA 3.0",
-  "page": "https://commons.wikimedia.org/wiki/File:AdornoHorkheimerHabermasbyJeremyJShapiro2.png"
+  "pie": "Max Horkheimer, Múnich 1958 (recorte: Horkheimer) · Barbara Niggl Radloff · CC BY-SA 4.0",
+  "page": "https://commons.wikimedia.org/wiki/File:FM-2019-1-6-4-30--Niggl-Radloff-B-Max-Horkheimer-ONLINE.jpg"
  },
  "whorf": {
   "f": "media/retratos/ilustres/whorf.jpg",

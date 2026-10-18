@@ -12,6 +12,24 @@ const ILU_EPOCAS = [
 const ILU_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة" };
 let iluSubject = "all", iluEpoca = "all", iluQuery = "";
 let iluAmb = "all";   // (12-10) 1.º: fila «Ámbito»
+/* (18-10) petición del profesor: elegir el orden de la lista, por fecha (épocas, como siempre) o alfabético
+   (agrupado por letra). Se recuerda en este navegador. */
+let iluOrden = (() => { try { return localStorage.getItem("iluOrden") === "alfa" ? "alfa" : "cron"; } catch (e) { return "cron"; } })();
+/* clave alfabética: el apellido; en la Antigüedad y la Edad Media, o con «de/da/della + lugar o familia» antes
+   del Renacimiento-Moderna temprana (Nicolás de Cusa, Erasmo de Róterdam, Isabel de Bohemia), el nombre de pila;
+   partículas en mayúscula (La Mettrie, De Morgan) y «X y Y» (Ortega y Gasset) se resuelven aquí. En las webs
+   traducidas se aplica la misma regla al nombre traducido (las excepciones de lugar están en castellano). */
+function iluClave(p){
+  const n = String(p.name || "").replace(/\(.*?\)/g, "").trim(), w = n.split(/\s+/);
+  if (w.length === 1 || p.block === "ant" || p.block === "med") return n;
+  const i = w.findIndex((x, k) => k > 0 && /^(de|da|della|di)$/.test(x));
+  if (i > 0 && (p.block === "ren" || p.block === "mod") && /^(Cusa|Vinci|Mirandola|Róterdam|Bohemia)$/.test(w[w.length - 1])) return w[0] === "Giovanni" ? w[1] : w[0];
+  const y = w.indexOf("و"); if (y > 0) return w[y - 1];
+  const k = w.length - 1;
+  if (k > 0 && /^(La|Le|De|Du|Van|Von)$/.test(w[k - 1])) return w[k - 1] + " " + w[k];
+  return w[k].replace(/^(d['’]|l['’])/i, "");
+}
+function iluLetra(p){ return iluFold(iluClave(p)).charAt(0).toUpperCase() || "#"; }
 /* (12-10) criterio del profesor: en la web de 1.º Ilustres criba por ÁMBITO filosófico (los años y la época
    siguen en cada ficha —«aunque incluyamos la información temporal»—). En HF y en la web local sigue por época.
    Ámbito = el de los temas de teoría que cita la ficha (temaN o el rótulo, ya traducido en las webs). */
@@ -63,7 +81,12 @@ function iluHi(escaped, q){
 
 function iluFiltered(){
   const q = iluFold(iluQuery);
-  return iluList().filter(p => {
+  const lista = iluList();
+  if (iluOrden === "alfa"){
+    const loc = (document.documentElement.lang || "es").slice(0, 2);
+    lista.sort((a, b) => iluClave(a).localeCompare(iluClave(b), loc, { sensitivity: "base" }) || (a.born ?? 0) - (b.born ?? 0));
+  }
+  return lista.filter(p => {
     if (iluSubject !== "all" && !(p.subjects || []).includes(iluSubject)) return false;
     if (!iluEsFil() && iluEpoca !== "all" && p.block !== iluEpoca) return false;
     if (iluEsFil() && iluAmb !== "all" && !iluRamas(p).includes(iluAmb)) return false;
@@ -96,10 +119,19 @@ function renderIluControls(){
     (present.length > 1 ? '<div class="fgroup"><span class="flabel">المادة</span>' + subjBtns + '</div>' : '') +
     (ambBtns ? '<div class="fgroup"><span class="flabel">المجال</span>' + ambBtns + '</div>'
              : '<div class="fgroup"><span class="flabel">العصر</span>' + epBtns + '</div>') +
+    '<div class="fgroup"><span class="flabel">الترتيب</span>' +
+      '<button class="fbtn" data-iord="cron" aria-pressed="' + (iluOrden === "cron") + '">حسب التاريخ</button>' +
+      '<button class="fbtn" data-iord="alfa" aria-pressed="' + (iluOrden === "alfa") + '">أبجدي</button></div>' +
     '<div class="ilu-tools"><input class="ilu-search" id="ilusearch" type="search" placeholder="ابحثوا عن مفكر أو عمل أو فكرة…" autocomplete="off" aria-label="البحث في الأعلام"></div>';
   box.querySelectorAll("[data-iamb]").forEach(b => b.addEventListener("click", () => {
     iluAmb = b.dataset.iamb;
     box.querySelectorAll("[data-iamb]").forEach(x => x.setAttribute("aria-pressed", x.dataset.iamb === iluAmb));
+    renderIluList();
+  }));
+  box.querySelectorAll("[data-iord]").forEach(b => b.addEventListener("click", () => {
+    iluOrden = b.dataset.iord;
+    try { localStorage.setItem("iluOrden", iluOrden); } catch (e) {}
+    box.querySelectorAll("[data-iord]").forEach(x => x.setAttribute("aria-pressed", x.dataset.iord === iluOrden));
     renderIluList();
   }));
   box.querySelectorAll("[data-isub]").forEach(b => b.addEventListener("click", () => {
@@ -131,7 +163,14 @@ function renderIluList(){
   const q = iluQuery;
   let html = "", last = null;
   rows.forEach(p => {
-    if (p.block !== last){
+    if (iluOrden === "alfa"){   // (18-10) orden alfabético: un encabezado por letra; el punto de color sigue diciendo la época
+      const L = iluLetra(p);
+      if (L !== last){
+        if (last !== null) html += "</div>";
+        html += '<h2 class="ilu-era ilu-letra">' + iluEsc(L) + '</h2><div class="ilu-grid">';
+        last = L;
+      }
+    } else if (p.block !== last){
       if (last !== null) html += "</div>";
       html += '<h2 class="ilu-era" data-b="' + p.block + '">' + (iluFichaEpoca(p.block)
         ? '<button type="button" class="ilu-era-btn" data-epoca="' + p.block + '" title="' + ILU_EPO.ver + '">' + iluEsc(iluEpocaName(p.block)) + ' <span aria-hidden="true">›</span></button>'
