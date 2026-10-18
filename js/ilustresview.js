@@ -394,6 +394,7 @@ function loadIlustre(id){
       (p.anecdota ? '<div class="ilu-sec ilu-anec"><h3><span>طُرفة</span>' + (p.tradicion ? ' <span class="ilu-trad">حسب التقليد</span>' : '') + '</h3>' +
         p.anecdota + (p.fuente ? '<p class="ilu-fuente"><span>المصدر</span>: ' + iluEsc(p.fuente) + '</p>' : '') + '</div>' : '') +
       ((p.obras || []).length ? '<div class="ilu-sec"><h3>الأعمال الرئيسية</h3><ul class="ilu-obras">' + p.obras.map(o => '<li>' + iluEsc(o) + '</li>').join("") + '</ul></div>' : '') +
+      iluVideosEu(p) +
       iluTemaChips(p) +
       iluRelaciones(p) +
       iluConceptos(p) +
@@ -413,6 +414,16 @@ function loadIlustre(id){
   const img = box.querySelector(".ilu-portrait img");
   if (img) img.addEventListener("click", () => { if (typeof openLightbox === "function") openLightbox(img.src, img.alt); });
   window.scrollTo(0, 0);
+}
+
+/* (18-10) Vídeos en euskera de Ikusgela sobre la persona (videos_eu.js, «ilustre»): enlaces externos, como «Obras principales»;
+   en la web en euskera, con el título original del vídeo. */
+function iluVideosEu(p){
+  const V = typeof VIDEOS_EU !== "undefined" && Array.isArray(VIDEOS_EU) ? VIDEOS_EU.filter(v => (v.ilustre || []).includes(p.id)) : [];
+  if (!V.length) return "";
+  const eu = (document.documentElement.lang || "").slice(0, 2) === "eu";
+  return '<div class="ilu-sec"><h3>فيديو بالباسكية</h3><ul class="ilu-obras">' + V.map(v => '<li><a href="https://www.youtube.com/watch?v=' + iluEsc(v.id) +
+    '" target="_blank" rel="noopener" hreflang="eu">' + iluEsc(eu ? v.eu_titulo : v.es) + '</a> · Ikusgela, ' + iluEsc(v.dur) + (eu ? '' : ' · <span lang="eu">«' + iluEsc(v.eu_titulo) + '»</span>') + '</li>').join("") + '</ul></div>';
 }
 
 /* En la teoría: al final de cada unidad, una tira con los ilustres que aparecen en ella (enlaza a su

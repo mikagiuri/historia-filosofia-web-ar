@@ -26,7 +26,9 @@
     esquemas: "خطاطات", lecturas: "قراءات", comentarios: "شروح النصوص", dilemas: "معضلات أخلاقية", pistas: "تلميحات متدرجة", conceptos: "المفاهيم",
     nTarjetas: "{n} بطاقات", nPreguntas: "{n} أسئلة", anterior: "الموضوع السابق", siguienteTema: "الموضوع التالي", anexos: "استكشافات", epoca: "الحقبة", epocaDe: "الحقبة: {e}", volverTema: "العودة إلى الموضوع",
     blEstudiar: "للمراجعة", blPau: "استعدّ للـ PAU", blPensar: "فكّر واكتب", blAmpliar: "تعمّق", pauBadge: "قراءة PAU",
-    infografia: "إنفوغرافيك", mapa: "خريطة", esquema: "خطاطة", lectura: "قراءة", dilema: "معضلة", comentario: "شرح",
+    cronogramas: "الجداول الزمنية", disertaciones: "الإنشاء الفلسفي", comparativas: "مقارنات", polemicas: "سجالات", comunidades: "الجماعات",
+    perseguidos: "المضطهَدون", duelo: "مبارزة الحجج", juegos: "ألعاب", logica: "ركن المنطق",
+    videosEu: "فيديوهات بالباسكية (Ikusgela)", videoEu: "فيديو بالباسكية من Ikusgela", infografia: "إنفوغرافيك", mapa: "خريطة", esquema: "خطاطة", lectura: "قراءة", dilema: "معضلة", comentario: "شرح",
     pau: "مسار PAU", pauLead: "استعدوا لـ PAU بالترتيب: أولًا كيف هو الامتحان، ثم كل تمرين، وفي النهاية التدرب حسب المواضيع.",
     pau1: "كيف هو الامتحان", pau2: "التمرين 1 · شرح النص", pau3: "التمرين 2 · المقالة الفلسفية",
     pau4: "التمرين 3 · العرض", pau5: "كيف يُصحَّح", pau6: "تدرّبوا حسب المواضيع", inicio: "الرئيسية",
@@ -272,6 +274,55 @@
   /* (12-10, rediseño Lote 3 · H0) temas de HF con lectura PAU: T6 (República VII), T14 (Discurso II-IV),
      T18 (¿Qué es la Ilustración?), T23 (Ecce Homo) y T26 (El segundo sexo). Saca la insignia «Lectura PAU». */
   var PAU_TEMAS = { 6: 1, 14: 1, 18: 1, 23: 1, 26: 1 };
+  /* (18-10, P-025 · plan del agente 47, Lote A) piezas que ya existían y faltaban en la caja: cronograma (HF), modelo de
+     disertación, comparativas (temas con lectura PAU), Rincón de lógica (1.º T4) y, en «Ampliar», polémicas, comunidades,
+     perseguidos, debates del Duelo y juegos. Decisiones del profesor del 18-10 (docs/36): el modelo «máquina» va en el T2
+     de 1.º y Rayuela en todos los temas de 1.º. Los rótulos son los del menú y los de los datos: no hay texto nuevo que traducir. */
+  /* cronogramas sin unidad del libro en el código: a mano; los demás (A9, B2, B7, C5…) por su unidad, como cronoFichasHtml */
+  var CRONO_TEMA = { "A1-OS": [1], "A2-OS": [2], "A-GRECIA-KRO-01": [4], "A-GRECIA-KRO-02": [5, 6], "A-GRECIA-KRO-03": [10],
+    "B-MED": [11, 12], "B-REN": [13], "B-MOD": [14, 15], "B-ILU": [18], "C-XIX": [21], "B2": [12], "C5": [22] };
+  function cronosDe(subject, tema){
+    var C = G("CRONOGRAMAS"); if (subject !== "hf" || !Array.isArray(C) || !view("cronogramas")) return [];
+    return C.filter(function(c){
+      var code = String(c.code || c.id || ""), pref = Object.keys(CRONO_TEMA).filter(function(p){ return code === p || code.indexOf(p + "-") === 0; })
+        .sort(function(a, b){ return b.length - a.length; })[0], ts;
+      if (pref) ts = CRONO_TEMA[pref];
+      else { var n = gloTema({ subject: subject, unidad: code.split("-")[0] }); ts = typeof n === "number" ? [n] : []; }   /* aquí subject es siempre "hf" (sin literal: check_builds lo tomaría por un dato de otra materia) */
+      return ts.indexOf(tema) >= 0;
+    }).map(function(c){ return { go: "cronogramas", arg: c.id, label: strip(c.title) }; });
+  }
+  var DISERT_TEMA = { "modelo-platon": [6, 9], "modelo-kant": [20], "modelo-nietzsche": [23], "modelo-medieval": [12],
+    "fil-modelo-filosofia": [1], "fil-modelo-naturaleza": [2], "fil-modelo-maquina": [2], "fil-modelo-vidabuena": [5], "fil-modelo-justicia": [6] };
+  function disertDe(subject, tema){
+    var D = coll("DISERTACIONES"); if (!D || !view("disertaciones")) return [];
+    return Object.keys(DISERT_TEMA).filter(function(k){ return D[k] && D[k].subject === subject && DISERT_TEMA[k].indexOf(tema) >= 0; })
+      .map(function(k){ return { go: "disertaciones", arg: k, label: strip(D[k].title) }; });
+  }
+  function comparativasDe(subject, tema){
+    var Pa = coll("PAU"); if (subject !== "hf" || !PAU_TEMAS[tema] || !Pa || !Pa["comparativas-temas"] || !view("pau")) return [];
+    return [{ go: "pau", arg: "comparativas-temas", label: strip(Pa["comparativas-temas"].title) }];
+  }
+  /* rótulo de una sección tal como lo pone el menú (ya traducido); si no está en el menú, el de TXT */
+  function navLabel(v, k){ var b = document.querySelector('#tabs [data-view="' + v + '"]'); return b ? strip(b.textContent) : t(k || v); }
+  function logicaDe(subject, tema){ return subject === "fil" && tema === 4 && view("logica") ? [{ go: "logica", arg: "", label: navLabel("logica", "logica") }] : []; }
+  /* polémicas, comunidades y perseguidos declaran sus temas (claves de THEORY) en «temas» */
+  function porTemas(name, go_, teoriaKeys, label){
+    var A = G(name); if (!Array.isArray(A) || !view(go_) || !teoriaKeys.length) return [];
+    return A.filter(function(x){ return x && (x.temas || []).some(function(k){ return teoriaKeys.indexOf(k) >= 0; }); })
+      .map(function(x){ return { go: go_, arg: x.id, label: label(x) }; });
+  }
+  /* debates del Duelo: los «pol-<id>» heredan los temas de su polémica; solo los del nivel de esta web */
+  function dueloDe(subject, polIds){
+    var D = G("DUELO_TEMAS"); if (!Array.isArray(D) || !view("duelo") || !polIds.length) return [];
+    return D.filter(function(d){ return d && /^pol-/.test(d.id) && polIds.indexOf(d.id.slice(4)) >= 0 && (d.nivel || []).indexOf(subject) >= 0; })
+      .map(function(d){ return { go: "duelo", arg: subject + "/" + d.id, label: strip(d.claim) }; });
+  }
+  var JUEGOS_TEMA = { hf: { 6: ["republica"], 8: ["eudaimonia"], 9: ["republica"], 15: ["leibniz"] }, fil: { 4: ["leibniz"] } };
+  function juegosDe(subject, tema){
+    var js = ((JUEGOS_TEMA[subject] || {})[tema] || []).slice();
+    if (subject === "fil") js.push("rayuela");   /* decisión del profesor (18-10): Rayuela en todos los temas de 1.º */
+    return js.filter(function(v){ return view(v); }).map(function(v){ return { go: v, arg: "", label: navLabel(v, "juegos") }; });
+  }
   function finHtml(subject, tema, key){
     var T = coll("THEORY"), teoria = items("teoria", subject, tema);
     var row = function(label, arr){ return arr.length ? '<div class="fin-row"><span class="fin-l">' + esc(label) + '</span><div class="fin-links">' + arr.map(function(x){ return btn(x); }).join("") + '</div></div>' : ""; };
@@ -282,17 +333,38 @@
     var anexosArr = !esAnexo(T[key]) ? Object.keys(T).filter(function(k){ return T[k].subject === subject && esAnexo(T[k]) && T[k].temaN === tema; })
       .map(function(k){ return { go: "teoria", arg: k, label: strip(T[k].title).replace(/^(Exploración|Esplorazioa|Exploration|Anexo|Eranskina|Annexe|Annex|Appendix)\s*-\s*/, "") }; }) : [];
     var epocaArr = epocasDeTeoria(key, subject, tema).map(function(k){ return { go: "ilustres", arg: "epoca-" + k, label: nombreEpoca(k) }; });   // (11-10) con / con2 y Filosofía 1.º
+    /* (18-10) vídeos en euskera de Ikusgela del tema (videos_eu.js): enlaces externos; en euskera, con su título original */
+    var V = G("VIDEOS_EU"), euWeb = (document.documentElement.lang || "").slice(0, 2) === "eu";
+    var videosArr = Array.isArray(V) ? V.filter(function(v){ return (v.temas || []).indexOf(key) >= 0; }) : [];
+    var videosHtml = videosArr.length ? '<div class="fin-row"><span class="fin-l">' + esc(t("videosEu")) + '</span><div class="fin-links">' +
+      videosArr.map(function(v){ return '<a class="itin-lnk" href="https://www.youtube.com/watch?v=' + esc(v.id) + '" target="_blank" rel="noopener" hreflang="eu" title="' + esc(t("videoEu") + " · «" + v.eu_titulo + "»") + '">' +
+        esc(euWeb ? v.eu_titulo : v.es) + ' <i>' + esc(v.dur) + '</i></a>'; }).join("") + '</div></div>' : "";
     var P = { tarjetas: row(t("tarjetas"), items("tarjetas", subject, tema)), cuestionarios: row(t("cuestionarios"), items("cuestionarios", subject, tema)),
       infografias: row(t("infografias"), items("infografias", subject, tema)), mapas: row(t("mapas"), items("mapas", subject, tema)),
       esquemas: row(t("esquemas"), items("esquemas", subject, tema)), lecturas: row(t("lecturas"), items("lecturas", subject, tema)),
       comentario: row(t("comentarios"), items("comentario", subject, tema)), dilemas: row(t("dilemas"), dilemasDe(teoria.map(function(x){ return x.arg; }))),
-      pistas: row(t("pistas"), pistasDe(teoria.map(function(x){ return x.arg; }))), conceptos: conceptosHtml, anexos: row(t("anexos"), anexosArr), epoca: row(t("epoca"), epocaArr) };
+      pistas: row(t("pistas"), pistasDe(teoria.map(function(x){ return x.arg; }))), conceptos: conceptosHtml, anexos: row(t("anexos"), anexosArr), epoca: row(t("epoca"), epocaArr), videos: videosHtml };
+    /* (18-10, P-025) lo que faltaba. En «Ampliar», una fila de más de seis enlaces se pliega con su total (regla 4.7 de docs/35). */
+    var rowFold = function(label, arr){ return arr.length > 6 ? '<details class="fin-row fin-fold"><summary class="fin-l">' + esc(label) + ' (' + arr.length + ')</summary><div class="fin-links">' +
+      arr.map(function(x){ return btn(x); }).join("") + '</div></details>' : row(label, arr); };
+    var tk = teoria.map(function(x){ return x.arg; });
+    var pols = porTemas("POLEMICAS", "polemicas", tk, function(p){ return strip(p.a) + " / " + strip(p.b); });
+    P.cronogramas = row(t("cronogramas"), cronosDe(subject, tema));
+    P.disertaciones = row(t("disertaciones"), disertDe(subject, tema));
+    P.comparativas = row(t("comparativas"), comparativasDe(subject, tema));
+    P.logica = row(t("logica"), logicaDe(subject, tema));
+    P.polemicas = rowFold(t("polemicas"), pols);
+    P.comunidades = rowFold(t("comunidades"), porTemas("COMUNIDADES", "comunidades", tk, function(c){ return strip(c.nombre); }));
+    P.perseguidos = rowFold(t("perseguidos"), porTemas("PERSEGUIDOS", "perseguidos", tk, function(c){ return strip(c.nombre); }));
+    P.duelo = rowFold(t("duelo"), dueloDe(subject, pols.map(function(x){ return x.arg; })));
+    P.juegos = row(t("juegos"), juegosDe(subject, tema));
     /* (12-10, rediseño Lote 3) la caja del final del tema se ordena en TRES bloques en TODOS los temas */
     var blk = function(titulo, arr){ var inner = arr.filter(Boolean).join(""); return inner ? '<div class="fin-bloque"><h3>' + esc(titulo) + '</h3>' + inner + '</div>' : ""; };
     var amp = function(titulo, arr){ var inner = arr.filter(Boolean).join(""); return inner ? '<details class="fin-bloque fin-amp"><summary>' + esc(titulo) + '</summary>' + inner + '</details>' : ""; };
-    var rowsHtml = blk(t("blEstudiar"), [P.tarjetas, P.cuestionarios, P.infografias, P.mapas, P.esquemas, P.conceptos, P.epoca]) +
-      (subject === "hf" ? blk(t("blPau"), [P.lecturas, P.comentario]) : blk(t("blPensar"), [P.lecturas, P.dilemas, P.pistas])) +
-      (subject === "hf" ? amp(t("blAmpliar"), [P.anexos, P.dilemas, P.pistas]) : amp(t("blAmpliar"), [P.anexos]));
+    var ampComun = [P.anexos].concat(subject === "hf" ? [P.dilemas, P.pistas] : []).concat([P.polemicas, P.comunidades, P.perseguidos, P.duelo, P.juegos, P.videos]);
+    var rowsHtml = blk(t("blEstudiar"), [P.tarjetas, P.cuestionarios, P.infografias, P.mapas, P.esquemas, P.conceptos, P.epoca, P.cronogramas]) +
+      (subject === "hf" ? blk(t("blPau"), [P.lecturas, P.comentario, P.disertaciones, P.comparativas]) : blk(t("blPensar"), [P.lecturas, P.disertaciones, P.dilemas, P.pistas, P.logica])) +
+      amp(t("blAmpliar"), ampComun);
     /* tema anterior / siguiente, en el orden de la materia; desde un anexo, solo «Volver al tema» */
     var ks = temasDe(subject), i = ks.indexOf(key), prev = i > 0 ? ks[i - 1] : null, next = i >= 0 && i < ks.length - 1 ? ks[i + 1] : null;
     if (i < 0 && esAnexo(T[key])) prev = ks.filter(function(k){ return !T[k].sigla && temaOf("teoria", k, T[k]) === tema; })[0] || null;
