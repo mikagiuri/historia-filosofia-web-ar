@@ -11,9 +11,7 @@ const GUIA = {
   "materia_hf": "تاريخ الفلسفة",
   "materia_fil": "الفلسفة 1"
  },
- "pdf": {
-  "hf": "media/guia/hf/guia_aula_de_filosofia_hf.pdf"
- },
+ "pdf": {},
  "bloques": [
   {
    "type": "h",
