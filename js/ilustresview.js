@@ -122,7 +122,7 @@ function renderIluControls(){
     '<div class="fgroup"><span class="flabel">الترتيب</span>' +
       '<button class="fbtn" data-iord="cron" aria-pressed="' + (iluOrden === "cron") + '">حسب التاريخ</button>' +
       '<button class="fbtn" data-iord="alfa" aria-pressed="' + (iluOrden === "alfa") + '">أبجدي</button></div>' +
-    '<div class="ilu-tools"><input class="ilu-search" id="ilusearch" type="search" placeholder="ابحثوا عن مفكر أو عمل أو فكرة…" autocomplete="off" aria-label="البحث في الأعلام"></div>';
+    '<div class="ilu-tools"><input class="ilu-search" id="ilusearch" type="search" placeholder="ابحثوا عن مفكر أو عمل أو فكرة…" autocomplete="off" aria-label="البحث في السِّيَر"></div>';
   box.querySelectorAll("[data-iamb]").forEach(b => b.addEventListener("click", () => {
     iluAmb = b.dataset.iamb;
     box.querySelectorAll("[data-iamb]").forEach(x => x.setAttribute("aria-pressed", x.dataset.iamb === iluAmb));
@@ -282,7 +282,7 @@ function iluAbrirGlosario(t, sub){
    los pensadores de esa época en Ilustres (calculado) y el paso a la época siguiente. */
 const ILU_EPO = { ver: "عرض بطاقة الحقبة", abre: "ما الذي يفتتحها", social: "المجتمع", politico: "السياسة",
   ciencia: "العلم والتقنية", arte: "الفن", pensamiento: "الفكر", pensadores: "مفكرو هذه الحقبة", rupturas: "القطائع والتحولات",
-  trampa: "فخّ", epoca: "العصر", volver: "→ كل الأعلام" };
+  trampa: "فخّ", epoca: "العصر", volver: "→ كل السِّيَر" };
 function iluListaPlegada(items, n){
   const resto = items.slice(n);
   return items.slice(0, n).join(", ") + (resto.length ? ' <details class="ilu-conc-mas"><summary>' + ILU_REL.mas.replace("{n}", resto.length) + '</summary>' + resto.join(", ") + '</details>' : '');
@@ -355,7 +355,7 @@ function loadIlustre(id){
   const i = seq.findIndex(x => x.id === id), prev = seq[i - 1], next = seq[i + 1];
   const r = iluRetrato(p);
   box.innerHTML =
-    '<div class="ilu-nav"><button class="btn ghost" data-back>→ كل الأعلام</button>' +
+    '<div class="ilu-nav"><button class="btn ghost" data-back>→ كل السِّيَر</button>' +
     '<span class="ilu-pn">' +
       (prev ? '<button class="btn ghost" data-go-ilu="' + iluEsc(prev.id) + '" title="' + iluEsc(prev.name) + '">‹ السابق</button>' : '') +
       (next ? '<button class="btn ghost" data-go-ilu="' + iluEsc(next.id) + '" title="' + iluEsc(next.name) + '">التالي ›</button>' : '') +
@@ -412,7 +412,7 @@ function iluInjectTheory(){
   if (!ps.length) return;
   const strip = document.createElement("aside");
   strip.className = "ilu-strip";
-  strip.innerHTML = '<h3>أعلام هذا الموضوع</h3><div class="ilu-strip-list">' +
+  strip.innerHTML = '<h3>سِيَر هذا الموضوع</h3><div class="ilu-strip-list">' +
     ps.map(p => '<button data-ilu="' + iluEsc(p.id) + '" data-b="' + p.block + '">' + iluEsc(p.name) + '<span>' + iluEsc(p.dates) + '</span></button>').join("") + '</div>';
   body.appendChild(strip);
   strip.querySelectorAll("[data-ilu]").forEach(b => b.addEventListener("click", () => {
