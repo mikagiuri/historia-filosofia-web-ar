@@ -76,6 +76,16 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/museo2/gorgias.jpg",
   "pie": "Gorgia di Leontini · Giuseppe Emanuele Ortolani e C. Biondi · Public Domain"
  },
+ "meliso": {
+  "f": "media/retratos/ilustres/meliso.jpg",
+  "pie": "Meliso de Samos (retrato imaginario, 1493) · Hartmann Schedel, Crónica de Núremberg · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Melissus_Nuremberg_Chronicle.jpg"
+ },
+ "leucipo": {
+  "f": "media/retratos/ilustres/leucipo.jpg",
+  "pie": "Leucipo (retrato imaginario, 1652-1653) · Luca Giordano · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Pinacoteca_Querini_Stampalia_-_Leucippus_-_Luca_Giordano.jpg"
+ },
  "policleto": {
   "f": "media/retratos/ilustres/policleto.jpg",
   "pie": "Estatua de Policleto (s. XIX, figura imaginada), Nuevo Hermitage, San Petersburgo · Александр Сигачёв · CC BY-SA 4.0",
@@ -85,6 +95,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/buda.jpg",
   "pie": "Gandhara Buddha (Museo Nacional de Tokio) · Escultura de Gandhara, s. I-II · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Gandhara_Buddha_(tnm).jpeg"
+ },
+ "filolao": {
+  "f": "media/retratos/ilustres/filolao.jpg",
+  "pie": "Filolao de Crotona (retrato imaginario, 1492) · Franchino Gaffurio, Theorica musicae · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Pythagoras_and_Philolaus.png"
  },
  "socrates": {
   "f": "media/retratos/museo/socrates.jpg",
@@ -129,6 +144,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Diogenes statue Sinop enhanced · Diogenes-statue-Sinop.JPG: Tony f derivative work: Singinglemon (talk) · CC BY 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Diogenes-statue-Sinop-enhanced.jpg"
  },
+ "espeusipo": {
+  "f": "media/retratos/ilustres/espeusipo.jpg",
+  "pie": "Espeusipo (retrato imaginario, hacia 1655) · Thomas Stanley, The History of Philosophy · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Speusippus_in_Thomas_Stanley_History_of_Philosophy.jpg"
+ },
  "aristoteles": {
   "f": "media/retratos/museo/aristoteles.jpg",
   "pie": "Aristotle Altemps Inv8575 · After Lysippos · Public Domain",
@@ -144,6 +164,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Busto de Teofrasto (Villa Albani, copia romana) · Autor desconocido · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Bust_of_Theophrastus_from_Villa_Albani.png"
  },
+ "crates": {
+  "f": "media/retratos/ilustres/crates.jpg",
+  "pie": "Crates de Tebas (retrato imaginario; fresco romano, s. I a. C.) · Villa della Farnesina (anónimo) · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Crates_of_Thebes_Villa_Farnesina.jpg"
+ },
  "pirron": {
   "f": "media/retratos/museo2/pirron.jpg",
   "pie": "Pyrrho Heliensis - Illustrium philosophorum et sapientum effigies ab eorum numistatibus extractae · Girolamo Olgiati · Public Domain"
@@ -153,6 +178,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Epicurus Massimo Inv197306 · Anónimo / desconocido · Public Domain",
   "page": "https://commons.wikimedia.org/wiki/File:Epicurus_Massimo_Inv197306.jpg"
  },
+ "straton": {
+  "f": "media/retratos/ilustres/straton.jpg",
+  "pie": "Estratón de Lámpsaco (retrato imaginario, 1493) · Hartmann Schedel, Crónica de Núremberg · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Strato_Nuremberg_Chronicle.jpg"
+ },
  "zenon": {
   "f": "media/retratos/museo2/zenon-citio.jpg",
   "pie": "Zeno of Citium - Museo archeologico nazionale di Napoli · Jeremy Weate from Abuja, Nigeria · CC BY 2.0"
@@ -160,6 +190,16 @@ const ILUSTRES_RETRATOS = {
  "cleantes": {
   "f": "media/retratos/museo2/cleantes.jpg",
   "pie": "Cleanthes Assius - Illustrium philosophorum et sapientum effigies ab eorum numistatibus extractae · Girolamo Olgiati · Public Domain"
+ },
+ "timon": {
+  "f": "media/retratos/ilustres/timon.jpg",
+  "pie": "Timón de Fliunte (retrato imaginario, hacia 1655) · Thomas Stanley, The History of Philosophy · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Timon_in_Thomas_Stanley_History_of_Philosophy.jpg"
+ },
+ "arcesilao": {
+  "f": "media/retratos/ilustres/arcesilao.jpg",
+  "pie": "Arcesilao de Pitane (retrato imaginario, 1810) · Grabado de la portada de los Academica de Cicerón · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Arcesilaus_and_Carneades.jpg"
  },
  "crisipo": {
   "f": "media/retratos/museo2/crisipo.jpg",
@@ -204,6 +244,16 @@ const ILUSTRES_RETRATOS = {
   "pie": "Hypatia Charles William Mitchell · Charles William Mitchell · Public Domain",
   "page": "https://commons.wikimedia.org/wiki/File:Hypatia_(Charles_William_Mitchell).jpg"
  },
+ "escoto_erigena": {
+  "f": "media/retratos/ilustres/escoto_erigena.jpg",
+  "pie": "Juan Escoto Erígena (retrato imaginario, s. XII) · Miniatura anónima (Clavis physicae, BnF, Lat. 6734) · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Johannes_Scottus_Eriugena.jpg"
+ },
+ "avicena": {
+  "f": "media/retratos/ilustres/avicena.jpg",
+  "pie": "Avicena (retrato imaginario, miniatura persa sin fecha) · Anónimo · CC0",
+  "page": "https://commons.wikimedia.org/wiki/File:Avicenna-miniatur.png"
+ },
  "anselmo": {
   "f": "media/retratos/museo2/anselmo.jpg",
   "pie": "AnselmCanterbury2 · Public Domain"
@@ -213,10 +263,20 @@ const ILUSTRES_RETRATOS = {
   "pie": "Abelard · Unknown authorUnknown author · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Abelard.jpg"
  },
+ "avempace": {
+  "f": "media/retratos/ilustres/avempace.jpg",
+  "pie": "Avempace (retrato imaginario, 1961) · Anónimo · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Ibn_B%C4%81jja,_Sayr_mulhimah_min_al-Sharq_wa-al-Gharb.png"
+ },
  "hildegarda": {
   "f": "media/retratos/ilustres/hildegarda.jpg",
   "pie": "Hildegard von Bingen · Unknown authorUnknown author · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Hildegard_von_Bingen.jpg"
+ },
+ "eloisa": {
+  "f": "media/retratos/ilustres/eloisa.jpg",
+  "pie": "Eloísa (retrato imaginario, 1883) · World's Noted Women · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Heloise_World_Noted_Women.jpg"
  },
  "averroes": {
   "f": "media/retratos/museo/averroes.jpg",
@@ -226,6 +286,11 @@ const ILUSTRES_RETRATOS = {
  "maimonides": {
   "f": "media/retratos/museo2/maimonides.jpg",
   "pie": "Maimonides bas-relief in the U.S. House of Representatives chamber cropped · Sculpture by Brenda Putnam; photo by the Architect of the Capitol · Public Domain"
+ },
+ "roger_bacon": {
+  "f": "media/retratos/ilustres/roger_bacon.jpg",
+  "pie": "Roger Bacon (retrato imaginario, 1617) · Michael Maier, Symbola aureae mensae · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Roger_Bacon_by_Michael_Maier.jpg"
  },
  "tomas": {
   "f": "media/retratos/museo/aquino.jpg",
@@ -296,6 +361,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/museo2/montaigne.jpg",
   "pie": "Michel de Montaigne, Portrait from Tietz edition (1753) · Engraving by J. C. G. Fritzsch · Public Domain"
  },
+ "giordano_bruno": {
+  "f": "media/retratos/ilustres/giordano_bruno.jpg",
+  "pie": "Giordano Bruno (retrato imaginario, principios del s. XVIII) · Johann Georg Mentzel · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Giordano_Bruno_-_Mentzel.jpg"
+ },
  "francis_bacon": {
   "f": "media/retratos/museo2/bacon.jpg",
   "pie": "British (English) School - Portrait of an Unknown Man (called 'Sir Francis Bacon, 1561–1626, Viscount St Albans') - 1210310 - National Trust · anonymous · Public Domain"
@@ -360,6 +430,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/museo2/leibniz.jpg",
   "pie": "Christoph Bernhard Francke - Bildnis des Philosophen Leibniz (ca. 1695) · Christoph Bernhard Francke · Public Domain"
  },
+ "bayle": {
+  "f": "media/galeria_museo/spinoza_universal/bayle.jpg",
+  "pie": "Pierre Bayle (hacia 1675) · Atribuido a Louis Ferdinand Elle el Joven · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Pierre_Bayle_by_Louis_Ferdinand_Elle.jpg"
+ },
  "berkeley": {
   "f": "media/retratos/museo2/berkeley.jpg",
   "pie": "Bishop George Berkeley by John Smibert, perhaps 1727, oil on canvas, from the National Portrait Gallery - NPG-8900050A 2 · John Smibert · Public Domain"
@@ -418,6 +493,11 @@ const ILUSTRES_RETRATOS = {
  "dalembert": {
   "f": "media/retratos/museo2/dalembert.jpg",
   "pie": "Jean le Rond d'Alembert. Line engraving. Wellcome V0000121 · Wellcome Collection · CC BY 4.0"
+ },
+ "morelly": {
+  "f": "media/retratos/ilustres/morelly.jpg",
+  "pie": "Étienne-Gabriel Morelly (retrato imaginario, finales del s. XVIII) · Autor desconocido · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:%C3%89tienne-Gabriel_Morelly.png"
  },
  "holbach": {
   "f": "media/retratos/ilustres/holbach.jpg",
@@ -481,6 +561,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/goethe.jpg",
   "pie": "Goethe (Stieler 1828) · Joseph Karl Stieler · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Goethe_(Stieler_1828).jpg"
+ },
+ "roux": {
+  "f": "media/retratos/ilustres/roux.jpg",
+  "pie": "Jacques Roux (retrato imaginario, entre 1793 y 1801) · Autor desconocido (Museo Carnavalet) · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Jacques_Roux_-_estampe_du_mus%C3%A9e_Carnavalet.jpg"
  },
  "hamilton": {
   "f": "media/retratos/ilustres/hamilton.jpg",
@@ -712,6 +797,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/museo2/husserl.jpg",
   "pie": "Edmund Husserl (Jewish influence in modern thought, 1929) · Public Domain"
  },
+ "dewey": {
+  "f": "media/retratos/museo/dewey.jpg",
+  "pie": "John Dewey cph.3a51565 · Underwood & Underwood · Public Domain",
+  "page": "https://commons.wikimedia.org/wiki/File%3AJohn_Dewey_cph.3a51565.jpg"
+ },
  "whitehead": {
   "f": "media/retratos/ilustres/whitehead.jpg",
   "pie": "ANWhitehead · unknown · Public domain",
@@ -731,9 +821,19 @@ const ILUSTRES_RETRATOS = {
   "pie": "Marie Curie c1920 · Henri Manuel · Public Domain",
   "page": "https://commons.wikimedia.org/wiki/File%3AMarie_Curie_c1920.jpg"
  },
+ "luxemburgo": {
+  "f": "media/retratos/ilustres/luxemburgo.jpg",
+  "pie": "Rosa Luxemburgo (h. 1910) · Autor desconocido · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Rosa_Luxemburg.jpg"
+ },
  "russell": {
   "f": "media/retratos/museo2/russell.jpg",
   "pie": "William Timym-Bertrand Russell-bronze bust-1970 · Alexanderb1970 · CC0"
+ },
+ "kollontai": {
+  "f": "media/retratos/ilustres/kollontai.jpg",
+  "pie": "Aleksandra Kollontái · George Grantham Bain Collection · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Alexandra_Kollontai.jpg"
  },
  "moore": {
   "f": "media/retratos/ilustres/moore.jpg",
@@ -788,6 +888,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/carnap.jpg",
   "pie": "Rudolf Carnap en 1907 · PD-US",
   "page": "https://en.wikipedia.org/wiki/File:Rudolf_Carnap_in_1907.jpeg"
+ },
+ "gramsci": {
+  "f": "media/retratos/ilustres/gramsci.jpg",
+  "pie": "Antonio Gramsci (hacia 1920) · Autor desconocido · Public domain",
+  "page": "https://commons.wikimedia.org/wiki/File:Gramsci.png"
  },
  "benjamin": {
   "f": "media/retratos/ilustres/benjamin.jpg",
@@ -848,6 +953,10 @@ const ILUSTRES_RETRATOS = {
   "pie": "Simone de Beauvoir drawing · aeneastudio · CC BY 2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Simone_de_Beauvoir_drawing.jpg"
  },
+ "weil": {
+  "f": "media/retratos/museo2/weil.jpg",
+  "pie": "Simone Weil (1909-1943) portrait · AnonymousUnknown author · Public Domain"
+ },
  "turing": {
   "f": "media/retratos/ilustres/turing.jpg",
   "pie": "Alan Turing (1951) (crop) · Elliott &amp; Fry · Public domain",
@@ -891,6 +1000,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Arthur Danto, 2012 · AmeOnTheLoose at Italian Wikipedia · CC BY-SA 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Arthur_Danto,_2012.jpg"
  },
+ "feyerabend": {
+  "f": "media/retratos/ilustres/feyerabend.jpg",
+  "pie": "Paul Feyerabend · Grazia Borrini-Feyerabend · Attribution",
+  "page": "https://commons.wikimedia.org/wiki/File:Paul_Feyerabend_1.jpg"
+ },
  "bauman": {
   "f": "media/retratos/ilustres/bauman.jpg",
   "pie": "Zigmunt Bauman na 20 Forumi vydavciv(Cropped) · Forumlitfest · CC BY 3.0",
@@ -933,6 +1047,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/debord.jpg",
   "pie": "Guy Debord, painted portrait · thierry ehrmann · CC BY 2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Guy_Debord,_painted_portrait.jpg"
+ },
+ "rorty": {
+  "f": "media/retratos/ilustres/rorty.jpg",
+  "pie": "Richard Rorty (dibujo a lápiz, 2013) · Manuel Redondo Dueñas · CC BY-SA 3.0",
+  "page": "https://commons.wikimedia.org/wiki/File:Richard_McKay_Rorty.png"
  },
  "vattimo": {
   "f": "media/retratos/ilustres/vattimo.jpg",

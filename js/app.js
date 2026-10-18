@@ -105,6 +105,22 @@ function routeNote(msg){
 function routeUnknown(){
   const raw = (location.hash || "").replace(/^#/, ""), go = raw.split("/")[0];
   if (!go || document.getElementById(go)) return;   // sin hash, o ancla interna (#th-3, #contenido): nada que avisar
+  /* (18-10) P-058: si el build lleva la vista «Sección no encontrada», se muestra fija y la dirección se conserva
+     (el aviso flotante se borraba a los 8 s y la dirección pasaba a la portada). Si no la lleva, el aviso de siempre. */
+  const nf = document.getElementById("noencontrada");
+  if (nf){
+    views.forEach(v => v.classList.toggle("active", v === nf));
+    tabs.querySelectorAll("button[data-view]").forEach(b => b.setAttribute("aria-current", "false"));
+    let dir = raw; try { dir = decodeURIComponent(raw); } catch (e){}
+    const d = document.getElementById("nfdir"); if (d) d.textContent = "#" + dir;
+    const home = homeView(), a = document.getElementById("nfhome"); if (a && home) a.setAttribute("href", "#" + home);
+    const m = document.getElementById("nfmapa"); if (m) m.hidden = !document.getElementById("mapa");
+    const b = document.getElementById("nfsearch");
+    if (b){ b.hidden = !document.getElementById("searchbtn"); b.onclick = () => { const sb = document.getElementById("searchbtn"); if (sb) sb.click(); }; }
+    window.scrollTo(0, 0);
+    const h = nf.querySelector("h1"); if (h){ h.setAttribute("tabindex", "-1"); try { h.focus({ preventScroll: true }); } catch (e){} }
+    return;
+  }
   const home = homeView();
   if (home){
     try { history.replaceState(null, "", "#" + home); } catch (e){}
