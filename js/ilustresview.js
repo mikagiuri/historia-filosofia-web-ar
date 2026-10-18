@@ -15,6 +15,9 @@ let iluAmb = "all";   // (12-10) 1.º: fila «Ámbito»
 /* (18-10) petición del profesor: elegir el orden de la lista, por fecha (épocas, como siempre) o alfabético
    (agrupado por letra). Se recuerda en este navegador. */
 let iluOrden = (() => { try { return localStorage.getItem("iluOrden") === "alfa" ? "alfa" : "cron"; } catch (e) { return "cron"; } })();
+/* (18-10, decisión del profesor) todo perseguido tiene ficha aquí: etiqueta en la ficha y filtro en el índice (casos de perseguidos.js por cas_ilu) */
+let iluPers = false;
+function iluCasosPer(id){ return (typeof PERSEGUIDOS !== "undefined" && Array.isArray(PERSEGUIDOS)) ? PERSEGUIDOS.filter(c => (c.cas_ilu || []).includes(id)) : []; }
 /* clave alfabética: el apellido; en la Antigüedad y la Edad Media, o con «de/da/della + lugar o familia» antes
    del Renacimiento-Moderna temprana (Nicolás de Cusa, Erasmo de Róterdam, Isabel de Bohemia), el nombre de pila;
    partículas en mayúscula (La Mettrie, De Morgan) y «X y Y» (Ortega y Gasset) se resuelven aquí. En las webs
@@ -90,6 +93,7 @@ function iluFiltered(){
     if (iluSubject !== "all" && !(p.subjects || []).includes(iluSubject)) return false;
     if (!iluEsFil() && iluEpoca !== "all" && p.block !== iluEpoca) return false;
     if (iluEsFil() && iluAmb !== "all" && !iluRamas(p).includes(iluAmb)) return false;
+    if (iluPers && !iluCasosPer(p.id).length) return false;
     if (q && !iluFold([p.name, p.role, p.idea, (p.obras || []).join(" "), p.bio, p.anecdota].join(" ")).includes(q)) return false;
     return true;
   });
@@ -119,6 +123,8 @@ function renderIluControls(){
     (present.length > 1 ? '<div class="fgroup"><span class="flabel">المادة</span>' + subjBtns + '</div>' : '') +
     (ambBtns ? '<div class="fgroup"><span class="flabel">المجال</span>' + ambBtns + '</div>'
              : '<div class="fgroup"><span class="flabel">العصر</span>' + epBtns + '</div>') +
+    (iluList().some(p => iluCasosPer(p.id).length)
+      ? '<div class="fgroup"><button class="fbtn" data-ipers aria-pressed="' + iluPers + '">' + "مضطهَدون بسبب أفكارهم" + '</button></div>' : '') +
     '<div class="fgroup"><span class="flabel">الترتيب</span>' +
       '<button class="fbtn" data-iord="cron" aria-pressed="' + (iluOrden === "cron") + '">حسب التاريخ</button>' +
       '<button class="fbtn" data-iord="alfa" aria-pressed="' + (iluOrden === "alfa") + '">أبجدي</button></div>' +
@@ -126,6 +132,11 @@ function renderIluControls(){
   box.querySelectorAll("[data-iamb]").forEach(b => b.addEventListener("click", () => {
     iluAmb = b.dataset.iamb;
     box.querySelectorAll("[data-iamb]").forEach(x => x.setAttribute("aria-pressed", x.dataset.iamb === iluAmb));
+    renderIluList();
+  }));
+  box.querySelectorAll("[data-ipers]").forEach(b => b.addEventListener("click", () => {
+    iluPers = !iluPers;
+    b.setAttribute("aria-pressed", iluPers);
     renderIluList();
   }));
   box.querySelectorAll("[data-iord]").forEach(b => b.addEventListener("click", () => {
@@ -154,6 +165,8 @@ function renderIluList(){
   const box = document.getElementById("ilubox"), cnt = document.getElementById("ilucount"), fb = document.getElementById("ilufilter");
   if (!box) return;
   if (fb) fb.hidden = false;
+  // (18-10) perseguidos.js se carga después que este fichero: si al pintar la lista ya hay perseguidos y falta su filtro, se repintan los controles
+  if (fb && !fb.querySelector("[data-ipers]") && iluList().some(p => iluCasosPer(p.id).length)) renderIluControls();
   const rows = iluFiltered(), total = iluList().length;
   if (cnt){
     cnt.hidden = false;
@@ -371,6 +384,7 @@ function loadIlustre(id){
             : iluEsc(iluEpocaName(p.block))) + ' · ' + iluEsc(p.role) + '</p>' +
           '<h2>' + iluEsc(p.name) + '</h2>' +
           '<p class="ilu-life">' + iluEsc(p.dates) + (p.place ? ' · ' + iluEsc(p.place) : '') + '</p>' +
+          iluCasosPer(p.id).map(c => '<p class="ilu-pers-tag"><button type="button" class="ilu-rel-a" data-cas-v="perseguidos" data-cas="' + iluEsc(c.id) + '">' + "مضطهَدون بسبب أفكارهم" + ' ›</button></p>').join("") +
           (p.idea ? '<p class="ilu-idea">' + iluEsc(p.idea) + '</p>' : '') +
         '</div>' +
       '</header>' +

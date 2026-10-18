@@ -126,6 +126,7 @@ function logTokens(s){
     if (two === "->" || two === "=>"){ out.push({ k: "imp" }); i += 2; continue; }
     if (c === "→"){ out.push({ k: "imp" }); i++; continue; }
     if (c === "(" || c === ")"){ out.push({ k: c }); i++; continue; }
+    if (c === "[" || c === "]"){ out.push({ k: c === "[" ? "(" : ")" }); i++; continue; }   /* (18-10) corchetes, como en las hojas de leyes */
     throw new Error(logT("errCar", { c }));
   }
   return out;
@@ -658,8 +659,8 @@ function logRenderConjuntos(){
 /* ---------- montaje y eventos ---------- */
 const LOG_SUB_SIL = ["silogismos", "cuadrado", "conjuntos"];
 /* (12-10) «Lógica moderna»: tablas de verdad, formalizar, reglas de inferencia y puertas lógicas (las dos del medio, en logicamoderna.js) */
-const LOG_SUB_MOD = ["tablas", "formalizar", "inferencia", "cuantificadores", "puertas"];
-const LOG_INTRO = { tablas: "introTablas", silogismos: "introSilog", cuadrado: "introCuadrado", conjuntos: "introConjuntos", puertas: "introPuertas", ejercicios: "introEjerc", clasicos: "introClasicos", formalizar: "introFormalizar", inferencia: "introInferencia", cuantificadores: "introCuantificadores", falacias: "introFalacias" };
+const LOG_SUB_MOD = ["tablas", "formalizar", "inferencia", "leyes", "cuantificadores", "puertas"];   /* (18-10) + «Leyes lógicas» */
+const LOG_INTRO = { tablas: "introTablas", silogismos: "introSilog", cuadrado: "introCuadrado", conjuntos: "introConjuntos", puertas: "introPuertas", ejercicios: "introEjerc", clasicos: "introClasicos", formalizar: "introFormalizar", inferencia: "introInferencia", leyes: "introLeyes", cuantificadores: "introCuantificadores", falacias: "introFalacias" };
 const LOG_GUIA = { tablas: "guiaTablas", silogismos: "guiaSilog", puertas: "guiaPuertas", ejercicios: "guiaEjerc", clasicos: "guiaClasicos" };
 function logRender(){
   const box = logBox(); if (!box) return;
@@ -667,9 +668,9 @@ function logRender(){
   const grupo = LOG_SUB_SIL.includes(LOG.tab) ? "silogismos" : LOG_SUB_MOD.includes(LOG.tab) ? "tablas" : LOG.tab;
   const tabs = [["silogismos", "tabClasica"], ["tablas", "tabModerna"], ...(typeof logRenderFalacias === "function" ? [["falacias", "tabFalacias"]] : []), ["paradojas", "tabParad"], ["ejercicios", "tabEjerc"], ["clasicos", "tabClasicos"]];
   const sub = LOG_SUB_SIL.includes(LOG.tab) ? [["silogismos", "tabSilog"], ["cuadrado", "tabCuadrado"], ["conjuntos", "tabConjuntos"]]
-    : LOG_SUB_MOD.includes(LOG.tab) ? [["tablas", "tabTablas"], ["formalizar", "tabFormalizar"], ["inferencia", "tabInferencia"], ["cuantificadores", "tabCuantificadores"], ["puertas", "tabPuertas"]].filter(([k]) => ["tablas", "puertas"].includes(k) || typeof logRenderFormalizar === "function") : null;
+    : LOG_SUB_MOD.includes(LOG.tab) ? [["tablas", "tabTablas"], ["formalizar", "tabFormalizar"], ["inferencia", "tabInferencia"], ["leyes", "tabLeyes"], ["cuantificadores", "tabCuantificadores"], ["puertas", "tabPuertas"]].filter(([k]) => ["tablas", "puertas"].includes(k) || typeof logRenderFormalizar === "function") : null;
   const cuerpo = LOG.tab === "silogismos" ? logRenderSil() : LOG.tab === "cuadrado" ? logRenderCuadrado() + (typeof logmConversion === "function" ? logmConversion() : "") : LOG.tab === "conjuntos" ? logRenderConjuntos() : LOG.tab === "puertas" ? logRenderPuertas()
-    : LOG.tab === "formalizar" && typeof logRenderFormalizar === "function" ? logRenderFormalizar() : LOG.tab === "inferencia" && typeof logRenderInferencia === "function" ? logRenderInferencia() : LOG.tab === "cuantificadores" && typeof logRenderCuantificadores === "function" ? logRenderCuantificadores() : LOG.tab === "falacias" && typeof logRenderFalacias === "function" ? logRenderFalacias()
+    : LOG.tab === "formalizar" && typeof logRenderFormalizar === "function" ? logRenderFormalizar() : LOG.tab === "inferencia" && typeof logRenderInferencia === "function" ? logRenderInferencia() : LOG.tab === "leyes" && typeof logRenderLeyes === "function" ? logRenderLeyes() : LOG.tab === "cuantificadores" && typeof logRenderCuantificadores === "function" ? logRenderCuantificadores() : LOG.tab === "falacias" && typeof logRenderFalacias === "function" ? logRenderFalacias()
     : LOG_PAR_VISTAS.includes(LOG.tab) ? logRenderParadojas(LOG.tab) : logRenderTablas();
   box.innerHTML = '<div class="fgroup lg-tabs" role="tablist">' + tabs.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (grupo === k) + '">' + logT(l) + "</button>").join("") + "</div>" +
     (sub ? '<div class="fgroup lg-subtabs">' + sub.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (LOG.tab === k) + '">' + logT(l) + "</button>").join("") + "</div>" : "") +

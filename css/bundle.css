@@ -2084,6 +2084,22 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #logicabox .lg-regla.lg-medio{ border-left-color:#d95f02; }
 #logicabox .lg-nof{ margin:.3rem 0; padding-left:1.1rem; } #logicabox .lg-nof li{ margin:.25rem 0; }
 #logicabox .lg-panel > h3{ margin:1rem 0 .4rem; }
+/* (18-10) Leyes lógicas: lista de 70 leyes por familias y reglas derivadas con su raya de deducción */
+#logicabox .lg-leyes{ border-top:1px solid var(--line); padding:.35rem 0; }
+#logicabox .lg-leyes > summary{ cursor:pointer; font-weight:600; padding:.2rem 0; }
+#logicabox .lg-leyes-l{ list-style:none; margin:.3rem 0 .4rem; padding:0; }
+#logicabox .lg-leyes-l li{ display:grid; grid-template-columns:2.2rem minmax(0, 1.3fr) minmax(0, 1fr) auto; gap:.3rem .7rem; align-items:center; padding:.3rem 0; border-bottom:1px dashed var(--line); }
+#logicabox .lg-ley-n{ color:var(--muted); text-align:end; font-variant-numeric:tabular-nums; }
+#logicabox .lg-ley-f{ font-family:var(--mono, ui-monospace, monospace); overflow-wrap:anywhere; text-align:start; }
+#logicabox .lg-ley-nom{ font-size:.9rem; }
+html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en LTR, pero junto al número */
+@media (max-width:640px){ #logicabox .lg-leyes-l li{ grid-template-columns:2rem minmax(0, 1fr) auto; } #logicabox .lg-ley-nom{ grid-column:2 / 4; grid-row:2; color:var(--muted); } #logicabox .lg-ley-f{ font-size:.88rem; } }
+#logicabox .lg-ded-fila{ display:flex; flex-wrap:wrap; gap:.6rem 1.2rem; margin:.3rem 0; }
+#logicabox .lg-ded-caja{ display:flex; align-items:flex-end; gap:.5rem; }
+#logicabox .lg-ded{ display:inline-flex; flex-direction:column; align-items:center; font-family:var(--mono, ui-monospace, monospace); font-size:.92rem; line-height:1.5; }
+#logicabox .lg-ded-c{ border-top:1.5px solid currentColor; padding-top:.1rem; margin-top:.1rem; align-self:stretch; text-align:center; }
+#logicabox .lg-ded-c.lg-ded-2{ border-top:4px double currentColor; }
+#logicabox .lg-regla h3 small{ font-weight:400; color:var(--muted); }
 /* (12-10) leyes de conjuntos: cada lado como «diagrama ∪ diagrama = diagrama», y los cinco casos de Euler */
 #logica .lg-co-h{ font-size:1rem; margin:1rem 0 .3rem }
 #logica .lg-co-ec{ display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:.25rem; margin:.3rem 0 .8rem }
@@ -2650,6 +2666,7 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #ilustres .ilu-era-tag{font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;font-weight:600;color:var(--e);margin-bottom:4px}
 #ilustres .ilu-id h2{font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:4px}
 #ilustres .ilu-life{color:var(--muted);font-size:.95rem}
+#ilustres .ilu-pers-tag{margin:.3rem 0 0;font-size:.92rem}   /* (18-10) enlace al caso de «Perseguidos por sus ideas» */
 #ilustres .ilu-idea{margin-top:14px;padding:10px 14px;border-inline-start:3px solid var(--e);background:var(--surface-2);border-radius:0 10px 10px 0;font-family:var(--serif);font-size:1.05rem;line-height:1.45}
 #ilustres .ilu-bio p{font-size:1rem;line-height:1.65;margin:0 0 .85em;max-width:70ch}
 #ilustres .ilu-sec{margin-top:18px}

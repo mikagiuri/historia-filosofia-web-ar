@@ -35,7 +35,7 @@ const ILUSTRES_RETRATOS = {
  },
  "jenofanes": {
   "f": "media/retratos/ilustres/jenofanes.jpg",
-  "pie": "Xenophanes in Thomas Stanley History of Philosophy · Unknown authorUnknown author · Public domain",
+  "pie": "Xenophanes in Thomas Stanley History of Philosophy · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Xenophanes_in_Thomas_Stanley_History_of_Philosophy.jpg"
  },
  "lao_zi": {
@@ -173,6 +173,10 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/museo2/pirron.jpg",
   "pie": "Pyrrho Heliensis - Illustrium philosophorum et sapientum effigies ab eorum numistatibus extractae · Girolamo Olgiati · Public Domain"
  },
+ "hiparquia": {
+  "f": "media/retratos/museo2/hiparquia.jpg",
+  "pie": "Hipparchia of Maroneia (Villa Farnesina fresco) · Unknown · Public Domain"
+ },
  "epicuro": {
   "f": "media/retratos/museo/epicuro.jpg",
   "pie": "Epicurus Massimo Inv197306 · Anónimo / desconocido · Public Domain",
@@ -215,6 +219,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Bust of Pseudo Seneca MET DP359039 · Peter Paul Rubens · CC0",
   "page": "https://commons.wikimedia.org/wiki/File:Bust_of_Pseudo-Seneca_MET_DP359039.jpg"
  },
+ "quintiliano": {
+  "f": "media/retratos/ilustres/quintiliano.jpg",
+  "pie": "Quintiliano · Taller de Michel Wolgemut (xilografía del Liber Chronicarum, la Crónica de Núremberg) · CC0 / dominio público (obra de 1493)",
+  "page": "https://commons.wikimedia.org/wiki/File:Marcus_Fabius_Quintilianus.jpg"
+ },
  "epicteto": {
   "f": "media/retratos/citas/epicteto.jpg",
   "pie": "Epictetus from L. Annaei Senecae philosophi Opera, 1605, title page detail · Theodoor Galle · Public domain",
@@ -244,6 +253,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Hypatia Charles William Mitchell · Charles William Mitchell · Public Domain",
   "page": "https://commons.wikimedia.org/wiki/File:Hypatia_(Charles_William_Mitchell).jpg"
  },
+ "isidoro": {
+  "f": "media/retratos/ilustres/isidoro.jpg",
+  "pie": "Isidoro de Sevilla · Bartolomé Esteban Murillo · Dominio público (PD-Art; Murillo falleció en 1682)",
+  "page": "https://commons.wikimedia.org/wiki/File:Isidor_von_Sevilla.jpeg"
+ },
  "escoto_erigena": {
   "f": "media/retratos/ilustres/escoto_erigena.jpg",
   "pie": "Juan Escoto Erígena (retrato imaginario, s. XII) · Miniatura anónima (Clavis physicae, BnF, Lat. 6734) · Public domain",
@@ -260,7 +274,7 @@ const ILUSTRES_RETRATOS = {
  },
  "abelardo": {
   "f": "media/retratos/ilustres/abelardo.jpg",
-  "pie": "Abelard · Unknown authorUnknown author · Public domain",
+  "pie": "Abelard · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Abelard.jpg"
  },
  "avempace": {
@@ -270,7 +284,7 @@ const ILUSTRES_RETRATOS = {
  },
  "hildegarda": {
   "f": "media/retratos/ilustres/hildegarda.jpg",
-  "pie": "Hildegard von Bingen · Unknown authorUnknown author · Public domain",
+  "pie": "Hildegard von Bingen · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Hildegard_von_Bingen.jpg"
  },
  "eloisa": {
@@ -315,6 +329,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/museo2/ockham.jpg",
   "pie": "William of Occam - Sketch - Frater Occham iste, 1341 · Public Domain"
  },
+ "pizan": {
+  "f": "media/retratos/ilustres/pizan.jpg",
+  "pie": "Christine de Pisan - cathedra (Harley MS 4431) · Iluminador anónimo (British Library, Harley MS 4431, f. 259v), c. 1410-1414 · Dominio público (manuscrito del s. XV; confirmado con la API de Commons el 18-10-2026)",
+  "page": "https://commons.wikimedia.org/wiki/File:Christine_de_Pisan_-_cathedra.jpg"
+ },
  "nicolas_cusa": {
   "f": "media/retratos/ilustres/nicolas_cusa.jpg",
   "pie": "Nicolás de Cusa (h. 1480, detalle) · Maestro de la Vida de la Virgen · Public domain",
@@ -352,10 +371,30 @@ const ILUSTRES_RETRATOS = {
   "pie": "Lucas Cranach d.Ä. - Martin Luther, 1528 (Veste Coburg) · Lucas Cranach the Elder · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Lucas_Cranach_d.%C3%84._-_Martin_Luther,_1528_(Veste_Coburg).jpg"
  },
+ "las_casas": {
+  "f": "media/retratos/ilustres/las_casas.jpg",
+  "pie": "Bartolomé de las Casas · Grabado anónimo (reproducido en una obra de 1791) · Dominio público",
+  "page": "https://commons.wikimedia.org/wiki/File:Bartolom%C3%A9_de_las_Casas.jpg"
+ },
+ "sepulveda": {
+  "f": "media/retratos/ilustres/sepulveda.jpg",
+  "pie": "Juan Ginés de Sepúlveda · José Maea (1760–1826) · Dominio público",
+  "page": "https://commons.wikimedia.org/wiki/File:Juan_Gin%C3%A9s_de_Sep%C3%BAlveda_(cropped).jpg"
+ },
+ "vives": {
+  "f": "media/retratos/ilustres/vives.jpg",
+  "pie": "Juan Luis Vives · Johann Theodor de Bry (grabador nacido en Lieja, activo en Fráncfort) · Dominio público (CC0, dedicación al dominio público)",
+  "page": "https://commons.wikimedia.org/wiki/File:Juan_Luis_Vives_philosophus.jpg"
+ },
  "calvino": {
   "f": "media/retratos/ilustres/calvino.jpg",
   "pie": "Portrait john calvin reverse · Portrait_john_calvin.jpg: Anonymous · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Portrait_john_calvin_reverse.jpg"
+ },
+ "servet": {
+  "f": "media/retratos/ilustres/servet.jpg",
+  "pie": "Miguel Servet · Christian Fritzsch (1695–1769), grabador · Dominio público",
+  "page": "https://commons.wikimedia.org/wiki/File:Michael_Servetus.jpg"
  },
  "montaigne": {
   "f": "media/retratos/museo2/montaigne.jpg",
@@ -365,6 +404,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/giordano_bruno.jpg",
   "pie": "Giordano Bruno (retrato imaginario, principios del s. XVIII) · Johann Georg Mentzel · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Giordano_Bruno_-_Mentzel.jpg"
+ },
+ "suarez": {
+  "f": "media/retratos/ilustres/suarez.jpg",
+  "pie": "Francisco Suárez · Anónimo (retrato conservado en Valladolid) · Dominio público",
+  "page": "https://commons.wikimedia.org/wiki/File:Retrato-del-padre-francisco-suarez-valladolid-s.-xvii.png"
  },
  "francis_bacon": {
   "f": "media/retratos/museo2/bacon.jpg",
@@ -397,6 +441,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/museo/descartes.jpg",
   "pie": "Frans Hals Portret van Ren Descartes · After Frans Hals · Public Domain",
   "page": "https://commons.wikimedia.org/wiki/File:Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg"
+ },
+ "gracian": {
+  "f": "media/retratos/ilustres/gracian.jpg",
+  "pie": "Baltasar Gracián · Anónimo · Dominio público",
+  "page": "https://commons.wikimedia.org/wiki/File:Baltasar_Graci%C3%A1n_Graus.jpg"
  },
  "isabel": {
   "f": "media/retratos/museo2/isabel-bohemia.jpg",
@@ -434,6 +483,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/galeria_museo/spinoza_universal/bayle.jpg",
   "pie": "Pierre Bayle (hacia 1675) · Atribuido a Louis Ferdinand Elle el Joven · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Pierre_Bayle_by_Louis_Ferdinand_Elle.jpg"
+ },
+ "feijoo": {
+  "f": "media/retratos/ilustres/feijoo.jpg",
+  "pie": "Benito Jerónimo Feijoo · Juan Bernabé Palomino (1692-1777) · Dominio público (grabado del siglo XVIII; Palomino falleció en 1777)",
+  "page": "https://commons.wikimedia.org/wiki/File:Benito_Jer%C3%B3nimo_Feijoo.jpg"
  },
  "berkeley": {
   "f": "media/retratos/museo2/berkeley.jpg",
@@ -548,6 +602,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Johann Gottfried Herder 2 · Anton Graff · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Johann_Gottfried_Herder_2.jpg"
  },
+ "jovellanos": {
+  "f": "media/retratos/ilustres/jovellanos.jpg",
+  "pie": "Gaspar Melchor de Jovellanos · Francisco de Goya · Dominio público (Goya falleció en 1828)",
+  "page": "https://commons.wikimedia.org/wiki/File:Gaspar_Melchor_de_Jovellanos.jpg"
+ },
  "bentham": {
   "f": "media/retratos/museo2/bentham.jpg",
   "pie": "Bentham head - moire · H. W. Pickersgill · Public Domain"
@@ -579,7 +638,7 @@ const ILUSTRES_RETRATOS = {
  },
  "hebert": {
   "f": "media/retratos/ilustres/hebert.jpg",
-  "pie": "Jacques-René Hébert (1757-1794) portrait · Unknown authorUnknown author · Public domain",
+  "pie": "Jacques-René Hébert (1757-1794) portrait · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Jacques-Ren%C3%A9_H%C3%A9bert_(1757-1794)_portrait.jpg"
  },
  "wollstonecraft": {
@@ -720,6 +779,11 @@ const ILUSTRES_RETRATOS = {
   "pie": "Pierre Joseph Proudhon · Gustave Courbet · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Pierre_Joseph_Proudhon.jpg"
  },
+ "balmes": {
+  "f": "media/retratos/ilustres/balmes.jpg",
+  "pie": "Jaime Balmes · Nicolás González (Madrid); retrato de época · Dominio público",
+  "page": "https://commons.wikimedia.org/wiki/File:Jaime_Balmes.jpg"
+ },
  "dickens": {
   "f": "media/retratos/ilustres/dickens.jpg",
   "pie": "Charles Dickens by Herbert Watkins 29 April 1858 (alternate) · Herbert Watkins (1828–1916) · Public domain",
@@ -736,7 +800,7 @@ const ILUSTRES_RETRATOS = {
  },
  "boole": {
   "f": "media/retratos/ilustres/boole.jpg",
-  "pie": "George Boole color · Unknown authorUnknown author · Public domain",
+  "pie": "George Boole color · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:George_Boole_color.jpg"
  },
  "marx": {
@@ -746,7 +810,7 @@ const ILUSTRES_RETRATOS = {
  },
  "mendel": {
   "f": "media/retratos/ilustres/mendel.jpg",
-  "pie": "Gregor Mendel with cross · Unknown authorUnknown author · Public domain",
+  "pie": "Gregor Mendel with cross · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Gregor_Mendel_with_cross.jpg"
  },
  "wallace": {
@@ -766,7 +830,7 @@ const ILUSTRES_RETRATOS = {
  },
  "kropotkin": {
   "f": "media/retratos/ilustres/kropotkin.jpg",
-  "pie": "Kropotkin1 · Unknown authorUnknown author · Public domain",
+  "pie": "Kropotkin1 · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Kropotkin1.jpg"
  },
  "james": {
@@ -781,7 +845,7 @@ const ILUSTRES_RETRATOS = {
  },
  "frege": {
   "f": "media/retratos/ilustres/frege.jpg",
-  "pie": "Young frege · Unknown authorUnknown author · Public domain",
+  "pie": "Young frege · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Young_frege.jpg"
  },
  "freud": {
@@ -806,6 +870,11 @@ const ILUSTRES_RETRATOS = {
   "f": "media/retratos/ilustres/whitehead.jpg",
   "pie": "ANWhitehead · unknown · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:ANWhitehead.jpg"
+ },
+ "salome": {
+  "f": "media/retratos/ilustres/salome.jpg",
+  "pie": "Lou Andreas-Salomé · Hofatelier Elvira (Múnich), c. 1897 · Dominio público (PD-old-70; publicada antes de 1931; confirmado con la API de Commons el 18-10-2026)",
+  "page": "https://commons.wikimedia.org/wiki/File:Lou_Andreas-Salom%C3%A9_-_Foto_Atelier_Elvira.jpg"
  },
  "unamuno": {
   "f": "media/retratos/museo2/unamuno.jpg",
@@ -842,7 +911,7 @@ const ILUSTRES_RETRATOS = {
  },
  "scheler": {
   "f": "media/retratos/ilustres/scheler.jpg",
-  "pie": "Max Scheler · Unknown authorUnknown author · Public domain",
+  "pie": "Max Scheler · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Max_Scheler.jpg"
  },
  "einstein": {
@@ -872,7 +941,7 @@ const ILUSTRES_RETRATOS = {
  },
  "duchamp": {
   "f": "media/retratos/ilustres/duchamp.jpg",
-  "pie": "Marcel Duchamp 01 · Unknown authorUnknown author · Public domain",
+  "pie": "Marcel Duchamp 01 · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Marcel_Duchamp_01.jpg"
  },
  "wittgenstein": {
@@ -955,7 +1024,7 @@ const ILUSTRES_RETRATOS = {
  },
  "weil": {
   "f": "media/retratos/museo2/weil.jpg",
-  "pie": "Simone Weil (1909-1943) portrait · AnonymousUnknown author · Public Domain"
+  "pie": "Simone Weil (1909-1943) portrait · Public Domain"
  },
  "turing": {
   "f": "media/retratos/ilustres/turing.jpg",

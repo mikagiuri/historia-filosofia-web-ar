@@ -115,6 +115,7 @@ function logRenderInferencia(){
   return '<div class="lg-panel"><h2>' + logmT("validas") + '</h2><div class="lg-reglas">' + LOGM_REGLAS.map(x => logmCarta(x, false)).join("") + "</div></div>" +
     '<div class="lg-panel"><h2>' + logmT("falacias") + '</h2><div class="lg-reglas">' + LOGM_FALACIAS.map(x => logmCarta(x, true)).join("") + "</div></div>" +
     '<p><button type="button" class="btn ghost" data-lgtab="falacias">' + logmT("falVer") + "</button></p>" +
+    '<p><button type="button" class="btn ghost" data-lgtab="leyes">' + logmT("leyesIr") + "</button></p>" +
     '<div class="lg-panel"><h2>' + logmT("ejTit") + '</h2><p class="lg-nota">' + logmT("ejAyuda") + "</p>" +
     LOGM_EJ.map((e, i) => {
       const r = LOG.inf[i], bien = T.find(x => x.k === e.r);
@@ -281,6 +282,145 @@ function logRenderFalacias(){
 }
 
 
+/* ---------- (18-10) pestaña «Leyes lógicas»: las 70 leyes elementales y las 21 reglas derivadas de deducción ----------
+   Transcritas de dos fotocopias que trajo el profesor el 18-10 («Leyes elementales de la lógica de enunciados», 2 hojas
+   a máquina, y «Reglas derivadas de deducción», 2 hojas). Las 70 leyes se han comprobado como tautologías y las 21 reglas
+   como argumentos válidos con este mismo motor (logParse/logEval). Erratas de la hoja corregidas: en la 40 falta la
+   flecha de «(p r)». La 68 lleva (p → r), la forma habitual de la ley de ese nombre; la hoja pone (q → r), que también
+   es tautología (orden del profesor del 18-10). Las abreviaturas de los nombres se escriben enteras («Lcp» = ley de carga de premisa, regla Cpr). */
+Object.assign(LOGM_TXT, {
+  tabLeyes: "القوانين المنطقية",
+  introLeyes: "القانون المنطقي صيغةٌ صادقة دائمًا، أيًّا كانت قيم حروفها: إنه تحصيل حاصل. تجدون هنا 70 قانونًا من منطق القضايا مجمَّعة في عائلات، و21 قاعدة استنباط مشتقة تستند إليها. اضغطوا «جدول» عند أيٍّ منها لتتحقّقوا منه بأنفسكم.",
+  leyesTit: "القوانين الأساسية لمنطق القضايا",
+  leyesNota: "الأقواس المربعة [ ] أقواسٌ عادية: تساعد على رؤية ما يقع داخل ماذا. القوانين التي يكون رابطها الرئيسي ↔ تقول إن صيغتين متكافئتان ويمكن وضع إحداهما مكان الأخرى؛ أما التي رابطها → فتسمح بالانتقال من إحداهما إلى الأخرى في اتجاه واحد فقط.",
+  leyTabla: "جدول",
+  derTit: "قواعد الاستنباط المشتقة",
+  derNota: "في الاستنباط، تسمح كل قاعدة بالانتقال من الصيغ الواقعة فوق الخط (المقدّمات) إلى الصيغة الواقعة تحته (النتيجة). ويعني الخط المزدوج أن القاعدة صالحة في الاتجاهين. إنها اختصارات: تُبرهَن كلٌّ منها بالقواعد الأساسية وتقابل أحد القوانين المذكورة أعلاه.",
+  derInter: "إذا كانت A وB متكافئتين، ففي أي صيغة C تحتوي على A يمكن وضع B مكانها: C<sub>A</sub> هي الصيغة التي فيها A، وC<sub>B</sub> هي الصيغة نفسها مع B. لذلك يصلح أي قانون فيه ↔ لإعادة كتابة جزء من صيغة.",
+  leyesIr: "القوانين المنطقية السبعون وقواعد الاستنباط المشتقة الإحدى والعشرون، في «القوانين المنطقية» ←"
+});
+const LOGM_LEYES = [
+  ["المبادئ", [
+    [1, "p ↔ p", "مبدأ الهوية"],
+    [2, "¬(p ∧ ¬p)", "مبدأ عدم التناقض"],
+    [3, "p ∨ ¬p", "مبدأ الثالث المرفوع"],
+    [4, "¬¬p ↔ p", "مبدأ النفي المزدوج"],
+    [5, "¬¬¬p ↔ ¬p", "مبدأ النفي الثلاثي"]]],
+  ["اللاتغيّر بالتكرار والتبديل والتجميع", [
+    [6, "(p ∧ p) ↔ p", "قانون اللاتغيّر بالتكرار في الوصل"],
+    [7, "(p ∧ q) ↔ (q ∧ p)", "قانون التبديل في الوصل"],
+    [8, "[(p ∧ q) ∧ r] ↔ [p ∧ (q ∧ r)]", "قانون التجميع في الوصل"],
+    [9, "(p ∨ p) ↔ p", "قانون اللاتغيّر بالتكرار في الفصل"],
+    [10, "(p ∨ q) ↔ (q ∨ p)", "قانون التبديل في الفصل"],
+    [11, "[(p ∨ q) ∨ r] ↔ [p ∨ (q ∨ r)]", "قانون التجميع في الفصل"]]],
+  ["التوزيع", [
+    [12, "[p ∧ (q ∨ r)] ↔ [(p ∧ q) ∨ (p ∧ r)]", "قانون توزيع الوصل على الفصل"],
+    [13, "[(p ∨ q) ∧ (r ∨ s)] ↔ [(p ∧ r) ∨ (p ∧ s) ∨ (q ∧ r) ∨ (q ∧ s)]", "قانون توزيع الوصل على الفصل (الصيغة الموسَّعة)"],
+    [14, "[p ∨ (q ∧ r)] ↔ [(p ∨ q) ∧ (p ∨ r)]", "قانون توزيع الفصل على الوصل"],
+    [15, "[(p ∧ q) ∨ (r ∧ s)] ↔ [(p ∨ r) ∧ (p ∨ s) ∧ (q ∨ r) ∧ (q ∨ s)]", "قانون توزيع الفصل على الوصل (الصيغة الموسَّعة)"]]],
+  ["التبسيط والإضافة", [
+    [16, "[p ∧ (p ∧ q)] ↔ (p ∧ q)", "القانون الأول لتبسيط الوصل"],
+    [17, "[p ∧ (p ∨ q)] ↔ p", "القانون الثاني لتبسيط الوصل"],
+    [18, "[p ∧ (q ∨ ¬q)] ↔ p", "القانون الثالث لتبسيط الوصل"],
+    [19, "(p ∧ q) → p", "القانون الرابع لتبسيط الوصل (من باب أولى)"],
+    [20, "(p ∧ q) → q", "القانون الخامس لتبسيط الوصل (من باب أولى)"],
+    [21, "[p ∨ (p ∨ q)] ↔ (p ∨ q)", "القانون الأول لتبسيط الفصل"],
+    [22, "[p ∨ (p ∧ q)] ↔ p", "القانون الثاني لتبسيط الفصل"],
+    [23, "[p ∨ (q ∧ ¬q)] ↔ p", "القانون الثالث لتبسيط الفصل"],
+    [24, "p → (p ∨ q)", "قانون الإضافة"],
+    [25, "q → (p ∨ q)", "قانون الإضافة"]]],
+  ["قوانين دي مورغان", [
+    [26, "¬(p ∨ q) ↔ (¬p ∧ ¬q)", "قانون دي مورغان الأول"],
+    [27, "¬(p ∧ q) ↔ (¬p ∨ ¬q)", "قانون دي مورغان الثاني"],
+    [28, "(p ∨ q) ↔ ¬(¬p ∧ ¬q)", "قانون دي مورغان الثالث"],
+    [29, "(p ∧ q) ↔ ¬(¬p ∨ ¬q)", "قانون دي مورغان الرابع"]]],
+  ["تعريف الروابط بعضها ببعض", [
+    [30, "(p ∧ q) ↔ ¬(p → ¬q)", "قانون التعريف المتبادل"],
+    [31, "(p ∨ q) ↔ (¬p → q)", "قانون التعريف المتبادل"],
+    [32, "(p → q) ↔ ¬(p ∧ ¬q)", "قانون التعريف المتبادل"],
+    [33, "(p → q) ↔ (¬p ∨ q)", "قانون التعريف المتبادل"],
+    [34, "(p ↔ q) ↔ [(p → q) ∧ (q → p)]", "قانون التعريف المتبادل"]]],
+  ["التصدير وتبديل المقدّمات والقياس", [
+    [35, "[(p ∧ q) → r] ↔ [p → (q → r)]", "قانون التصدير والاستيراد"],
+    [36, "[p → (q → r)] ↔ [q → (p → r)]", "قانون تبديل المقدّمات"],
+    [37, "p → [q → (p ∧ q)]", "يُستخرج من القانونين 35 و1"],
+    [38, "[(p → q) ∧ (q → r)] → (p → r)", "قانون القياس"],
+    [39, "(p → q) → [(q → r) → (p → r)]", "قانون القياس (من القانونين 38 و35)"],
+    [40, "(q → r) → [(p → q) → (p → r)]", "قانون القياس (من القانونين 39 و36)"],
+    [41, "(p → q) → [(r ∨ p) → (r ∨ q)]", "قانون القياس"]]],
+  ["إثبات المقدَّم، نفي التالي، القياس الفصلي والمعضلات", [
+    [42, "[(p → q) ∧ p] → q", "Modus ponendo ponens (1)"],
+    [43, "p → [(p → q) → q]", "Modus ponendo ponens (2)"],
+    [44, "[(p → q) ∧ ¬q] → ¬p", "Modus tollendo tollens (1)"],
+    [45, "¬q → [(p → q) → ¬p]", "Modus tollendo tollens (2)"],
+    [46, "[(p ∨ q) ∧ ¬p] → q", "القياس الفصلي"],
+    [47, "[(p ∨ q) ∧ ¬q] → p", "القياس الفصلي"],
+    [48, "[(p ∨ q) ∧ (p → r) ∧ (q → r)] → r", "قانون المعضلة البنّاءة البسيطة"],
+    [49, "[(p ∨ q) ∧ (p → r) ∧ (q → s)] → (r ∨ s)", "قانون المعضلة البنّاءة المركّبة"],
+    [50, "[(¬p ∨ ¬q) ∧ (r → p) ∧ (r → q)] → ¬r", "قانون المعضلة الهدّامة البسيطة"],
+    [51, "[(¬p ∨ ¬q) ∧ (r → p) ∧ (s → q)] → (¬r ∨ ¬s)", "قانون المعضلة الهدّامة المركّبة"]]],
+  ["برهان الخُلف", [
+    [52, "(p → ¬p) → ¬p", "القانون الأول لبرهان الخُلف"],
+    [53, "(¬p → p) → p", "القانون الثاني لبرهان الخُلف (قانون كلافيوس أو consequentia mirabilis)"],
+    [54, "[(p → q) ∧ (p → ¬q)] → ¬p", "القانون الثالث لبرهان الخُلف"],
+    [55, "[p → (q ∧ ¬q)] → ¬p", "القانون الرابع لبرهان الخُلف"]]],
+  ["من الكاذب يلزم أي شيء (والصادق يلزم من أي شيء)", [
+    [56, "(p ∧ ¬p) → p", "Ex falso sequitur quodlibet"],
+    [57, "(p ∧ ¬p) → ¬p", "Ex falso sequitur quodlibet"],
+    [58, "(p ∧ ¬p) → q", "Ex falso sequitur quodlibet"],
+    [59, "p → (¬p → q)", "Ex falso sequitur quodlibet (من القانونين 58 و35)"],
+    [60, "¬p → (p → q)", "Ex falso sequitur quodlibet"],
+    [61, "[(p → q) ∧ (p ∧ ¬q)] → r", "Ex falso sequitur quodlibet"],
+    [62, "p → (q → p)", "Verum sequitur ad quodlibet (القانون المفارِق أو قانون إضافة مقدّمة)"]]],
+  ["عكس النقيض والاستلزام", [
+    [63, "(p → q) ↔ (¬q → ¬p)", "قانون عكس النقيض في الشرطية"],
+    [64, "(p → q) ↔ [p ↔ (p ∧ q)]", "قانون الاستلزام"],
+    [65, "(p → q) ↔ [q ↔ (p ∨ q)]", "قانون الاستلزام"],
+    [66, "[p → (p → q)] ↔ (p → q)", "قانون الاستلزام"],
+    [67, "(p ∧ q) → (p → q)", "قانون الاستلزام"],
+    [68, "[(p → q) ∧ (p → r)] → [p → (q ∧ r)]", "قانون الوصل في التالي"],
+    [69, "[(p → q) ∧ (r → s)] → [(p ∨ r) → (q ∨ s)]", "قانون الفصل في الطرفين"],
+    [70, "[(p → q) ∧ (r → s)] → [(p ∧ r) → (q ∧ s)]", "قانون الوصل في الطرفين (praeclarum theorema، لايبنتس)"]]]
+];
+/* reglas: [nº, nombre, abreviatura, formas]; cada forma = [premisas separadas por «;», conclusión, raya doble] */
+const LOGM_DERIVADAS = [
+  [1, "القياس الشرطي", "Sil", [["p → q; q → r", "p → r"]]],
+  [2, "تبديل المقدّمات", "Mut", [["p → (q → r)", "q → (p → r)"]]],
+  [3, "الهوية", "Id", [["p", "p"]]],
+  [4, "إضافة مقدّمة", "Cpr", [["p", "q → p"]]],
+  [5, "توزيع الوصل", "DC", [["p ∧ (q ∨ r)", "(p ∧ q) ∨ (p ∧ r)", 1]]],
+  [6, "توزيع الفصل", "DD", [["p ∨ (q ∧ r)", "(p ∨ q) ∧ (p ∨ r)", 1]]],
+  [7, "عكس النقيض", "Cp", [["p → q", "¬q → ¬p", 1], ["p → ¬q", "q → ¬p", 1], ["¬p → q", "¬q → p", 1], ["¬p → ¬q", "q → p", 1]]],
+  [8, "Modus tollens (نفي التالي)", "MT", [["p → q; ¬q", "¬p"]]],
+  [9, "إدخال النفي المزدوج", "IDN", [["p", "¬¬p"]]],
+  [10, "القياس الفصلي", "SD", [["p ∨ q; ¬q", "p"], ["p ∨ q; ¬p", "q"]]],
+  [11, "المعضلة البنّاءة البسيطة", "Dil 1", [["p ∨ q; p → r; q → r", "r"]]],
+  [12, "المعضلة البنّاءة المركّبة", "Dil 2", [["p ∨ q; p → r; q → s", "r ∨ s"]]],
+  [13, "المعضلة الهدّامة البسيطة", "Dil 3", [["¬p ∨ ¬q; r → p; r → q", "¬r"]]],
+  [14, "المعضلة الهدّامة المركّبة", "Dil 4", [["¬p ∨ ¬q; r → p; s → q", "¬r ∨ ¬s"]]],
+  [15, "التبادل أو الاستبدال", "I", null],
+  [16, "تعريف الشرطية", "DI 1", [["p → q", "¬(p ∧ ¬q)"]]],
+  [17, "تعريف الشرطية", "DI 2", [["p → q", "¬p ∨ q"]]],
+  [18, "تعريف الوصل", "DfC 1", [["p ∧ q", "¬(p → ¬q)"]]],
+  [19, "تعريف الوصل", "DfC 2", [["p ∧ q", "¬(¬p ∨ ¬q)"]]],
+  [20, "تعريف الفصل", "DfD 1", [["p ∨ q", "¬p → q"]]],
+  [21, "تعريف الفصل", "DfD 2", [["p ∨ q", "¬(¬p ∧ ¬q)"]]]
+];
+function logmDeduccion(p, c, doble){
+  return '<div class="lg-ded" dir="ltr">' + p.split(";").map(x => "<span>" + logEsc(x.trim()) + "</span>").join("") + '<span class="lg-ded-c' + (doble ? " lg-ded-2" : "") + '">' + logEsc(c) + "</span></div>";
+}
+function logRenderLeyes(){
+  const tit = logmT("verTabla");
+  return '<div class="lg-panel"><h2>' + logmT("leyesTit") + '</h2><p class="lg-nota">' + logmT("leyesNota") + "</p>" +
+    LOGM_LEYES.map(([g, ls], k) => '<details class="lg-leyes"' + (k ? "" : " open") + "><summary>" + logEsc(g) + " (" + ls[0][0] + "–" + ls[ls.length - 1][0] + ')</summary><ol class="lg-leyes-l">' +
+      ls.map(([n, f, nom]) => '<li value="' + n + '"><span class="lg-ley-n">' + n + '.</span><span class="lg-ley-f" dir="ltr">' + logEsc(f) + '</span><span class="lg-ley-nom">' + logEsc(nom) + '</span><button type="button" class="chip" data-ley="' + logEsc(f) + '" title="' + tit + '">' + logmT("leyTabla") + "</button></li>").join("") + "</ol></details>").join("") + "</div>" +
+    '<div class="lg-panel"><h2>' + logmT("derTit") + '</h2><p class="lg-nota">' + logmT("derNota") + '</p><div class="lg-reglas">' +
+    LOGM_DERIVADAS.map(([n, nom, ab, fs]) => '<div class="lg-regla"><h3>' + n + ". " + logEsc(nom) + " <small>(" + ab + ")</small></h3>" +
+      (fs ? '<div class="lg-ded-fila">' + fs.map(([p, c, d]) => '<div class="lg-ded-caja">' + logmDeduccion(p, c, d) + '<button type="button" class="chip" data-infp="' + logEsc(p) + '" data-infc="' + logEsc(c) + '" title="' + tit + '">' + logmT("leyTabla") + "</button></div>").join("") + "</div>"
+        : '<div class="lg-ded-fila"><div class="lg-ded-caja"><div class="lg-ded" dir="ltr"><span>A ↔ B</span><span>C<sub>A</sub></span><span class="lg-ded-c">C<sub>B</sub></span></div></div></div><p>' + logmT("derInter") + "</p>") + "</div>").join("") + "</div></div>";
+}
+
+
 /* ---------- eventos (delegados en la caja del Rincón; logicaview.js maneja los demás) ---------- */
 (function(){
   const box = document.getElementById("logicabox"); if (!box) return;
@@ -291,6 +431,7 @@ function logRenderFalacias(){
     const b = ev.target.closest("button"); if (!b) return;
     if (b.dataset.fzok != null){ const i = +b.dataset.fzok; LOG.fz[i] = Object.assign(LOG.fz[i] || {}, { hecho: true, sol: false }); const r = document.getElementById("lg-fzr-" + i); if (r) r.innerHTML = logmFzRes(i); }
     else if (b.dataset.fzsol != null){ const i = +b.dataset.fzsol; LOG.fz[i] = Object.assign(LOG.fz[i] || {}, { sol: true }); const r = document.getElementById("lg-fzr-" + i); if (r) r.innerHTML = logmFzRes(i); }
+    else if (b.dataset.ley != null){ LOG.formula = b.dataset.ley; LOG.tab = "tablas"; logRender(); const t = document.getElementById("lg-tabla"); if (t) t.scrollIntoView({ block: "center" }); }
     else if (b.dataset.infp != null){ LOG.prem = b.dataset.infp; LOG.concl = b.dataset.infc; LOG.tab = "tablas"; logRender(); const a = document.getElementById("lg-arg"); if (a) a.scrollIntoView({ block: "center" }); }
     else if (b.dataset.cqi != null){ const r = LOG.cq.m[+b.dataset.cqi]; r[+b.dataset.cqj] = r[+b.dataset.cqj] ? 0 : 1; const c = document.getElementById("lg-cq"); if (c) c.innerHTML = logmCqMundo(); }
     else if (b.dataset.falsil){ const [m, f] = b.dataset.falsil.split("-"); Object.assign(LOG.sil, { may: m[0], men: m[1], con: m[2], fig: +f }); LOG.tab = "silogismos"; logRender(); const c = document.getElementById("lg-sil"); if (c) c.scrollIntoView({ block: "start" }); }

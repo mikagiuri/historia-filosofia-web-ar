@@ -39,7 +39,12 @@ CONMUTADORES.forEach(function (g){
 });
 
 /* vista → vista de entrada de su grupo (para marcar el menú); si no es de un conmutador, se devuelve igual */
-function commuteEntry(id){ return COMM_ENTRY[id] || id; }
+/* (18-10) si la vista tiene su propia entrada en el menú (Cronogramas, en «Historia» desde el 18-10), se marca esa */
+function commuteEntry(id){
+  var tabs = document.getElementById("tabs");
+  if (tabs && id && tabs.querySelector('button[data-view="' + id + '"]')) return id;
+  return COMM_ENTRY[id] || id;
+}
 /* vista → rótulo del modo (para la miga de pan); "" si no es modo de un conmutador */
 function commuteLabel(id){ return COMM_LABEL[id] || ""; }
 

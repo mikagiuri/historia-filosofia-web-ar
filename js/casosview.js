@@ -144,5 +144,7 @@ function casosDe(id){
   }).join("");
 }
 window.casosDe = casosDe;
+/* (18-10) Biografías se pinta antes de que existan PERSEGUIDOS: ahora que están, se repintan sus controles (filtro «Perseguidos por sus ideas») */
+if (typeof renderIluControls === "function") renderIluControls();
 /* primera pintura: la lista, sin esperar al enrutado */
 ["perseguidos", "comunidades"].forEach(v => { if (document.getElementById(v + "box") && CAS[v].datos().length){ casFiltro(v); casRenderLista(v); } });

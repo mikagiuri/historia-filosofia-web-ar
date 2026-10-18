@@ -295,7 +295,9 @@ const PERSEGUIDOS = [
  },
  {
   "id": "servet",
-  "cas_ilu": [],
+  "cas_ilu": [
+   "servet"
+  ],
   "nombre": "ميغيل سيرفيت",
   "fechas": "فيين (فرنسا) وجنيف، 1553",
   "cas_epoca": "ren",
