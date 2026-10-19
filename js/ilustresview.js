@@ -17,6 +17,7 @@ let iluAmb = "all";   // (12-10) 1.º: fila «Ámbito»
 let iluOrden = (() => { try { return localStorage.getItem("iluOrden") === "alfa" ? "alfa" : "cron"; } catch (e) { return "cron"; } })();
 /* (18-10, decisión del profesor) todo perseguido tiene ficha aquí: etiqueta en la ficha y filtro en el índice (casos de perseguidos.js por cas_ilu) */
 let iluPers = false;
+let iluImp = false;   // (19-10) filtro «solo imprescindibles y esenciales» (niveles 5 y 4: imprescindibles.js)
 function iluCasosPer(id){ return (typeof PERSEGUIDOS !== "undefined" && Array.isArray(PERSEGUIDOS)) ? PERSEGUIDOS.filter(c => (c.cas_ilu || []).includes(id)) : []; }
 /* clave alfabética: el apellido; en la Antigüedad y la Edad Media, o con «de/da/della + lugar o familia» antes
    del Renacimiento-Moderna temprana (Nicolás de Cusa, Erasmo de Róterdam, Isabel de Bohemia), el nombre de pila;
@@ -94,6 +95,7 @@ function iluFiltered(){
     if (!iluEsFil() && iluEpoca !== "all" && p.block !== iluEpoca) return false;
     if (iluEsFil() && iluAmb !== "all" && !iluRamas(p).includes(iluAmb)) return false;
     if (iluPers && !iluCasosPer(p.id).length) return false;
+    if (iluImp && ((typeof impNivel === "function" && impNivel("autor", p.id)) || { n: 0 }).n < 4) return false;
     if (q && !iluFold([p.name, p.role, p.idea, (p.obras || []).join(" "), p.bio, p.anecdota].join(" ")).includes(q)) return false;
     return true;
   });
@@ -125,6 +127,8 @@ function renderIluControls(){
              : '<div class="fgroup"><span class="flabel">العصر</span>' + epBtns + '</div>') +
     (iluList().some(p => iluCasosPer(p.id).length)
       ? '<div class="fgroup"><button class="fbtn" data-ipers aria-pressed="' + iluPers + '">' + "مضطهَدون بسبب أفكارهم" + '</button></div>' : '') +
+    (!iluEsFil() && typeof impBadge === "function" && typeof IMPRESCINDIBLES !== "undefined"
+      ? '<div class="fgroup"><button class="fbtn" data-iimp aria-pressed="' + iluImp + '">' + impBadge("autor", "platon") + ' ' + impT("filtro") + '</button></div>' + impLeyenda() : '') +
     '<div class="fgroup"><span class="flabel">الترتيب</span>' +
       '<button class="fbtn" data-iord="cron" aria-pressed="' + (iluOrden === "cron") + '">حسب التاريخ</button>' +
       '<button class="fbtn" data-iord="alfa" aria-pressed="' + (iluOrden === "alfa") + '">أبجدي</button></div>' +
@@ -132,6 +136,11 @@ function renderIluControls(){
   box.querySelectorAll("[data-iamb]").forEach(b => b.addEventListener("click", () => {
     iluAmb = b.dataset.iamb;
     box.querySelectorAll("[data-iamb]").forEach(x => x.setAttribute("aria-pressed", x.dataset.iamb === iluAmb));
+    renderIluList();
+  }));
+  box.querySelectorAll("[data-iimp]").forEach(b => b.addEventListener("click", () => {
+    iluImp = !iluImp;
+    b.setAttribute("aria-pressed", iluImp);
     renderIluList();
   }));
   box.querySelectorAll("[data-ipers]").forEach(b => b.addEventListener("click", () => {
@@ -193,7 +202,7 @@ function renderIluList(){
     html += '<button class="ilu-card" data-b="' + p.block + '" data-ilu="' + iluEsc(p.id) + '">' +
       '<span class="ilu-av">' + iluAvatar(p) + '</span>' +
       '<span class="ilu-txt"><b>' + iluHi(iluEsc(p.name), q) + '</b>' +
-      '<span class="ilu-dates">' + iluEsc(p.dates) + '</span>' +
+      '<span class="ilu-dates">' + iluEsc(p.dates) + (!iluEsFil() && typeof impBadge === "function" ? impBadge("autor", p.id) : '') + '</span>' +
       '<span class="ilu-role">' + iluHi(iluEsc(p.role), q) + '</span></span></button>';
   });
   html += "</div>";
@@ -384,6 +393,7 @@ function loadIlustre(id){
             : iluEsc(iluEpocaName(p.block))) + ' · ' + iluEsc(p.role) + '</p>' +
           '<h2>' + iluEsc(p.name) + '</h2>' +
           '<p class="ilu-life">' + iluEsc(p.dates) + (p.place ? ' · ' + iluEsc(p.place) : '') + '</p>' +
+          (!iluEsFil() && typeof impBadge === "function" && impNivel("autor", p.id) ? '<div class="imp-ficha">' + impBadge("autor", p.id, "completa") + impMotivo("autor", p.id) + '</div>' : '') +
           iluCasosPer(p.id).map(c => '<p class="ilu-pers-tag"><button type="button" class="ilu-rel-a" data-cas-v="perseguidos" data-cas="' + iluEsc(c.id) + '">' + "مضطهَدون بسبب أفكارهم" + ' ›</button></p>').join("") +
           (p.idea ? '<p class="ilu-idea">' + iluEsc(p.idea) + '</p>' : '') +
         '</div>' +

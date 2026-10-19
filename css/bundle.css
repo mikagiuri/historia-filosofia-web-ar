@@ -2881,6 +2881,28 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 [dir="rtl"] #epocas .epo-arr{display:inline-block;transform:scaleX(-1)}
 
 
+/* ==== css/imprescindibles.css ==== */
+/* Señalética de importancia (19-10): puntos 5-1 con el color de la materia; solo variables de styles.css. */
+.imp{ display:inline-flex; align-items:center; gap:.35em; vertical-align:middle; line-height:1; color:var(--c, var(--hf)); white-space:nowrap }
+.imp-pts{ display:inline-flex; gap:2px }
+.imp-p{ display:inline-block; width:.5em; height:.5em; border-radius:50%; border:1.5px solid currentColor; box-sizing:border-box; opacity:.55 }
+.imp-p.imp-on{ background:currentColor; opacity:1 }
+.imp-full{ font:600 .72rem var(--sans); letter-spacing:.04em; text-transform:uppercase; padding:.18em .5em; border:1px solid var(--line); border-radius:999px; background:var(--surface-2) }
+.imp-full .imp-p{ width:.62em; height:.62em }
+.imp-nom{ color:var(--ink) }
+.imp-motivo{ font-size:.86rem; color:var(--muted); margin:.3rem 0 0 }
+.imp-motivo span{ font-weight:600 }
+.imp-leyenda{ font-size:.88rem; margin:.4rem 0 .8rem; color:var(--muted) }
+.imp-leyenda summary{ cursor:pointer; color:var(--ink); font-weight:600 }
+.imp-leyenda ul{ list-style:none; padding:0; margin:.5rem 0 }
+.imp-leyenda li{ margin:.35rem 0; line-height:1.45 }
+.imp-leyenda .imp-full{ min-width:9.5em }
+.imp-leypie{ font-size:.8rem; margin:.3rem 0 0 }
+/* en la tarjeta de Biografías y en la lista de temas: puntos pequeños, en línea */
+.ilu-card .imp{ margin-inline-start:.4em }
+ol.itin-temas .temas-t .imp{ margin-inline-start:.2rem; font-size:.95rem }   /* al final del título, en línea: no estrecha ni mueve nada */
+
+
 /* ==== css/guia.css ==== */
 /* ===== Guía «Cómo usar la web» (#guia, guiaview.js · 13-10-2026) ===== */
 #guia .guia-idx{ display:flex; flex-wrap:wrap; align-items:center; gap:.35rem .9rem; margin:1rem 0 1.4rem; padding:.7rem 1rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); }

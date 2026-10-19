@@ -78,6 +78,7 @@ function gloInject(){
 }
 
 /* Términos visibles para la materia elegida (para el desplegable de áreas). */
+let gloImp = false;   // (19-10) filtro «solo imprescindibles y esenciales» (niveles 5 y 4, en g.imp; imprescindibles.js)
 function gloTermsForSubject(){
   return GLOSARIO.filter(g => gloSubject === "all" || g.subject === gloSubject);
 }
@@ -102,6 +103,8 @@ function renderGloControls(){
     (gloSubject === "hf" || (gloSubject === "all" && present.includes("hf"))
       ? '<div class="fgroup"><span class="flabel">العصر</span>' + blkBtns + '</div>'
       : '') +
+    (typeof impBadge === "function" && typeof IMPRESCINDIBLES !== "undefined" && present.includes("hf") && gloSubject !== "fil" && gloSubject !== "ipc"
+      ? '<div class="fgroup"><button class="fbtn" data-gimp aria-pressed="' + gloImp + '">' + impT("filtro") + '</button></div>' + impLeyenda() : '') +
     '<div class="glotools">' +
       '<input class="glosearch" id="glosearch" type="search" placeholder="ابحثوا عن مصطلح أو تعريف…" autocomplete="off" aria-label="البحث في المسرد">' +
       '<select class="gloarea" id="gloarea" aria-label="تصفية حسب المجال">' + areaOpts + '</select>' +
@@ -111,6 +114,11 @@ function renderGloControls(){
     gloSubject = b.dataset.sub;
     if (gloSubject !== "hf") gloArea = "all";
     renderGloControls(); renderGloList();
+  }));
+  box.querySelectorAll("[data-gimp]").forEach(b => b.addEventListener("click", () => {
+    gloImp = !gloImp;
+    b.setAttribute("aria-pressed", gloImp);
+    renderGloList();
   }));
   box.querySelectorAll("[data-era]").forEach(b => b.addEventListener("click", () => {
     gloBloque = b.dataset.era;
@@ -180,6 +188,7 @@ function renderGloList(){
     if (gloSubject !== "all" && g.subject !== gloSubject) return false;
     if ((gloSubject === "hf" || gloSubject === "all") && present.includes("hf") && gloBloque !== "all" && g.bloque && gloEpoca(g) !== gloBloque) return false;
     if (gloArea !== "all" && g.area !== gloArea) return false;
+    if (gloImp && !(g.imp >= 4)) return false;
     if (q && !gloFold(g.t + " " + g.def + " " + g.area + " " + (g.et || "").replace(/\*/g, "")).includes(q)) return false;
     return true;
   });
@@ -196,7 +205,7 @@ function renderGloList(){
     const src = g.tema ? '<div class="src">' + gloEsc(g.tema) + (g.unidad ? " · " + g.unidad : "") + '</div>' : "";
     const ilu = gloIlustres(g);
     const ep = g.subject === "hf" && { A: "ant", B: "medmod", C: "con" }[g.bloque];   // (30-09) color del bloque de HF (styles.css)
-    return '<article class="gloitem"' + (ep ? ' data-ep="' + ep + '"' : '') + '><div class="top"><h4>' + term + btn + '</h4><span class="tag">' + gloEsc(tag) + '</span></div><p>' + def + '</p>' + ety + src + ilu + '</article>';
+    return '<article class="gloitem"' + (ep ? ' data-ep="' + ep + '"' : '') + '><div class="top"><h4>' + term + btn + (g.subject === "hf" && typeof impBadge === "function" && typeof IMPRESCINDIBLES !== "undefined" ? ' ' + impBadge("glo", g) : '') + '</h4><span class="tag">' + gloEsc(tag) + '</span></div><p>' + def + '</p>' + ety + src + ilu + '</article>';
   }).join("");
 }
 
