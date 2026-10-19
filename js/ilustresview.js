@@ -423,7 +423,8 @@ function iluVideosEu(p){
   if (!V.length) return "";
   const eu = (document.documentElement.lang || "").slice(0, 2) === "eu";
   return '<div class="ilu-sec"><h3>فيديو بالباسكية</h3><ul class="ilu-obras">' + V.map(v => '<li><a href="https://www.youtube.com/watch?v=' + iluEsc(v.id) +
-    '" target="_blank" rel="noopener" hreflang="eu">' + iluEsc(eu ? v.eu_titulo : v.es) + '</a> · Ikusgela, ' + iluEsc(v.dur) + (eu ? '' : ' · <span lang="eu">«' + iluEsc(v.eu_titulo) + '»</span>') + '</li>').join("") + '</ul></div>';
+    '" target="_blank" rel="noopener" hreflang="eu">' + iluEsc(eu ? v.eu_titulo : v.es) + '</a> · Ikusgela, ' + iluEsc(v.dur) + (eu ? '' : ' · <span lang="eu">«' + iluEsc(v.eu_titulo) + '»</span>') +
+    ' · <a href="media/ikusgela/' + iluEsc(v.id) + '.html" target="_blank" rel="noopener" hreflang="eu" title="نص الفيديو: الترجمة المكتوبة من Ikusgela">النص المكتوب</a></li>').join("") + '</ul></div>';
 }
 
 /* En la teoría: al final de cada unidad, una tira con los ilustres que aparecen en ella (enlaza a su
