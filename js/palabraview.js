@@ -116,7 +116,8 @@ function paRender(){
       '<div class="pa-botones"><button type="button" data-pa="ordcomp">' + paT("comprobar") + '</button><button type="button" data-pa="ordre" class="pa-sec-btn">' + paT("otraVez") +
       '</button></div><p class="pa-res" aria-live="polite"></p></div>' +
       "<h3>" + D.estiloTit + "</h3>" + paPs(D.estilo) + paCita(D.cita2, D.cita2Pie) +
-      '<div class="pa-pieza" id="pa-metafora"><h3>' + D.pieza2Tit + "</h3><p>" + D.pieza2Txt + "</p>" + paClasif(D.frases, D.figurasNom) + "</div>" + paCuidado(D.cuidado)) +
+      '<div class="pa-pieza" id="pa-metafora"><h3>' + D.pieza2Tit + "</h3><p>" + D.pieza2Txt + "</p>" + paClasif(D.frases, D.figurasNom) + "</div>" + paCuidado(D.cuidado) +
+      "<h3>" + D.metanoiaTit + "</h3>" + paPs(D.metanoia) + paCita(D.cita3, D.cita3Pie)) +
 
     /* 4 · poética */
     paSec(ID.poetica, O, paPs(O.texto) + paFigs(["mascara", "pronomo"]) + paCita(O.cita, O.citaPie) +
