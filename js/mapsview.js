@@ -27,9 +27,12 @@ function mapAmbOf(k, m){
 function renderMapFilter(){
   const box = document.getElementById("mapfilter");
   if (!box) return;
-  const subjBtns = ["all", "fil", "hf", "ipc"].map(s =>
+  /* (19-10) solo las materias de esta web que tienen mapas; con una sola (webs del alumnado), sin fila «Materia» */
+  const subjs = ["fil", "hf", "ipc"].filter(s => (typeof SUBJECTS === "undefined" || SUBJECTS[s]) && Object.keys(MAPS).some(k => MAPS[k].subject === s));
+  if (subjs.length === 1) mapSubject = subjs[0];
+  const subjBtns = subjs.length > 1 ? ["all"].concat(subjs).map(s =>
     '<button class="fbtn" data-subj="' + s + '" aria-pressed="' + (s === mapSubject) + '">' +
-    (s === "all" ? "الكل" : MAP_SUBJECTS[s]) + '</button>').join("");
+    (s === "all" ? "الكل" : MAP_SUBJECTS[s]) + '</button>').join("") : "";
   let blockBtns = "";
   if (mapSubject === "hf"){
     blockBtns = ["all", "ant", "med", "mod", "ilu", "con"].map(b =>
@@ -44,7 +47,7 @@ function renderMapFilter(){
       '<button class="fbtn" data-amb="' + b + '" aria-pressed="' + (b === mapAmb) + '">' +
       (b === "all" ? "الكل" : MAP_AMBS[b]) + '</button>').join("");
   }
-  box.innerHTML = '<div class="fgroup"><span class="flabel">المادة</span>' + subjBtns + '</div>' +
+  box.innerHTML = (subjBtns ? '<div class="fgroup"><span class="flabel">المادة</span>' + subjBtns + '</div>' : '') +
     (blockBtns ? '<div class="fgroup"><span class="flabel">العصر</span>' + blockBtns + '</div>' : '') +
     (ambBtns ? '<div class="fgroup"><span class="flabel">المجال</span>' + ambBtns + '</div>' : '');
   box.querySelectorAll("[data-subj]").forEach(b => b.addEventListener("click", () => {

@@ -2230,6 +2230,112 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #leibniz #lz-rect input[type=range], #leibniz #lz-serie input[type=range]{ width:100%; max-width:24rem }
 
 
+/* ==== css/universo.css ==== */
+/* El universo aristotélico (19-10, Bachillerato · MUESTRA): mismo patrón que el Taller de Leibniz (leibniz.css). */
+#universo .ua-cabecera{ display:flow-root; margin:.4rem 0 1.2rem }
+#universo .ua-retrato{ float:inline-start; width:9rem; margin:.2rem 1.2rem .6rem 0 }
+@media (max-width:640px){ #universo .ua-retrato{ width:6.5rem; margin-inline-end:.9rem } }
+#universo .ua-retrato img{ width:100%; display:block; border-radius:12px }
+#universo .ua-retrato figcaption{ font-size:.75rem; color:var(--muted); margin-top:.3rem; line-height:1.3 }
+#universo .ua-intro{ font-size:1.05rem; line-height:1.6; margin:0 0 .6rem }
+#universo .ua-pista{ color:var(--muted); margin:0 }
+
+#universo .ua-indice{ max-width:52rem; margin:0 0 1.8rem; background:var(--surface-2); border-radius:var(--radius); padding:.5rem 1rem }
+#universo .ua-indice ol{ margin:.3rem 0; padding-inline-start:1.3rem }
+#universo .ua-indice li{ margin:.3rem 0; line-height:1.45 }
+#universo .ua-indice .ua-prep{ color:var(--muted) }
+#universo .ua-mat{ display:inline-block; font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); min-width:7.5rem }
+
+#universo .ua-sec{ max-width:52rem; margin:0 0 2.4rem; scroll-margin-top:5.5rem }
+#universo .ua-eyebrow{ font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color:var(--hf); margin:0 }
+#universo .ua-sec h2{ font-size:1.5rem; margin:.1rem 0 .7rem }
+#universo .ua-sec h3{ font-size:1.12rem; margin:1.4rem 0 .4rem }
+#universo .ua-sec h4{ font-size:1rem; margin:.6rem 0 .2rem }
+#universo .ua-sec p{ line-height:1.6; margin:.5rem 0 }
+#universo .ua-cita{ margin:1rem 0; padding:.7rem 1rem; border-inline-start:4px solid var(--accent); background:var(--surface-2); border-radius:8px }
+#universo .ua-cita p{ font-family:var(--serif); font-size:1.08rem; font-style:italic; margin:0 }
+#universo .ua-cita footer{ font-size:.85rem; color:var(--muted); margin:.35rem 0 0; padding:0; border:0 }
+#universo .ua-cuidado{ background:var(--bad-bg); border-radius:8px; padding:.55rem .8rem }
+
+#universo .ua-pieza{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:.4rem 1rem 1rem; margin:1rem 0; box-shadow:var(--shadow) }
+#universo .ua-pieza h3{ margin-top:.6rem }
+#universo .ua-elige{ display:flex; flex-wrap:wrap; gap:.4rem; margin:.6rem 0 }
+#universo .ua-chip{ font:inherit; font-size:.9rem; padding:.3rem .8rem; border-radius:999px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); cursor:pointer }
+#universo .ua-chip[aria-pressed=true]{ background:var(--accent); border-color:var(--accent); color:var(--on-accent) }
+#universo .ua-svg{ width:100%; max-width:26rem; height:auto; display:block; margin:.3rem 0 }
+#universo .ua-lado{ stroke:var(--ink); stroke-width:2 }
+#universo .ua-diag{ stroke:var(--line); stroke-width:1.5; stroke-dasharray:5 5 }
+#universo .ua-q{ fill:var(--muted); font:600 14px var(--sans) }
+#universo .ua-nodo circle{ stroke:var(--line); stroke-width:2; fill:var(--surface-2); transition:fill .2s }
+#universo .ua-nodo text{ fill:var(--ink); font:600 15px var(--sans) }
+#universo .ua-fuego.ua-on circle{ fill:#e8743b }
+#universo .ua-aire.ua-on circle{ fill:#9ecbe8 }
+#universo .ua-agua.ua-on circle{ fill:#3b7fc4 }
+#universo .ua-tierra.ua-on circle{ fill:#a07c4f }
+#universo .ua-on text{ fill:#fff }
+#universo .ua-aire.ua-on text{ fill:#1b2a36 }
+#universo .ua-on circle{ stroke:var(--ink) }
+#universo .ua-botones{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.6rem }
+#universo .ua-botones button{ font:inherit; padding:.42rem .8rem; border-radius:10px; border:1px solid var(--accent); background:var(--accent); color:var(--on-accent); cursor:pointer }
+#universo .ua-botones button.ua-sec-btn{ background:transparent; color:var(--accent) }
+#universo .ua-pasos{ font-weight:600; margin-bottom:.2rem }
+#universo .ua-hist{ margin:.2rem 0 .6rem; padding-inline-start:1.3rem; color:var(--muted); font-size:.92rem }
+#universo .ua-ok{ color:var(--ok); font-weight:600 }
+#universo .ua-reto{ border-top:1px dashed var(--line); margin-top:.6rem; padding-top:.2rem }
+
+#universo .ua-tabla-wrap{ overflow-x:auto }
+#universo .ua-tabla{ border-collapse:collapse; width:100%; font-size:.95rem }
+#universo .ua-tabla th, #universo .ua-tabla td{ border-bottom:1px solid var(--line-soft); padding:.45rem .5rem; text-align:start; vertical-align:top; line-height:1.45 }
+#universo .ua-tabla th{ font-size:.8rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted) }
+#universo .ua-preguntas{ background:var(--surface-2); border-radius:var(--radius); padding:.2rem 1rem .6rem; margin-top:1.2rem }
+#universo .ua-preguntas li{ margin:.35rem 0; line-height:1.5 }
+#universo .ua-enlaces{ font-size:.9rem; color:var(--muted) }
+
+/* imágenes con crédito */
+#universo .ua-figs{ display:grid; grid-template-columns:repeat(auto-fit, minmax(14rem, 1fr)); gap:1rem; margin:1rem 0 }
+#universo .ua-fig-img{ margin:0 }
+#universo .ua-fig-img img{ width:100%; height:auto; max-height:26rem; object-fit:contain; display:block; border-radius:8px; background:var(--surface-2) }
+#universo .ua-fig-img figcaption{ font-size:.82rem; line-height:1.4; color:var(--muted); margin-top:.35rem }
+#universo .ua-cred{ display:block; font-size:.76rem; margin-top:.15rem }
+#universo .ua-cred a{ color:inherit }
+
+/* las cuatro causas */
+#universo .ua-fila{ display:flex; flex-wrap:wrap; align-items:center; gap:.3rem .8rem; margin:.45rem 0 }
+#universo .ua-fila span{ min-width:6.5rem; font-weight:600 }
+#universo select, #universo .ua-campos select{ font:inherit; padding:.3rem .45rem; border:1px solid var(--line); border-radius:8px; background:var(--surface-2); color:var(--ink); max-width:100% }
+#universo select.ua-bien{ border-color:var(--ok); box-shadow:0 0 0 2px var(--ok) }
+#universo select.ua-malo{ border-color:var(--bad); box-shadow:0 0 0 2px var(--bad) }
+#universo .ua-campos{ display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:flex-end; margin:.6rem 0 }
+#universo .ua-campos label{ display:flex; flex-direction:column; gap:.2rem; font-size:.88rem; color:var(--muted) }
+#universo .ua-res{ margin-top:.6rem }
+#universo .ua-ari{ border-inline-start:4px solid var(--hf); padding-inline-start:.7rem }
+#universo .ua-obs{ border-inline-start:4px solid var(--ok); padding-inline-start:.7rem }
+
+/* capacidades y sangre */
+#universo .ua-marcar td{ text-align:center }
+#universo .ua-marcar input{ width:1.15rem; height:1.15rem; accent-color:var(--accent) }
+#universo td.ua-bien, #universo li.ua-bien{ background:color-mix(in srgb, var(--ok) 18%, transparent) }
+#universo td.ua-malo, #universo li.ua-malo{ background:var(--bad-bg) }
+#universo td.ua-duda{ background:color-mix(in srgb, var(--hf) 18%, transparent) }
+#universo .ua-animales{ list-style:none; padding:0; margin:.6rem 0; display:grid; gap:.35rem }
+#universo .ua-animales li{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:.4rem; padding:.3rem .5rem; border-radius:8px; border-bottom:1px solid var(--line-soft) }
+#universo .ua-dos{ display:flex; gap:.35rem }
+
+/* grietas */
+#universo .ua-grietas{ display:grid; gap:.5rem; margin:.8rem 0 }
+#universo .ua-grieta{ border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); padding:.2rem .9rem }
+#universo .ua-grieta summary{ cursor:pointer; font-weight:600; padding:.45rem 0; line-height:1.4 }
+#universo .ua-grieta dl{ margin:.3rem 0 .6rem }
+#universo .ua-grieta dt{ font-size:.75rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-top:.5rem }
+#universo .ua-grieta dd{ margin:.15rem 0 0; line-height:1.55 }
+
+/* línea del tiempo */
+#universo .ua-crono{ list-style:none; padding:0; margin:.4rem 0 }
+#universo .ua-crono li{ display:grid; grid-template-columns:6.5rem 1fr; gap:.8rem; padding:.4rem 0; border-bottom:1px solid var(--line-soft); line-height:1.5 }
+#universo .ua-y{ font-weight:700; color:var(--hf) }
+@media (max-width:640px){ #universo .ua-crono li{ grid-template-columns:1fr; gap:.1rem } }
+
+
 /* ==== css/rescritura.css ==== */
 /* «Rescritura» (09-10, Bachillerato): distinguir rescritura de copia, sinonimia y malinterpretación (rescrituraview.js) */
 #rescritura .res-guia{ max-width:62rem; margin:0 0 1rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); line-height:1.55 }

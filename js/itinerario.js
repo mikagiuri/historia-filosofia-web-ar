@@ -317,7 +317,7 @@
     return D.filter(function(d){ return d && /^pol-/.test(d.id) && polIds.indexOf(d.id.slice(4)) >= 0 && (d.nivel || []).indexOf(subject) >= 0; })
       .map(function(d){ return { go: "duelo", arg: subject + "/" + d.id, label: strip(d.claim) }; });
   }
-  var JUEGOS_TEMA = { hf: { 6: ["republica"], 8: ["eudaimonia"], 9: ["republica"], 15: ["leibniz"] }, fil: { 4: ["leibniz"] } };
+  var JUEGOS_TEMA = { hf: { 4: ["universo"], 6: ["republica", "universo"], 7: ["universo"], 8: ["eudaimonia"], 9: ["republica"], 10: ["universo"], 13: ["universo"], 15: ["leibniz"] }, fil: { 2: ["universo"], 3: ["universo"], 3.5: ["universo"], 4: ["leibniz"] } };   // (19-10) + universo
   function juegosDe(subject, tema){
     var js = ((JUEGOS_TEMA[subject] || {})[tema] || []).slice();
     if (subject === "fil") js.push("rayuela");   /* decisión del profesor (18-10): Rayuela en todos los temas de 1.º */
@@ -417,7 +417,8 @@
 
   /* ---------- itinerario PAU (Historia de la Filosofía) ---------- */
   function pauPasos(){
-    var navLabel = function(id){ var b = document.querySelector('#tabs button[data-view="' + id + '"]'); return b ? strip(b.textContent) : ""; };
+    /* (19-10) sin entrada en el menú (p. ej. «esqautor», Resúmenes), el título de la sección: nunca la clave cruda */
+    var navLabel = function(id){ var b = document.querySelector('#tabs button[data-view="' + id + '"]'), h = document.querySelector("#" + id + " h1"); return b ? strip(b.textContent) : h ? strip(h.textContent) : ""; };
     var item = function(go_, name, key){ var c = coll(name); if (!view(go_) || !c || !c[key]) return null; return { go: go_, arg: key, label: strip(c[key].title || c[key].name || key) }; };
     var sec = function(id){ return view(id) ? { go: id, arg: "", label: navLabel(id) || id } : null; };
     var steps = [

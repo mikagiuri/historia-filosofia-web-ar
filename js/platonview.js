@@ -168,7 +168,7 @@ function renderRepStart(){
 function drawRepModes(){
   document.getElementById("repModes").innerHTML=
     '<span class="flabel">مستوى الصعوبة</span>'+Object.entries(REP_MODES).map(([k,m])=>'<button class="pbtn" data-mode="'+k+'" aria-pressed="'+(k===rep.mode)+'">'+m.name+'</button>').join("")+
-    '<span class="flabel" style="margin-left:.8rem">الإجراءات</span><button class="pbtn" data-acc="si" aria-pressed="'+(rep.acciones==="si")+'">مع إجراءات</button><button class="pbtn" data-acc="no" aria-pressed="'+(rep.acciones==="no")+'">بدون إجراءات</button>'+
+    '<span class="flabel" style="margin-left:.8rem">الإجراءات</span><button class="pbtn" data-acc="si" aria-pressed="'+(rep.acciones==="si")+'">مع إجراءات</button><button class="pbtn" data-acc="لا" aria-pressed="'+(rep.acciones==="لا")+'">بدون إجراءات</button>'+
     '<button class="pbtn rep-rnd" id="repRandom">🎲 عشوائي</button>'+
     (repHistLoad().length?'<button class="pbtn rep-hist-open" id="repHistOpen">📚 الألعاب ('+repHistLoad().length+')</button>':'');
   document.querySelectorAll("#repModes [data-mode]").forEach(b=>b.addEventListener("click",()=>{ rep.mode=b.dataset.mode; drawRepModes(); drawRepSummary(); }));
@@ -368,7 +368,7 @@ function renderRepHistory(){
       '<span class="rep-hist-io">'+(h.length?'<button class="btn2" id="repHistExport" title="حمّلوا كل ألعابكم في ملف JSON لحفظها أو نقلها إلى جهاز آخر">⬆️ تصدير</button>':'')+'<button class="btn2" id="repHistImport" title="حمّلوا ألعابًا من ملف JSON مُصدَّر (تُضاف إلى ألعاب هذا الجهاز دون حذفها)">⬇️ استيراد</button>'+(h.length?'<button class="btn2" id="repHistClear" title="احذفوا كل الألعاب المحفوظة في هذا المتصفح (لا يؤثر ذلك في الملفات المصدَّرة)">🗑️ حذف الكل</button>':'')+'</span>'+
       '<input type="file" id="repHistFile" accept="application/json,.json" style="display:none">'+
       '</div>'+
-    (h.length? h.map((r,i)=>'<details class="rep-hist-item"><summary><span class="rep-hist-badge">'+r.emoji+'</span> '+(r.name?'<b class="rep-hist-name">'+repEsc(r.name)+'</b> · ':'')+r.rank+' · ⚖ '+r.arm+' · '+r.turns+' أدوار · '+r.mode+(r.acc==="no"?" (بدون إجراءات)":"")+' · <span class="rep-hist-date">'+r.date+'</span></summary>'+
+    (h.length? h.map((r,i)=>'<details class="rep-hist-item"><summary><span class="rep-hist-badge">'+r.emoji+'</span> '+(r.name?'<b class="rep-hist-name">'+repEsc(r.name)+'</b> · ':'')+r.rank+' · ⚖ '+r.arm+' · '+r.turns+' أدوار · '+r.mode+(r.acc==="لا"?" (بدون إجراءات)":"")+' · <span class="rep-hist-date">'+r.date+'</span></summary>'+
         '<pre class="rep-hist-text">'+repEsc(r.text)+'</pre>'+
         '<div class="rep-hist-btns"><button class="btn2" data-hcopy="'+i+'">📋 نسخ</button><button class="btn2" data-hdl="'+i+'">💾 تنزيل</button></div></details>').join("")
       : '<p class="rep-hist-empty">لم تُنهوا أي لعبة بعد. العبوا لعبة وستُحفظ هنا (يُحتفظ بآخر '+REP_HIST_MAX+').</p>')+

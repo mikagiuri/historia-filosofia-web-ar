@@ -24,7 +24,8 @@
       case "tip": return '<div class="guia-tip">' + b.x + '</div>';
       case "warn": return '<div class="guia-warn">' + b.x + '</div>';
       case "img":
-        var src = "media/guia/" + cur + "/" + b.src;
+        /* (19-10) la web en euskera lleva sus propias capturas (media/guia/<materia>/eu/); las demás lenguas, las de castellano */
+        var src = "media/guia/" + cur + "/" + ((document.documentElement.lang || "").slice(0, 2) === "eu" ? "eu/" : "") + b.src;
         return '<figure class="guia-fig' + (b.w ? " guia-" + b.w : "") + '"><a href="' + src + '" target="_blank" rel="noopener">' +
           '<img src="' + src + '" alt="' + esc(b.cap) + '" loading="lazy"></a><figcaption>' + esc(b.cap) + '</figcaption></figure>';
       case "list":
