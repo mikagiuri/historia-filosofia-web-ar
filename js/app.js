@@ -46,11 +46,12 @@ window.VIEW_LOADERS = {
   pistas: "loadPista",
   logica: "loadLogica", juegosucio: "loadJuegoSucio",   // (08-10) #juegosucio/<estratagema>
       // (01-10) #logica/tablas|silogismos|puertas   // (01-10) #pistas/kant-imperativo
-  leibniz: "loadLeibniz", universo: "loadUniverso", rescritura: "loadRescritura", nudos: "loadNudos", adagios: "loadAdagios", polemicas: "loadPolemicas", perseguidos: "loadPerseguidos", comunidades: "loadComunidades", duelo: "loadDuelo", rayuela: "loadRayuela",   // (11-10) #rayuela/<estación>   // (09-10) #adagios/<id>
+  leibniz: "loadLeibniz", universo: "loadUniverso", palabra: "loadPalabra", rescritura: "loadRescritura", nudos: "loadNudos", adagios: "loadAdagios", polemicas: "loadPolemicas", perseguidos: "loadPerseguidos", comunidades: "loadComunidades", duelo: "loadDuelo", rayuela: "loadRayuela",   // (11-10) #rayuela/<estación>   // (09-10) #adagios/<id>
     // (09-10) #nudos/mentir|creer
     // (09-10) #rescritura/distinguir|escribir[/texto]
     // (08-10) #leibniz/maquina|binario|alfabeto|tratados|diagramas|calculemos|reverso|newton|voltaire
     // (19-10) #universo/cambio|elementos|lugares|alma|naturalista|grietas|puente|preguntas
+    // (19-10) #palabra/tekhne|retorica|discurso|poetica|topicos|tradicion|preguntas
   comentario: "loadComentario", disertaciones: "loadDisert"   // (29-09) enlaces profundos a un ejemplo resuelto o una disertación: #comentario/heraclito
 };
 

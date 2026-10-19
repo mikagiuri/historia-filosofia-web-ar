@@ -248,6 +248,9 @@ function uaRender(){
 }
 function loadUniverso(arg){
   uaRender();
-  if (arg){ const el = document.getElementById("ua-" + arg); if (el) setTimeout(() => el.scrollIntoView({ block: "start" }), 60); }
+  if (arg){ const el = document.getElementById("ua-" + arg);
+    if (el){ const ir = () => el.scrollIntoView({ block: "start" }), t0 = Date.now(); setTimeout(ir, 60);
+      // (19-10) las imágenes diferidas que cargan después del salto lo desplazan: se vuelve a saltar durante 3 s
+      document.querySelectorAll("#universo img").forEach(i => { if (!i.complete) i.addEventListener("load", () => { if (Date.now() - t0 < 3000) ir(); }, { once: true }); }); } }
 }
 if (uaBox()) uaRender();

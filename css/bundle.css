@@ -2336,6 +2336,159 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 @media (max-width:640px){ #universo .ua-crono li{ grid-template-columns:1fr; gap:.1rem } }
 
 
+/* ==== css/palabra.css ==== */
+/* El arte de la palabra (19-10, Bachillerato · MUESTRA): mismo patrón que el Taller de Leibniz (leibniz.css). */
+#palabra .pa-cabecera{ display:flow-root; margin:.4rem 0 1.2rem }
+#palabra .pa-retrato{ float:inline-start; width:9rem; margin:.2rem 1.2rem .6rem 0 }
+@media (max-width:640px){ #palabra .pa-retrato{ width:6.5rem; margin-inline-end:.9rem } }
+#palabra .pa-retrato img{ width:100%; display:block; border-radius:12px }
+#palabra .pa-retrato figcaption{ font-size:.75rem; color:var(--muted); margin-top:.3rem; line-height:1.3 }
+#palabra .pa-intro{ font-size:1.05rem; line-height:1.6; margin:0 0 .6rem }
+#palabra .pa-pista{ color:var(--muted); margin:0 }
+
+#palabra .pa-indice{ max-width:52rem; margin:0 0 1.8rem; background:var(--surface-2); border-radius:var(--radius); padding:.5rem 1rem }
+#palabra .pa-indice ol{ margin:.3rem 0; padding-inline-start:1.3rem }
+#palabra .pa-indice li{ margin:.3rem 0; line-height:1.45 }
+#palabra .pa-indice .pa-prep{ color:var(--muted) }
+#palabra .pa-mat{ display:inline-block; font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); min-width:7.5rem }
+
+#palabra .pa-sec{ max-width:52rem; margin:0 0 2.4rem; scroll-margin-top:5.5rem }
+#palabra .pa-eyebrow{ font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; color:var(--hf); margin:0 }
+#palabra .pa-sec h2{ font-size:1.5rem; margin:.1rem 0 .7rem }
+#palabra .pa-sec h3{ font-size:1.12rem; margin:1.4rem 0 .4rem }
+#palabra .pa-sec h4{ font-size:1rem; margin:.6rem 0 .2rem }
+#palabra .pa-sec p{ line-height:1.6; margin:.5rem 0 }
+#palabra .pa-cita{ margin:1rem 0; padding:.7rem 1rem; border-inline-start:4px solid var(--accent); background:var(--surface-2); border-radius:8px }
+#palabra .pa-cita p{ font-family:var(--serif); font-size:1.08rem; font-style:italic; margin:0 }
+#palabra .pa-cita footer{ font-size:.85rem; color:var(--muted); margin:.35rem 0 0; padding:0; border:0 }
+#palabra .pa-cuidado{ background:var(--bad-bg); border-radius:8px; padding:.55rem .8rem }
+
+#palabra .pa-pieza{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:.4rem 1rem 1rem; margin:1rem 0; box-shadow:var(--shadow) }
+#palabra .pa-pieza h3{ margin-top:.6rem }
+#palabra .pa-elige{ display:flex; flex-wrap:wrap; gap:.4rem; margin:.6rem 0 }
+#palabra .pa-chip{ font:inherit; font-size:.9rem; padding:.3rem .8rem; border-radius:999px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); cursor:pointer }
+#palabra .pa-chip[aria-pressed=true]{ background:var(--accent); border-color:var(--accent); color:var(--on-accent) }
+#palabra .pa-svg{ width:100%; max-width:26rem; height:auto; display:block; margin:.3rem 0 }
+#palabra .pa-lado{ stroke:var(--ink); stroke-width:2 }
+#palabra .pa-diag{ stroke:var(--line); stroke-width:1.5; stroke-dasharray:5 5 }
+#palabra .pa-q{ fill:var(--muted); font:600 14px var(--sans) }
+#palabra .pa-nodo circle{ stroke:var(--line); stroke-width:2; fill:var(--surface-2); transition:fill .2s }
+#palabra .pa-nodo text{ fill:var(--ink); font:600 15px var(--sans) }
+#palabra .pa-fuego.pa-on circle{ fill:#e8743b }
+#palabra .pa-aire.pa-on circle{ fill:#9ecbe8 }
+#palabra .pa-agua.pa-on circle{ fill:#3b7fc4 }
+#palabra .pa-tierra.pa-on circle{ fill:#a07c4f }
+#palabra .pa-on text{ fill:#fff }
+#palabra .pa-aire.pa-on text{ fill:#1b2a36 }
+#palabra .pa-on circle{ stroke:var(--ink) }
+#palabra .pa-botones{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.6rem }
+#palabra .pa-botones button{ font:inherit; padding:.42rem .8rem; border-radius:10px; border:1px solid var(--accent); background:var(--accent); color:var(--on-accent); cursor:pointer }
+#palabra .pa-botones button.pa-sec-btn{ background:transparent; color:var(--accent) }
+#palabra .pa-pasos{ font-weight:600; margin-bottom:.2rem }
+#palabra .pa-hist{ margin:.2rem 0 .6rem; padding-inline-start:1.3rem; color:var(--muted); font-size:.92rem }
+#palabra .pa-ok{ color:var(--ok); font-weight:600 }
+#palabra .pa-reto{ border-top:1px dashed var(--line); margin-top:.6rem; padding-top:.2rem }
+
+#palabra .pa-tabla-wrap{ overflow-x:auto }
+#palabra .pa-tabla{ border-collapse:collapse; width:100%; font-size:.95rem }
+#palabra .pa-tabla th, #palabra .pa-tabla td{ border-bottom:1px solid var(--line-soft); padding:.45rem .5rem; text-align:start; vertical-align:top; line-height:1.45 }
+#palabra .pa-tabla th{ font-size:.8rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted) }
+#palabra .pa-preguntas{ background:var(--surface-2); border-radius:var(--radius); padding:.2rem 1rem .6rem; margin-top:1.2rem }
+#palabra .pa-preguntas li{ margin:.35rem 0; line-height:1.5 }
+#palabra .pa-enlaces{ font-size:.9rem; color:var(--muted) }
+
+/* imágenes con crédito */
+#palabra .pa-figs{ display:grid; grid-template-columns:repeat(auto-fit, minmax(14rem, 1fr)); gap:1rem; margin:1rem 0 }
+#palabra .pa-fig-img{ margin:0 }
+#palabra .pa-fig-img img{ width:100%; height:auto; max-height:26rem; object-fit:contain; display:block; border-radius:8px; background:var(--surface-2) }
+#palabra .pa-fig-img figcaption{ font-size:.82rem; line-height:1.4; color:var(--muted); margin-top:.35rem }
+#palabra .pa-cred{ display:block; font-size:.76rem; margin-top:.15rem }
+#palabra .pa-cred a{ color:inherit }
+
+/* las cuatro causas */
+#palabra .pa-fila{ display:flex; flex-wrap:wrap; align-items:center; gap:.3rem .8rem; margin:.45rem 0 }
+#palabra .pa-fila span{ min-width:6.5rem; font-weight:600 }
+#palabra select, #palabra .pa-campos select{ font:inherit; padding:.3rem .45rem; border:1px solid var(--line); border-radius:8px; background:var(--surface-2); color:var(--ink); max-width:100% }
+#palabra select.pa-bien{ border-color:var(--ok); box-shadow:0 0 0 2px var(--ok) }
+#palabra select.pa-malo{ border-color:var(--bad); box-shadow:0 0 0 2px var(--bad) }
+#palabra .pa-campos{ display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:flex-end; margin:.6rem 0 }
+#palabra .pa-campos label{ display:flex; flex-direction:column; gap:.2rem; font-size:.88rem; color:var(--muted) }
+#palabra .pa-res{ margin-top:.6rem }
+#palabra .pa-ari{ border-inline-start:4px solid var(--hf); padding-inline-start:.7rem }
+#palabra .pa-obs{ border-inline-start:4px solid var(--ok); padding-inline-start:.7rem }
+
+/* capacidades y sangre */
+#palabra .pa-marcar td{ text-align:center }
+#palabra .pa-marcar input{ width:1.15rem; height:1.15rem; accent-color:var(--accent) }
+#palabra td.pa-bien, #palabra li.pa-bien{ background:color-mix(in srgb, var(--ok) 18%, transparent) }
+#palabra td.pa-malo, #palabra li.pa-malo{ background:var(--bad-bg) }
+#palabra td.pa-duda{ background:color-mix(in srgb, var(--hf) 18%, transparent) }
+#palabra .pa-animales{ list-style:none; padding:0; margin:.6rem 0; display:grid; gap:.35rem }
+#palabra .pa-animales li{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:.4rem; padding:.3rem .5rem; border-radius:8px; border-bottom:1px solid var(--line-soft) }
+#palabra .pa-dos{ display:flex; gap:.35rem }
+
+/* grietas */
+#palabra .pa-grietas{ display:grid; gap:.5rem; margin:.8rem 0 }
+#palabra .pa-grieta{ border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); padding:.2rem .9rem }
+#palabra .pa-grieta summary{ cursor:pointer; font-weight:600; padding:.45rem 0; line-height:1.4 }
+#palabra .pa-grieta dl{ margin:.3rem 0 .6rem }
+#palabra .pa-grieta dt{ font-size:.75rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-top:.5rem }
+#palabra .pa-grieta dd{ margin:.15rem 0 0; line-height:1.55 }
+
+/* línea del tiempo */
+#palabra .pa-crono{ list-style:none; padding:0; margin:.4rem 0 }
+#palabra .pa-crono li{ display:grid; grid-template-columns:6.5rem 1fr; gap:.8rem; padding:.4rem 0; border-bottom:1px solid var(--line-soft); line-height:1.5 }
+#palabra .pa-y{ font-weight:700; color:var(--hf) }
+@media (max-width:640px){ #palabra .pa-crono li{ grid-template-columns:1fr; gap:.1rem } }
+
+/* piezas de clasificación */
+#palabra .pa-items{ list-style:none; padding:0; margin:.6rem 0; display:grid; gap:.5rem }
+#palabra .pa-items li{ border:1px solid var(--line-soft); border-radius:10px; padding:.5rem .7rem }
+#palabra .pa-frase{ margin:0 0 .4rem !important; font-family:var(--serif); font-size:1.02rem }
+#palabra .pa-opc{ display:flex; flex-wrap:wrap; gap:.35rem }
+#palabra .pa-chip{ font:inherit; font-size:.88rem; padding:.28rem .75rem; border-radius:999px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); cursor:pointer }
+#palabra .pa-chip[aria-pressed=true]{ background:var(--accent); border-color:var(--accent); color:var(--on-accent) }
+#palabra .pa-exp{ font-size:.9rem; margin:.45rem 0 0 !important }
+#palabra li.pa-bien{ background:color-mix(in srgb, var(--ok) 15%, transparent) }
+#palabra li.pa-malo{ background:var(--bad-bg) }
+#palabra .pa-con-fig{ display:flow-root }
+#palabra .pa-fig{ float:inline-end; width:9rem; margin:.2rem 0 .6rem 1rem }
+#palabra .pa-fig img{ width:100%; border-radius:10px; display:block }
+#palabra .pa-fig figcaption{ font-size:.75rem; color:var(--muted); margin-top:.3rem; line-height:1.3 }
+#palabra .pa-otras{ background:var(--surface-2); border-radius:var(--radius); padding:.2rem 1rem .6rem; margin-top:1.2rem }
+#palabra .pa-otras li{ margin:.35rem 0; line-height:1.5 }
+#palabra .pa-enlaces{ font-size:.9rem; color:var(--muted) }
+
+/* imágenes con crédito */
+#palabra .pa-figs{ display:grid; grid-template-columns:repeat(auto-fit, minmax(13rem, 1fr)); gap:1rem; margin:1rem 0 }
+#palabra .pa-fig-img{ margin:0 }
+#palabra .pa-fig-img img{ width:100%; height:auto; max-height:24rem; object-fit:contain; display:block; border-radius:8px; background:var(--surface-2) }
+#palabra .pa-fig-img figcaption{ font-size:.82rem; line-height:1.4; color:var(--muted); margin-top:.35rem }
+#palabra .pa-cred{ display:block; font-size:.76rem; margin-top:.15rem }
+#palabra .pa-cred a{ color:inherit }
+/* línea del tiempo */
+#palabra .pa-crono{ list-style:none; padding:0; margin:.4rem 0 }
+#palabra .pa-crono li{ display:grid; grid-template-columns:6.5rem 1fr; gap:.8rem; padding:.4rem 0; border-bottom:1px solid var(--line-soft); line-height:1.5 }
+#palabra .pa-y{ font-weight:700; color:var(--hf) }
+@media (max-width:640px){ #palabra .pa-crono li{ grid-template-columns:1fr; gap:.1rem } }
+/* ordenar el discurso */
+#palabra .pa-ord{ list-style:none; padding:0; margin:.6rem 0; display:grid; gap:.5rem }
+#palabra .pa-ord li{ display:grid; grid-template-columns:auto 1fr auto; gap:.6rem; align-items:center; border:1px solid var(--line-soft); border-radius:10px; padding:.5rem .7rem }
+#palabra .pa-ord-n{ font:700 1rem var(--mono); color:var(--accent) }
+#palabra .pa-ord .pa-frase{ margin:0 !important }
+#palabra .pa-ord-b{ display:flex; flex-direction:column; gap:.25rem }
+#palabra .pa-ord-b button{ font:inherit; width:2.2rem; height:2rem; border-radius:8px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); cursor:pointer }
+#palabra .pa-ord-b button:disabled{ opacity:.35; cursor:default }
+/* arma una tragedia */
+#palabra .pa-grupos{ display:grid; grid-template-columns:repeat(auto-fit, minmax(14rem, 1fr)); gap:.8rem; margin:.6rem 0 }
+#palabra .pa-grupo{ border:1px solid var(--line-soft); border-radius:10px; padding:.4rem .8rem .6rem; margin:0 }
+#palabra .pa-grupo legend{ font-weight:600; padding:0 .3rem }
+#palabra .pa-grupo label{ display:flex; gap:.45rem; align-items:flex-start; margin:.35rem 0; line-height:1.4; cursor:pointer }
+#palabra .pa-grupo input{ accent-color:var(--accent); margin-top:.2rem }
+#palabra .pa-preguntas{ background:var(--surface-2); border-radius:var(--radius); padding:.2rem 1rem .6rem; margin-top:1.2rem }
+#palabra .pa-preguntas li{ margin:.35rem 0; line-height:1.5 }
+
+
 /* ==== css/rescritura.css ==== */
 /* «Rescritura» (09-10, Bachillerato): distinguir rescritura de copia, sinonimia y malinterpretación (rescrituraview.js) */
 #rescritura .res-guia{ max-width:62rem; margin:0 0 1rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); line-height:1.55 }
