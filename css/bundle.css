@@ -1767,6 +1767,36 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #republica .rep-diser{ text-align:start; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:.8rem 1rem; margin:1rem 0; }
 #republica .rep-diser ol{ margin:.4rem 0 0; padding-inline-start:1.3rem; display:grid; gap:.35rem; font-size:.92rem; }
 @media (prefers-reduced-motion:reduce){ #republica .rep-dialog.reveal, #republica .rep-degen.reveal{ animation:none; } }
+/* ===== La República (20-10, tanda 2): selector de versión, fases, funciones y chuleta ===== */
+#republica .rep-pick-h{ font-family:var(--serif); font-size:1.3rem; margin:.2rem 0; }
+#republica .rep-pick{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:.8rem; margin:.8rem 0 1rem; }
+#republica .rep-pick-card{ font:inherit; text-align:start; cursor:pointer; display:grid; gap:.35rem; align-content:start; padding:1rem 1.1rem; border:1px solid var(--line); border-inline-start:4px solid var(--hf); border-radius:12px; background:var(--surface); color:var(--ink); box-shadow:var(--shadow); }
+#republica .rep-pick-card:hover, #republica .rep-pick-card:focus-visible, #republica .rep-pick-card.on{ border-color:var(--hf); }
+#republica .rep-pick-card b{ font-family:var(--serif); font-size:1.15rem; }
+#republica .rep-pick-ic{ font-size:2rem; line-height:1; }
+#republica .rep-pick-lema{ font-weight:600; }
+#republica .rep-pick-intro{ font-size:.88rem; color:var(--muted); }
+#republica .rep-pick-go{ color:var(--accent); font-weight:600; margin-top:.3rem; }
+#republica .rep-vhead{ display:flex; gap:.7rem; align-items:center; flex-wrap:wrap; padding:.6rem .8rem; border:1px solid var(--line); border-inline-start:4px solid var(--hf); border-radius:12px; background:var(--surface); margin-bottom:.6rem; }
+#republica .rep-vhead > div{ display:grid; gap:.1rem; flex:1 1 220px; }
+#republica .rep-vhead b{ font-family:var(--serif); font-size:1.05rem; }
+#republica .rep-vbtns{ display:flex; gap:.4rem; flex-wrap:wrap; }
+#republica .btn2{ font:inherit; cursor:pointer; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); padding:.45rem .8rem; border-radius:10px; }
+#republica .rep-doxa{ margin:0 0 .8rem; }
+#republica .rep-funcs .rep-lr.on{ border-color:var(--ok); background:var(--ok-bg); color:var(--ink); }
+#republica .rep-fase{ border:1px dashed var(--hf); border-radius:10px; padding:.5rem .8rem; margin-bottom:.8rem; background:var(--surface); }
+#republica .rep-fase p{ margin:.2rem 0 0; font-size:.9rem; }
+#republica .rep-func-list{ list-style:none; padding:0; margin:.5rem 0; display:grid; gap:.45rem; }
+#republica .rep-func-list li{ padding:.5rem .7rem; border-radius:9px; border:1px solid var(--line); border-inline-start:3px solid var(--line); background:var(--surface); font-size:.92rem; }
+#republica .rep-func-list li.ok{ border-inline-start-color:var(--ok); } #republica .rep-func-list li.bad{ border-inline-start-color:var(--bad); }
+#republica .rep-func-list cite, #republica .rep-chuleta cite{ font-style:normal; font-size:.78rem; color:var(--muted); }
+#republica .rep-er{ text-align:start; margin:1rem 0; }
+#republica .rep-chuleta h4{ font-family:var(--serif); font-size:1.08rem; margin:1.2rem 0 .4rem; }
+#republica .rep-chuleta p{ font-size:.92rem; line-height:1.5; }
+#republica .rep-ch-t{ width:100%; border-collapse:collapse; font-size:.86rem; margin:.4rem 0 .8rem; }
+#republica .rep-ch-t th, #republica .rep-ch-t td{ border-bottom:1px solid var(--line-soft); padding:.35rem .4rem; text-align:start; vertical-align:top; }
+#republica .rep-ch-t td.c, #republica .rep-ch-t th.c{ text-align:center; white-space:nowrap; }
+@media print{ #republica .rep-hist-top button{ display:none; } }
 
 
 /* ==== css/dilemas.css ==== */

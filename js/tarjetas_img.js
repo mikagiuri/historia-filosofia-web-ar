@@ -2,6 +2,20 @@
    Si una tarjeta no está aquí, se queda con su icono. Las imágenes no se precachean: se cargan al mostrarlas.
    GENERADO por tools/generar_tarjetas_img.py desde recursos/tarjetas_prompts/*.json: no editar a mano. */
 const TARJETAS_IMG = {
+ // tanda11_fil_reuso (P-074): 3 tarjetas nuevas de Filosofía 1.º con dibujo ya existente (añadido a mano para no
+ // arrastrar traducciones pendientes de otras sesiones; al regenerar con el script estas claves se recrean igual).
+ "fil-etica-teorias|Ética del discurso": "accion_comunicativa",
+ "fil-etica-teorias|أخلاقيات المناقشة": "accion_comunicativa",
+ "fil-etica-teorias|Discourse ethics": "accion_comunicativa",
+ "fil-etica-teorias|Diskurtsoaren etika": "accion_comunicativa",
+ "fil-etica-teorias|Éthique de la discussion": "accion_comunicativa",
+ "fil-arte-sociedad|Ready-made": "teoria_institucional",
+ "fil-arte-sociedad|الجاهز (ready-made)": "teoria_institucional",
+ "fil-etica-teorias|Universalismo moral": "universalidad",
+ "fil-etica-teorias|الكونية الأخلاقية": "universalidad",
+ "fil-etica-teorias|Moral universalism": "universalidad",
+ "fil-etica-teorias|Unibertsalismo morala": "universalidad",
+ "fil-etica-teorias|Universalisme moral": "universalidad",
  "kant|A priori": "a_priori",
  "kant|القبلي (a priori)": "a_priori",
  "platon|Mundo inteligible": "mundo_inteligible",

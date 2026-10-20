@@ -35,6 +35,35 @@ const REP_ROSTER = {
        { id:"diligente", name:"منتجون مجتهدون", sj:2,v:2,t:5, note:"معتدلون وكادحون" } ]
 };
 const REP_IMG = "media/juegos/platon/";
+/* (20-10, tanda 2) dos versiones: A «degen» (Rep. VIII-X) y B «clases» (Rep. II-IV). La web usa estos valores;
+   REP_AP0, REP_MODES y REP_ACTS se quedan como están porque los lee la versión impresa (tools/cartas_juegos.js). */
+const REP_V2 = { ap0:8, apTurno:1, apFase:2, maxActs:3, deck:{ facil:12, real:14 }, dlgTurns:[1,4,7,10] };
+const REP_JUEGO_KEY = "aula-republica-juego";
+const REP_EV_V = { golpe:"a", victoria:"a", delos:"a", esparta:"a", pericles:"a", timocracia:"a",
+  caverna:"b", hambruna:"b", reforma:"b", cosecha:"b" };   // el resto, en las dos
+const REP_DLG_V = { trasimaco:"a", giges:"a", poetas:"a", filosofo:"a", metales:"b", comunidad:"b", adimanto:"b", caverna:"b" };
+const REP_ACT_V = { moviliza:"ab", heroismo:"a", educacion:"ab", cosecha:"ab", purga:"a" };   // cartas antiguas por versión
+function repZsj(x){ const Z=rep.t.Z; if(!Z.n) return; Z.sj=Math.max(Z.n, Z.sj+x*Z.n); Z.max=Math.max(1,Math.min(5,Z.max+x)); if(x<0) Z.just=0; else if(Z.max>=5) Z.just=Z.n; }
+function repArm(x){ rep.armonia=Math.round((rep.armonia+x)*10)/10; }
+const REP_ACT_RUN = {
+  censura:()=>repZsj(1), limite:()=>repArm(1), sorteo:()=>{ rep.ap+=2; repArm(-1); },
+  escolta:()=>{ repArm(2); rep.t.escolta=true; }, consejo:()=>repArm(2), zanganos:()=>repArm(1),
+  oficio:()=>{ rep.t.prodBonus=(rep.t.prodBonus||0)+6; }, musica:()=>repZsj(1), lana:()=>{ rep.t.hero=true; },
+  pruebas:()=>{ rep.t.Z.just=rep.t.Z.n; }, comun:()=>repArm(2), mito:()=>repArm(1),
+  rey:()=>{ if(rep.t.Z.max>=5) repArm(3); }, bajar:()=>{ repArm(2); repZsj(-1); }
+};
+const REP_ACT_OK = { lana:()=>!rep.t.hero, rey:()=>rep.t.Z.n>0 };
+function repV(){ return rep.juego==="clases" ? "b" : "a"; }
+function repActsFor(){
+  const v=repV(), D=repD();
+  const old=REP_ACTS.filter(a=>(REP_ACT_V[a.id]||"ab").includes(v));
+  const neu=(D&&D.acciones||[]).filter(a=>a.v===v).map(a=>Object.assign({}, a, { run:REP_ACT_RUN[a.id], ok:REP_ACT_OK[a.id] }));
+  return old.concat(neu); }
+function repFases(){ const D=repD(); return (rep.juego==="clases" && D && D.fases) ? D.fases : []; }
+function repFaseIdx(turn){ const F=repFases(); if(!F.length) return -1; return Math.min(F.length-1, Math.floor(turn*F.length/rep.turns)); }
+function repFunc(){   // Versión B: las cuatro funciones de la ciudad
+  const Z=rep.t.Z, sophia=Z.max>=5 && Z.n>0, andreia=repNGeff()>=rep.t.E.n/2.5 && rep.t.G.n>0, sophrosyne=repProd()>=repPop();
+  return { sophia, andreia, sophrosyne, dikaiosyne: sophia&&andreia&&sophrosyne }; }
 const REP_ACTS = [
   { id:"moviliza", name:"التعبئة", ap:2, img:"ac-agoge", d:"يُدرَّب منتج ليصير محاربًا.", ok:()=>rep.t.E.n>1,
     run:()=>{ repMove("E","G",1); } },
@@ -46,21 +75,28 @@ const REP_ACTS = [
 
 const rep = repFresh();
 function repFresh(){ return { mode:"real", acciones:"si", cnt:{}, armonia:REP_START, turn:0, turns:8, deck:[], resolved:false, nZ:0,nG:0,nE:0, t:null, ap:0, apTurn:0, used:new Set(), log:[], turnActs:[], designText:"",
-  reg:0, regLog:[], dlgPlan:{}, dlgDone:{}, posturas:[] }; }   // (20-10) régimen del libro VIII y diálogos (republica_dialogos.js)
+  reg:0, regLog:[], dlgPlan:{}, dlgDone:{}, posturas:[], juego:repJuegoLoad(), erChoice:null, fase:-1 }; }
+var repJuegoMem=null;   // (var: repFresh() se llama antes de esta línea) respaldo en memoria si el navegador no deja guardar
+function repJuegoLoad(){ let j=null; try{ j=store.get(REP_JUEGO_KEY,null); }catch(e){} return (j==="degen"||j==="clases")?j:repJuegoMem; }
+function repJuegoSave(j){ repJuegoMem=j; try{ store.set(REP_JUEGO_KEY,j); }catch(e){} }   // (20-10) régimen del libro VIII y diálogos (republica_dialogos.js)
 /* ---------- (20-10) degeneración del libro VIII y diálogos de la República ---------- */
 const REP_DLG_TURNS = [1,3,5];   // índices de turno antes de los que sale un diálogo (2.º, 4.º y 6.º)
 function repD(){ return (typeof REP_DIAL!=="undefined") ? REP_DIAL : null; }
 function repMd(s){ return String(s||"").replace(/\*([^*]+)\*/g,"<em>$1</em>"); }
 function repRegFor(a){ const R=repD().regimenes; let i=0; while(i<R.length-1 && a<R[i].min) i++; return i; }
 function repUpdReg(){   // la ciudad solo baja de régimen, nunca sube (546a: «todo lo que nace se corrompe»)
-  if(!repD()) return false; const n=Math.max(rep.reg, (rep.armonia<=0||repPop()<3) ? repD().regimenes.length-1 : repRegFor(rep.armonia));
+  if(!repD() || rep.juego==="clases") return false;   // (20-10) la degeneración es solo de la Versión A
+  const n=Math.max(rep.reg, (rep.armonia<=0||repPop()<3) ? repD().regimenes.length-1 : repRegFor(rep.armonia));
   if(n>rep.reg){ rep.regLog.push({ n:rep.turn+1, from:rep.reg, to:n }); rep.reg=n; return true; } return false; }
 function repGloName(id){ try{ const g=(typeof GLOSARIO!=="undefined") && GLOSARIO.find(x=>x.id===id); return g ? g.t : null; }catch(e){ return null; } }
 function repGloLinks(ids){ const L=(ids||[]).map(id=>({ id, t:repGloName(id) })).filter(x=>x.t);
   return L.length ? '<p class="rep-glo">📖 '+L.map(x=>'<a href="#glosario/'+x.id+'">'+x.t+'</a>').join(" · ")+'</p>' : ""; }
-function repLadder(){ const D=repD(); if(!D) return "";
+function repLadder(){ const D=repD(); if(!D) return ""; if(rep.juego==="clases") return repFuncBar();
   return '<div class="rep-ladder" role="list" aria-label="'+D.ui.regTitulo+'"><span class="rep-ladder-h">'+D.ui.hudReg+'</span>'+D.regimenes.map((r,i)=>
     '<span role="listitem" class="rep-lr'+(i===rep.reg?' on':'')+(i<rep.reg?' past':'')+'" title="'+r.lema+'">'+r.emoji+' '+r.name+'</span>').join('<i aria-hidden="true">›</i>')+'</div>'; }
+function repFuncBar(){ const D=repD(); if(!D||!rep.t) return ""; const f=repFunc(), F=repFases(), fi=repFaseIdx(Math.min(rep.turn,rep.turns-1));
+  return '<div class="rep-ladder rep-funcs" role="list" aria-label="'+D.ui.funciones+'">'+(fi>=0?'<span class="rep-ladder-h">'+D.ui.fase+': <b>'+F[fi].name+'</b></span>':'')+
+    D.funciones.map(x=>'<span role="listitem" class="rep-lr'+(f[x.k]?' on':'')+'" title="'+(f[x.k]?x.ok:x.no)+'">'+x.emoji+' '+x.name+(f[x.k]?' ✓':' ✗')+'</span>').join("")+'</div>'; }
 function repHud(){
   return '<div class="rep-hud"><span class="stat">الدور <b>'+(Math.min(rep.turn+1,rep.turns))+'</b>/'+rep.turns+'</span>'+
       '<span class="stat" title="تبدؤون من 10، لكن لا يوجد سقف: يمكنكم أن تتجاوزوه.">⚖️ الانسجام <b id="repArm">'+repFmt(rep.armonia)+'</b></span>'+
@@ -229,12 +265,27 @@ const REP_EVENTS = [
 ];
 
 /* ---------- setup ---------- */
-function renderRepStart(){
+function renderRepPick(){
+  const box=repBox(); const D=repD(); if(!box||!D) return; const U=D.ui;
+  box.innerHTML='<div class="rep-wrap"><h2 class="rep-pick-h">'+U.elegir+'</h2><p class="rep-dl-note">'+U.elegirIntro+'</p><div class="rep-pick">'+
+    ["degen","clases"].map(k=>{ const V=D.versiones[k]; return '<button class="rep-pick-card'+(rep.juego===k?' on':'')+'" data-juego="'+k+'"><span class="rep-pick-ic" aria-hidden="true">'+V.emoji+'</span>'+
+      '<span class="rep-ev-tag">'+V.eyebrow+' · '+V.libros+'</span><b>'+V.name+'</b><span class="rep-pick-lema">'+V.lema+'</span><span class="rep-pick-intro">'+V.intro+'</span><span class="rep-pick-go">'+U.jugarEsta+'</span></button>'; }).join("")+
+    '</div><div class="rep-actions2"><button class="btn2" id="repChuleta">'+U.chuleta+'</button></div></div>';
+  box.querySelectorAll("[data-juego]").forEach(b=>b.addEventListener("click",()=>{ repJuegoSave(b.dataset.juego); rep.juego=b.dataset.juego; renderRepStart(true); }));
+  document.getElementById("repChuleta").addEventListener("click",renderRepChuleta);
+}
+function renderRepStart(force){
   const box=repBox(); if(!box) return; Object.assign(rep, repFresh());
-  box.innerHTML='<div class="rep-wrap"><div class="rep-modes-pick" id="repModes"></div>'+
+  if(repD() && (!rep.juego || force===false)){ renderRepPick(); return; }
+  const D=repD(), V=D?D.versiones[rep.juego]:null;
+  box.innerHTML='<div class="rep-wrap">'+(V?'<div class="rep-vhead"><span class="rep-pick-ic" aria-hidden="true">'+V.emoji+'</span><div><span class="rep-ev-tag">'+V.eyebrow+' · '+V.libros+'</span><b>'+V.name+'</b><span class="rep-pick-lema">'+V.lema+'</span></div>'+
+      '<span class="rep-vbtns"><button class="btn2" id="repCambiar">'+D.ui.cambiar+'</button><button class="btn2" id="repChuleta">'+D.ui.chuleta+'</button></span></div>'+(rep.juego==="clases"?'<p class="rep-dl-note rep-doxa">'+repMd(D.doxa)+'</p>':''):'')+
+    '<div class="rep-modes-pick" id="repModes"></div>'+
     '<div class="rep-design"><div class="rep-roster" id="repRoster"></div><aside class="rep-summary" id="repSummary"></aside></div>'+
     '<p class="ia-note">رسوم مولَّدة بالذكاء الاصطناعي</p></div>';
   drawRepModes(); drawRepRoster(); drawRepSummary();
+  const cb=document.getElementById("repCambiar"); if(cb) cb.addEventListener("click",()=>renderRepStart(false));
+  const ch=document.getElementById("repChuleta"); if(ch) ch.addEventListener("click",renderRepChuleta);
 }
 function drawRepModes(){
   document.getElementById("repModes").innerHTML=
@@ -286,28 +337,33 @@ function repRandom(){
 
 /* ---------- turnos ---------- */
 function repStart(){
-  const s0=repCompute(); const c=rep._cls; rep.armonia=REP_START; rep.turn=0; rep.ap=(rep.acciones==="si")?REP_AP0:0;
+  const s0=repCompute(); const c=rep._cls; rep.armonia=REP_START; rep.turn=0; rep.ap=(rep.acciones==="si")?(repD()?REP_V2.ap0:REP_AP0):0;
   // crónica: instantánea del diseño inicial
   const parts=[]; ["Z","G","E"].forEach(k=>REP_ROSTER[k].forEach(p=>{ const q=rep.cnt[p.id]||0; if(q) parts.push(q+"× "+p.name); }));
   rep.designText=parts.join(", ")+" — "+s0.pop+" نسمة، "+s0.pts+" نقطة";
   rep.log=[];
-  const n=REP_MODES[rep.mode].deck;   // Real 8 · Fácil 7 — cada carta es un turno
+  const n=repD()?REP_V2.deck[rep.mode]:REP_MODES[rep.mode].deck;   // (20-10) web: Real 14 · Fácil 12 (impresa: 8 · 7) — cada carta es un turno
   rep.turns=n;
   const nFate=(rep.mode==="real")?3:2;                                  // cartas del destino inevitables por partida
   const forced=repShuffle(REP_FATE).slice(0,nFate).concat("menguada");  // + «Ciudad menguada» siempre presente
   const forcedSet=new Set(forced);
-  const pool=REP_EVENTS.filter(e=>!forcedSet.has(e.id)).map(e=>e.id);   // el resto: eventos condicionales variados
+  const pool=REP_EVENTS.filter(e=>!forcedSet.has(e.id) && (!repD() || !REP_EV_V[e.id] || REP_EV_V[e.id]===repV())).map(e=>e.id);   // el resto: eventos condicionales de la versión
   const rest=repShuffle(pool).slice(0, Math.max(0, n-forced.length));
   rep.deck=repShuffle(rest.concat(forced));
   rep.t={ Z:Object.assign({},c.Z), G:Object.assign({},c.G), E:Object.assign({},c.E), hero:false, prodBonus:0 };
   rep.reg=0; rep.regLog=[]; rep.dlgPlan={}; rep.dlgDone={}; rep.posturas=[];
-  if(repD()){ const ds=repShuffle(repD().dialogos); REP_DLG_TURNS.forEach((tn,i)=>{ if(ds[i] && tn<n) rep.dlgPlan[tn]=ds[i]; }); }
+  if(repD()){ const ds=repShuffle(repD().dialogos.filter(d=>!REP_DLG_V[d.id] || REP_DLG_V[d.id]===repV())); REP_V2.dlgTurns.forEach((tn,i)=>{ if(ds[i] && tn<n) rep.dlgPlan[tn]=ds[i]; }); }
+  rep.fase=repFaseIdx(0);
   repRenderTurn();
 }
 function repFmt(n){ n=Math.round(n*10)/10; return Number.isInteger(n)?n:n.toFixed(1); }
 function repRenderTurn(){
   const dl=rep.dlgPlan && rep.dlgPlan[rep.turn]; if(dl && !rep.dlgDone[rep.turn]){ repRenderDialog(dl); return; }   // (20-10) antes del turno, el diálogo
   rep.resolved=false; rep.apTurn=0; rep.used=new Set(); rep.turnActs=[]; rep.t.hero=false;
+  let faseMsg="";
+  if(repD() && rep.acciones==="si" && rep.turn>0 && rep._apPaid!==rep.turn){ rep._apPaid=rep.turn; rep.ap+=REP_V2.apTurno;
+    const fi=repFaseIdx(rep.turn); if(fi>rep.fase){ rep.fase=fi; rep.ap+=REP_V2.apFase; faseMsg=repFases()[fi]; } }
+  else if(repD() && rep.turn>0){ const fi=repFaseIdx(rep.turn); if(fi>rep.fase){ rep.fase=fi; faseMsg=repFases()[fi]; } }
   rep.rng=Math.random();   // azar fijo del turno (oráculo): igual en previsualización y resolución
   const ev=REP_EVENTS.find(e=>e.id===rep.deck[rep.turn]);
   repBox().innerHTML='<div class="rep-wrap">'+
@@ -317,8 +373,9 @@ function repRenderTurn(){
     '<div class="rep-arm'+(rep.armonia<=4?' low':'')+(rep.armonia>REP_ARM0?' over':'')+'"><i style="width:'+Math.min(100,Math.max(0,rep.armonia/REP_ARM0*100))+'%"></i></div>'+repLadder()+
     '<div class="rep-classes" id="repClasses"></div>'+
     '<div class="rep-city" id="repCity"></div>'+
+    (faseMsg?'<div class="rep-fase"><span class="rep-ev-tag">'+repD().ui.fase+' · '+faseMsg.name+(rep.acciones==="si"?' · '+repD().ui.nuevaFase:'')+'</span><p>'+faseMsg.lema+'</p></div>':'')+
     '<div class="rep-event reveal" id="repEvent"></div>'+
-    (rep.acciones==="si"?'<div class="rep-actions-h">الإجراءات (2 كحد أقصى في هذا الدور)</div><div class="rep-acts" id="repActs"></div>':'')+
+    (rep.acciones==="si"?'<div class="rep-actions-h">'+(repD()?repD().ui.accionesMax:'')+'</div><div class="rep-acts" id="repActs"></div>':'')+
     '<div class="rep-resolve"><button id="repResolve">واجهوا الحدث →</button></div></div>';
   repDrawTurn(ev);
   document.getElementById("repResolve").addEventListener("click",()=>repResolve(ev));
@@ -342,12 +399,13 @@ function repDrawTurn(ev){
     '<div class="threat">'+ev.threat+'</div>'+
     '<div class="rep-status '+(bad?"bad":good?"good":"ok")+'">'+(bad?"⚠ ":good?"✓ ":"• ")+pre.msg+'</div></div>';
   if(rep.acciones==="si"){ const acts=document.getElementById("repActs");
-    acts.innerHTML=REP_ACTS.map(a=>{ const dis=rep.apTurn>=2||rep.used.has(a.id)||rep.ap<a.ap||(a.ok&&!a.ok());
-      return '<button class="rep-act" data-act="'+a.id+'"'+(dis?" disabled":"")+'>'+(a.img?'<span class="rep-act-art"><img src="'+REP_IMG+a.img+'.jpg" alt=""></span>':'')+'<span class="rep-act-b"><b>'+a.name+' <span class="ap">'+a.ap+' AP</span></b><span class="d">'+a.d+'</span></span></button>'; }).join("");
+    const MX=repD()?REP_V2.maxActs:2;
+    acts.innerHTML=repActsFor().map(a=>{ const dis=rep.apTurn>=MX||rep.used.has(a.id)||rep.ap<a.ap||(a.ok&&!a.ok());
+      return '<button class="rep-act" data-act="'+a.id+'"'+(dis?" disabled":"")+(a.src?' title="'+a.src+'"':'')+'>'+(a.img?'<span class="rep-act-art"><img src="'+REP_IMG+a.img+'.jpg" alt="" onerror="this.parentNode.remove()"></span>':'')+'<span class="rep-act-b"><b>'+a.name+' <span class="ap">'+a.ap+' AP</span></b><span class="d">'+a.d+'</span></span></button>'; }).join("");
     acts.querySelectorAll("[data-act]").forEach(b=>b.addEventListener("click",()=>repDoAct(b.dataset.act,ev))); }
 }
-function repDoAct(id,ev){ const a=REP_ACTS.find(x=>x.id===id);
-  if(rep.apTurn>=2||rep.used.has(id)||rep.ap<a.ap||(a.ok&&!a.ok())) return;
+function repDoAct(id,ev){ const a=repActsFor().find(x=>x.id===id); const MX=repD()?REP_V2.maxActs:2;
+  if(!a||rep.apTurn>=MX||rep.used.has(id)||rep.ap<a.ap||(a.ok&&!a.ok())) return;
   a.run(); rep.ap-=a.ap; rep.apTurn++; rep.used.add(id); rep.turnActs.push(a.name);
   const ael=document.getElementById("repAp"); if(ael)ael.textContent=rep.ap;
   const arm=document.getElementById("repArm"); if(arm)arm.textContent=repFmt(rep.armonia);
@@ -356,7 +414,8 @@ function repDoAct(id,ev){ const a=REP_ACTS.find(x=>x.id===id);
 function repResolve(ev){
   if(rep.resolved) return; rep.resolved=true;
   const before=rep.armonia;
-  const r=ev.effect(); const after=Math.round((before+r.d)*10)/10; rep.armonia=after;   // sin techo
+  const r=ev.effect(); let dd=r.d; if(rep.t.escolta && repD()){ dd-=0.5; r.msg+=" "+repD().ui.escolta; }
+  const after=Math.round((before+dd)*10)/10; rep.armonia=after;   // sin techo
   const prevReg=rep.reg, degen=repUpdReg();
   rep.log.push({ n:rep.turn+1, ev:ev.name, src:ev.src, fate:!!ev.fate, msg:r.msg, acts:rep.turnActs.slice(), before, after, Z:rep.t.Z.n, G:rep.t.G.n, E:rep.t.E.n, reg:rep.reg });
   rep.turn++;
@@ -377,10 +436,16 @@ function repChronicleText(){
     L.push("");
   });
   L.push("الخاتمة: "+(rep._rank||"—")+" — "+repFmt(Math.max(0,rep.armonia))+" من الانسجام (الأساس "+REP_ARM0+") بعد "+rep.log.length+" أدوار عشتموها.");
-  const D=repD(); if(D){ const U=D.ui, R=D.regimenes, rg=R[rep.reg];   // (20-10) régimen, diálogos y guion de disertación
-    L.push("", "== "+U.finRegimen.toUpperCase()+": "+rg.name.toUpperCase()+" ==", rg.lema, rg.cita+" ("+rg.loc+")");
+  const D=repD(); if(D){ const U=D.ui, R=D.regimenes, rg=R[rep.reg], V=D.versiones[rep.juego||"degen"];   // (20-10) régimen, diálogos y guion de disertación
+    L.splice(3, 0, U.version+": "+V.eyebrow+" · "+V.name+" ("+V.libros+")");
+    if(rep.juego==="clases"){ const f=repFunc(); L.push("", "== "+U.funciones.toUpperCase()+" ==");
+      D.funciones.forEach(x=>L.push("   "+(f[x.k]?"✓ ":"✗ ")+x.name+" — "+x.gr.replace(/\*/g,"")+" — "+x.clase+": "+(f[x.k]?x.ok:x.no)+" ("+x.loc+")"));
+      L.push("", D.doxa.replace(/\*/g,""), "", "== "+U.posturas.toUpperCase()+" =="); }
+    else { L.push("", "== "+U.finRegimen.toUpperCase()+": "+rg.name.toUpperCase()+" ==", rg.lema, rg.cita+" ("+rg.loc+")");
     rep.regLog.forEach(x=>L.push("   "+x.n+": "+R.slice(x.from,x.to+1).map(r=>r.name).join(" → ")));
-    L.push("", U.escalera, "", "== "+U.posturas.toUpperCase()+" ==");
+    L.push("", U.escalera);
+    if(rep.erChoice!=null){ const E=D.er, o=E.opts[rep.erChoice]; L.push("", "== "+E.titulo.toUpperCase()+" ==", E.cita+" ("+E.loc+")", "   → "+o.t, "   "+o.r, E.cierre); }
+    L.push("", "== "+U.posturas.toUpperCase()+" =="); }
     if(!rep.posturas.length) L.push(U.sinDialogos);
     rep.posturas.forEach(p=>{ L.push("", p.quien+" ("+p.loc+"): "+p.cita, "   → "+p.t, "   "+U.porque+": "+p.razon, "   "+U.resultado+": "+p.r,
       "   "+U.responde+": "+p.platon.txt.replace(/\*/g,"")+" ("+p.platon.loc+")", "   "+U.objeta+" ("+p.critica.autor+"): "+p.critica.txt.replace(/\*/g,"")+" ("+p.critica.loc+")"); });
@@ -470,12 +535,28 @@ function repCopyChronicle(btn){
   const txt=repChronicleText();
   if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(()=>{ const o=btn.textContent; btn.textContent="✓ تم النسخ!"; setTimeout(()=>{btn.textContent=o;},1600); }).catch(()=>{}); }
 }
+function repErBlock(){   // (20-10) Versión A: epílogo con el mito de Er (República X, 614b-621d)
+  const D=repD(), E=D.er, U=D.ui;
+  return '<div class="rep-dialog rep-er" id="repEr"><div class="rep-dl-h"><span class="rep-dl-ic" aria-hidden="true">🌌</span><div><span class="rep-ev-tag">'+E.loc+'</span><h3>'+E.titulo+'</h3></div></div>'+
+    '<p class="rep-dl-sit">'+E.situacion+'</p><blockquote class="rep-dl-cita">'+E.cita+' <cite>'+E.loc+'</cite></blockquote><p class="rep-dl-gr">'+repMd(E.griego)+'</p>'+
+    (rep.erChoice==null
+      ? '<p class="rep-dl-q"><b>'+E.pregunta+'</b></p><div class="rep-dl-opts">'+E.opts.map((o,i)=>'<button class="rep-dl-opt" data-er="'+i+'"><b>'+o.t+'</b></button>').join("")+'</div>'
+      : '<div class="rep-dl-chosen"><b>'+U.erElige+': '+E.opts[rep.erChoice].t+'</b><span>'+E.opts[rep.erChoice].r+'</span></div><p class="rep-dl-note">'+E.cierre+'</p>')+'</div>'; }
+function repErWire(){ document.querySelectorAll("#repEr [data-er]").forEach(b=>b.addEventListener("click",()=>{ rep.erChoice=+b.dataset.er;
+  const el=document.getElementById("repEr"); if(el){ el.outerHTML=repErBlock(); }
+  try{ const h=repHistLoad(); if(h.length){ h[0].text=repChronicleText(); store.set(REP_HIST_KEY,h); } }catch(e){} })); }
+function repFuncPanel(){   // (20-10) Versión B: qué función cumple cada clase
+  const D=repD(), f=repFunc();
+  return '<div class="rep-final-reg"><div class="rep-cr-title">⚖️ '+D.ui.funciones+'</div><ul class="rep-func-list">'+D.funciones.map(x=>
+    '<li class="'+(f[x.k]?'ok':'bad')+'"><b>'+x.emoji+' '+x.name+'</b> '+repMd(x.gr)+' · <em>'+x.clase+'</em><br>'+(f[x.k]?'✓ '+x.ok:'✗ '+x.no)+' <cite>'+x.loc+'</cite></li>').join("")+'</ul>'+
+    '<p class="rep-dl-note">'+repMd(D.doxa)+'</p></div>'; }
 function repFinalBlocks(){   // (20-10) régimen final, posturas y guion de disertación
   const D=repD(); if(!D) return ""; const U=D.ui, rg=D.regimenes[rep.reg];
-  const glo=[...new Set([].concat(...rep.posturas.map(p=>p.glo), ...D.regimenes.slice(0,rep.reg+1).map(r=>r.glo)))];
-  return '<div class="rep-final-reg">'+repLadder()+'<p class="rep-dl-sit"><b>'+rg.lema+'</b></p>'+
+  const glo=[...new Set([].concat(...rep.posturas.map(p=>p.glo), ...(rep.juego==="clases"?[["g-las-tres-partes-del-alma","g-justicia","g-sabiduria","g-valentia","g-templanza"]]:D.regimenes.slice(0,rep.reg+1).map(r=>r.glo))))];
+  return (rep.juego==="clases" ? repFuncPanel() :
+    '<div class="rep-final-reg">'+repLadder()+'<p class="rep-dl-sit"><b>'+rg.lema+'</b></p>'+
       '<blockquote class="rep-dl-cita">'+rg.cita+' <cite>'+rg.loc+'</cite></blockquote>'+
-      '<p class="rep-dl-note">'+U.escalera+'</p></div>'+
+      '<p class="rep-dl-note">'+U.escalera+'</p></div>'+repErBlock())+
     '<div class="rep-chronicle"><div class="rep-cr-title">🗣️ '+U.posturas+'</div>'+
       (rep.posturas.length ? '<ol class="rep-cr-list">'+rep.posturas.map(p=>'<li class="rep-cr-item"><div class="rep-cr-h"><span class="rep-cr-n">T'+p.n+'</span><b>'+p.quien+'</b> <span class="rep-cr-badge">'+p.loc+'</span></div>'+
         '<div class="rep-cr-msg"><b>'+p.t+'</b> '+U.porque+': '+p.razon+'</div><div class="rep-cr-acts">'+U.objeta+' ('+p.critica.autor+'): '+repMd(p.critica.txt)+' <cite>'+p.critica.loc+'</cite></div></li>').join("")+'</ol>'
@@ -488,14 +569,16 @@ function repResult(){
   else if(a>=8){ emoji="🏛️"; rank="جمهورية منسجمة"; }
   else if(a>=5){ emoji="⚖️"; rank="جمهورية مستقرة"; }
   else { emoji="⚠️"; rank="جمهورية هشّة، لكنها صامدة"; }
-  const D=repD(); if(D){ repUpdReg(); const rg=D.regimenes[rep.reg];   // (20-10) el desenlace es el régimen del libro VIII
+  const D=repD(); if(D && rep.juego==="clases"){ const f=repFunc(), dead=a<=0||repPop()<3;   // (20-10) B: grado de ciudad justa
+    const fb=D.finB.find(x=>!dead && a>=x.min && (!x.todas || f.dikaiosyne)) || D.finB[D.finB.length-1]; emoji=fb.emoji; rank=fb.name; }
+  else if(D){ repUpdReg(); const rg=D.regimenes[rep.reg];   // (20-10) A: el desenlace es el régimen del libro VIII
     if(a<=0||repPop()<3){ emoji="💥"; rank=D.ui.hunde; } else { emoji=rg.emoji; rank=rg.name; } }
   rep._rank=rank;
   const key="aula-republica-best"; const best=store.get(key,0); const record=a>best; if(record) store.set(key,a);
   // guardar en el historial del navegador (con nombre por defecto, editable después)
   rep._defaultName=repDefaultName(); rep.gameName=rep._defaultName;
   const ts=Date.now(); let fecha; try{ fecha=new Date(ts).toLocaleString("ar-MA-u-nu-latn",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}); }catch(e){ fecha=new Date(ts).toLocaleString(); }
-  repHistPush({ ts, date:fecha, name:rep.gameName, emoji, rank, mode:REP_MODES[rep.mode].name, acc:rep.acciones, arm:repFmt(Math.max(0,a)), turns:rep.log.length, text:repChronicleText() });
+  repHistPush({ ts, date:fecha, name:rep.gameName, emoji, rank, mode:REP_MODES[rep.mode].name+(D&&rep.juego?" · "+D.versiones[rep.juego].eyebrow:""), acc:rep.acciones, arm:repFmt(Math.max(0,a)), turns:rep.log.length, text:repChronicleText() });
   const qs=["ماذا تُظهر هذه اللعبة عن حاجة مجتمع أفلاطون إلى التوازن؟",
     "ما المخاطر التي تنتج عن السلطة المفرطة لكل طبقة اجتماعية؟",
     "هل صحيح، كما قال أفلاطون، أن المجتمع لا يمكن أن يخلص دون حكام فلاسفة؟",
@@ -518,7 +601,28 @@ function repResult(){
   const sv=document.getElementById("repSave"); if(sv) sv.addEventListener("click",repDownloadChronicle);
   const cp=document.getElementById("repCopy"); if(cp) cp.addEventListener("click",()=>repCopyChronicle(cp));
   const hv=document.getElementById("repHistView"); if(hv) hv.addEventListener("click",renderRepHistory);
+  if(D && rep.juego!=="clases") repErWire();
   const nm=document.getElementById("repName"); if(nm){ nm.addEventListener("input",()=>repHistSetLatestName(nm.value)); nm.addEventListener("focus",()=>nm.select()); }
+}
+function renderRepChuleta(){   // (20-10) chuleta: todas las reglas y fórmulas de las dos versiones
+  const D=repD(), box=repBox(); if(!D||!box) return; const U=D.ui, V=D.versiones;
+  const actRow=a=>'<tr><td><b>'+a.name+'</b>'+(a.src?'<br><cite>'+a.src+'</cite>':'')+'</td><td class="c">'+a.ap+'</td><td>'+a.d+'</td></tr>';
+  const actTable=list=>'<table class="rep-ch-t"><tr><th>'+U.cAcciones+'</th><th class="c">AP</th><th></th></tr>'+list.map(actRow).join("")+'</table>';
+  const old=v=>REP_ACTS.filter(a=>(REP_ACT_V[a.id]||"ab").includes(v));
+  const evV=e=>REP_EV_V[e.id]==="a"?" · A":REP_EV_V[e.id]==="b"?" · B":"";
+  box.innerHTML='<div class="rep-wrap rep-chuleta"><div class="rep-hist-top"><button class="btn2" id="repChBack">'+U.volver+'</button><h3>📋 '+U.chuletaT+'</h3>'+
+      '<button class="btn2" onclick="void 0 /* sin imprimir en la web de alumnado */">🖨️</button></div>'+
+    '<h4>'+U.cClases+'</h4><p>'+U.cClasesT+'</p><table class="rep-ch-t">'+["Z","G","E"].map(k=>REP_ROSTER[k].map(c=>'<tr><td>'+c.name+'</td><td>⚖️'+c.sj+' 🛡️'+c.v+' 🍷'+c.t+'</td><td class="c">'+cost(c)+'</td></tr>').join("")).join("")+'</table>'+
+    '<h4>'+U.cEconomia+'</h4><p>'+U.cEconomiaT+' '+U.cTurnos+'</p>'+
+    '<h4>'+U.cVictoria+'</h4><p>'+U.cVictoriaA+'</p><p>'+U.cVictoriaB+'</p><p>'+U.cFunciones+'</p>'+
+    '<h4>'+V.degen.emoji+' '+V.degen.eyebrow+' · '+V.degen.name+'</h4><table class="rep-ch-t">'+D.regimenes.map((r,i)=>'<tr><td><b>'+r.emoji+' '+r.name+'</b></td><td>'+(i===0?'≥ 8':i===D.regimenes.length-1?'< 2':'< '+D.regimenes[i-1].min)+'</td><td>'+r.lema+' '+repMd(r.causa)+'<br><cite>'+r.cita+' ('+r.loc+')</cite></td></tr>').join("")+'</table>'+
+    actTable(old("a").concat(D.acciones.filter(a=>a.v==="a")))+
+    '<h4>'+V.clases.emoji+' '+V.clases.eyebrow+' · '+V.clases.name+'</h4><table class="rep-ch-t">'+D.funciones.map(x=>'<tr><td><b>'+x.emoji+' '+x.name+'</b><br>'+repMd(x.gr)+'</td><td>'+x.clase+'</td><td>'+x.ok+'<br><cite>'+x.loc+'</cite></td></tr>').join("")+'</table>'+
+    '<p>'+D.fases.map((f,i)=>'<b>'+(i+1)+'. '+f.name+'</b>: '+f.lema).join("<br>")+'</p><p>'+repMd(D.doxa)+'</p>'+
+    actTable(old("b").concat(D.acciones.filter(a=>a.v==="b")))+
+    '<h4>'+U.cEventos+'</h4><table class="rep-ch-t">'+REP_EVENTS.map(e=>'<tr><td><b>'+e.name+'</b>'+evV(e)+'<br><cite>'+e.src+'</cite></td><td colspan="2">'+e.threat+'</td></tr>').join("")+'</table>'+
+    '<p>'+U.cDestino+'</p><p>'+U.cDialogos+'</p></div>';
+  document.getElementById("repChBack").addEventListener("click",()=>renderRepStart(rep.juego?true:false));
 }
 function initRep(){ renderRepStart(); }
 document.addEventListener("DOMContentLoaded", initRep);
