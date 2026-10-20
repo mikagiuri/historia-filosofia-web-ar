@@ -319,7 +319,7 @@
     return D.filter(function(d){ return d && /^pol-/.test(d.id) && polIds.indexOf(d.id.slice(4)) >= 0 && (d.nivel || []).indexOf(subject) >= 0; })
       .map(function(d){ return { go: "duelo", arg: subject + "/" + d.id, label: strip(d.claim) }; });
   }
-  var JUEGOS_TEMA = { hf: { 4: ["universo"], 5: ["palabra"], 6: ["republica", "universo"], 7: ["universo"], 8: ["eudaimonia"], 9: ["republica", "palabra"], 10: ["universo"], 13: ["universo", "palabra"], 15: ["leibniz"] }, fil: { 1: ["palabra"], 2: ["universo"], 3: ["universo"], 3.5: ["universo"], 4: ["leibniz", "palabra"], 7: ["palabra"] } };   // (19-10) + universo, palabra
+  var JUEGOS_TEMA = { hf: { 4: ["universo"], 5: ["palabra"], 6: ["republica", "universo"], 7: ["universo"], 8: ["eudaimonia"], 9: ["republica", "palabra"], 10: ["universo"], 13: ["universo", "palabra"], 15: ["leibniz", "afectos"] }, fil: { 1: ["palabra"], 2: ["universo"], 3: ["universo"], 3.5: ["universo"], 4: ["leibniz", "palabra"], 7: ["palabra"] } };   // (19-10) + universo, palabra; (20-10) + afectos
   function juegosDe(subject, tema){
     var js = ((JUEGOS_TEMA[subject] || {})[tema] || []).slice();
     if (subject === "fil") js.push("rayuela");   /* decisión del profesor (18-10): Rayuela en todos los temas de 1.º */

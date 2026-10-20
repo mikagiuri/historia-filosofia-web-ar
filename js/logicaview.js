@@ -665,18 +665,26 @@ const LOG_GUIA = { tablas: "guiaTablas", silogismos: "guiaSilog", puertas: "guia
 function logRender(){
   const box = logBox(); if (!box) return;
   /* (12-10) arriba: «Lógica clásica» y «Lógica moderna», cada una con sus subpestañas (no más de 6 pestañas arriba) */
-  const grupo = LOG_SUB_SIL.includes(LOG.tab) ? "silogismos" : LOG_SUB_MOD.includes(LOG.tab) ? "tablas" : LOG.tab;
-  const tabs = [["silogismos", "tabClasica"], ["tablas", "tabModerna"], ...(typeof logRenderFalacias === "function" ? [["falacias", "tabFalacias"]] : []), ["paradojas", "tabParad"], ["ejercicios", "tabEjerc"], ["clasicos", "tabClasicos"]];
+  /* (20-10) + «Laboratorio» (laboratorioview.js: cinco mesas); para no pasar de seis arriba, Paradojas · Ejercicios ·
+     Argumentos clásicos van juntas como subpestañas de «Paradojas» (las tres ya eran la misma vista: logRenderParadojas) */
+  const hayLab = typeof labMontar === "function" && typeof LAB !== "undefined";
+  const esLab = hayLab && LB_MESAS.includes(LOG.tab);
+  const grupo = LOG_SUB_SIL.includes(LOG.tab) ? "silogismos" : LOG_SUB_MOD.includes(LOG.tab) ? "tablas" : LOG_PAR_VISTAS.includes(LOG.tab) ? "paradojas" : esLab ? "hablamos" : LOG.tab;
+  const tabs = [["silogismos", "tabClasica"], ["tablas", "tabModerna"], ...(typeof logRenderFalacias === "function" ? [["falacias", "tabFalacias"]] : []), ["paradojas", "tabParad"], ...(hayLab ? [["hablamos", "tabLab"]] : [])];
   const sub = LOG_SUB_SIL.includes(LOG.tab) ? [["silogismos", "tabSilog"], ["cuadrado", "tabCuadrado"], ["conjuntos", "tabConjuntos"]]
-    : LOG_SUB_MOD.includes(LOG.tab) ? [["tablas", "tabTablas"], ["formalizar", "tabFormalizar"], ["inferencia", "tabInferencia"], ["leyes", "tabLeyes"], ["cuantificadores", "tabCuantificadores"], ["puertas", "tabPuertas"]].filter(([k]) => ["tablas", "puertas"].includes(k) || typeof logRenderFormalizar === "function") : null;
-  const cuerpo = LOG.tab === "silogismos" ? logRenderSil() : LOG.tab === "cuadrado" ? logRenderCuadrado() + (typeof logmConversion === "function" ? logmConversion() : "") : LOG.tab === "conjuntos" ? logRenderConjuntos() : LOG.tab === "puertas" ? logRenderPuertas()
+    : LOG_SUB_MOD.includes(LOG.tab) ? [["tablas", "tabTablas"], ["formalizar", "tabFormalizar"], ["inferencia", "tabInferencia"], ["leyes", "tabLeyes"], ["cuantificadores", "tabCuantificadores"], ["puertas", "tabPuertas"]].filter(([k]) => ["tablas", "puertas"].includes(k) || typeof logRenderFormalizar === "function")
+    : LOG_PAR_VISTAS.includes(LOG.tab) ? [["paradojas", "tabParad"], ["ejercicios", "tabEjerc"], ["clasicos", "tabClasicos"]]
+    : esLab ? [["hablamos", "mesaHablamos"], ["arbol", "mesaArbol"], ["mundo", "mesaMundo"], ["relaciones", "mesaRelaciones"], ["demos", "mesaDemos"]] : null;
+  const rotulo = l => (hayLab && /^(tabLab|mesa)/.test(l) ? lbT(l) : logT(l));
+  const cuerpo = esLab ? '<div id="lb-box" class="lb-box"></div>' : LOG.tab === "silogismos" ? logRenderSil() : LOG.tab === "cuadrado" ? logRenderCuadrado() + (typeof logmConversion === "function" ? logmConversion() : "") : LOG.tab === "conjuntos" ? logRenderConjuntos() : LOG.tab === "puertas" ? logRenderPuertas()
     : LOG.tab === "formalizar" && typeof logRenderFormalizar === "function" ? logRenderFormalizar() : LOG.tab === "inferencia" && typeof logRenderInferencia === "function" ? logRenderInferencia() : LOG.tab === "leyes" && typeof logRenderLeyes === "function" ? logRenderLeyes() : LOG.tab === "cuantificadores" && typeof logRenderCuantificadores === "function" ? logRenderCuantificadores() : LOG.tab === "falacias" && typeof logRenderFalacias === "function" ? logRenderFalacias()
     : LOG_PAR_VISTAS.includes(LOG.tab) ? logRenderParadojas(LOG.tab) : logRenderTablas();
-  box.innerHTML = '<div class="fgroup lg-tabs" role="tablist">' + tabs.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (grupo === k) + '">' + logT(l) + "</button>").join("") + "</div>" +
-    (sub ? '<div class="fgroup lg-subtabs">' + sub.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (LOG.tab === k) + '">' + logT(l) + "</button>").join("") + "</div>" : "") +
+  box.innerHTML = '<div class="fgroup lg-tabs" role="tablist">' + tabs.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (grupo === k) + '">' + rotulo(l) + "</button>").join("") + "</div>" +
+    (sub ? '<div class="fgroup lg-subtabs">' + sub.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (LOG.tab === k) + '">' + rotulo(l) + "</button>").join("") + "</div>" : "") +
     /* (08-10) una introducción breve en cada pestaña, por si se llega a ella sin contexto (Paradojas ya tiene la suya) */
     (LOG_INTRO[LOG.tab] ? '<p class="lg-intro">' + logT(LOG_INTRO[LOG.tab]) + "</p>" + (LOG_GUIA[LOG.tab] ? logGuia(LOG_GUIA[LOG.tab]) : "") : "") +
     '<div class="lg-cuerpo">' + cuerpo + "</div>";
+  if (esLab) labMontar(LOG.tab);
 }
 function logInsertar(input, txt){
   const a = input.selectionStart != null ? input.selectionStart : input.value.length, b = input.selectionEnd != null ? input.selectionEnd : a;
@@ -732,7 +740,7 @@ function loadLogica(arg){
   const m = /^(?:paradojas|ejercicios|clasicos)\/([\w-]+)$/.exec(arg || ""), ficha = m && typeof PARADOJAS !== "undefined" ? PARADOJAS.find(p => p.id === m[1]) : null;
   const grupo = ficha && typeof PARADOJAS_GRUPOS !== "undefined" ? PARADOJAS_GRUPOS.find(g => g.id === ficha.grupo) : null;
   if (ficha){ LOG.tab = (grupo && grupo.view) || "paradojas"; LOG.parGrupo = ficha.grupo; }
-  else if (arg && ["tablas", "silogismos", "cuadrado", "conjuntos", "puertas", "formalizar", "inferencia", "cuantificadores", "falacias", ...LOG_PAR_VISTAS].includes(arg)){ LOG.tab = arg; LOG.parGrupo = "all"; }
+  else if (arg && ["tablas", "silogismos", "cuadrado", "conjuntos", "puertas", "formalizar", "inferencia", "cuantificadores", "falacias", ...LOG_PAR_VISTAS, ...(typeof LB_MESAS !== "undefined" ? LB_MESAS : [])].includes(arg)){ LOG.tab = arg; LOG.parGrupo = "all"; }   /* (20-10) #logica/hablamos|arbol|mundo|relaciones|demos */
   logRender(); logWire();
   if (ficha){ const el = document.getElementById("par-" + ficha.id); if (el) el.scrollIntoView({ block: "start" }); }
 }

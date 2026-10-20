@@ -20,13 +20,19 @@ const PIS_TXT = {
   comprobacion: "تحقق", pregunta: "سؤال", logrado: "تم بلوغ الفهم", completado: "اكتمل المسار",
   sinAyuda: "لقد حللتموه دون تلميحات.", usaste: "التلميحات المستعملة: {n}.", repetir: "أعيدوا المسار", siguiente: "السؤال التالي:",
   pisN: "تلميح {n}", revelar: "انقروا للكشف", preguntas: "أسئلة",
-  enGlosario: "في مسرد المصطلحات", abrirGlo: "افتح في مسرد المصطلحات ›"
+  enGlosario: "في مسرد المصطلحات", abrirGlo: "افتح في مسرد المصطلحات ›",
+  seguir: "حاول مرة أخرى",
+  intentoLb: "قبل أن ترى الشرح", intentoTxt: "اكتب إجابتك بكلماتك، حتى لو لم تكن متأكدًا. بعد ذلك ستقارنها بالشرح.",
+  intentoGuarda: "ما تكتبه يُحفظ في هذا المتصفح فقط.", intentoPal: "{n} كلمة (الحد الأدنى {m})", intentoVer: "اعرض الشرح وقارن",
+  tuIntento: "محاولتك", compara: "قارن: هل قلتَ ذلك؟"
 };
+const PIS_MIN = 8;   // (20-10) palabras mínimas del intento escrito antes de ver la explicación
 
 const PIS = { it: null, st: null };
 const pisBox = () => document.getElementById("pistasbox");
 const pisKey = id => "aula-pistas-" + id;
-const pisNuevo = () => ({ c: 0, vista: "inicio", rev: {}, r: 0, intentos: 0, usadas: 0, done: {} });
+/* (20-10) esc: intento escrito por pregunta; rep: casillas marcadas de «Compara» por pregunta */
+const pisNuevo = () => ({ c: 0, vista: "inicio", rev: {}, r: 0, intentos: 0, usadas: 0, done: {}, esc: {}, rep: {} });
 /* índices de pistas reveladas del ciclo actual (persisten por ciclo al saltar de página) */
 const pisRev = () => (PIS.st.rev[PIS.st.c] || (PIS.st.rev[PIS.st.c] = []));
 
@@ -35,6 +41,8 @@ function pisLoad(id){
     const st = Object.assign(pisNuevo(), s);
     if (!st.rev || typeof st.rev !== "object") st.rev = {};
     if (!st.done || typeof st.done !== "object") st.done = {};
+    if (!st.esc || typeof st.esc !== "object") st.esc = {};
+    if (!st.rep || typeof st.rep !== "object") st.rep = {};
     return st;
   } } catch (e){}
   return null;
@@ -153,19 +161,50 @@ function pisPista(){
   }));
   const resc = k.rescate && k.rescate.length;
   pisBotones([PIS_TXT.yaPuedo, true, () => pisIr("comprobacion")],
-    (resc && rev.length >= n) ? [k.rescate[0].boton || PIS_TXT.leer, false, () => { st.r = 0; st.intentos = 0; pisIr("rescate"); }] : null);
+    (resc && rev.length >= n) ? [k.rescate[0].boton || PIS_TXT.leer, false, () => { st.r = 0; st.intentos = 0; pisIr(pisPalabras(st.esc[st.c]) >= PIS_MIN ? "rescate" : "intento"); }] : null);
 }
 
+/* (20-10) «Escribe antes de ver»: antes de la explicación (el rescate), el alumno escribe su intento; se guarda solo en este
+   navegador (pisSave, con try/catch) y reaparece en el rescate junto a la lista «Compara» del ciclo (campo «repaso»). */
+const pisPalabras = s => (String(s || "").trim().match(/\S+/g) || []).length;
+const pisEsc = s => String(s || "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function pisIntento(){
+  const k = pisCiclo(), st = PIS.st;
+  pisMarco(0.6, '<div class="pis-label">' + PIS_TXT.intentoLb + '</div><h3>' + k.pregunta + '</h3>' +
+    '<p>' + PIS_TXT.intentoTxt + '</p>' +
+    '<textarea class="pis-ta" id="pis-ta" rows="5" aria-label="' + PIS_TXT.tuIntento + '">' + pisEsc(st.esc[st.c]) + '</textarea>' +
+    '<div class="pis-small pis-cnt" id="pis-cnt"></div><p class="pis-small">' + PIS_TXT.intentoGuarda + '</p>');
+  pisBotones([PIS_TXT.intentoVer, true, () => { st.r = 0; st.intentos = 0; pisIr("rescate"); }]);
+  const ta = pisBox().querySelector("#pis-ta"), cnt = pisBox().querySelector("#pis-cnt"), ver = pisBox().querySelector(".pis-actions button");
+  const upd = () => { const n = pisPalabras(ta.value); cnt.textContent = PIS_TXT.intentoPal.replace("{n}", n).replace("{m}", PIS_MIN); ver.disabled = n < PIS_MIN; };
+  ta.addEventListener("input", () => { st.esc[st.c] = ta.value; pisSave(); upd(); });
+  upd();
+}
+/* el intento escrito y la lista «Compara» del ciclo, al pie de cada panel de rescate */
+function pisCompara(){
+  const k = pisCiclo(), st = PIS.st, tx = st.esc[st.c], rep = k.repaso || [], hechas = st.rep[st.c] || [];
+  if (!pisPalabras(tx) && !rep.length) return "";
+  return '<div class="pis-comp">' +
+    (pisPalabras(tx) ? '<div class="pis-glo-lb">' + PIS_TXT.tuIntento + '</div><p class="pis-tuyo">' + pisEsc(tx).replace(/\n/g, "<br>") + '</p>' : '') +
+    (rep.length ? '<div class="pis-glo-lb">' + PIS_TXT.compara + '</div><div class="pis-rep">' + rep.map((x, i) =>
+      '<label><input type="checkbox" data-rep="' + i + '"' + (hechas.indexOf(i) >= 0 ? " checked" : "") + '> <span>' + x + '</span></label>').join("") + '</div>' : '') +
+    '</div>';
+}
+
+/* (20-10) una opción errónea puede llevar como 4.º elemento el id de un término del glosario: al fallarla se abre esa
+   píldora (término y definición) y el alumno sigue cuando la ha leído, en vez de volver solo a los 2 s */
 function pisTest(test, dentro, alAcertar, alFallar){
   pisMarco(dentro, '<div class="pis-label">' + (test.etiqueta || PIS_TXT.comprobacion) + '</div><h3>' + test.pregunta + '</h3>' +
-    '<div class="pis-choices"></div><div class="pis-fb" role="status"></div>');
-  const lista = pisBox().querySelector(".pis-choices"), fb = pisBox().querySelector(".pis-fb");
-  pisBarajar(test.opciones).forEach(([txt, ok, porQue]) => {
+    '<div class="pis-choices"></div><div class="pis-fb" role="status"></div><div class="pis-fb-glo"></div>');
+  const lista = pisBox().querySelector(".pis-choices"), fb = pisBox().querySelector(".pis-fb"), fbg = pisBox().querySelector(".pis-fb-glo");
+  pisBarajar(test.opciones).forEach(([txt, ok, porQue, glo]) => {
     const b = document.createElement("button"); b.type = "button"; b.className = "pis-choice"; b.innerHTML = txt;
     b.addEventListener("click", () => {
       lista.querySelectorAll("button").forEach(x => (x.disabled = true));
       b.classList.add(ok ? "ok" : "bad");
       fb.className = "pis-fb " + (ok ? "ok" : "bad"); fb.innerHTML = ok ? test.ok : (porQue || test.mal);
+      const pildora = !ok && glo ? pisGlo([glo], true) : "";
+      if (pildora){ fbg.innerHTML = pildora; pisBotones([PIS_TXT.seguir, true, alFallar]); return; }
       setTimeout(ok ? alAcertar : alFallar, ok ? 1200 : 2200);
     });
     lista.appendChild(b);
@@ -177,8 +216,13 @@ function pisRescate(){
   pisMarco(0.65 + 0.1 * PIS.st.r, '<div class="pis-label">' + p.etiqueta + '</div><h3>' + p.titulo + '</h3>' +
     (p.cita ? '<blockquote class="pis-cita">' + p.cita.texto + (p.cita.fuente ? '<cite>' + p.cita.fuente + '</cite>' : '') + '</blockquote>' : '') +
     (p.definicion ? '<div class="pis-def">' + p.definicion.map(x => '<p>' + x + '</p>').join("") + '</div>' : '') +
-    (p.parrafos || []).map(x => '<p>' + x + '</p>').join("") + pisGlo(p.glosario));
+    (p.parrafos || []).map(x => '<p>' + x + '</p>').join("") + pisCompara() + pisGlo(p.glosario));
   pisBotones([p.comprobacion.boton || PIS_TXT.comprobar, true, () => pisIr("rescateTest")]);
+  pisBox().querySelectorAll("[data-rep]").forEach(c => c.addEventListener("change", () => {
+    const st = PIS.st, a = st.rep[st.c] || (st.rep[st.c] = []), i = +c.dataset.rep, j = a.indexOf(i);
+    if (c.checked && j < 0) a.push(i); else if (!c.checked && j >= 0) a.splice(j, 1);
+    pisSave();
+  }));
 }
 
 function pisRescateTest(){
@@ -200,7 +244,7 @@ function pisFin(){
 }
 
 const PIS_VISTAS = { inicio: pisInicio, pista: pisPista, comprobacion: () => pisTest(pisCiclo().comprobacion, 0.6, pisSiguienteCiclo, () => pisIr("pista")),
-  rescate: pisRescate, rescateTest: pisRescateTest, fin: pisFin };
+  intento: pisIntento, rescate: pisRescate, rescateTest: pisRescateTest, fin: pisFin };
 function pisPintar(){ (PIS_VISTAS[PIS.st.vista] || pisInicio)(); }
 
 if (pisBox() && typeof PISTAS !== "undefined") renderPisCatalogo();
