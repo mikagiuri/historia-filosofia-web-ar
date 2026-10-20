@@ -1506,7 +1506,7 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #republica .rep-reflect{ font-family:var(--serif); font-style:italic; color:var(--ink); max-width:52ch; margin:.8rem auto 1.2rem; padding:.6rem 1rem; border-inline-start:3px solid var(--accent); background:var(--surface-2); border-radius:0 8px 8px 0; text-align:start; }
 #republica .rep-actions2{ display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; }
 #republica .rep-actions2 .btn2{ font:inherit; cursor:pointer; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); padding:.6rem 1.1rem; border-radius:10px; } #republica .rep-actions2 .btn2.primary{ background:var(--accent); color:var(--on-accent); border-color:var(--accent); }
-@media (max-width:560px){ #republica .rep-classes{ grid-template-columns:1fr; } }
+@media (max-width:560px){ #republica .rep-classes{ gap:.4rem; } #republica .rep-class{ padding:.5rem .3rem; } #republica .rep-class .c{ font-size:1.25rem; } }   /* (20-10) tres en fila: la carta del turno entra en la primera pantalla */
 
 /* ===== Eudaimonía v2: retratos, tres bienes, azar destacado ===== */
 #eudaimonia .ari-chars{ grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); }
@@ -1731,6 +1731,42 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #eudaimonia .fel-comp button{ font:inherit; background:none; border:0; cursor:pointer; color:var(--bad); padding:0 .3rem; }
 #eudaimonia .fel-saber summary{ cursor:pointer; color:var(--accent); font-weight:500; }
 #eudaimonia .fel-saber ol{ margin:.5rem 0 0; padding-inline-start:1.3rem; display:grid; gap:.35rem; font-size:.92rem; }
+
+/* ===== La República (20-10): degeneración del libro VIII, diálogos y guion de disertación ===== */
+#republica .rep-ladder{ display:flex; flex-wrap:wrap; align-items:center; gap:.25rem .35rem; margin:-.4rem 0 1rem; font-size:.78rem; }
+#republica .rep-ladder-h{ color:var(--muted); margin-inline-end:.2rem; }
+#republica .rep-ladder > i{ font-style:normal; color:var(--muted); }
+#republica .rep-lr{ padding:.15rem .5rem; border-radius:999px; border:1px solid var(--line); color:var(--muted); background:var(--surface); white-space:nowrap; }
+#republica .rep-lr.past{ text-decoration:line-through; opacity:.7; }
+#republica .rep-lr.on{ border-color:var(--hf); color:var(--on-hf); background:var(--hf); font-weight:600; }
+#republica .rep-dialog, #republica .rep-degen{ background:var(--surface); border:1px solid var(--line); border-inline-start:4px solid var(--hf); border-radius:12px; padding:.9rem 1.1rem; margin-bottom:1rem; box-shadow:var(--shadow); }
+#republica .rep-dialog.reveal, #republica .rep-degen.reveal{ animation:ari-reveal .45s cubic-bezier(.2,.9,.3,1.2); }
+#republica .rep-degen{ border-inline-start-color:var(--bad); }
+#republica .rep-dl-h{ display:flex; gap:.7rem; align-items:center; }
+#republica .rep-dl-ic{ font-size:2rem; line-height:1; }
+#republica .rep-dialog h3, #republica .rep-degen h3{ font-family:var(--serif); font-size:1.15rem; margin:.1rem 0 .2rem; }
+#republica .rep-dl-sit{ margin:.6rem 0; line-height:1.5; }
+#republica .rep-dl-cita{ font-family:var(--serif); font-size:1.02rem; line-height:1.5; margin:.6rem 0; padding:.5rem .9rem; border-inline-start:3px solid var(--hf); background:var(--surface-2); border-radius:0 8px 8px 0; }
+#republica .rep-dl-cita.crit{ border-inline-start-color:var(--accent); }
+#republica .rep-dl-cita cite{ display:block; font-family:var(--sans); font-style:normal; font-size:.78rem; color:var(--muted); margin-top:.25rem; }
+#republica .rep-dl-gr{ font-size:.85rem; color:var(--muted); margin:.2rem 0 .6rem; }
+#republica .rep-dl-q{ margin:.8rem 0 .5rem; }
+#republica .rep-dl-opts{ display:grid; gap:.5rem; }
+#republica .rep-dl-opt{ font:inherit; text-align:start; cursor:pointer; display:grid; gap:.2rem; padding:.65rem .85rem; border:1px solid var(--line); border-radius:10px; background:var(--surface-2); color:var(--ink); }
+#republica .rep-dl-opt:hover, #republica .rep-dl-opt:focus-visible{ border-color:var(--hf); }
+#republica .rep-dl-opt span, #republica .rep-dl-chosen span{ font-size:.85rem; color:var(--muted); }
+#republica .rep-dl-chosen{ display:grid; gap:.2rem; padding:.6rem .85rem; border:1px solid var(--hf); border-radius:10px; margin:.6rem 0; }
+#republica .rep-dl-sec{ margin-top:.7rem; }
+#republica .rep-dl-note{ font-size:.82rem; color:var(--muted); margin:.7rem 0 0; }
+#republica .rep-status.good{ color:var(--ok); }
+#republica .rep-glo{ font-size:.85rem; margin:.6rem 0 0; }
+#republica .rep-glo a{ color:var(--accent); }
+#republica .rep-degen-step + .rep-degen-step{ border-top:1px solid var(--line-soft); margin-top:.8rem; padding-top:.4rem; }
+#republica .rep-final-reg{ text-align:start; margin:1rem 0; }
+#republica .rep-final-reg .rep-ladder{ margin:0 0 .5rem; justify-content:center; }
+#republica .rep-diser{ text-align:start; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:.8rem 1rem; margin:1rem 0; }
+#republica .rep-diser ol{ margin:.4rem 0 0; padding-inline-start:1.3rem; display:grid; gap:.35rem; font-size:.92rem; }
+@media (prefers-reduced-motion:reduce){ #republica .rep-dialog.reveal, #republica .rep-degen.reveal{ animation:none; } }
 
 
 /* ==== css/dilemas.css ==== */
