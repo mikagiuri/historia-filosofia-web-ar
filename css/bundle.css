@@ -3363,8 +3363,8 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 @media (max-width:560px){ .museo-grid{ grid-template-columns:repeat(auto-fill,minmax(min(120px,100%),1fr)); } }
 
 
-/* ==== css/ilustres.css ==== */
-/* ===== Ilustres: biografías de los pensadores de la teoría (ilustresview.js) =====
+/* ==== css/biografias.css ==== */
+/* ===== Ilustres: biografías de los pensadores de la teoría (biografiasview.js) =====
    Colores de época = los del eje cronológico del curso (eje_cronologico.js); en oscuro, tonos claros. */
 #ilustres, .ilu-strip{
   --e-ant:#8F6600; --e-med:#8A4B84; --e-ren:#B83220; --e-mod:#0A76A0; --e-ilu:#5B4FC4; --e-con:#267A5B;
@@ -3468,7 +3468,7 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #ilustres .ilu-cit-dest{border-inline-start-width:6px;background:linear-gradient(0deg,var(--surface),var(--surface-2))}
 #ilustres .ilu-cit-dest .ilu-cit-q{font-size:1.3rem;font-style:normal;font-weight:500}
 #ilustres .ilu-cit-badge{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--on-accent,#fff);background:var(--accent);border-radius:999px;padding:3px 10px}
-/* (01-10) «Su vida en fechas» (iluVida en ilustresview.js): una línea vertical hacia abajo, con el color de la época */
+/* (01-10) «Su vida en fechas» (iluVida en biografiasview.js): una línea vertical hacia abajo, con el color de la época */
 #ilustres .vida-linea{list-style:none;margin:6px 0 0;padding:0 0 0 22px;position:relative}
 #ilustres .vida-linea::before{content:"";position:absolute;inset-inline-start:6px;top:8px;bottom:8px;width:2px;background:var(--e);border-radius:1px}
 #ilustres .vida-linea li{position:relative;display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline;padding:4px 0 10px}

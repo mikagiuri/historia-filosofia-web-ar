@@ -1,5 +1,5 @@
 "use strict";
-/* ===== Vista Ilustres ===== depende de: ilustres.js (ILUSTRES), ilustres_retratos.js (ILUSTRES_RETRATOS, opcional),
+/* ===== Vista Ilustres ===== depende de: biografias.js (ILUSTRES), biografias_retratos.js (ILUSTRES_RETRATOS, opcional),
    theory.js (THEORY, para los enlaces a los temas) =====
    Biografías de los pensadores que aparecen en la teoría de Filosofía 1.º y de Historia de la
    Filosofía 2.º. Listado en orden cronológico, filtrable por materia (si la web trae las dos),
@@ -64,7 +64,7 @@ function iluList(){
 }
 function iluPresent(){ const all = iluList(); return ["fil", "hf"].filter(s => all.some(p => (p.subjects || []).includes(s))); }
 function iluEpocaName(b){ const e = ILU_EPOCAS.find(x => x[0] === b); return e ? e[1] : ""; }
-/* retrato: {f, pie, page?} de ilustres_retratos.js (generado por tools/build_ilustres.js) */
+/* retrato: {f, pie, page?} de biografias_retratos.js (generado por tools/build_ilustres.js) */
 function iluRetrato(p){
   return typeof ILUSTRES_RETRATOS !== "undefined" && ILUSTRES_RETRATOS[p.id] || null;
 }

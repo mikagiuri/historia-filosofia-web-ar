@@ -4,7 +4,7 @@
    Lista filtrable por época (y, en Perseguidos, por lo que les pasó); cada ficha: retrato(s) de Ilustres, el relato,
    una cita con su referencia, el «caso trampa», una pregunta para pensar, los temas y las fuentes. Sin nota y sin guardar nada.
    Enlace profundo: #perseguidos/<id> y #comunidades/<id>. Los temas y los pensadores se enlazan solo si existen en esta web.
-   Ilustres: casosDe(id) añade a la ficha de cada pensador los casos en que aparece (lo pinta ilustresview.js si existe). */
+   Ilustres: casosDe(id) añade a la ficha de cada pensador los casos en que aparece (lo pinta biografiasview.js si existe). */
 const CAS_TXT = {
   epoca: "العصر", todas: "الكل", todos: "الكل", castigo: "ماذا حدث لهم",
   ant: "القديمة", med: "الوسيطة", ren: "عصر النهضة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة",
@@ -136,7 +136,7 @@ document.addEventListener("click", e => {
   const th = t.closest("[data-th]"); if (th){ (window.show || show)("teoria"); if (typeof window.loadTheory === "function") window.loadTheory(th.dataset.th); }
 });
 
-/* ---- Ilustres: perseguidos y comunidades de un pensador (las pinta ilustresview.js si existe casosDe) ---- */
+/* ---- Ilustres: perseguidos y comunidades de un pensador (las pinta biografiasview.js si existe casosDe) ---- */
 function casosDe(id){
   return [["perseguidos", "enPer"], ["comunidades", "enCom"]].map(([v, k]) => {
     const ls = CAS[v].datos().filter(x => (x.cas_ilu || []).includes(id)); if (!ls.length) return "";

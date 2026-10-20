@@ -1,4 +1,4 @@
-// Generado por web_i18n/i18n_rebuild.js (ar) a partir de web/js/ilustres_pies.js. No editar a mano: editar la memoria tm/ar.json y regenerar.
+// Generado por web_i18n/i18n_rebuild.js (ar) a partir de web/js/biografias_pies.js. No editar a mano: editar la memoria tm/ar.json y regenerar.
 const ILUSTRES_PIES = {
  "confucio": "Confucius Tang Dynasty · Wu Daozi (منسوب إليه)، 685-758 · Public domain",
  "meliso": "ميليسوس الساموسي (صورة تخيلية، 1493) · Hartmann Schedel، حوليات نورنبرغ · Public domain",

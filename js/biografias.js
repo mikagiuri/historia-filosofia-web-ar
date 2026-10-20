@@ -1,4 +1,4 @@
-// Generado por web_i18n/i18n_rebuild.js (ar) a partir de web/js/ilustres.js. No editar a mano: editar la memoria tm/ar.json y regenerar.
+// Generado por web_i18n/i18n_rebuild.js (ar) a partir de web/js/biografias.js. No editar a mano: editar la memoria tm/ar.json y regenerar.
 const ILUSTRES = {
  "homero": {
   "name": "هوميروس",

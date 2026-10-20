@@ -1,5 +1,5 @@
 "use strict";
-/* ===== Vista Genealogías ===== depende de: genealogias.js (GENEALOGIAS), ilustres.js (ILUSTRES; opcional loadIlustre)
+/* ===== Vista Genealogías ===== depende de: genealogias.js (GENEALOGIAS), biografias.js (ILUSTRES; opcional loadIlustre)
    (29-09) Plano de «metro» diacrónico: cada tradición es una línea horizontal de color y sus
    estaciones son pensadores, colocados en el orden en que nacieron (sin escala de años: lo que
    importa es la sucesión). Un pensador en varias líneas es un transbordo (cápsula vertical). Las

@@ -214,7 +214,7 @@ function polGenea(){
   }).join("") + '</div>';
 }
 window.polGenea = polGenea;
-/* ---- Ilustres: las polémicas de un pensador (las pinta ilustresview.js si existe polDe) ---- */
+/* ---- Ilustres: las polémicas de un pensador (las pinta biografiasview.js si existe polDe) ---- */
 function polDe(id){
   if (typeof POLEMICAS === "undefined") return "";
   const ls = POLEMICAS.filter(polVisible).filter(p => (p.ilu_a || []).includes(id) || (p.ilu_b || []).includes(id));   // (12-10, F2) Ilustres no enlaza polémicas ocultas

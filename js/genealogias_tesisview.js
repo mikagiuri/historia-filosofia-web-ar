@@ -1,6 +1,6 @@
 "use strict";
 /* ===== Genealogías · «Red de tesis» y «¿Verde o roja?» (09-10) ===== depende de: genealogias_tesis.js (GEN_TESIS),
-   ilustres.js (ILUSTRES; opcional loadIlustre). La llama genealogiasview.js según el modo.
+   biografias.js (ILUSTRES; opcional loadIlustre). La llama genealogiasview.js según el modo.
    · Red de tesis: las tesis en orden cronológico, agrupadas por autor; a la derecha, arcos verdes (acuerdo) y
      rojos (desacuerdo) entre tesis. Al pulsar una tesis se apaga lo demás y se despliegan sus enlaces con su «por qué».
      En pantallas estrechas no hay arcos: solo el desplegable.
