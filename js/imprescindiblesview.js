@@ -14,7 +14,8 @@ const IMP_TXT = {
   ley2: "مفيد كسياق أو للحِجاج في الإنشاء الفلسفي.",
   ley1: "للفضول أو للتوسّع: لمعرفة المزيد.",
   leyPie: "المعيار: أولًا منهاج إقليم الباسك (المرسوم 76/2023)، ثم امتحان PAU في جامعة إقليم الباسك (UPV/EHU).",
-  filtro: "فقط ما لا غنى عنه والأساسي"
+  filtro: "فقط ما لا غنى عنه والأساسي",
+  leyMedio: "نصف نقطة: بين مستويين. لا تُعَدّ الـ3.5 بعدُ «أساسية»."   /* (20-10) */
 };
 const impT = (k, v) => String(IMP_TXT[k] || k).replace(/\{(\w+)\}/g, (_, x) => (v && v[x] != null ? v[x] : ""));
 const impEsc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -26,12 +27,15 @@ function impNivel(tipo, k){
   const d = tipo === "tema" ? IMPRESCINDIBLES.temasHf[k] : IMPRESCINDIBLES.autores[k];
   return d ? { n: d[0], motivo: d[1] } : null;
 }
+/* (20-10) medios puntos: 3.5 = ●●●◐○; el nombre es el del nivel entero de abajo; la cifra, con coma salvo en inglés y árabe */
+const impDec = n => n % 1 ? String(n).replace(".", /^(en|ar)/.test(document.documentElement.lang || "") ? "." : ",") : String(n);
+const impPts = n => [1, 2, 3, 4, 5].map(i => '<i class="imp-p' + (i <= n ? " imp-on" : i - 0.5 === n ? " imp-half" : "") + '"></i>').join("");
 /* insignia: modo "puntos" (solo puntos, para tarjetas y listas) o "completa" (puntos + nombre) */
 function impBadge(tipo, k, modo){
   const d = impNivel(tipo, k); if (!d) return "";
-  const nombre = impT("n" + d.n), lab = impT("aria", { n: d.n, t: nombre.toLowerCase() }) + " " + d.motivo;
-  const pts = [1, 2, 3, 4, 5].map(i => '<i class="imp-p' + (i <= d.n ? " imp-on" : "") + '"></i>').join("");
-  return '<span class="imp imp-' + d.n + (modo === "completa" ? " imp-full" : "") + '" role="img" aria-label="' + impEsc(lab) + '" title="' + impEsc(nombre + ": " + d.motivo) + '">' +
+  const nombre = impT("n" + Math.floor(d.n)), lab = impT("aria", { n: impDec(d.n), t: nombre.toLowerCase() }) + " " + d.motivo;
+  const pts = impPts(d.n);
+  return '<span class="imp imp-' + Math.floor(d.n) + (modo === "completa" ? " imp-full" : "") + '" role="img" aria-label="' + impEsc(lab) + '" title="' + impEsc(nombre + ": " + d.motivo) + '">' +
     '<span class="imp-pts" aria-hidden="true">' + pts + "</span>" + (modo === "completa" ? '<span class="imp-nom" aria-hidden="true">' + impEsc(nombre) + "</span>" : "") + "</span>";
 }
 /* motivo visible (para la ficha) */
@@ -45,5 +49,7 @@ function impLeyenda(){
   return '<details class="imp-leyenda"><summary>' + impEsc(impT("leyTit")) + '</summary><ul>' +
     [5, 4, 3, 2, 1].map(n => '<li><span class="imp imp-' + n + ' imp-full" aria-hidden="true"><span class="imp-pts">' +
       [1, 2, 3, 4, 5].map(i => '<i class="imp-p' + (i <= n ? " imp-on" : "") + '"></i>').join("") + '</span><span class="imp-nom">' + impEsc(impT("n" + n)) + "</span></span> " +
-      impEsc(impT("ley" + n)) + "</li>").join("") + '</ul><p class="imp-leypie">' + impEsc(impT("leyPie")) + "</p></details>";
+      impEsc(impT("ley" + n)) + "</li>").join("") +
+    '<li><span class="imp imp-3 imp-full" aria-hidden="true"><span class="imp-pts">' + impPts(3.5) + '</span></span> ' + impEsc(impT("leyMedio")) + '</li>' +
+    '</ul><p class="imp-leypie">' + impEsc(impT("leyPie")) + "</p></details>";
 }

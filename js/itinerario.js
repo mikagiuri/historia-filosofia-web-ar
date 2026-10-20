@@ -27,6 +27,7 @@
     nTarjetas: "{n} بطاقات", nPreguntas: "{n} أسئلة", anterior: "الموضوع السابق", siguienteTema: "الموضوع التالي", anexos: "استكشافات", epoca: "الحقبة", epocaDe: "الحقبة: {e}", volverTema: "العودة إلى الموضوع",
     blEstudiar: "للمراجعة", blPau: "استعدّ للـ PAU", blPensar: "فكّر واكتب", blAmpliar: "تعمّق", pauBadge: "قراءة PAU",
     cronogramas: "الجداول الزمنية", disertaciones: "الإنشاء الفلسفي", comparativas: "مقارنات", polemicas: "سجالات", comunidades: "الجماعات",
+    puenteFil: "ستعودون إليه في السنة الثانية من البكالوريا", puenteHf: "سبق أن رأيتموه في السنة الأولى من البكالوريا", hfSig: "HF",
     perseguidos: "المضطهَدون", duelo: "مبارزة الحجج", juegos: "ألعاب", logica: "ركن المنطق",
     videosEu: "فيديوهات بالباسكية (Ikusgela)", videoEu: "فيديو بالباسكية من Ikusgela", transcripcion: "النص المكتوب", transcripcionT: "نص الفيديو: الترجمة المكتوبة من Ikusgela", infografia: "إنفوغرافيك", mapa: "خريطة", esquema: "خطاطة", lectura: "قراءة", dilema: "معضلة", comentario: "شرح",
     pau: "مسار PAU", pauLead: "استعدوا لـ PAU بالترتيب: أولًا كيف هو الامتحان، ثم كل تمرين، وفي النهاية التدرب حسب المواضيع.",
@@ -323,6 +324,94 @@
     if (subject === "fil") js.push("rayuela");   /* decisión del profesor (18-10): Rayuela en todos los temas de 1.º */
     return js.filter(function(v){ return view(v); }).map(function(v){ return { go: v, arg: "", label: navLabel(v, "juegos") }; });
   }
+  /* (19-10) puentes 1.º <-> 2.º (informe fil1->hf2 §5.2; borrador de DSH, visto bueno de la 50). Muestra aprobada por el profesor; extendido a todos los temas del mapa (borrador 3 de DSH).
+     En la web completa el enlace abre el tema; en las webs del alumnado, la otra web publicada en la misma lengua. */
+  var PUENTES = {
+    "fil-metafisica": [
+      { k: "hf-medieval", n: 11, tit: "الفلسفة في العصور الوسطى: المراحل والمناهج ومشكلة الكليات", txt: "في السنة الأولى رأيتم الحجج الوسيطة في الله، عند أنسلم وتوما الأكويني؛ وفي السنة الثانية سترون العصور الوسطى كلها: العلاقة بين الإيمان والعقل ومراحلها ومشكلة الكليات." },
+      { k: "hf-fe-razon", n: 12, tit: "الإيمان والعقل: استيعاب الفلسفة اليونانية ووجود الله", txt: "في السنة الأولى رأيتم الطرق الخمس عند توما الأكويني والتمييز بين الماهية والوجود؛ وفي السنة الثانية سترون كيف استوعبت المسيحية الفلسفة اليونانية، مع أوغسطين وتوما الأكويني وابن سينا وأوكام." },
+      { k: "hf-metafisica", n: 15, tit: "النقاش الميتافيزيقي الحديث: الثنائية والمادية", txt: "في السنة الأولى رأيتم الواحدية والثنائية والمادية بوصفها أجوبة عن الجوهر؛ وفي السنة الثانية سترون هذا النقاش في العصر الحديث، مع ديكارت وهوبز وسبينوزا ولوك." }
+    ],
+    "fil-t1": [
+      { k: "hf-mito", n: 3, tit: "نشأة الفلسفة: من الأسطورة إلى اللوغوس", txt: "في السنة الأولى رأيتم الانتقال من الأسطورة إلى اللوغوس (logos) بوصفه ولادة الفلسفة؛ وفي السنة الثانية ستقرؤون عن أوائل فلاسفة ميليتوس وهم يفسّرون الواقع بالعقل، من دون آلهة." },
+      { k: "hf-preso", n: 4, tit: "مشكلة الواقع عند ما قبل السقراطيين", txt: "في السنة الأولى رأيتم طاليس الميلي يبحث عن الأرخي (arché) بوصفه المبدأ الأول؛ وفي السنة الثانية سترون لماذا اقترح كل فيلسوف من فلاسفة ما قبل سقراط مبدأً مختلفًا وكيف فهموا الواقع." }
+    ],
+    "fil-t2": [
+      { k: "hf-antropologia", n: 7, tit: "الأنثروبولوجيا الكلاسيكية: سقراط وأفلاطون وأرسطو", txt: "في السنة الأولى رأيتم النفس في مشكلة العقل والجسد، مع أفلاطون وأرسطو؛ وفي السنة الثانية ستقرؤون عن منعطف سقراط والتصورات الثلاثة للنفس: الروح والفضيلة والحياة الفاضلة." },
+      { k: "hf-metafisica", n: 15, tit: "النقاش الميتافيزيقي الحديث: الثنائية والمادية", txt: "في السنة الأولى رأيتم ثنائية ديكارت ومادية هوبز؛ وفي السنة الثانية سترون هذا النقاش الحديث كاملًا، مع واحدية سبينوزا ومنعطف لوك التجريبي." }
+    ],
+    "fil-t3": [
+      { k: "hf-racionalismo", n: 14, tit: "العقلانية والتجريبية: ديكارت وهيوم", txt: "في السنة الأولى رأيتم العقلانية والتجريبية بوصفهما مصدرين متعارضين للمعرفة؛ وفي السنة الثانية ستقرؤون ديكارت وهيوم قراءة من الداخل: الشك المنهجي، والكوجيتو (cogito)، ونقد السببية." },
+      { k: "hf-kant", n: 19, tit: "فلسفة كانط النقدية ومشكلة الميتافيزيقا", txt: "في السنة الأولى رأيتم النقدية الكانطية تجمع بين العقل والتجربة؛ وفي السنة الثانية سترون كيف ينظّم المكان والزمان والمقولات التجربة، ولماذا لا نعرف الأشياء «في ذاتها»." }
+    ],
+    "fil-t5": [
+      { k: "hf-etica", n: 8, tit: "الأخلاق الكلاسيكية: المذهب العقلي والفضائل والسعادة (eudaimonía)", txt: "في السنة الأولى رأيتم الفضيلة بوصفها وسطًا وعقلانية سقراط الأخلاقية؛ وفي السنة الثانية ستقرؤون الأخلاق الكلاسيكية كلها: الأريتيه (areté) واليودايمونيا (eudaimonía) وأجوبة سقراط وأفلاطون وأرسطو." },
+      { k: "hf-helenismo", n: 10, tit: "العصر الهلنستي: الكلبية والرواقية والأبيقورية والريبية", txt: "في السنة الأولى رأيتم لذّية أبيقور بوصفها أخلاق السعادة؛ وفي السنة الثانية سترون العصر الهلنستي كاملًا: الكلبية والرواقية والأبيقورية والشكّية وهي تجيب عن سؤال كيف نعيش في عالم غير مؤكد." },
+      { k: "hf-etica-deber", n: 20, tit: "أخلاق السعادة وأخلاق الواجب: كانط في مواجهة مذهب المنفعة", txt: "في السنة الأولى رأيتم أخلاق كانط الصورية ونفعية بنثام وميل؛ وفي السنة الثانية ستقرؤون هذا الصدام بعمق: أخلاق الواجب في مواجهة أخلاق السعادة." }
+    ],
+    "fil-t6": [
+      { k: "hf-contrato", n: 16, tit: "أصل المجتمع والسلطة: ماكيافيلي والعقد الاجتماعي", txt: "في السنة الأولى رأيتم العقد الاجتماعي عند هوبز ولوك وروسو بوصفه أصل الدولة؛ وفي السنة الثانية ستقرؤون أيضًا مكيافيلي وفكرة مونتسكيو في تقييد السلطة." },
+      { k: "hf-utilitarismo", n: 17, tit: "مذهب المنفعة والليبرالية: أسس الرأسمالية", txt: "في السنة الأولى رأيتم الليبرالية السياسية عند لوك والعقد الاجتماعي؛ وفي السنة الثانية سترون أسس الليبرالية الاقتصادية: نفعية بنثام وميل وسوق آدم سميث." },
+      { k: "hf-capitalismo", n: 22, tit: "نقد الرأسمالية: من ماركس إلى رولز", txt: "في السنة الأولى رأيتم نقد ماركس للرأسمالية: الصراع الطبقي وفائض القيمة والاغتراب؛ وفي السنة الثانية ستقرؤون كيف يستمر عند غرامشي ومدرسة فرانكفورت وهابرماس ورولز." },
+      { k: "hf-beauvoir", n: 26, tit: "النسوية المعاصرة: سيمون دي بوفوار", txt: "في السنة الأولى رأيتم بوفوار في موجات النسوية وعبارتها «لا يولد المرء امرأة، بل يصبح امرأة»؛ وفي السنة الثانية ستقرؤون وجوديتها بعمق، وكذلك باتلر وفريزر ونوسباوم." }
+    ],
+    "hf-antropologia": [
+      { k: "fil-t2", n: 2, tit: "ما هو الإنسان؟", txt: "سبق أن رأيتم في السنة الأولى النفس في مشكلة العقل والجسد، مع ثنائية أفلاطون ونفس أرسطو بوصفها صورة؛ وهنا قرأتم منعطف سقراط والتصورات الثلاثة للنفس." }
+    ],
+    "hf-beauvoir": [
+      { k: "fil-t6", n: 6, tit: "الحياة في المجتمع (الفلسفة السياسية)", txt: "سبق أن رأيتم في السنة الأولى بوفوار في موجات النسوية وعبارتها «لا يولد المرء امرأة»؛ وهنا قرأتم وجوديتها بعمق، وكذلك باتلر وفريزر ونوسباوم." }
+    ],
+    "hf-capitalismo": [
+      { k: "fil-t6", n: 6, tit: "الحياة في المجتمع (الفلسفة السياسية)", txt: "سبق أن رأيتم في السنة الأولى نقد ماركس للرأسمالية: الصراع الطبقي وفائض القيمة والاغتراب؛ وهنا قرأتم امتداده، من غرامشي ومدرسة فرانكفورت إلى هابرماس ورولز." }
+    ],
+    "hf-contrato": [
+      { k: "fil-t6", n: 6, tit: "الحياة في المجتمع (الفلسفة السياسية)", txt: "سبق أن رأيتم في السنة الأولى العقد الاجتماعي عند هوبز ولوك وروسو والحق الإلهي؛ وهنا قرأتم أيضًا مكيافيلي وفصل السلطات عند مونتسكيو." }
+    ],
+    "hf-etica": [
+      { k: "fil-t5", n: 5, tit: "أسئلة الأخلاق", txt: "سبق أن رأيتم في السنة الأولى الفضيلة بوصفها وسطًا وعقلانية سقراط الأخلاقية؛ وهنا قرأتم الأخلاق الكلاسيكية: ما الأريتيه (areté) وما اليودايمونيا (eudaimonía) عند سقراط وأفلاطون وأرسطو." }
+    ],
+    "hf-etica-deber": [
+      { k: "fil-t5", n: 5, tit: "أسئلة الأخلاق", txt: "سبق أن رأيتم في السنة الأولى أخلاق كانط الصورية ونفعية بنثام وميل؛ وهنا قرأتم هذا الصدام بعمق: أخلاق الواجب في مواجهة أخلاق السعادة." }
+    ],
+    "hf-fe-razon": [
+      { k: "fil-metafisica", n: "M", tit: "الواقع: ما الموجود وكيف هو؟ (الميتافيزيقا)", txt: "سبق أن رأيتم في السنة الأولى الطرق الخمس عند توما الأكويني والتمييز بين الماهية والوجود؛ وهنا قرأتم التركيب بين الإيمان والعقل، مع أوغسطين وتوما الأكويني وابن سينا وأوكام." }
+    ],
+    "hf-helenismo": [
+      { k: "fil-t5", n: 5, tit: "أسئلة الأخلاق", txt: "سبق أن رأيتم في السنة الأولى لذّية أبيقور وانعدام اضطرابه (ataraxia)؛ وهنا قرأتم العصر الهلنستي كاملًا: أربع مدارس تجيب عن سؤال كيف نعيش حياة جيدة في عالم غير مؤكد." }
+    ],
+    "hf-kant": [
+      { k: "fil-t3", n: 3, tit: "ماذا يمكننا أن نعرف؟", txt: "سبق أن رأيتم في السنة الأولى نقدية كانط بوصفها تركيبًا بين العقلانية والتجريبية؛ وهنا قرأتم فلسفته النقدية بعمق: الظاهرة والنومين (noúmeno) وحدود العقل." }
+    ],
+    "hf-medieval": [
+      { k: "fil-metafisica", n: "M", tit: "الواقع: ما الموجود وكيف هو؟ (الميتافيزيقا)", txt: "سبق أن رأيتم في السنة الأولى حجج أنسلم وتوما الأكويني في الله؛ وهنا قرأتم العصور الوسطى التي تحيط بها: العلاقة بين الإيمان والعقل ومراحلها ومشكلة الكليات." }
+    ],
+    "hf-metafisica": [
+      { k: "fil-t2", n: 2, tit: "ما هو الإنسان؟", txt: "سبق أن رأيتم في السنة الأولى مشكلة العقل والجسد مع ثنائية ديكارت ومادية هوبز؛ وهنا قرأتم هذا النقاش الحديث كاملًا، مع واحدية سبينوزا ومنعطف لوك." },
+      { k: "fil-metafisica", n: "M", tit: "الواقع: ما الموجود وكيف هو؟ (الميتافيزيقا)", txt: "سبق أن رأيتم في السنة الأولى الواحدية والثنائية والمادية بوصفها مواقف من الجوهر؛ وهنا قرأتم هذا النقاش في العصر الحديث، مع ديكارت وهوبز وسبينوزا ولوك." }
+    ],
+    "hf-mito": [
+      { k: "fil-t1", n: 1, tit: "ما الفلسفة؟", txt: "سبق أن رأيتم في السنة الأولى الانتقال من الأسطورة إلى اللوغوس (logos) وسمات التفكير الأسطوري؛ وهنا قرأتم ولادة الفلسفة في إيونيا، تفسّر الطبيعة من دون ما هو فوق طبيعي." }
+    ],
+    "hf-preso": [
+      { k: "fil-t1", n: 1, tit: "ما الفلسفة؟", txt: "سبق أن رأيتم في السنة الأولى أرخي (arché) طاليس بوصفه الخطوة الأولى للوغوس (logos)؛ وهنا تتبعتم أجوبة فلاسفة ما قبل سقراط عن سؤال الواقع ومبدأ كل شيء." }
+    ],
+    "hf-racionalismo": [
+      { k: "fil-t3", n: 3, tit: "ماذا يمكننا أن نعرف؟", txt: "سبق أن رأيتم في السنة الأولى العقلانية والتجريبية في جدول مصادر المعرفة؛ وهنا قرأتم ديكارت وهيوم قراءة من الداخل: الشك، والكوجيتو (cogito)، ونقد السببية." }
+    ],
+    "hf-utilitarismo": [
+      { k: "fil-t6", n: 6, tit: "الحياة في المجتمع (الفلسفة السياسية)", txt: "سبق أن رأيتم في السنة الأولى الليبرالية السياسية عند لوك والعقد الاجتماعي؛ وهنا قرأتم أسس الليبرالية الاقتصادية: نفعية بنثام وميل وسوق آدم سميث." }
+    ]
+  };
+  var WEB_REPO = { fil: "aula-de-filosofia-web", hf: "historia-filosofia-web" };
+  function puentesHtml(subject, key){
+    var arr = PUENTES[key]; if (!arr || !arr.length) return "";
+    var T = coll("THEORY"), lang = (document.documentElement.lang || "es").slice(0, 2), otra = subject === "fil" ? "hf" : "fil";
+    var url = "https://mikagiuri.github.io/" + WEB_REPO[otra] + (lang === "es" ? "" : "-" + lang) + "/#teoria/";
+    return '<div class="fin-bloque fin-puentes"><h3>' + esc(t(subject === "fil" ? "puenteFil" : "puenteHf")) + '</h3>' + arr.map(function(x){
+      var lab = (otra === "hf" ? t("hfSig") + " · " : "") + (typeof x.n === "number" ? t("tema", { n: x.n }) : x.n) + " · " + x.tit;
+      var a = T && T[x.k] ? btn({ go: "teoria", arg: x.k, label: lab }) : '<a class="itin-lnk" href="' + esc(url + x.k) + '" target="_blank" rel="noopener">' + esc(lab) + ' ↗</a>';
+      return '<div class="fin-puente">' + a + '<p>' + esc(x.txt) + '</p></div>'; }).join("") + '</div>';
+  }
   function finHtml(subject, tema, key){
     var T = coll("THEORY"), teoria = items("teoria", subject, tema);
     var row = function(label, arr){ return arr.length ? '<div class="fin-row"><span class="fin-l">' + esc(label) + '</span><div class="fin-links">' + arr.map(function(x){ return btn(x); }).join("") + '</div></div>' : ""; };
@@ -364,7 +453,7 @@
     var blk = function(titulo, arr){ var inner = arr.filter(Boolean).join(""); return inner ? '<div class="fin-bloque"><h3>' + esc(titulo) + '</h3>' + inner + '</div>' : ""; };
     var amp = function(titulo, arr){ var inner = arr.filter(Boolean).join(""); return inner ? '<details class="fin-bloque fin-amp"><summary>' + esc(titulo) + '</summary>' + inner + '</details>' : ""; };
     var ampComun = [P.anexos].concat(subject === "hf" ? [P.dilemas, P.pistas] : []).concat([P.polemicas, P.comunidades, P.perseguidos, P.duelo, P.juegos, P.videos]);
-    var rowsHtml = blk(t("blEstudiar"), [P.tarjetas, P.cuestionarios, P.infografias, P.mapas, P.esquemas, P.conceptos, P.epoca, P.cronogramas]) +
+    var rowsHtml = puentesHtml(subject, key) + blk(t("blEstudiar"), [P.tarjetas, P.cuestionarios, P.infografias, P.mapas, P.esquemas, P.conceptos, P.epoca, P.cronogramas]) +
       (subject === "hf" ? blk(t("blPau"), [P.lecturas, P.comentario, P.disertaciones, P.comparativas]) : blk(t("blPensar"), [P.lecturas, P.disertaciones, P.dilemas, P.pistas, P.logica])) +
       amp(t("blAmpliar"), ampComun);
     /* tema anterior / siguiente, en el orden de la materia; desde un anexo, solo «Volver al tema» */
@@ -494,7 +583,7 @@
              presocráticos; «Filosofía · Tema 5», helenismo) va sangrado bajo su tema y NO repite la ficha «Tema N» */
           var declaraN = extra && !anexo && temaNum(T[k]) != null;
           var li = '<li' + (extra ? ' class="temas-extra"' : '') + ga + '><button type="button" data-igo="teoria" data-iarg="' + esc(k) + '">' +
-            (T[k].sigla ? '<span class="temas-n">' + esc(T[k].sigla) + '</span>' : typeof n === "number" && !anexo && !declaraN ? '<span class="temas-n">' + esc(t("tema", { n: n })) + '</span>' : '') + '<span class="temas-t">' + esc(anexo ? strip(T[k].title).replace(/^[^\s-]+ - /, "") : strip(T[k].title)) + (subject === "hf" && typeof n === "number" && !anexo && !T[k].sigla && typeof impBadge === "function" ? ' ' + impBadge("tema", n) : '') + '</span>' + (subject === "hf" && PAU_TEMAS[n] ? '<span class="temas-pau">' + esc(t("pauBadge")) + '</span>' : '') + (anexo && T[k].clase ? '<span class="temas-anexo">في القسم</span>' : '') + '</button></li>';
+            (T[k].sigla ? '<span class="temas-n">' + esc(T[k].sigla) + '</span>' : typeof n === "number" && !anexo && !declaraN ? '<span class="temas-n">' + esc(t("tema", { n: n })) + '</span>' : '') + '<span class="temas-t">' + esc(anexo ? strip(T[k].title).replace(/^[^\s-]+ - /, "") : strip(T[k].title)) + (subject === "hf" && !anexo && typeof impBadge === "function" ? ' ' + impBadge("tema", typeof n === "number" && !T[k].sigla ? n : k) : '') + '</span>' + (subject === "hf" && PAU_TEMAS[n] ? '<span class="temas-pau">' + esc(t("pauBadge")) + '</span>' : '') + (anexo && T[k].clase ? '<span class="temas-anexo">في القسم</span>' : '') + '</button></li>';
           if (anexo) exp.push(li);
           else { if (!extra) flush(); out += li; }
         });

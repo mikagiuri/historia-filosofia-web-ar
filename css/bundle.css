@@ -385,6 +385,8 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:24px 0 60px;colo
 .itin-l{font-weight:600;color:var(--ink);font-size:.9rem}
 .itin-here{font-style:normal;font-weight:600;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--c,var(--accent));margin-inline-start:6px}
 .itin-links{display:flex;flex-wrap:wrap;gap:6px}
+/* (19-10) puentes 1.º <-> 2.º */
+.fin-puente{margin:.2rem 0 .7rem}.fin-puente p{margin:.35rem 0 0;color:var(--muted);font-size:.9rem;line-height:1.45}
 .itin-lnk{background:var(--surface);border:1px solid var(--line);color:var(--ink);padding:4px 10px;border-radius:999px;font:500 .84rem/1.3 var(--sans);text-align:start}
 .itin-lnk:hover{border-color:var(--c,var(--accent));color:var(--c,var(--accent))}
 .itin-lnk[aria-current="true"]{background:var(--c,var(--accent));border-color:transparent;color:var(--on-accent);cursor:default}
@@ -3040,6 +3042,8 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .imp-pts{ display:inline-flex; gap:2px }
 .imp-p{ display:inline-block; width:.5em; height:.5em; border-radius:50%; border:1.5px solid currentColor; box-sizing:border-box; opacity:.55 }
 .imp-p.imp-on{ background:currentColor; opacity:1 }
+.imp-p.imp-half{ background:linear-gradient(90deg, currentColor 50%, transparent 50%); opacity:1 }   /* (20-10) medio punto */
+[dir="rtl"] .imp-p.imp-half{ background:linear-gradient(270deg, currentColor 50%, transparent 50%) }
 .imp-full{ font:600 .72rem var(--sans); letter-spacing:.04em; text-transform:uppercase; padding:.18em .5em; border:1px solid var(--line); border-radius:999px; background:var(--surface-2) }
 .imp-full .imp-p{ width:.62em; height:.62em }
 .imp-nom{ color:var(--ink) }
