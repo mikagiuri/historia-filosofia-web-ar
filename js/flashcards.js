@@ -23,7 +23,7 @@ const DECK_AMB_ORDEN = ["int", "ant", "con", "met", "log", "eti", "pol", "est"];
 const DECK_AMB = { "fil-que-es": "int", "fil-ramas": "int", "fil-caracteristicas": "int", "fil-metodo": "int", "fil-saberes": "int", "fil-presocraticos": "int",
   "fil-ser-humano": "ant", "fil-mente": "ant", "fil-concepciones": "ant", "fil-identidad": "ant",
   "fil-conocer": "con", "fil-verdad": "con", "fil-ciencia": "con", "fil-posverdad": "con",
-  "fil-metafisica": "met", "fil-logica": "log", "fil-etica": "eti", "fil-helenismo": "eti", "fil-politica": "pol", "fil-arte": "est" };
+  "fil-metafisica": "met", "fil-logica": "log", "fil-etica": "eti", "fil-helenismo": "eti", "fil-politica": "pol", "fil-arte": "est", "fil-argumentacion": "log", "fil-etica-teorias": "eti", "fil-poder": "pol", "fil-arte-sociedad": "est" };
 function deckEsFil(){ return typeof SUBJECTS !== "undefined" && !!SUBJECTS.fil && !SUBJECTS.hf; }
 
 const DECK_TIPOS = { conceptos: "المفاهيم", frases: "أقوال" };

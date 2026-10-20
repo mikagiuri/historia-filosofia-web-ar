@@ -68,7 +68,7 @@
     utilitarismo: 17, ilustracion: 18, eticaDeber: 20, sospecha: 21, capitalismo: 22, posmodernidad: 23, analitica: 24, existencialismo: 25, beauvoir: 26, siglo21: 27,
     "fil-que-es": 1, "fil-ramas": 1, "fil-caracteristicas": 1, "fil-metodo": 1, "fil-saberes": 1, "fil-presocraticos": 1,
     "fil-ser-humano": 2, "fil-mente": 2, "fil-concepciones": 2, "fil-identidad": 2, "fil-conocer": 3, "fil-verdad": 3, "fil-metafisica": 3.5, "fil-ciencia": 3, "fil-posverdad": 3,
-    "fil-logica": 4, "fil-etica": 5, "fil-helenismo": 5, "fil-politica": 6, "fil-arte": 7
+    "fil-logica": 4, "fil-etica": 5, "fil-helenismo": 5, "fil-politica": 6, "fil-arte": 7, "fil-argumentacion": 4, "fil-etica-teorias": 5, "fil-poder": 6, "fil-arte-sociedad": 7
   };
   var MAP_TEMA = {
     "map-descartes": 14, "map-kant": 19, "map-critica-razon-pura": 19, "map-ilustracion-modernidad": 18, "map-san-agustin": 12, "map-platon": 6,
@@ -116,7 +116,8 @@
         var m2 = /^FIL-(T(\d)|PRE|HEL|TA)-/.exec(key); if (m2) return m2[2] ? +m2[2] : m2[1] === "PRE" ? 1 : m2[1] === "HEL" ? 5 : 4;
         var m3 = /^([A-Za-z0-9]+)-REL-/.exec(key); return (m3 && ESQ_REL[m3[1]]) || null;
       }
-      case "lecturas": case "comentario": return temaNum(o);
+      /* (20-10, F9a) lecturas del tema M de 1.º: «Filosofía · M (…)», como en lecRama de lecturasview.js */
+      case "lecturas": case "comentario": return o && /·\s*M(?:\s|$|\()/.test(String(o.tema || "")) ? 3.5 : temaNum(o);
     }
     return null;
   }
@@ -293,7 +294,7 @@
     }).map(function(c){ return { go: "cronogramas", arg: c.id, label: strip(c.title) }; });
   }
   var DISERT_TEMA = { "modelo-platon": [6, 9], "modelo-kant": [20], "modelo-nietzsche": [21], "modelo-medieval": [12], "modelo-descartes": [14], "modelo-beauvoir": [26],
-    "fil-modelo-filosofia": [1], "fil-modelo-naturaleza": [2], "fil-modelo-maquina": [2], "fil-modelo-vidabuena": [5], "fil-modelo-justicia": [6] };
+    "fil-modelo-filosofia": [1], "fil-modelo-naturaleza": [2], "fil-modelo-maquina": [2], "fil-modelo-vidabuena": [5], "fil-modelo-justicia": [6], "fil-modelo-sentidos": [3], "fil-modelo-arte": [7], "fil-modelo-materia": [3.5] };
   function disertDe(subject, tema){
     var D = coll("DISERTACIONES"); if (!D || !view("disertaciones")) return [];
     return Object.keys(DISERT_TEMA).filter(function(k){ return D[k] && D[k].subject === subject && DISERT_TEMA[k].indexOf(tema) >= 0; })

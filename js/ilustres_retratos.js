@@ -1133,7 +1133,7 @@ const ILUSTRES_RETRATOS = {
  },
  "baudrillard": {
   "f": "media/retratos/ilustres/baudrillard.jpg",
-  "pie": "WikipediaBaudrillard20040612-cropped · http://en.wikipedia.org/wiki/User:Ayaleila · CC BY-SA 3.0",
+  "pie": "WikipediaBaudrillard20040612-cropped · Ayaleila (Wikipedia) · CC BY-SA 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:WikipediaBaudrillard20040612-cropped.png"
  },
  "derrida": {

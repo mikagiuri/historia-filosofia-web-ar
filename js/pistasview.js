@@ -19,7 +19,8 @@ const PIS_TXT = {
   pistaDe: "التلميح {n} من {t}", quedaUna: "بقي تلميح واحد.", quedan: "بقيت {n} تلميحات.", ninguna: "لا توجد تلميحات أخرى.",
   comprobacion: "تحقق", pregunta: "سؤال", logrado: "تم بلوغ الفهم", completado: "اكتمل المسار",
   sinAyuda: "لقد حللتموه دون تلميحات.", usaste: "التلميحات المستعملة: {n}.", repetir: "أعيدوا المسار", siguiente: "السؤال التالي:",
-  pisN: "تلميح {n}", revelar: "انقروا للكشف", preguntas: "أسئلة"
+  pisN: "تلميح {n}", revelar: "انقروا للكشف", preguntas: "أسئلة",
+  enGlosario: "في مسرد المصطلحات", abrirGlo: "افتح في مسرد المصطلحات ›"
 };
 
 const PIS = { it: null, st: null };
@@ -41,6 +42,26 @@ function pisLoad(id){
 function pisSave(){ try { localStorage.setItem(pisKey(PIS.it.id), JSON.stringify(PIS.st)); } catch (e){} }
 
 function pisBarajar(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+/* (20-10) Puente con el glosario: los paneles llevan «glosario: [ids]» (ids neutros de tools/glosario_ids.js). El término y su
+   definición salen de GLOSARIO, que cada web trae ya traducido, así que la tarjeta no repite definiciones. Plegados en
+   <details> (no desplazan nada hasta que se abren) y con enlace profundo #glosario/<id>. */
+function pisGloFmt(s){ return String(s || "").replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c])).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\*([^*]+)\*/g, "<i>$1</i>"); }
+function pisGloTerminos(ids){ return typeof GLOSARIO === "undefined" ? [] : (ids || []).map(id => GLOSARIO.find(g => g.id === id)).filter(Boolean); }
+function pisGlo(ids, abierto){
+  const gs = pisGloTerminos(ids); if (!gs.length) return "";
+  const enlace = !!document.getElementById("glosario");
+  return '<div class="pis-glo"><div class="pis-glo-lb">' + PIS_TXT.enGlosario + '</div>' + gs.map(g =>
+    '<details class="pis-glo-it"' + (abierto ? " open" : "") + '><summary>' + pisGloFmt(g.t) + '</summary><p>' + pisGloFmt(g.def) + '</p>' +
+    (enlace ? '<a class="pis-glo-a" href="#glosario/' + g.id + '">' + PIS_TXT.abrirGlo + '</a>' : '') + '</details>').join("") + '</div>';
+}
+/* todos los términos del itinerario (para el cierre), sin repetir y en orden de aparición */
+function pisGloTodos(it){
+  const ids = [];
+  (it.ciclos || []).forEach(k => (k.rescate || []).forEach(p => (p.glosario || []).forEach(id => { if (ids.indexOf(id) < 0) ids.push(id); })));
+  ((it.cierre && it.cierre.glosario) || []).forEach(id => { if (ids.indexOf(id) < 0) ids.push(id); });
+  return ids;
+}
 
 /* ---------- catálogo ---------- */
 function renderPisCatalogo(){
@@ -156,7 +177,7 @@ function pisRescate(){
   pisMarco(0.65 + 0.1 * PIS.st.r, '<div class="pis-label">' + p.etiqueta + '</div><h3>' + p.titulo + '</h3>' +
     (p.cita ? '<blockquote class="pis-cita">' + p.cita.texto + (p.cita.fuente ? '<cite>' + p.cita.fuente + '</cite>' : '') + '</blockquote>' : '') +
     (p.definicion ? '<div class="pis-def">' + p.definicion.map(x => '<p>' + x + '</p>').join("") + '</div>' : '') +
-    (p.parrafos || []).map(x => '<p>' + x + '</p>').join(""));
+    (p.parrafos || []).map(x => '<p>' + x + '</p>').join("") + pisGlo(p.glosario));
   pisBotones([p.comprobacion.boton || PIS_TXT.comprobar, true, () => pisIr("rescateTest")]);
 }
 
@@ -171,7 +192,7 @@ function pisRescateTest(){
 
 function pisFin(){
   const f = PIS.it.cierre, u = PIS.st.usadas;
-  pisMarco(1, '<div class="pis-label">' + PIS_TXT.logrado + '</div><h3>' + f.titulo + '</h3>' + f.parrafos.map(x => '<p>' + x + '</p>').join("") +
+  pisMarco(1, '<div class="pis-label">' + PIS_TXT.logrado + '</div><h3>' + f.titulo + '</h3>' + f.parrafos.map(x => '<p>' + x + '</p>').join("") + pisGlo(pisGloTodos(PIS.it)) +
     '<p class="pis-small">' + (u === 0 ? PIS_TXT.sinAyuda : PIS_TXT.usaste.replace("{n}", u)) + '</p>');
   const sig = f.siguiente && PISTAS.find(x => x.id === f.siguiente);
   pisBotones(sig ? [PIS_TXT.siguiente + ' ' + sig.titulo, true, () => loadPista(sig.id)] : null,

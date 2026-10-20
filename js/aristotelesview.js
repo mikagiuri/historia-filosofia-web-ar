@@ -135,6 +135,78 @@ function ariEFinal(S){
   return { eud, parts, band };
 }
 
+/* ===== Juzgar la vida (20-10, artefacto «Los pesos de la felicidad») · lógica sin DOM =====
+   La misma vida del motor, puntuada por varias teorías (datos en JUEGO_ARIS.juzgar). No cambia el balance del juego. */
+const FEL = (() => {
+  const J = () => JUEGO_ARIS.juzgar;
+  // muertes de opción del juego, clasificadas una a una (dilema:opción → causa)
+  const MUERTES = { "delion:1":"temeridad", "leon:3":"fidelidad", "sicilia:0":"ambicion", "stasis:3":"fidelidad", "alejandria:0":"fidelidad",
+    "golpe:0":"ambicion", "carcel:1":"fidelidad", "c-tirano:3":"ambicion", "c-oligarca:0":"temeridad" };
+  function causaOpcion(d, i){
+    const k = MUERTES[d.id + ":" + i]; if(k) return k;
+    const o = d.opts[i], tags = o.tags || [];
+    if((o.car || 0) >= 2 || tags.includes("justo") || tags.includes("verdad")) return "fidelidad";
+    if(tags.includes("injusto") || (o.rep || 0) >= 2 || (o.hac || 0) >= 2) return "ambicion";
+    return "temeridad";
+  }
+  // nota de 0 a 100: suma de peso × valor (hasta el tope) / máximo posible; los pesos negativos restan; × factor si se trunca
+  function puntuar(st, T, causa){
+    let pts = 0, max = 0;
+    ARI_KEYS.forEach(k => {
+      const w = T.w[k] || 0, v = Math.min(st[k], T.tope[k]);
+      if(w > 0){ pts += w * v; max += w * T.tope[k]; } else if(w < 0) pts += w * st[k];
+    });
+    let pct = max > 0 ? Math.max(0, 100 * pts / max) : 0;
+    if(causa) pct *= T.muerte[causa] ?? 1;
+    return Math.round(pct * 10) / 10;
+  }
+  function valorOpcion(S, o, E){
+    if(!E.w) return ariRng();
+    const base = ariEEff(S, o, o.tags);
+    let v = ARI_KEYS.reduce((s, k) => s + (E.w[k] || 0) * (base[k] || 0), 0);
+    if(o.risk){
+      const p = ariPExito(S, o), win = ariEEff(S, o.win || { car:1 }), lose = ariEEff(S, o.lose || { car:-1, sal:-1 });
+      v += ARI_KEYS.reduce((s, k) => s + (E.w[k] || 0) * (p * (win[k] || 0) + (1 - p) * (lose[k] || 0)), 0);
+    }
+    if(o.muerte) v -= E.muerte * (o.muerte >= 1 ? 1 : o.muerte) * 10;
+    return v + ariRng() * 0.01;
+  }
+  function elegir(S, E){
+    const opts = S.cur.opts.map((o, i) => ({ o, i })).filter(x => !ariBlocked(S, x.o)), val = new Map(opts.map(x => [x.i, valorOpcion(S, x.o, E)]));
+    return opts.reduce((a, b) => val.get(b.i) > val.get(a.i) ? b : a).i;
+  }
+  // vida nueva, con registro de la trayectoria
+  function nueva(charId){ const S = ariENew(charId); return { S, tray:[{ r:0, st:Object.assign({}, S.st), etapa:ariEtapaDe(0).label }], decisiones:[], estilo:null }; }
+  function siguiente(V){
+    const d = ariENext(V.S);
+    if(V.S.over && !V.causa) V.causa = V.S.over.tipo === "ruina" ? "ruina" : "salud";   // el paso de etapa también puede acabar una vida
+    return d;
+  }
+  function decidir(V, i){
+    const S = V.S, d = S.cur, o = d.opts[i], ev = ariEResolve(S, i);
+    if(S.over && !V.causa){
+      if(ev.some(e => e.tipo === "muerte")) V.causa = causaOpcion(d, i);
+      else if(ev.some(e => e.tipo === "peligro" && e.muerte)) V.causa = "enemigos";
+      else V.causa = S.over.tipo === "ruina" ? "ruina" : "salud";
+    }
+    V.decisiones.push({ r:S.round, o:o.t });
+    V.tray.push({ r:S.round, st:Object.assign({}, S.st), etapa:ariEtapaDe(Math.max(0, S.round - 1)).label, o:o.t });
+    return ev;
+  }
+  function automatica(charId, estiloId){
+    const E = J().estilos.find(x => x.id === estiloId), V = nueva(charId);
+    V.estilo = E.nombre;
+    let n = 0;
+    while(siguiente(V) && n++ < 40) decidir(V, elegir(V.S, E));
+    return V;
+  }
+  function veredictos(V, teorias){
+    const causa = V.S.over ? V.causa || "salud" : null;
+    return teorias.map(T => ({ T, pct:puntuar(V.S.st, T, causa), curva:V.tray.map((p, i) => ({ r:p.r, pct:puntuar(p.st, T, i === V.tray.length - 1 ? causa : null) })) }));
+  }
+  return { puntuar, nueva, siguiente, decidir, automatica, veredictos, elegir };
+})();
+
 /* ================= VISTA ================= */
 const ARI = { S:null, answered:false };
 function ariBox(){ return document.getElementById("aribox"); }
@@ -149,8 +221,20 @@ function ariStat(k){ return JUEGO_ARIS.stats.find(s => s.k === k); }
 function ariNivel(k, v){ return ariStat(k).niveles.find(n => v <= n[0])[1]; }
 function ariAlerta(k, v){ return (k === "sal" || k === "hac") ? v <= 2 : k === "ene" ? v >= 6 : false; }
 
+// conmutador de mesas: el juego o «Juzgar la vida»
+function ariModoBar(){
+  if(!JUEGO_ARIS.juzgar) return "";
+  const U = JUEGO_ARIS.juzgar.ui;
+  return '<div class="fgroup ari-modo" role="group">' + [["jugar", U.modoJugar], ["juzgar", U.modoJuzgar]].map(m =>
+    '<button class="fbtn" type="button" data-ari-modo="' + m[0] + '" aria-pressed="' + ((ARI.modo || "jugar") === m[0]) + '">' + ariEsc(m[1]) + '</button>').join("") + '</div>';
+}
+function ariModoWire(box){
+  box.querySelectorAll("[data-ari-modo]").forEach(b => b.addEventListener("click", () => { ARI.modo = b.dataset.ariModo; renderAriStart(); }));
+}
+
 function renderAriStart(){
   const box = ariBox(); if(!box) return;
+  if(ARI.modo === "juzgar" && JUEGO_ARIS.juzgar){ renderFel(box); return; }
   const cards = JUEGO_ARIS.chars.map(c =>
     '<button class="ari-char" data-char="' + c.id + '">' +
       '<div class="ari-portrait">' + ariRetrato(c, "ari-portrait-img", true) + '<span class="ari-orient">' + c.orient + '</span></div>' +
@@ -161,7 +245,7 @@ function renderAriStart(){
         '<div class="ari-frase">«' + c.frase + '»</div></div>' +
     '</button>').join("");
   const et = ariEtapas().map(e => e.label.toLowerCase()), etTxt = et.slice(0, -1).join("، ") + " و" + et[et.length-1] + ": " + ariTotalRondas() + " قرارًا في المجموع";
-  box.innerHTML = '<div class="ari-wrap">' +
+  box.innerHTML = '<div class="ari-wrap">' + ariModoBar() +
     '<details class="ari-intro" open><summary>كيف تلعبون</summary>' +
       '<ul>' +
         '<li>اختاروا شخصية وعيشوا حياتها في ثلاث مراحل، ' + etTxt + '.</li>' +
@@ -182,6 +266,7 @@ function renderAriStart(){
     '<div class="ari-chars">' + cards + '</div>' +
     '<p class="ia-note">رسوم مولَّدة بالذكاء الاصطناعي</p></div>';
   box.querySelectorAll("[data-char]").forEach(b => b.addEventListener("click", () => ariStart(b.dataset.char)));
+  ariModoWire(box);
 }
 
 function ariStart(id){ ARI.S = ariENew(id); ariRenderDilemma(); }
@@ -306,6 +391,238 @@ function ariResult(){
   document.getElementById("ariAgain").addEventListener("click", () => ariStart(c.id));
   document.getElementById("ariHome").addEventListener("click", renderAriStart);
 }
+
+/* ================= VISTA · Juzgar la vida ================= */
+const renderFel = (() => {
+  const st = { V:null, modo:null, sel:"aristoteles", mia:null, vidas:[] };
+  let box = null;
+  const J = () => JUEGO_ARIS.juzgar, U = () => JUEGO_ARIS.juzgar.ui;
+  const q = sel => box.querySelector(sel);
+  const fx = (s, o) => String(s).replace(/\{(\w+)\}/g, (m, k) => o[k] != null ? o[k] : m);
+  const clon = o => JSON.parse(JSON.stringify(o));
+  const loc = () => { const l = (document.documentElement.lang || "es").slice(0, 2); return l === "ar" ? "ar-u-nu-latn" : l; };
+  const fmt = x => (Math.round(x * 10) / 10).toLocaleString(loc());
+  const fmtF = x => (Math.round(x * 100) / 100).toLocaleString(loc());   // factores: 0,35
+  const EM = k => ariStat(k).em, NOM = k => ariStat(k).label;
+  function h(tag, attrs, ...kids){
+    const e = document.createElement(tag);
+    for(const [k, v] of Object.entries(attrs || {})){
+      if(v == null || v === false) continue;
+      if(k.startsWith("on")) e.addEventListener(k.slice(2), v);
+      else e.setAttribute(k, v === true ? "" : v);
+    }
+    kids.flat().forEach(c => c != null && e.append(c.nodeType ? c : document.createTextNode(c)));
+    return e;
+  }
+  const SVGNS = "http://www.w3.org/2000/svg";
+  function s(tag, attrs, txt){ const e = document.createElementNS(SVGNS, tag); for(const [k, v] of Object.entries(attrs || {})) e.setAttribute(k, v); if(txt != null) e.textContent = txt; return e; }
+  const teorias = () => [...J().teorias, st.mia];
+  const pj = () => JUEGO_ARIS.chars.find(c => c.id === q("#fel-pj").value);
+  const causaN = k => J().causas[k || "salud"];
+
+  /* ---------- 1 · vivir ---------- */
+  function pintarPerfil(){
+    const c = pj(), u = U();
+    q("#fel-perfil").textContent = c.name + " (" + c.orient.toLowerCase() + "). " + (c.perfil || "") +
+      (c.virtudT ? " " + u.virtud + " (" + c.virtud + "): " + c.virtudT : "") + (c.debilidadT ? " " + u.debilidad + " (" + c.debilidad + "): " + c.debilidadT : "");
+  }
+  function pintarStats(){
+    const base = st.V ? st.V.S.st : pj();
+    q("#fel-stats").replaceChildren(...ARI_KEYS.map(k => h("div", { class:"fel-stat", title:NOM(k) }, h("span", {}, EM(k) + " " + NOM(k)),
+      h("div", { class:"fel-sb" }, h("div", { style:"width:" + (100 * base[k] / 12) + "%" })), h("b", { class:"fel-mono" }, String(base[k])))));
+  }
+  function deltaTxt(real){
+    const ks = ARI_KEYS.filter(k => real && real[k]);
+    if(!ks.length) return h("span", { class:"fel-delta" }, U().sinCambios);
+    return h("span", { class:"fel-delta" }, ...ks.map(k => h("span", { class:(k === "ene" ? real[k] < 0 : real[k] > 0) ? "up" : "down" }, (real[k] > 0 ? "+" : "") + real[k] + EM(k) + " ")));
+  }
+  function evLinea(e){
+    const u = U();
+    if(e.tipo === "decision") return h("div", {}, h("b", {}, u.tuDecision + " "), deltaTxt(e.real));
+    if(e.tipo === "dado") return h("div", {}, h("b", {}, (e.ok ? u.saleBien : u.saleMal) + " "), (e.r || "") + " ", deltaTxt(e.real));
+    if(e.tipo === "azar") return h("div", {}, h("b", {}, u.fortuna + " "), (e.card.t || "") + (e.card.d ? ". " + e.card.d : "") + " ", deltaTxt(e.real));
+    if(e.tipo === "peligro") return h("div", {}, h("b", {}, u.peligro + " "), (e.t || "") + (e.d ? ". " + e.d : "") + " ", deltaTxt(e.real));
+    if(e.tipo === "muerte") return h("div", {}, h("b", {}, u.muerte + " "), e.t || "");
+    return null;
+  }
+  function jugar(){ st.respondida = false; st.V = FEL.nueva(pj().id); st.V.estilo = U().jugadaPorTi; st.modo = "manual"; siguienteManual(); }
+  function siguienteManual(){
+    const d = FEL.siguiente(st.V);
+    pintarStats();
+    if(!d){ terminar(); return; }
+    pintarDilema(d);
+  }
+  function pintarDilema(d){
+    st.respondida = false;
+    const S = st.V.S, et = ariEtapaDe(S.round).label;
+    const pasoT = S.ultimoPaso ? h("div", { class:"fel-aviso" }, h("b", {}, U().pasaTiempo + " "), S.ultimoPaso.t + " ", deltaTxt(S.ultimoPaso.real)) : null;
+    q("#fel-juego").replaceChildren(h("div", { class:"fel-dilema" }, pasoT, h("span", { class:"fel-etq" }, et + " · " + U().ronda + " " + (S.round + 1) + (d.virtue ? " · " + d.virtue : "")), h("p", { class:"fel-situ" }, d.sit),
+      h("div", { class:"fel-ops" }, ...d.opts.map((o, i) => { const bl = ariBlocked(S, o); return h("button", { type:"button", disabled:bl, onclick:() => elegir(i) }, o.t + (bl ? " " + U().bloqueada : "")); }))));
+    pintarTray();
+  }
+  function elegir(i){
+    st.respondida = true;
+    const V = st.V, o = V.S.cur.opts[i], ev = FEL.decidir(V, i);
+    pintarStats(); pintarTray();
+    q("#fel-juego").replaceChildren(h("div", { class:"fel-dilema" }, h("p", { class:"fel-situ" }, o.r || ""), h("div", { class:"fel-ev" }, ...ev.map(evLinea).filter(Boolean)),
+      h("div", { class:"fel-fila" }, h("button", { type:"button", class:"fel-b prim", onclick:siguienteManual }, V.S.over ? U().verFinal : U().seguir))));
+    q("#fel-juego .prim").focus();
+  }
+  function auto(){ st.V = FEL.automatica(pj().id, q("#fel-estilo").value); st.modo = "auto"; pintarStats(); terminar(); }
+  function terminar(){
+    const V = st.V, S = V.S, u = U();
+    V.final = ariEFinal(S);
+    const C = causaN(V.causa);
+    const cab = S.over ? (S.over.tipo === "muerte" ? u.muereAntes : u.acabaRuina) + " · " + C.nombre.toLowerCase() : u.completa;
+    q("#fel-juego").replaceChildren(h("div", { class:"fel-aviso " + (S.over ? "mal" : "ok") }, h("b", {}, cab + ". "),
+      (S.over ? S.over.texto + " (" + C.desc + ".) " : "") + fx(u.decisiones, { n:V.decisiones.length }) + (st.modo === "auto" ? " " + fx(u.conEstiloX, { e:V.estilo }) : "") + ". " + u.bajaVer));
+    q("#fel-guardar").disabled = false;
+    pintarTray(); pintarPesos();
+    q("#fel-m-pesos").hidden = false;
+  }
+
+  /* ---------- 2 · trayectoria ---------- */
+  function mini(k, tray){
+    const W = 260, H = 110, ml = 24, mr = 10, mt = 18, mb = 18, iw = W - ml - mr, ih = H - mt - mb;
+    const n = Math.max(1, tray[tray.length - 1].r), X = r => ml + r / n * iw, Y = v => mt + ih - v / 12 * ih;
+    const sv = s("svg", { viewBox:`0 0 ${W} ${H}`, role:"img", "aria-label":fx(U().deA, { k:NOM(k), a:tray[0].st[k], b:tray[tray.length - 1].st[k] }) });
+    sv.append(s("text", { x:0, y:11, class:"fel-svg-t" }, EM(k) + " " + NOM(k)));
+    // madurez sombreada (rondas de la etapa central)
+    const et = ariEtapas(), r0 = et[0].rondas, r1 = Math.min(r0 + et[1].rondas, n);
+    if(n > r0) sv.append(s("rect", { x:X(r0), y:mt, width:Math.max(0, X(r1) - X(r0)), height:ih, class:"fel-svg-band" }));
+    [0, 6, 12].forEach(v => { sv.append(s("line", { x1:ml, x2:ml + iw, y1:Y(v), y2:Y(v), class:"fel-svg-grid" })); sv.append(s("text", { x:ml - 5, y:Y(v) + 3.5, "text-anchor":"end", class:"fel-svg-ax" }, v)); });
+    if(tray.length > 1) sv.append(s("polyline", { points:tray.map(p => X(p.r) + "," + Y(p.st[k])).join(" "), class:"fel-svg-line" }));
+    const u = tray[tray.length - 1];
+    sv.append(s("circle", { cx:X(u.r), cy:Y(u.st[k]), r:4, class:"fel-svg-dot" }));
+    sv.append(s("text", { x:Math.min(X(u.r) + 6, W - 14), y:Y(u.st[k]) - 6, class:"fel-svg-val" }, u.st[k]));
+    if(st.V && st.V.S.over && tray.length > 1) sv.append(s("text", { x:X(u.r) - 3, y:mt - 4, "text-anchor":"end", class:"fel-svg-dead" }, "†"));
+    const guia = s("line", { y1:mt, y2:mt + ih, class:"fel-guia", visibility:"hidden" });
+    const zona = s("rect", { x:ml, y:mt, width:iw, height:ih, fill:"transparent" });
+    const mover = ev => {
+      const b = sv.getBoundingClientRect(), px = ((ev.touches ? ev.touches[0].clientX : ev.clientX) - b.left) * (W / b.width);
+      const r = Math.round((px - ml) / iw * n), p = tray.reduce((a, c) => Math.abs(c.r - r) < Math.abs(a.r - r) ? c : a);
+      box.querySelectorAll("#fel-mult .fel-guia").forEach(g => { g.setAttribute("x1", X(p.r)); g.setAttribute("x2", X(p.r)); g.setAttribute("visibility", "visible"); });
+      const vals = ARI_KEYS.map(k2 => EM(k2) + p.st[k2]).join(" ");
+      q("#fel-tip").textContent = p.r === 0 ? U().puntoPartida + " " + vals : fx(U().rondaX, { n:p.r, e:p.etapa }) + " " + (p.o ? "«" + p.o + "»" : "") + " → " + vals;
+    };
+    zona.addEventListener("pointermove", mover); zona.addEventListener("touchmove", mover, { passive:true });
+    zona.addEventListener("pointerleave", () => box.querySelectorAll("#fel-mult .fel-guia").forEach(g => g.setAttribute("visibility", "hidden")));
+    sv.append(guia, zona);
+    return h("div", { class:"fel-graf" }, sv);
+  }
+  function pintarTray(){
+    const V = st.V, ok = V && V.tray.length > 1;
+    q("#fel-m-tray").hidden = !ok;
+    if(ok) q("#fel-mult").replaceChildren(...ARI_KEYS.map(k => mini(k, V.tray)));
+  }
+
+  /* ---------- 3 · pesos ---------- */
+  function curvaFel(T){
+    const u = U(), ver = FEL.veredictos(st.V, [T])[0], c = ver.curva;
+    const W = 520, H = 140, ml = 34, mr = 46, mt = 10, mb = 20, iw = W - ml - mr, ih = H - mt - mb, n = Math.max(1, c[c.length - 1].r);
+    const X = r => ml + r / n * iw, Y = v => mt + ih - v / 100 * ih;
+    const sv = s("svg", { viewBox:`0 0 ${W} ${H}`, role:"img", "aria-label":fx(u.curvaAria, { t:T.nombre, p:fmt(ver.pct) }) });
+    [0, 50, 100].forEach(v => { sv.append(s("line", { x1:ml, x2:ml + iw, y1:Y(v), y2:Y(v), class:"fel-svg-grid" })); sv.append(s("text", { x:ml - 6, y:Y(v) + 3.5, "text-anchor":"end", class:"fel-svg-ax" }, v + " %")); });
+    [0, n].forEach((r, i) => sv.append(s("text", { x:X(r), y:H - 5, "text-anchor":i ? "end" : "start", class:"fel-svg-ax" }, fx(u.rondaN, { n:r }))));
+    sv.append(s("polyline", { points:c.map(p => X(p.r) + "," + Y(p.pct)).join(" "), class:"fel-svg-line acc" }));
+    const z = c[c.length - 1];
+    sv.append(s("circle", { cx:X(z.r), cy:Y(z.pct), r:4, class:"fel-svg-dot acc" }));
+    sv.append(s("text", { x:X(z.r) + 7, y:Y(z.pct) + 4, class:"fel-svg-val" }, fmt(z.pct) + " %"));
+    const f = T.muerte[st.V.causa] ?? 1;
+    return h("div", { class:"fel-graf" }, h("h3", {}, fx(u.curvaT, { t:T.nombre })), sv,
+      h("p", { class:"fel-d" }, st.V.S.over && f < 1 ? fx(u.caida, { c:causaN(st.V.causa).nombre.toLowerCase(), f:fmtF(f) }) : u.soloFinal));
+  }
+  function rango(attrs, onv){ return h("input", Object.assign({ type:"range", oninput:ev => { onv(+ev.target.value, ev.target); pintarVeredictos(); pintarComp(); } }, attrs)); }
+  function tablaPesos(T){
+    const u = U(), edit = T.id === "mia";
+    const filas = ARI_KEYS.map(k => {
+      const w = T.w[k] || 0, top = T.tope[k];
+      const celW = edit ? h("td", {}, rango({ min:-3, max:3, step:0.5, value:w, "aria-label":fx(u.pesoDe, { k:NOM(k) }) }, (v, el) => { T.w[k] = v; el.parentNode.nextSibling.textContent = fmt(v); })) : null;
+      const celT = edit ? h("td", {}, rango({ min:1, max:12, step:1, value:top, "aria-label":fx(u.topeDe, { k:NOM(k) }) }, (v, el) => { T.tope[k] = v; el.parentNode.nextSibling.textContent = v; })) : null;
+      return h("tr", {}, h("td", {}, EM(k) + " " + NOM(k)), celW, h("td", { class:"fel-mono" }, fmt(w)), celT, h("td", { class:"fel-mono" }, w < 0 ? "—" : String(top)));
+    });
+    const causaV = st.V && st.V.S.over ? st.V.causa : null;
+    const muertes = Object.entries(J().causas).map(([k, C]) => h("tr", { class:k === causaV ? "esta" : null }, h("td", {}, C.nombre + (k === causaV ? " " + u.estaVida : "")),
+      edit ? h("td", {}, rango({ min:0, max:1, step:0.05, value:T.muerte[k], "aria-label":fx(u.factorDe, { k:C.nombre }) }, (v, el) => { T.muerte[k] = v; el.parentNode.nextSibling.textContent = "×" + fmtF(v); })) : null,
+      h("td", { class:"fel-mono" }, "×" + fmtF(T.muerte[k]))));
+    return h("div", { class:"fel-col" },
+      h("table", { class:"fel-pesos" }, h("thead", {}, h("tr", {}, h("th", {}, u.variable), h("th", { colspan:edit ? 2 : null }, u.peso), h("th", { colspan:edit ? 2 : null }, u.tope))), h("tbody", {}, ...filas)),
+      h("h3", {}, u.truncada),
+      h("table", { class:"fel-pesos" }, h("thead", {}, h("tr", {}, h("th", {}, u.causa), h("th", { colspan:edit ? 2 : null }, edit ? u.factor : u.multiplica))), h("tbody", {}, ...muertes)),
+      h("p", { class:"fel-d" }, u.comoCalcula));
+  }
+  function pintarVeredictos(){
+    if(!st.V || !st.V.final) return;
+    const sel = T => { st.sel = T.id; pintarPesos(); };
+    q("#fel-ver").replaceChildren(...FEL.veredictos(st.V, teorias()).map(({ T, pct }) => h("div", { class:"fel-ver" + (T.id === st.sel ? " sel" : ""), role:"listitem", tabindex:0, "aria-label":T.nombre + ": " + fmt(pct) + " %",
+      onclick:() => sel(T), onkeydown:ev => { if(ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); sel(T); } } },
+      h("span", { class:"nm" }, T.nombre, h("small", {}, T.sub)), h("div", { class:"fel-vbar" }, h("div", { class:"fel-vb", style:"width:" + pct + "%" })), h("b", {}, fmt(pct) + " %"))));
+  }
+  function pintarPesos(){
+    if(!st.V || !st.V.final) return;
+    const f = st.V.final, u = U();
+    q("#fel-juego-dice").textContent = fx(u.juegoDice, { n:f.eud, b:f.band.label });
+    pintarVeredictos();
+    const T = teorias().find(t => t.id === st.sel);
+    q("#fel-teoria").replaceChildren(...[h("div", { class:"fel-aviso neutro" }, h("b", {}, T.nombre + ". "), T.txt),
+      T.id !== "mia" ? h("div", { class:"fel-fila" }, h("button", { type:"button", class:"fel-b", onclick:() => { Object.assign(st.mia, { w:clon(T.w), tope:clon(T.tope), muerte:clon(T.muerte) }); st.sel = "mia"; pintarPesos(); pintarComp(); } }, u.copiar)) : null,
+      tablaPesos(T), curvaFel(T)].filter(Boolean));
+  }
+
+  /* ---------- 4 · comparar ---------- */
+  function guardar(V){
+    st.vidas.push({ V, et:V.S.char.name + " · " + V.estilo + (V.S.over ? " · † " + causaN(V.causa).nombre.toLowerCase() : "") });
+    pintarComp();
+  }
+  function pintarComp(){
+    const T = teorias(), u = U(), filas = st.vidas.map(x => Object.assign({}, x, { pcts:FEL.veredictos(x.V, T).map(v => v.pct) }));
+    const mejores = T.map((_, j) => Math.max(...filas.map(f => f.pcts[j]), -1));
+    q("#fel-comp").replaceChildren(h("thead", {}, h("tr", {}, h("th", {}, u.vidaCol), ...T.map(t => h("th", {}, t.nombre)), h("th", {}, ""))),
+      h("tbody", {}, ...(filas.length ? filas.map((f, i) => h("tr", {}, h("td", {}, f.et), ...f.pcts.map((p, j) => h("td", { class:p === mejores[j] ? "mejor" : null }, (p === mejores[j] ? "★ " : "") + fmt(p))),
+        h("td", {}, h("button", { type:"button", "aria-label":u.quitar, title:u.quitar, onclick:() => { st.vidas.splice(i, 1); pintarComp(); } }, "×"))))
+        : [h("tr", {}, h("td", { colspan:T.length + 2, class:"fel-d fel-vacio" }, u.vacio))])));
+  }
+
+  /* ---------- montaje ---------- */
+  return function(b){
+    box = b;
+    const u = U();
+    if(!st.mia) st.mia = Object.assign(clon(J().teorias[0]), { id:"mia" }, J().mia);
+    box.innerHTML = '<div class="ari-wrap fel">' + ariModoBar() + '</div>';
+    const wrap = box.firstChild;
+    const sec = (id, t, ...kids) => h("section", { class:"fel-mesa", id, "aria-labelledby":id + "-t" }, h("h2", { id:id + "-t" }, t), ...kids);
+    wrap.append(
+      h("p", { class:"fel-lede" }, u.lede),
+      h("p", { class:"fel-aviso neutro" }, u.aviso),
+      sec("fel-m-vivir", u.t1,
+        h("div", { class:"fel-fila" }, h("label", { class:"fel-d", for:"fel-pj" }, u.personaje), h("select", { class:"fel-sel", id:"fel-pj" }, ...JUEGO_ARIS.chars.map(c => h("option", { value:c.id }, c.name + " (" + c.orient.toLowerCase() + ")")))),
+        h("p", { class:"fel-perfil", id:"fel-perfil" }),
+        h("div", { class:"fel-fila" }, h("button", { type:"button", class:"fel-b prim", onclick:jugar }, u.jugarYo), h("span", { class:"fel-d" }, u.o),
+          h("button", { type:"button", class:"fel-b", onclick:auto }, u.auto), h("label", { class:"fel-d", for:"fel-estilo" }, u.conEstilo),
+          h("select", { class:"fel-sel", id:"fel-estilo" }, ...J().estilos.map(e => h("option", { value:e.id }, e.nombre)))),
+        h("div", { class:"fel-stats", id:"fel-stats", "aria-live":"polite" }),
+        h("div", { id:"fel-juego" })),
+      sec("fel-m-tray", u.t2, h("p", { class:"fel-d" }, u.t2d), h("div", { class:"fel-mult", id:"fel-mult" }), h("p", { class:"fel-tip", id:"fel-tip", "aria-live":"polite" })),
+      sec("fel-m-pesos", u.t3, h("p", { class:"fel-d", id:"fel-juego-dice" }), h("div", { class:"fel-veredictos", id:"fel-ver", role:"list" }), h("div", { id:"fel-teoria" })),
+      sec("fel-m-comp", u.t4, h("p", { class:"fel-d" }, u.t4d),
+        h("div", { class:"fel-fila" }, h("button", { type:"button", class:"fel-b", id:"fel-guardar", disabled:true, onclick:ev => { if(st.V && st.V.final){ guardar(st.V); ev.target.disabled = true; } } }, u.guardar),
+          h("button", { type:"button", class:"fel-b", onclick:() => { for(let i = 0; i < 10; i++){ const c = JUEGO_ARIS.chars[Math.floor(Math.random() * JUEGO_ARIS.chars.length)], e = J().estilos[Math.floor(Math.random() * 4)]; const V = FEL.automatica(c.id, e.id); V.final = ariEFinal(V.S); guardar(V); } } }, u.diez),
+          h("button", { type:"button", class:"fel-b", onclick:() => { st.vidas = []; pintarComp(); } }, u.vaciar)),
+        h("div", { class:"fel-tscroll" }, h("table", { class:"fel-comp", id:"fel-comp" })),
+        h("details", { class:"fel-saber" }, h("summary", {}, u.paraPensar), h("ol", {}, ...J().preguntas.map(p => h("li", {}, p))))));
+    ariModoWire(box);
+    q("#fel-m-tray").hidden = true; q("#fel-m-pesos").hidden = true;
+    q("#fel-pj").addEventListener("change", () => { pintarPerfil(); if(!st.V || st.V.final){ st.V = null; pintarStats(); } });
+    if(st.V){   // volver a la mesa: se conserva la última vida
+      q("#fel-pj").value = st.V.S.char.id; pintarPerfil(); pintarStats(); pintarComp();
+      if(st.V.final) terminar(); else if(st.respondida) siguienteManual(); else { pintarTray(); pintarDilema(st.V.S.cur); }
+      return;
+    }
+    // abre con un ejemplo vivido para que se vea qué hace la mesa
+    q("#fel-pj").value = "alcibiades"; q("#fel-estilo").value = "ambicioso";
+    pintarPerfil(); pintarComp(); auto();
+  };
+})();
 
 /* ---------- init ---------- */
 function initAri(){ if(typeof JUEGO_ARIS === "undefined") return; renderAriStart(); }

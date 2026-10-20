@@ -54,6 +54,7 @@ const GLO_CSS = `
 #glosario .glo-root:hover,#glosario .glo-root[aria-expanded="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 #glosario mark{background:var(--accent);color:var(--on-accent);padding:0 2px;border-radius:3px}
 #glosario .gloempty{color:var(--muted);padding:24px 2px}
+#glosario .gloitem.glo-hit{outline:2px solid var(--accent);outline-offset:2px}
 `;
 
 function gloFold(s){ return (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
@@ -205,7 +206,7 @@ function renderGloList(){
     const src = g.tema ? '<div class="src">' + gloEsc(g.tema) + (g.unidad ? " · " + g.unidad : "") + '</div>' : "";
     const ilu = gloIlustres(g);
     const ep = g.subject === "hf" && { A: "ant", B: "medmod", C: "con" }[g.bloque];   // (30-09) color del bloque de HF (styles.css)
-    return '<article class="gloitem"' + (ep ? ' data-ep="' + ep + '"' : '') + '><div class="top"><h4>' + term + btn + (g.subject === "hf" && typeof impBadge === "function" && typeof IMPRESCINDIBLES !== "undefined" ? ' ' + impBadge("glo", g) : '') + '</h4><span class="tag">' + gloEsc(tag) + '</span></div><p>' + def + '</p>' + ety + src + ilu + '</article>';
+    return '<article class="gloitem"' + (g.id ? ' data-gid="' + g.id + '"' : '') + (ep ? ' data-ep="' + ep + '"' : '') + '><div class="top"><h4>' + term + btn + (g.subject === "hf" && typeof impBadge === "function" && typeof IMPRESCINDIBLES !== "undefined" ? ' ' + impBadge("glo", g) : '') + '</h4><span class="tag">' + gloEsc(tag) + '</span></div><p>' + def + '</p>' + ety + src + ilu + '</article>';
   }).join("");
 }
 
@@ -220,6 +221,19 @@ function renderGloList(){
     ety.hidden = !ety.hidden; b.setAttribute("aria-expanded", String(!ety.hidden));
   });
 })();
+
+/* (20-10) Enlace profundo #glosario/<id> (id neutro de cada término, tools/glosario_ids.js): no depende de la lengua.
+   Pone los filtros en la materia y la época del término, lo enmarca y lo trae a la vista. Lo usan las Pistas. */
+function gloPorId(id){ return typeof GLOSARIO !== "undefined" ? GLOSARIO.find(g => g.id === id) || null : null; }
+function loadGlosario(id){
+  const g = gloPorId(id);
+  if (!g){ renderGloControls(); renderGloList(); return; }
+  gloSubject = g.subject; gloBloque = gloEpoca(g) || "all"; gloArea = "all"; gloQuery = ""; gloImp = false;
+  renderGloControls(); renderGloList();
+  const el = document.querySelector('#glolist [data-gid="' + id + '"]'); if (!el) return;
+  el.classList.add("glo-hit");
+  setTimeout(() => el.scrollIntoView({ block: "center", behavior: "smooth" }), 60);
+}
 
 renderGloControls();
 renderGloList();

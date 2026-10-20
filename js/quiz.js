@@ -199,6 +199,20 @@ function renderQuizFilter(){
   }));
 }
 
+/* (18-10, P-024 · H4 estricto, docs/36 D10) en HF, dentro de cada tema, dos niveles: «Banco completo» y «Repaso».
+   No se funde ni se borra ningún cuestionario: los sueltos que solapan con el repaso de su tema se quedan como
+   «Repaso (otra versión)», y hf-t2-metodos hace de repaso del T2, que no tiene otro. Las claves no cambian (el
+   progreso guardado se conserva); el nombre completo queda en el title del botón. En 1.º, los nombres de siempre. */
+const QUIZ_OTRA_VERSION = { "hf-t1-historicidad": 1, "hf-t12-fe-razon": 1, "hf-t20-etica-deber": 1, "preso": 1 };
+const QUIZ_NIVEL_TXT = { banco: "بنك الأسئلة كاملًا", repaso: "مراجعة", otra: "مراجعة (نسخة أخرى)" };
+const QUIZ_NIVEL_ORDEN = { banco: 0, repaso: 1, otra: 2 };
+function quizNivel(k){
+  if (!QUIZZES[k] || QUIZZES[k].subject !== "hf") return null;
+  if (/-banco$/.test(k)) return "banco";
+  if (QUIZ_OTRA_VERSION[k]) return "otra";
+  return /-repaso$/.test(k) || k === "hf-t2-metodos" ? "repaso" : null;
+}
+function quizOrdenTema(k){ const n = quizNivel(k); return n ? QUIZ_NIVEL_ORDEN[n] : 3 + quizTipo(k); }
 function renderQuizChips(){
   const box = document.getElementById("quizchips");
   const allEntries = Object.entries(QUIZZES).filter(([k, q]) => quizEnFiltro(k, q, true));
@@ -212,10 +226,13 @@ function renderQuizChips(){
   else {
     /* agrupados por tema, con su título; dentro de cada tema: banco ampliado, breve y léxico (el «Del libro» va a «Por autor») */
     const entries = allEntries.filter(([k]) => quizSerie(k) !== "autor");
+    /* (18-10, H4) en HF, el botón dice el nivel y el número de preguntas; el nombre completo, en el title */
+    const chipNivel = ([k, q]) => { const n = quizNivel(k); if (!n) return chip([k, q]);
+      return `<button class="chip" data-quiz="${k}" aria-pressed="${k === quizKey}" title="${String(q.name).replace(/"/g, "&quot;")}">${QUIZ_NIVEL_TXT[n]} · ${(q.items || []).length}</button>`; };
     box.innerHTML = quizTemasVisibles().filter(t => quizTema === "all" || t === quizTema).map(t => {
-      const del = entries.filter(([k]) => quizTemaDe(k) === t).sort((a, b) => quizTipo(a[0]) - quizTipo(b[0]));
+      const del = entries.filter(([k]) => quizTemaDe(k) === t).sort((a, b) => quizOrdenTema(a[0]) - quizOrdenTema(b[0]));
       const cab = (quizEsFil() && QUIZ_RAMAS[t] ? QUIZ_RAMAS[t] + " · " : quizTemaNum(t) ? t + " · " : "") + quizTemaEtq(t);   // (12-10) 1.º: «Ámbito · título»
-      return del.length ? '<div class="quiz-tema"><span class="flabel">' + cab + '</span><div class="quiz-tema-chips">' + del.map(chip).join("") + '</div></div>' : "";
+      return del.length ? '<div class="quiz-tema"><span class="flabel">' + cab + '</span><div class="quiz-tema-chips">' + del.map(chipNivel).join("") + '</div></div>' : "";
     }).join("");
   }
   box.querySelectorAll("[data-quiz]").forEach(b => b.addEventListener("click", () => loadQuiz(b.dataset.quiz)));
