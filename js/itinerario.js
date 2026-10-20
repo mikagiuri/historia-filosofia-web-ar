@@ -72,7 +72,7 @@
   };
   var MAP_TEMA = {
     "map-descartes": 14, "map-kant": 19, "map-critica-razon-pura": 19, "map-ilustracion-modernidad": 18, "map-san-agustin": 12, "map-platon": 6,
-    "map-aristoteles": 7, "map-helenismo": 10, "map-nietzsche": 23, "map-hegel": 21, "map-ideologia": 22, "map-presocraticos": 4, "map-sofistas-socrates": 5,
+    "map-aristoteles": 7, "map-helenismo": 10, "map-nietzsche": 21, "map-hegel": 21, "map-ideologia": 22, "map-presocraticos": 4, "map-sofistas-socrates": 5,
     "map-medieval": 11, "map-etica-clasica": 8, "map-politica-clasica": 9, "map-renacimiento": 13, "map-sustancias-modernas": 15, "map-contrato-social": 16,
     "map-utilitarismo-liberalismo": 17, "map-maestros-sospecha": 21, "map-critica-capitalismo": 22, "map-postmodernidad": 23, "map-filosofia-lenguaje": 24,
     "map-existencialismo": 25, "map-feminismo-beauvoir": 26,
@@ -274,7 +274,7 @@
   /* ---------- final de cada tema de Teoría ---------- */
   /* (12-10, rediseño Lote 3 · H0) temas de HF con lectura PAU: T6 (República VII), T14 (Discurso II-IV),
      T18 (¿Qué es la Ilustración?), T23 (Ecce Homo) y T26 (El segundo sexo). Saca la insignia «Lectura PAU». */
-  var PAU_TEMAS = { 6: 1, 14: 1, 18: 1, 23: 1, 26: 1 };
+  var PAU_TEMAS = { 6: 1, 14: 1, 18: 1, 21: 1, 26: 1 };   /* (20-10) el profesor: la lectura PAU de Ecce Homo cuelga del tema 21, no del 23 */
   /* (18-10, P-025 · plan del agente 47, Lote A) piezas que ya existían y faltaban en la caja: cronograma (HF), modelo de
      disertación, comparativas (temas con lectura PAU), Rincón de lógica (1.º T4) y, en «Ampliar», polémicas, comunidades,
      perseguidos, debates del Duelo y juegos. Decisiones del profesor del 18-10 (docs/36): el modelo «máquina» va en el T2
@@ -292,7 +292,7 @@
       return ts.indexOf(tema) >= 0;
     }).map(function(c){ return { go: "cronogramas", arg: c.id, label: strip(c.title) }; });
   }
-  var DISERT_TEMA = { "modelo-platon": [6, 9], "modelo-kant": [20], "modelo-nietzsche": [23], "modelo-medieval": [12], "modelo-descartes": [14], "modelo-beauvoir": [26],
+  var DISERT_TEMA = { "modelo-platon": [6, 9], "modelo-kant": [20], "modelo-nietzsche": [21], "modelo-medieval": [12], "modelo-descartes": [14], "modelo-beauvoir": [26],
     "fil-modelo-filosofia": [1], "fil-modelo-naturaleza": [2], "fil-modelo-maquina": [2], "fil-modelo-vidabuena": [5], "fil-modelo-justicia": [6] };
   function disertDe(subject, tema){
     var D = coll("DISERTACIONES"); if (!D || !view("disertaciones")) return [];

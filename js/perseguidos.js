@@ -22,6 +22,7 @@ const PERSEGUIDOS = [
   "temas": [
    "hf-sofistas",
    "hf-etica",
+   "hf-spinoza-huir",
    "fil-t1",
    "fil-t5"
   ],
@@ -575,6 +576,7 @@ const PERSEGUIDOS = [
   "temas": [
    "hf-spinoza-universal",
    "hf-spinoza-sistema",
+   "hf-spinoza-huir",
    "fil-spinoza-sistema",
    "hf-racionalismo"
   ],

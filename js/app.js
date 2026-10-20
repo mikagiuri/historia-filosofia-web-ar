@@ -46,7 +46,7 @@ window.VIEW_LOADERS = {
   pistas: "loadPista",
   logica: "loadLogica", juegosucio: "loadJuegoSucio",   // (08-10) #juegosucio/<estratagema>
       // (01-10) #logica/tablas|silogismos|puertas   // (01-10) #pistas/kant-imperativo
-  leibniz: "loadLeibniz", universo: "loadUniverso", palabra: "loadPalabra", rescritura: "loadRescritura", nudos: "loadNudos", adagios: "loadAdagios", polemicas: "loadPolemicas", perseguidos: "loadPerseguidos", comunidades: "loadComunidades", duelo: "loadDuelo", rayuela: "loadRayuela",   // (11-10) #rayuela/<estación>   // (09-10) #adagios/<id>
+  leibniz: "loadLeibniz", universo: "loadUniverso", palabra: "loadPalabra", rescritura: "loadRescritura", nudos: "loadNudos", adagios: "loadAdagios", polemicas: "loadPolemicas", perseguidos: "loadPerseguidos", comunidades: "loadComunidades", dilemas: "loadDilema", duelo: "loadDuelo", rayuela: "loadRayuela",   // (11-10) #rayuela/<estación>   // (09-10) #adagios/<id>
     // (09-10) #nudos/mentir|creer
     // (09-10) #rescritura/distinguir|escribir[/texto]
     // (08-10) #leibniz/maquina|binario|alfabeto|tratados|diagramas|calculemos|reverso|newton|voltaire
@@ -85,6 +85,7 @@ const ROUTE_KEY_OK = {
   cuestionarios: k => typeof QUIZZES === "undefined" || !!QUIZZES[k],
   tarjetas: k => typeof DECKS === "undefined" || !!DECKS[k],
   materiales: k => typeof MATERIALS === "undefined" || !!MATERIALS[k],
+  dilemas: k => typeof DILEMAS === "undefined" || DILEMAS.some(d => d.id === k),   // (20-10) #dilemas/<id>
   ilustres: k => typeof iluList !== "function" || iluList().some(x => x.id === k) || (/^epoca-/.test(k) && typeof EPOCAS_FICHAS !== "undefined" && !!EPOCAS_FICHAS[k.slice(6)])
 };
 function routeNote(msg){

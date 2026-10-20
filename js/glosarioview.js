@@ -197,7 +197,7 @@ function renderGloList(){
   if (!rows.length){ list.innerHTML = '<p class="gloempty">لا توجد مصطلحات تطابق البحث.</p>'; return; }
   list.innerHTML = rows.map(g => {
     const term = gloHi(gloEsc(g.t), gloQuery);
-    const def = gloHi(gloBold(gloEsc(g.def)), gloQuery);
+    const def = gloHi(gloIt(gloBold(gloEsc(g.def))), gloQuery);   // (20-10) también *cursiva* (antes se veían los asteriscos)
     const tag = (g.area ? g.area : "") + (g.bloque ? " · " + (GLO_EPOCAS[gloEpoca(g)] || g.bloque) : "");
     const abre = g.et && q && !gloFold(g.t + " " + g.def + " " + g.area).includes(q);   // lo buscado está solo en la raíz
     const ety = g.et ? '<div class="ety"' + (abre ? "" : " hidden") + "><b>" + GLO_ETY + "</b> " + gloIt(gloHi(gloEsc(g.et), gloQuery)) + "</div>" : "";
