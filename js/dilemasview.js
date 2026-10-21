@@ -42,7 +42,7 @@ function dilEnlaces(d){
   const ok = h => { const m = /^#(teoria|perseguidos|ilustres)\/(.+)$/.exec(h || ""); if (!m) return false;
     if (m[1] === "teoria") return typeof THEORY !== "undefined" && !!THEORY[m[2]];
     if (m[1] === "perseguidos") return typeof PERSEGUIDOS !== "undefined" && PERSEGUIDOS.some(c => c.id === m[2]);
-    return typeof ILUSTRES !== "undefined" && !!ILUSTRES[m[2]]; };
+    return typeof BIOGRAFIAS !== "undefined" && !!BIOGRAFIAS[m[2]]; };
   const ls = (d.enlaces || []).filter(e => ok(e.href));
   return ls.length ? '<p class="dil-links"><b>' + DIL_TXT.seguir + '</b> ' + ls.map(e => '<a href="' + e.href + '">' + dilEsc(e.t) + '</a>').join(' · ') + '</p>' : '';
 }
@@ -137,10 +137,10 @@ function renderDil(){
       (d.dato ? '<p class="dil-dato"><b>' + DIL_TXT.unDato + '</b> ' + dilEsc(d.dato) + '</p>' : '') + dilEnlaces(d) + '</div>';
     /* Bachillerato: las escuelas responden (con ficha de Ilustres) y el debate de su época (texto + unidad de teoría) */
     if (Array.isArray(d.escuelas) && d.escuelas.length){
-      const I = typeof ILUSTRES !== "undefined" ? ILUSTRES : {};
+      const I = typeof BIOGRAFIAS !== "undefined" ? BIOGRAFIAS : {};
       html += '<div class="dil-esc"><h3>' + DIL_TXT.escuelas + '</h3><ul>' + d.escuelas.map(e =>
         '<li class="dil-' + String(e.elige || '').toLowerCase() + '"><span class="dil-letter" title="' + DIL_TXT.elige + ' ' + dilEsc(e.elige) + '">' + dilEsc(e.elige) + '</span><div><b>' +
-        (e.ilustre && I[e.ilustre] ? '<a href="#ilustres/' + e.ilustre + '">' + dilEsc(e.quien) + '</a>' : dilEsc(e.quien)) + '</b> ' + dilEsc(e.porque) + '</div></li>').join('') + '</ul></div>';
+        (e.ilustre && I[e.ilustre] ? '<a href="#biografias/' + e.ilustre + '">' + dilEsc(e.quien) + '</a>' : dilEsc(e.quien)) + '</b> ' + dilEsc(e.porque) + '</div></li>').join('') + '</ul></div>';
     }
     if (d.debate && d.debate.texto){
       const TH = typeof THEORY !== "undefined" ? THEORY : {}, u = d.debate.unidad;

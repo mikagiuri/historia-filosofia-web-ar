@@ -27,7 +27,7 @@ const MAPA_DESC = {
   reto: "أسئلة ضد الساعة للمراجعة باللعب.",
   parejas: "لعبة ذاكرة: صِلوا كل مفهوم بزوجه.",
   glosario: "مفاهيم كل موضوع، مع تعريفها وأصلها.",
-  ilustres: "سِيَر المفكرين وبطاقات كل حقبة.",
+  biografias: "سِيَر المفكرين وبطاقات كل حقبة.",
   citas: "أقوال مشهورة للفلاسفة، مع شرحها.",
   adagios: "أقوال مأثورة كلاسيكية باللاتينية واليونانية، وأقوال مشهورة للفلاسفة: ماذا تعني ومتى تُستعمل.",
   duelo: "مناظرة ضد الحاسوب: اكشفوا مغالطاته أو ردّوا بحجج أقوى، دون أن تفقدوا رباطة جأشكم.",
@@ -71,7 +71,7 @@ const MAPA_DESC = {
   signos: "دورة في لغة الإشارة."
 };
 /* cuántos elementos tiene cada sección (si su colección está cargada en esta web) */
-const MAPA_CUENTA = { tarjetas: "DECKS", cuestionarios: "QUIZZES", glosario: "GLOSARIO", ilustres: "ILUSTRES", citas: "CITAS", adagios: "ADAGIOS", polemicas: "POLEMICAS", perseguidos: "PERSEGUIDOS", comunidades: "COMUNIDADES",
+const MAPA_CUENTA = { tarjetas: "DECKS", cuestionarios: "QUIZZES", glosario: "GLOSARIO", biografias: "BIOGRAFIAS", citas: "CITAS", adagios: "ADAGIOS", polemicas: "POLEMICAS", perseguidos: "PERSEGUIDOS", comunidades: "COMUNIDADES",
   infografias: "INFOGRAFIAS", mapas: "MAPS", esquemas: "ESQUEMAS", cronogramas: "CRONOGRAMAS", genealogias: "GENEALOGIAS", lecturas: "LECTURAS",
   galeria: "GALERIA", dilemas: "DILEMAS", disertaciones: "DISERTACIONES", nudos: "NUDOS", pistas: "PISTAS", materiales: "MATERIALS" };
 function mapaG(name){ try { return (0, eval)("typeof " + name + " !== 'undefined' ? " + name + " : undefined"); } catch (e){ return undefined; } }
@@ -85,15 +85,15 @@ function mapaCuenta(v){
 function mapaItem(el){
   if (el.tagName === "A") return '<li><a class="mapa-a" href="' + mapaEsc(el.getAttribute("href")) + '" target="_blank" rel="noopener">' + mapaEsc(mapaStrip(el.innerHTML)) + '</a></li>';
   const v = el.dataset.view; if (!v || v === "mapa" || !document.getElementById(v)) return "";
-  const n = mapaCuenta(v), extra = v === "ilustres" ? mapaEpocas() : "";
+  const n = mapaCuenta(v), extra = v === "biografias" ? mapaEpocas() : "";
   return '<li><button type="button" class="mapa-a" data-igo="' + mapaEsc(v) + '" data-iarg="">' + mapaEsc(mapaStrip(el.textContent)) + '</button>' +
     (n ? ' <span class="mapa-n" title="' + n + " " + MAPA_TXT.elementos + '">' + n + '</span>' : '') +
     (MAPA_DESC[v] ? '<span class="mapa-d">' + mapaEsc(MAPA_DESC[v]) + '</span>' : '') + extra + '</li>';
 }
 function mapaEpocas(){
-  const EF = mapaG("EPOCAS_FICHAS"); if (!EF || typeof iluNombreFicha !== "function") return "";
+  const EF = mapaG("EPOCAS_FICHAS"); if (!EF || typeof bioNombreFicha !== "function") return "";
   return '<span class="mapa-sub"><b>' + MAPA_TXT.epocas + ':</b> ' + Object.keys(EF).map(k =>
-    '<button type="button" class="mapa-a" data-igo="ilustres" data-iarg="epoca-' + k + '">' + mapaEsc(iluNombreFicha(k)) + '</button>').join(" · ") + '</span>';
+    '<button type="button" class="mapa-a" data-igo="biografias" data-iarg="epoca-' + k + '">' + mapaEsc(bioNombreFicha(k)) + '</button>').join(" · ") + '</span>';
 }
 function mapaTemas(){
   const It = window.Itinerario, T = mapaG("THEORY"); if (!It || !It.temasDe || !T) return "";

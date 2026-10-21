@@ -83,14 +83,14 @@ const CRONO_FICHAS = { "A1-OS": "*", "A-GRECIA": ["ant"], "B-MED": ["med"], "B-R
   "B2": ["med"], "B7": ["ilu"], "C5": ["con", "con2"], "C8": ["con", "con2"], "C9": ["ilu", "con", "con2"] };
 const CRONO_EPOCA_TIT = "بطاقات الحقب";
 function cronoFichasHtml(c){
-  if (typeof EPOCAS_FICHAS === "undefined" || typeof iluNombreFicha !== "function" || !document.getElementById("ilustres")) return "";
+  if (typeof EPOCAS_FICHAS === "undefined" || typeof bioNombreFicha !== "function" || !document.getElementById("biografias")) return "";
   const code = c.code || "", pref = Object.keys(CRONO_FICHAS).find(p => code.indexOf(p + "-") === 0);
   let ks = pref ? CRONO_FICHAS[pref] : null;
   if (ks === "*") ks = Object.keys(EPOCAS_FICHAS);
   if (!ks){ const It = window.Itinerario, n = It && It.gloTema ? It.gloTema({ subject: "hf", unidad: code.split("-")[0] }) : null, e = typeof n === "number" ? It.epocaFicha("hf", n) : null; ks = e ? [e] : []; }
   ks = ks.filter(k => EPOCAS_FICHAS[k]);
   if (!ks.length) return "";
-  return '<p class="crono-epocas"><b>' + CRONO_EPOCA_TIT + ':</b> ' + ks.map(k => '<button type="button" class="ilu-rel-a" data-eje-epoca="' + k + '">' + escapeCrono(iluNombreFicha(k)) + '</button>').join(" · ") + '</p>';
+  return '<p class="crono-epocas"><b>' + CRONO_EPOCA_TIT + ':</b> ' + ks.map(k => '<button type="button" class="ilu-rel-a" data-eje-epoca="' + k + '">' + escapeCrono(bioNombreFicha(k)) + '</button>').join(" · ") + '</p>';
 }
 
 function cronoSvg(c){
@@ -348,11 +348,11 @@ function ejeGrid(E){
 const EJE_FICHAS = ["ant", "med", "ren", "mod", "con"], EJE_VER_EPOCA = "عرض بطاقة الحقبة";
 function ejeFicha(i){
   const k = EJE_FICHAS[i];
-  return k && typeof EPOCAS_FICHAS !== "undefined" && EPOCAS_FICHAS[k] && typeof loadIlustre === "function" && document.getElementById("ilustres") ? k : null;
+  return k && typeof EPOCAS_FICHAS !== "undefined" && EPOCAS_FICHAS[k] && typeof loadBiografia === "function" && document.getElementById("biografias") ? k : null;
 }
 document.addEventListener("click", e => {
   const b = e.target.closest && e.target.closest("[data-eje-epoca]"); if (!b) return;
-  (window.show || show)("ilustres"); loadIlustre("epoca-" + b.dataset.ejeEpoca);
+  (window.show || show)("biografias"); loadBiografia("epoca-" + b.dataset.ejeEpoca);
 });
 /* (12-10) límites en años de cada época (de epocas_fichas.js): Antigua -600..476 · Medieval 476..1492 ·
    Moderna 1492..1680 (Renacimiento + s. XVII) · Ilustración 1680..1800 · Contemporánea 1800..hoy (2100 como tope). */
@@ -396,19 +396,19 @@ function escapeCrono(s){ return String(s || "").replace(/&/g, "&amp;").replace(/
 /* ---------- init ---------- */
 /* ===== Nombres de pensadores → su ficha en «Ilustres» (25-09) =====
    Tras dibujar un cronograma (líneas de tiempo SVG, fichas por épocas o eje del curso) se buscan en su
-   texto los nombres de los pensadores con ficha y se convierten en enlaces (#ilustres/<id>).
+   texto los nombres de los pensadores con ficha y se convierten en enlaces (#biografias/<id>).
    Alias: los de tools/ilustres_autores.txt (CRONO_ILU_ALIAS, generado; regenerar si cambia esa lista)
    + el nombre de la ficha tal como está en esta web (en euskera, «Platon», «Tomas Akinokoa»…) y su forma
    corta. Un alias que valga para dos pensadores se descarta (mejor sin enlace que con uno equivocado). */
 const CRONO_ILU_ALIAS = {"homero":["Homero"],"hesiodo":["Hesíodo"],"tales":["Tales de Mileto","Tales"],"anaximandro":["Anaximandro"],"anaximenes":["Anaxímenes"],"pitagoras":["Pitágoras de Samos","Pitágoras"],"jenofanes":["Jenófanes de Colofón","Jenófanes"],"heraclito":["Heráclito de Éfeso","هيراقليطس"],"parmenides":["Parménides de Elea","بارمنيدس"],"anaxagoras":["Anaxágoras de Clazómenas","Anaxágoras"],"empedocles":["Empédocles de Agrigento","Empédocles"],"solon":["Solón"],"protagoras":["Protágoras de Abdera","بروتاغوراس"],"gorgias":["Gorgias de Leontinos","Gorgias"],"policleto":["Policleto"],"socrates":["سقراط"],"aspasia":["Aspasia de Mileto","Aspasia"],"democrito":["Demócrito de Abdera","Demócrito"],"hipias":["Hipias de Élide","Hipias"],"antistenes":["Antístenes"],"aristipo":["Aristipo de Cirene","Aristipo"],"platon":["أفلاطون"],"diogenes":["Diógenes de Sinope","Diógenes"],"aristoteles":["أرسطو"],"pirron":["Pirrón de Elis","Pirrón"],"epicuro":["أبيقور"],"zenon":["Zenón de Citio"],"filolao":["Filolao de Crotona","Filolao"],"arquitas":["Arquitas de Tarento","Arquitas"],"zenon_elea":["Zenón de Elea"],"meliso":["Meliso de Samos","Meliso"],"leucipo":["Leucipo"],"trasimaco":["Trasímaco de Calcedonia","Trasímaco"],"espeusipo":["Espeusipo"],"arcesilao":["Arcesilao de Pitane","Arcesilao"],"carneades":["Carnéades de Cirene","Carnéades"],"teofrasto":["Teofrasto de Ereso","Teofrasto"],"straton":["Estratón de Lámpsaco","Estratón"],"crates":["Crates de Tebas","Crates"],"timon":["Timón de Fliunte"],"cleantes":["Cleantes de Aso","Cleantes"],"crisipo":["Crisipo de Solos","Crisipo"],"seneca":["سينيكا"],"tertuliano":["ترتليان"],"plotino":["Plotino"],"hipatia":["Hipatia de Alejandría","Hipatia"],"agustin":["أوغسطين","القديس أوغسطين","S. Agustín","Agustín"],"anselmo":["أنسلم الكانتربري","Anselmo"],"abelardo":["Pedro Abelardo","Abelardo"],"hildegarda":["Hildegarda de Bingen","Hildegarda"],"averroes":["ابن رشد"],"tomas":["توما الأكويني","Santo Tomás","S. Tomás"],"ockham":["Guillermo de Ockham","أوكام"],"maquiavelo":["Nicolás Maquiavelo","ماكيافيلي"],"copernico":["Nicolás Copérnico","Copérnico"],"lutero":["Martín Lutero","Lutero"],"calvino":["Juan Calvino","Calvino"],"galileo":["Galileo Galilei","Galileo"],"kepler":["Johannes Kepler","Kepler"],"harvey":["William Harvey","Harvey"],"hobbes":["Thomas Hobbes","هوبز"],"descartes":["René Descartes","ديكارت"],"isabel":["Isabel de Bohemia"],"spinoza":["Baruch Spinoza","اسبينوزا"],"locke":["John Locke","جون لوك"],"malebranche":["Nicolas Malebranche","Malebranche"],"newton":["Isaac Newton","Newton"],"leibniz":["Gottfried Wilhelm Leibniz","لايبنتز"],"berkeley":["George Berkeley","Berkeley"],"montesquieu":["Montesquieu"],"voltaire":["Voltaire"],"hume":["David Hume","هيوم"],"lamettrie":["Julien Offray de La Mettrie","La Mettrie"],"rousseau":["Jean-Jacques Rousseau","Rousseau"],"diderot":["Denis Diderot","Diderot"],"dalembert":["Jean le Rond d'Alembert","D'Alembert","d'Alembert"],"baumgarten":["Alexander Baumgarten","Baumgarten"],"smith":["Adam Smith"],"kant":["Immanuel Kant","كانط"],"lamarck":["Jean-Baptiste Lamarck","Lamarck"],"bentham":["Jeremy Bentham","Bentham"],"gouges":["Olympe de Gouges","De Gouges"],"wollstonecraft":["Mary Wollstonecraft","Wollstonecraft"],"hegel":["Georg Wilhelm Friedrich Hegel","هيغل"],"comte":["Auguste Comte","Comte"],"feuerbach":["Ludwig Feuerbach","Feuerbach"],"mill":["John Stuart Mill","Stuart Mill"],"darwin":["Charles Darwin","داروين"],"boole":["George Boole","Boole"],"marx":["Karl Marx","ماركس"],"mendel":["Gregor Mendel","Mendel"],"wallace":["Alfred Russel Wallace","Wallace"],"kropotkin":["Piotr Kropotkin","Kropotkin"],"tylor":["Edward B. Tylor","Tylor"],"nietzsche":["Friedrich Nietzsche","Nietzsche"],"james":["William James"],"freud":["Sigmund Freud","Freud"],"frege":["Gottlob Frege","Frege"],"unamuno":["Miguel de Unamuno","Unamuno"],"whitehead":["Alfred North Whitehead","Whitehead"],"weber":["Max Weber","Weber"],"curie":["Marie Curie","Curie"],"russell":["Bertrand Russell","Russell"],"moore":["George Edward Moore","Moore"],"scheler":["Max Scheler","Scheler"],"schlick":["Moritz Schlick","Schlick"],"einstein":["Albert Einstein","Einstein"],"ortega":["José Ortega y Gasset","Ortega"],"sapir":["Edward Sapir","Sapir"],"duchamp":["Marcel Duchamp","Duchamp"],"wittgenstein":["Ludwig Wittgenstein","Wittgenstein"],"heidegger":["Martin Heidegger","هايدغر"],"carnap":["Rudolf Carnap","Carnap"],"horkheimer":["Max Horkheimer","Horkheimer"],"benjamin":["Walter Benjamin"],"whorf":["Benjamin Lee Whorf","Whorf"],"gadamer":["Hans-Georg Gadamer","Gadamer"],"ryle":["Gilbert Ryle","Ryle"],"popper":["Karl Popper","Popper"],"adorno":["Theodor W. Adorno","Adorno"],"zambrano":["María Zambrano","Zambrano"],"sartre":["Jean-Paul Sartre","Sartre"],"arendt":["حنا أرندت","Arendt"],"beauvoir":["Simone de Beauvoir","Beauvoir"],"turing":["Alan Turing","Turing"],"camus":["Albert Camus","Camus"],"shannon":["Claude Shannon","Shannon"],"franklin":["Rosalind Franklin"],"ricoeur":["Paul Ricoeur","Ricoeur"],"rawls":["John Rawls","Rawls"],"kuhn":["Thomas Kuhn","Kuhn"],"lyotard":["Jean-François Lyotard","Lyotard"],"bauman":["Zygmunt Bauman","Bauman"],"danto":["Arthur Danto","Danto"],"foucault":["Michel Foucault","Foucault"],"dickie":["George Dickie","Dickie"],"habermas":["Jürgen Habermas","Habermas"],"wilson":["Edward O. Wilson"],"txillardegi":["Txillardegi"],"baudrillard":["Jean Baudrillard","Baudrillard"],"debord":["Guy Debord","Debord"],"derrida":["Jacques Derrida","Derrida"],"vattimo":["Gianni Vattimo","Vattimo"],"azurmendi":["Joxe Azurmendi","Azurmendi"],"ingham":["Geoffrey Ingham","Ingham"],"nussbaum":["Martha Nussbaum","Nussbaum"],"butler":["Judith Butler","Butler"],"han":["Byung-Chul Han"],"herrero":["Yayo Herrero"],"chalmers":["David Chalmers","Chalmers"],"klein":["Naomi Klein"],"preciado":["Paul B. Preciado","Preciado"],"bostrom":["Nick Bostrom","Bostrom"]};
 let _cronoIluRe = null, _cronoIluMap = null;
 function cronoIluIndex(){
-  if (_cronoIluMap || typeof ILUSTRES === "undefined") return _cronoIluMap;
+  if (_cronoIluMap || typeof BIOGRAFIAS === "undefined") return _cronoIluMap;
   const cand = {};                                   /* alias → conjunto de ids */
   const add = (a, id) => { a = (a || "").trim(); if (a.length < 4) return; (cand[a] = cand[a] || new Set()).add(id); };
-  Object.keys(ILUSTRES).forEach(id => {
+  Object.keys(BIOGRAFIAS).forEach(id => {
     (CRONO_ILU_ALIAS[id] || []).forEach(a => add(a, id));
-    const n = ILUSTRES[id].name || ""; add(n, id);
+    const n = BIOGRAFIAS[id].name || ""; add(n, id);
     const w = n.split(/\s+/);
     if (w.length > 1){
       if (/\s(de|del|d'|von|van)\s/i.test(n) || /[kg]oa$/i.test(n)) add(w[0], id);   /* «Tales de Mileto», «Tales Miletokoa», «Xenofanes Kolofongoa» → Tales, Xenofanes */
@@ -442,7 +442,7 @@ function cronoIlu(root){   /* root: otra caja que enlazar (29-09: «Esquemas de 
       const id = _cronoIluMap.get(m[1]);
       const el = inSvg ? document.createElementNS(SVGNS, "tspan") : document.createElement("a");
       el.setAttribute("class", "crono-ilu"); el.setAttribute("data-ilu", id);
-      if (!inSvg){ el.setAttribute("href", "#ilustres/" + id); }
+      if (!inSvg){ el.setAttribute("href", "#biografias/" + id); }
       el.setAttribute("role", "link"); el.setAttribute("tabindex", "0");
       el.textContent = m[1]; frag.appendChild(el); last = m.index + m[1].length;
     }
@@ -451,7 +451,7 @@ function cronoIlu(root){   /* root: otra caja que enlazar (29-09: «Esquemas de 
   });
   box.querySelectorAll(".crono-ilu:not([data-wired])").forEach(el => {
     el.setAttribute("data-wired", "1");
-    const go = e => { e.preventDefault(); if (typeof show === "function") show("ilustres"); if (typeof loadIlustre === "function") loadIlustre(el.getAttribute("data-ilu")); };
+    const go = e => { e.preventDefault(); if (typeof show === "function") show("biografias"); if (typeof loadBiografia === "function") loadBiografia(el.getAttribute("data-ilu")); };
     el.addEventListener("click", go);
     el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") go(e); });
   });

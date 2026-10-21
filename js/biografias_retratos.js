@@ -1,7 +1,7 @@
 "use strict";
 /* ===== Retratos de «Ilustres» (dominio público / CC; atribución en «pie» y «page») =====
    Generado por tools/build_ilustres.js. No se traduce (no está en DATA_FILES). */
-const ILUSTRES_RETRATOS = {
+const BIOGRAFIAS_RETRATOS = {
  "homero": {
   "f": "media/retratos/ilustres/homero.jpg",
   "pie": "Homer bust, Farnese collection (Naples) · NikonZ7II · CC BY-SA 4.0",

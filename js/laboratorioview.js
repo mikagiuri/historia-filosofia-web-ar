@@ -9,7 +9,7 @@
    Textos en laboratorio.js (LAB, memoria de traducción); aquí solo motores, fórmulas y dibujo.
    Se monta desde logicaview.js (logRender → labMontar) en #logicabox; enlace profundo #logica/<mesa>. */
 
-const LB_MESAS = ["hablamos", "arbol", "mundo", "relaciones", "demos"];
+const LB_MESAS = ["hablamos", "arbol", "mundo", "relaciones", "demos", "kant", "spinoza"];   /* (21-10) + «Juicios de Kant»; + «Spinoza» (en desarrollo, laboratorio_spinozaview.js) */
 const lbT = (k, v) => String((LAB.t && LAB.t[k]) || k).replace(/\{(\w+)\}/g, (_, x) => (v && v[x] != null ? v[x] : ""));
 
 /* ---------- PL: lógica proposicional ---------- */
@@ -1012,8 +1012,75 @@ const LB_DEU = (() => {
   return { montar(b) { box = b; pintar(); } };
 })();
 
+/* ================= JUICIOS DE KANT (21-10-2026) =================
+   Tabla de los juicios (A70/B95) y de las categorías (A80/B106) en una cuadrícula de cuatro títulos; cada fila abre
+   su ejemplo, su escritura en la lógica actual y la mesa o pestaña del Rincón donde se trabaja. Debajo, un ejercicio:
+   ponerle a un juicio una forma de cada título. Textos en LAB.kant (laboratorio.js); fórmulas y enlaces, aquí. */
+const LB_KANT = (() => {
+  const FORM = [["∀x (Mx → Cx)", "∃x (Mx ∧ Gx)", "Ca"], ["Ma", "¬Ma", "¬Ma"], ["La", "p → q", "(p ∨ q ∨ r) ∧ ¬(p ∧ q) ∧ ¬(p ∧ r) ∧ ¬(q ∧ r)"], ["◇p", "p", "□p"]];
+  /* [pestaña del Rincón, rótulo]; los rótulos «mesa…» son del Laboratorio (lbT) y los demás de logicaview (logT) */
+  const IR = [[[["cuantificadores", "tabCuantificadores"], ["mundo", "mesaMundo"]], [["cuantificadores", "tabCuantificadores"], ["mundo", "mesaMundo"]], [["mundo", "mesaMundo"]]],
+    [[["mundo", "mesaMundo"]], [["mundo", "mesaMundo"]], [["conjuntos", "tabConjuntos"]]],
+    [[["silogismos", "tabSilog"], ["mundo", "mesaMundo"]], [["arbol", "mesaArbol"], ["inferencia", "tabInferencia"]], [["hablamos", "mesaHablamos"], ["arbol", "mesaArbol"]]],
+    [[], [], []]];
+  const st = { sel: [2, 1], ej: 0, marcas: [-1, -1, -1, -1], comprobado: false };
+  let box = null;
+  const K = () => LAB.kant;
+  const rot = (k) => (/^mesa/.test(k) ? lbT(k) : typeof logT === "function" ? logT(k) : k);
+  function ir(tab) { if (typeof LOG === "undefined" || typeof logRender !== "function") return; LOG.tab = tab; logRender(); const b = document.getElementById("logicabox"); if (b) b.scrollIntoView({ block: "start" }); }
+  function detalle() {
+    const [t, m] = st.sel, T = K().titulos[t], M = T.momentos[m];
+    const enlaces = IR[t][m];
+    return lbH("div", { class: "lb-aviso lb-neutro lb-kant-det", "aria-live": "polite" },
+      lbH("p", {}, lbH("b", {}, T.nom + " · " + M.juicio), " → ", lbH("b", {}, M.cat)),
+      lbH("p", {}, lbH("span", { class: "lb-et" }, lbT("kEjemplo") + ": "), "«" + M.ej + "»"),
+      lbH("p", {}, lbH("span", { class: "lb-et" }, lbT("kHoy") + ": "), lbMono(FORM[t][m]), lbH("span", { class: "lb-suave" }, "  (" + M.letras + ")")),
+      lbH("p", { class: "lb-nota" }, M.nota),
+      lbH("p", { class: "lb-nota" }, lbH("span", { class: "lb-et" }, lbT("kQueHace") + ": "), M.hace + "."),
+      t === 3 ? lbH("p", { class: "lb-nota" }, lbT("kModal")) : null,
+      t === 0 ? lbH("p", { class: "lb-nota" }, lbT("kParejaDudosa")) : null,
+      enlaces.length ? lbH("div", { class: "lb-fila" }, lbH("span", { class: "lb-et" }, lbT("kTrabajala")), ...enlaces.map(([tab, l]) => lbH("button", { type: "button", class: "chip", onclick: () => ir(tab) }, rot(l)))) : null);
+  }
+  function cuadricula() {
+    return lbH("div", { class: "lb-kant-grid" }, ...K().titulos.map((T, t) => lbH("section", { class: "lb-kant-card" },
+      lbH("h4", {}, T.nom, " ", lbH("span", { class: "lb-suave" }, T.preg)),
+      lbH("div", { class: "lb-kant-cab", "aria-hidden": "true" }, lbH("span", {}, lbT("kJuicio")), lbH("span", {}, lbT("kCategoria"))),
+      ...T.momentos.map((M, m) => lbH("button", { type: "button", class: "lb-kant-fila", "aria-pressed": String(st.sel[0] === t && st.sel[1] === m),
+        onclick: () => { st.sel = [t, m]; pintar(); const d = box.querySelector(".lb-kant-det"); if (d && window.innerWidth < 640) d.scrollIntoView({ block: "nearest" }); } }, lbH("span", {}, M.juicio), lbH("span", { class: "lb-kant-flecha", "aria-hidden": "true" }, "→"), lbH("span", {}, M.cat))))));
+  }
+  function ejercicio() {
+    const E = K().ejercicio, it = E[st.ej], T = K().titulos;
+    const filas = T.map((Ti, t) => {
+      if (it.r[t] < 0) return lbH("div", { class: "lb-fila" }, lbH("span", { class: "lb-et lb-ancho" }, Ti.nom), lbH("span", { class: "lb-suave" }, lbT("kNoSePide")));
+      const ok = st.comprobado ? st.marcas[t] === it.r[t] : null;
+      return lbH("div", { class: "lb-kant-ej" + (ok === false ? " lb-kant-mal" : "") },
+        lbH("div", { class: "lb-fila", role: "group", "aria-label": Ti.nom }, lbH("span", { class: "lb-et lb-ancho" }, Ti.nom),
+          ...Ti.momentos.map((M, m) => lbChip(M.juicio, st.marcas[t] === m, () => { st.marcas[t] = m; st.comprobado = false; pintar(); }))),
+        ok === null ? null : lbH("span", { class: ok ? "lb-x lb-okt" : "lb-x lb-mal" }, ok ? lbT("kBien") : lbT("kMal", { x: Ti.momentos[it.r[t]].juicio })));
+    });
+    const pedidos = it.r.map((r, t) => [r, t]).filter(([r]) => r >= 0), todas = st.comprobado && pedidos.every(([r, t]) => st.marcas[t] === r);
+    return lbH("div", { class: "lb-mesa" }, lbH("h3", {}, lbT("kEjTit")), lbH("p", { class: "lb-nota" }, lbT("kEjAyuda")),
+      lbH("p", { class: "lb-et" }, lbT("kFrase", { n: st.ej + 1, m: E.length })), lbH("p", { class: "lb-kant-frase" }, "«" + it.txt + "»"),
+      ...filas,
+      lbH("div", { class: "lb-fila" }, lbH("button", { type: "button", class: "btn", onclick: () => { st.comprobado = true; pintar(); } }, lbT("kComprobar")),
+        lbH("button", { type: "button", class: "btn ghost", onclick: () => { st.ej = (st.ej + 1) % E.length; st.marcas = [-1, -1, -1, -1]; st.comprobado = false; pintar(); } }, lbT("kSiguiente"))),
+      st.comprobado ? lbAviso(todas ? "ok" : "warn", (todas ? lbT("kTodas") : lbT("kRevisa")) + (it.nota ? " " + it.nota : "")) : null);
+  }
+  function pintar() {
+    if (!box || !box.isConnected) return;
+    const hayExplo = typeof THEORY !== "undefined" && THEORY["hf-kant-juicios"];
+    box.replaceChildren(
+      lbH("p", { class: "lg-intro", html: lbT("kLede") }),
+      lbH("div", { class: "lb-mesa" }, cuadricula(), detalle(),
+        lbH("p", { class: "lb-nota" }, lbT("kTercera", { t: K().terceras })),
+        hayExplo ? lbH("p", {}, lbH("a", { href: "#teoria/hf-kant-juicios" }, lbT("kExplo") + " →")) : null),
+      ejercicio());
+  }
+  return { montar(b) { box = b; pintar(); } };
+})();
+
 /* ---------- montaje (lo llama logRender en logicaview.js) ---------- */
 function labMontar(mesa) {
   const box = document.getElementById("lb-box"); if (!box) return;
-  ({ hablamos: LB_HBU, arbol: LB_ARU, mundo: LB_MUU, relaciones: LB_REU, demos: LB_DEU }[mesa] || LB_HBU).montar(box);
+  ({ hablamos: LB_HBU, arbol: LB_ARU, mundo: LB_MUU, relaciones: LB_REU, demos: LB_DEU, kant: LB_KANT, spinoza: LB_SPZ }[mesa] || LB_HBU).montar(box);
 }

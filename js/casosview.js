@@ -32,9 +32,9 @@ const CAS = {
   comunidades: { datos: () => typeof COMUNIDADES === "undefined" ? [] : COMUNIDADES, ep: "all", sel: null, cuenta: "comCuenta", cuenta1: "comCuenta1", criterio: "comCriterio" }
 };
 function casEsc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
-function casHayIlu(id){ return typeof ILUSTRES !== "undefined" && ILUSTRES[id] && typeof loadIlustre === "function"; }
+function casHayBio(id){ return typeof BIOGRAFIAS !== "undefined" && BIOGRAFIAS[id] && typeof loadBiografia === "function"; }
 function casHayTema(k){ return typeof THEORY !== "undefined" && THEORY[k]; }
-function casRetrato(id){ return typeof ILUSTRES_RETRATOS !== "undefined" && ILUSTRES_RETRATOS[id] ? ILUSTRES_RETRATOS[id] : null; }
+function casRetrato(id){ return typeof BIOGRAFIAS_RETRATOS !== "undefined" && BIOGRAFIAS_RETRATOS[id] ? BIOGRAFIAS_RETRATOS[id] : null; }
 function casLista(v){ const C = CAS[v]; return C.datos().filter(x => (C.ep === "all" || x.cas_epoca === C.ep) && (!C.ca || C.ca === "all" || x.cas_castigo === C.ca)); }
 function casFiltro(v){
   const C = CAS[v], f = document.getElementById(v + "filter"); if (!f) return;
@@ -65,10 +65,10 @@ function casRenderLista(v){
 }
 function casSec(k, txt){ return txt ? '<div class="cas-sec"><p class="cas-k">' + casT(k) + '</p><p>' + casEsc(txt) + '</p></div>' : ''; }
 function casGente(x){
-  const ids = (x.cas_ilu || []).filter(casHayIlu); if (!ids.length) return "";
+  const ids = (x.cas_ilu || []).filter(casHayBio); if (!ids.length) return "";
   const con = ids.filter(casRetrato), sin = ids.filter(id => !casRetrato(id));
-  const boton = id => '<button type="button" class="cas-per" data-ilu="' + id + '" title="' + casEsc(casT("verBio", { n: ILUSTRES[id].name })) + '"><img src="' + casEsc(casRetrato(id).f) + '" alt="" loading="lazy"><span>' + casEsc(ILUSTRES[id].name) + '</span></button>';
-  const enlace = id => '<button type="button" class="cas-per-txt" data-ilu="' + id + '">' + casEsc(ILUSTRES[id].name) + '</button>';
+  const boton = id => '<button type="button" class="cas-per" data-ilu="' + id + '" title="' + casEsc(casT("verBio", { n: BIOGRAFIAS[id].name })) + '"><img src="' + casEsc(casRetrato(id).f) + '" alt="" loading="lazy"><span>' + casEsc(BIOGRAFIAS[id].name) + '</span></button>';
+  const enlace = id => '<button type="button" class="cas-per-txt" data-ilu="' + id + '">' + casEsc(BIOGRAFIAS[id].name) + '</button>';
   return (con.length ? '<div class="cas-gente">' + con.map(boton).join("") + '</div>' : "") +
     (sin.length ? '<p class="cas-gente-txt">' + casT("biografias") + ' ' + sin.map(enlace).join(" · ") + '</p>' : "");
 }
@@ -132,7 +132,7 @@ document.addEventListener("click", e => {
   const ca = t.closest("[data-cas-ca]"); if (ca){ C.ca = ca.dataset.casCa; casFiltro(v); casRenderLista(v); return; }
   if (t.closest("[data-cas-back]")){ casVolver(v); return; }
   const c = t.closest("[data-cas]"); if (c){ casAbrir(v, c.dataset.cas); return; }
-  const il = t.closest("[data-ilu]"); if (il){ (window.show || show)("ilustres"); loadIlustre(il.dataset.ilu); return; }
+  const il = t.closest("[data-ilu]"); if (il){ (window.show || show)("biografias"); loadBiografia(il.dataset.ilu); return; }
   const th = t.closest("[data-th]"); if (th){ (window.show || show)("teoria"); if (typeof window.loadTheory === "function") window.loadTheory(th.dataset.th); }
 });
 

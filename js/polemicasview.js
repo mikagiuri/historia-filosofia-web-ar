@@ -34,7 +34,7 @@ let polEp = "all", polVia = "all", polAmb = "all", polSel = null, POL_ESTADO = {
 function polEsc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 function polBox(){ return document.getElementById("polemicasbox"); }
 function polIcono(v){ const x = POL_VIAS.find(p => p[0] === v); return x ? x[1] : ""; }
-function polHayIlu(id){ return typeof ILUSTRES !== "undefined" && ILUSTRES[id] && typeof loadIlustre === "function"; }
+function polHayIlu(id){ return typeof BIOGRAFIAS !== "undefined" && BIOGRAFIAS[id] && typeof loadBiografia === "function"; }
 function polHayTema(k){ return typeof THEORY !== "undefined" && THEORY[k]; }
 /* (12-10, rediseño Lote 1 · F2) una polémica solo se ve si esta web tiene alguno de sus temas:
    en 1.º quedan las 27 con algún «fil-…»; las 7 que solo tocan temas de HF ni se listan ni se enlazan.
@@ -66,8 +66,8 @@ function polLista(){
 /* nombre de un bando con enlace a Ilustres si hay ficha (y solo uno: si el bando son varios, se enlaza cada nombre aparte en la línea de debajo) */
 function polBando(p, lado){
   const ids = (p["ilu_" + lado] || []).filter(polHayIlu), nom = p[lado];
-  if (ids.length === 1) return '<button type="button" class="pol-ilu" data-ilu="' + ids[0] + '" title="' + polEsc(polT("verBio", { n: ILUSTRES[ids[0]].name })) + '">' + polEsc(nom) + '</button>';
-  return polEsc(nom) + (ids.length > 1 ? ' <span class="pol-ilus">(' + ids.map(id => '<button type="button" class="pol-ilu" data-ilu="' + id + '">' + polEsc(ILUSTRES[id].name) + '</button>').join(", ") + ')</span>' : "");
+  if (ids.length === 1) return '<button type="button" class="pol-ilu" data-ilu="' + ids[0] + '" title="' + polEsc(polT("verBio", { n: BIOGRAFIAS[ids[0]].name })) + '">' + polEsc(nom) + '</button>';
+  return polEsc(nom) + (ids.length > 1 ? ' <span class="pol-ilus">(' + ids.map(id => '<button type="button" class="pol-ilu" data-ilu="' + id + '">' + polEsc(BIOGRAFIAS[id].name) + '</button>').join(", ") + ')</span>' : "");
 }
 function polFiltro(){
   const f = document.getElementById("polemicasfilter"); if (!f) return;
@@ -179,7 +179,7 @@ document.addEventListener("click", e => {
   const vi = t.closest("[data-pol-via]"); if (vi){ polVia = vi.dataset.polVia; polFiltro(); polRenderLista(); return; }
   if (t.closest("[data-pol-back]")){ polVolver(); return; }
   const c = t.closest("[data-pol]"); if (c){ polAbrir(c.dataset.pol); return; }
-  const il = t.closest("[data-ilu]"); if (il){ (window.show || show)("ilustres"); loadIlustre(il.dataset.ilu); return; }
+  const il = t.closest("[data-ilu]"); if (il){ (window.show || show)("biografias"); loadBiografia(il.dataset.ilu); return; }
   const th = t.closest("[data-th]"); if (th){ (window.show || show)("teoria"); if (typeof window.loadTheory === "function") window.loadTheory(th.dataset.th); return; }
   if (!polSel) return;
   const st = POL_ESTADO[polSel] = POL_ESTADO[polSel] || {};

@@ -2876,6 +2876,26 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .lb-tc.lb-puesta::after{ content:""; position:absolute; inset:4px; border-radius:4px; background:var(--lb); opacity:.75 }
 .lb-tc.lb-elegida{ box-shadow:inset 0 0 0 3px var(--lb) }
 
+/* Juicios de Kant (21-10): cuadrícula de los cuatro títulos; cada fila, un botón juicio → categoría */
+.lb-kant-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.7rem }
+@media (max-width:640px){ .lb-kant-grid{ grid-template-columns:minmax(0,1fr) } }
+.lb-kant-card{ border:1px solid var(--line-soft); border-radius:10px; padding:.55rem .6rem; background:var(--surface-2); display:grid; gap:.25rem; min-width:0 }
+.lb-kant-card h4{ margin:0 0 .2rem; font:600 1rem var(--serif); color:var(--lb) }
+.lb-kant-card h4 .lb-suave{ font:400 .82rem var(--sans) }
+.lb-kant-cab, .lb-kant-fila{ display:grid; grid-template-columns:minmax(0,1fr) 1.2rem minmax(0,1.3fr); gap:.3rem; align-items:center }
+.lb-kant-cab{ grid-template-columns:minmax(0,1fr) minmax(0,1.3fr); font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); padding:0 .45rem }
+.lb-kant-cab span:last-child{ padding-inline-start:1.5rem }
+.lb-kant-fila{ text-align:start; font:inherit; font-size:.9rem; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:.4rem .45rem; min-width:0 }
+.lb-kant-fila:hover{ border-color:var(--lb) }
+.lb-kant-fila[aria-pressed="true"]{ border-color:var(--lb); background:var(--lb-suave); box-shadow:inset 3px 0 0 var(--lb) }
+.lb-kant-fila > span{ overflow-wrap:anywhere }
+.lb-kant-fila > span:first-child{ font-weight:600 }
+.lb-kant-flecha{ color:var(--muted); text-align:center }
+.lb-kant-det p{ margin:.25rem 0 }
+.lb-kant-frase{ font-family:var(--serif); font-size:1.15rem; margin:0 }
+.lb-kant-ej{ display:grid; gap:.2rem; padding:.2rem 0; border-radius:8px }
+.lb-kant-ej.lb-kant-mal{ background:var(--bad-bg); padding:.3rem .4rem }
+
 /* Los afectos de Spinoza */
 .af-modelo > summary{ cursor:pointer }
 #afectosbox > .fgroup{ margin:.2rem 0 1rem }
@@ -2979,6 +2999,49 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .af-ley-svg{ width:28px; height:8px; flex:none }
 .af-ley-linea{ display:inline-block; width:28px; height:2px; background:var(--lb); flex:none; transform:translateY(-3px) }
 @media (prefers-reduced-motion:reduce){ .lb-box *, #afectosbox *{ animation:none !important; transition:none !important } }
+
+/* Mesa «Spinoza» (21-10, en desarrollo; laboratorio_spinozaview.js): Ética I con premisas de Isabelle/HOL y contramodelos */
+.spz-sello{ display:inline-block; font:600 .72rem var(--sans); letter-spacing:.08em; text-transform:uppercase; padding:.1rem .45rem; border-radius:6px; border:1px solid currentColor; margin-inline-end:.4rem }
+.lb-ok .spz-sello{ color:var(--ok) } .lb-mal .spz-sello{ color:var(--bad) } .lb-warn .spz-sello{ color:var(--lb-warn) }
+.spz-h{ font-family:var(--serif); font-size:1.1rem; margin:.4rem 0 0; font-weight:600 }
+.spz-sub{ display:block; font-size:.78rem; color:var(--muted); letter-spacing:.05em; text-transform:uppercase; margin:.2rem 0 .3rem }
+.spz-defs{ list-style:none; margin:0; padding:0; display:grid; gap:.6rem }
+.spz-defs li{ display:grid; gap:.2rem; padding-bottom:.55rem; border-bottom:1px solid var(--line-soft) }
+.spz-defs li:last-child{ border-bottom:0; padding-bottom:0 }
+.spz-origen{ font:600 .82rem var(--mono); color:var(--lb) }
+.spz-texto{ font-family:var(--serif); line-height:1.5 }
+.spz-cita{ font-family:var(--serif); font-style:italic; margin:0; padding-inline-start:.8rem; border-inline-start:2px solid var(--lb-suave); line-height:1.5 }
+.spz-formal{ background:var(--surface-2); border-radius:10px; padding:.6rem .8rem; display:grid; gap:.2rem }
+.spz-lista{ list-style:none; padding:0; display:grid; gap:.25rem; font-size:.85rem }
+.spz-premisas{ display:grid; gap:.6rem; max-height:26rem; overflow-y:auto; padding-inline-end:.3rem }
+.spz-grupo{ border:1px solid var(--line-soft); border-radius:10px; padding:.4rem .6rem .5rem; margin:0; display:grid; gap:.35rem; min-width:0 }
+.spz-grupo legend{ font-size:.78rem; color:var(--muted); padding:0 .3rem }
+.spz-premisa{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:0 .5rem; align-items:start; font-size:.88rem; cursor:pointer }
+.spz-premisa input{ grid-row:span 2; margin-top:.2rem; accent-color:var(--lb) }
+.spz-nom{ font-size:.8rem; overflow-wrap:anywhere }
+.spz-que{ color:var(--muted); line-height:1.4 }
+.spz-isa .spz-nom{ color:var(--lb); font-weight:600 }
+.spz-usada{ font:500 .72rem var(--sans) }
+.spz-lienzo{ background:var(--surface-2); border-radius:10px; border:1px solid var(--line-soft) }
+.spz-svg{ width:100%; min-width:20rem; height:auto; display:block }
+.spz-nodo{ font:600 13px var(--sans); fill:var(--ink) }
+.spz-etq{ font:11px var(--sans); fill:var(--muted) }
+.spz-leyenda{ display:flex; flex-wrap:wrap; gap:.3rem 1rem; font-size:.8rem; color:var(--muted) }
+.spz-leyenda span{ display:inline-flex; gap:.35rem; align-items:center }
+.spz-falla{ font-size:.85rem }
+.spz-hechos{ display:grid; grid-template-columns:repeat(auto-fit, minmax(12rem, 1fr)); gap:.6rem; font-size:.85rem }
+.spz-hechos h4{ font-size:.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin:0 0 .2rem }
+.spz-hechos ul{ margin:0; padding-inline-start:1rem; display:grid; gap:.1rem }
+.spz-formal .lb-res, .spz-defs .lb-res, .spz-lista, .spz-falla, .spz-nom, .spz-lienzo{ direction:ltr; unicode-bidi:isolate }   /* fórmulas e identificadores, de izquierda a derecha también en árabe */
+#logica .lg-subfold > summary{ cursor:pointer; font-size:.9rem; color:var(--muted); padding:.2rem 0 .4rem; width:max-content; max-width:100% }   /* (21-10) subpestañas plegadas (más de seis) */
+#logica .lg-subfold[open] > summary{ color:var(--r-log, var(--accent)) }
+/* (21-10) Guía de la mesa «Spinoza» y su tabla de símbolos */
+.spz-guia h4{ font-family:var(--sans); font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:.9rem 0 .3rem }
+.spz-guia ol{ margin:.3rem 0; padding-inline-start:1.4rem; display:grid; gap:.35rem; font-size:.92rem; max-width:68ch }
+.spz-simbolos{ display:grid; grid-template-columns:repeat(auto-fill, minmax(12rem, 1fr)); gap:.3rem .9rem; margin:.2rem 0; font-size:.9rem }
+.spz-simbolos > div{ display:flex; gap:.6rem; align-items:baseline }
+.spz-simbolos dt{ min-width:2.2rem; direction:ltr; unicode-bidi:isolate }
+.spz-simbolos dd{ margin:0 }
 
 
 /* ==== css/rescritura.css ==== */
@@ -3378,108 +3441,108 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 /* ==== css/biografias.css ==== */
 /* ===== Ilustres: biografías de los pensadores de la teoría (biografiasview.js) =====
    Colores de época = los del eje cronológico del curso (eje_cronologico.js); en oscuro, tonos claros. */
-#ilustres, .ilu-strip{
+#ilustres, .bio-strip{
   --e-ant:#8F6600; --e-med:#8A4B84; --e-ren:#B83220; --e-mod:#0A76A0; --e-ilu:#5B4FC4; --e-con:#267A5B;
 }
 @media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) #ilustres, :root:not([data-theme="light"]) .ilu-strip{ --e-ant:#E3B23C; --e-med:#C48ABF; --e-ren:#F07A66; --e-mod:#5BC3EA; --e-ilu:#A9A2F2; --e-con:#6FCBA6; }
+  :root:not([data-theme="light"]) #ilustres, :root:not([data-theme="light"]) .bio-strip{ --e-ant:#E3B23C; --e-med:#C48ABF; --e-ren:#F07A66; --e-mod:#5BC3EA; --e-ilu:#A9A2F2; --e-con:#6FCBA6; }
 }
-:root[data-theme="dark"] #ilustres, :root[data-theme="dark"] .ilu-strip{ --e-ant:#E3B23C; --e-med:#C48ABF; --e-ren:#F07A66; --e-mod:#5BC3EA; --e-ilu:#A9A2F2; --e-con:#6FCBA6; }
-:is(#ilustres, .ilu-strip) [data-b="ant"]{ --e:var(--e-ant) } :is(#ilustres, .ilu-strip) [data-b="med"]{ --e:var(--e-med) }
-:is(#ilustres, .ilu-strip) [data-b="ren"]{ --e:var(--e-ren) } :is(#ilustres, .ilu-strip) [data-b="mod"]{ --e:var(--e-mod) }
-:is(#ilustres, .ilu-strip) [data-b="ilu"]{ --e:var(--e-ilu) }   /* (29-09) Ilustración */
-:is(#ilustres, .ilu-strip) [data-b="con"]{ --e:var(--e-con) }
+:root[data-theme="dark"] #ilustres, :root[data-theme="dark"] .bio-strip{ --e-ant:#E3B23C; --e-med:#C48ABF; --e-ren:#F07A66; --e-mod:#5BC3EA; --e-ilu:#A9A2F2; --e-con:#6FCBA6; }
+:is(#ilustres, .bio-strip) [data-b="ant"]{ --e:var(--e-ant) } :is(#ilustres, .bio-strip) [data-b="med"]{ --e:var(--e-med) }
+:is(#ilustres, .bio-strip) [data-b="ren"]{ --e:var(--e-ren) } :is(#ilustres, .bio-strip) [data-b="mod"]{ --e:var(--e-mod) }
+:is(#ilustres, .bio-strip) [data-b="ilu"]{ --e:var(--e-ilu) }   /* (29-09) Ilustración */
+:is(#ilustres, .bio-strip) [data-b="con"]{ --e:var(--e-con) }
 
-#ilustres .filterbar[hidden], #ilustres .ilu-count[hidden]{display:none}
-#ilustres .ilu-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--e);margin-inline-end:6px;vertical-align:1px}
-#ilustres .ilu-tools{display:flex;margin:4px 0 0}
-#ilustres .ilu-search{flex:1;min-width:0;max-width:520px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;font:inherit;background:var(--surface);color:var(--ink)}
-#ilustres .ilu-search:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
-#ilustres .ilu-count{color:var(--muted);font-size:13px;margin:12px 0 4px}
-#ilustres .ilu-empty{color:var(--muted);padding:24px 2px}
+#ilustres .filterbar[hidden], #ilustres .bio-count[hidden]{display:none}
+#ilustres .bio-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--e);margin-inline-end:6px;vertical-align:1px}
+#ilustres .bio-tools{display:flex;margin:4px 0 0}
+#ilustres .bio-search{flex:1;min-width:0;max-width:520px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;font:inherit;background:var(--surface);color:var(--ink)}
+#ilustres .bio-search:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+#ilustres .bio-count{color:var(--muted);font-size:13px;margin:12px 0 4px}
+#ilustres .bio-empty{color:var(--muted);padding:24px 2px}
 #ilustres mark{background:var(--accent);color:var(--on-accent);padding:0 2px;border-radius:3px}
 
 /* listado */
-#ilustres .ilu-era{font-size:1.15rem;margin:26px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--e);color:var(--ink)}
-#ilustres .ilu-letra{border-bottom-color:var(--line)}   /* (18-10) orden alfabético: la letra no es una época */
-#ilustres .ilu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
-#ilustres .ilu-card{display:flex;gap:12px;align-items:center;text-align:start;padding:10px 12px;border:1px solid var(--line);border-inline-start:3px solid var(--e);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow);font:inherit;color:var(--ink);transition:border-color .15s, transform .15s}
-#ilustres .ilu-card:hover{border-color:var(--e);transform:translateY(-1px)}
-#ilustres .ilu-av{flex:none;width:52px;height:52px;border-radius:50%;overflow:hidden;background:var(--surface-2);display:grid;place-items:center;border:1px solid var(--line-soft)}
-#ilustres .ilu-av .ilu-img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
-#ilustres .ilu-mono{font-family:var(--serif);font-weight:600;font-size:1.1rem;color:var(--e)}
-#ilustres .ilu-txt{display:flex;flex-direction:column;min-width:0;line-height:1.3}
-#ilustres .ilu-txt b{font-family:var(--serif);font-size:1.02rem;font-weight:600}
-#ilustres .ilu-dates{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
-#ilustres .ilu-role{font-size:.8rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#ilustres .bio-era{font-size:1.15rem;margin:26px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--e);color:var(--ink)}
+#ilustres .bio-letra{border-bottom-color:var(--line)}   /* (18-10) orden alfabético: la letra no es una época */
+#ilustres .bio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+#ilustres .bio-card{display:flex;gap:12px;align-items:center;text-align:start;padding:10px 12px;border:1px solid var(--line);border-inline-start:3px solid var(--e);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow);font:inherit;color:var(--ink);transition:border-color .15s, transform .15s}
+#ilustres .bio-card:hover{border-color:var(--e);transform:translateY(-1px)}
+#ilustres .bio-av{flex:none;width:52px;height:52px;border-radius:50%;overflow:hidden;background:var(--surface-2);display:grid;place-items:center;border:1px solid var(--line-soft)}
+#ilustres .bio-av .bio-img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+#ilustres .bio-mono{font-family:var(--serif);font-weight:600;font-size:1.1rem;color:var(--e)}
+#ilustres .bio-txt{display:flex;flex-direction:column;min-width:0;line-height:1.3}
+#ilustres .bio-txt b{font-family:var(--serif);font-size:1.02rem;font-weight:600}
+#ilustres .bio-dates{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+#ilustres .bio-role{font-size:.8rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* ficha */
-#ilustres .ilu-nav{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:18px 0 14px}
-#ilustres .ilu-pn{display:flex;gap:8px}
-#ilustres .ilu-ficha{border:1px solid var(--line);border-top:4px solid var(--e);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow);padding:22px 24px 24px;max-width:860px}
-#ilustres .ilu-head{display:flex;gap:22px;align-items:flex-start;margin-bottom:16px}
-#ilustres .ilu-portrait{flex:none;width:170px;margin:0}
-#ilustres .ilu-portrait .ilu-img{width:170px;height:210px;object-fit:cover;object-position:50% 20%;border-radius:10px;border:1px solid var(--line-soft);cursor:zoom-in;display:block}
-#ilustres .ilu-portrait .ilu-mono{display:grid;place-items:center;width:170px;height:170px;border-radius:50%;background:var(--surface-2);border:2px solid var(--e);font-size:3rem}
-#ilustres .ilu-portrait figcaption{font-size:11px;line-height:1.35;color:var(--muted);margin-top:6px;overflow-wrap:anywhere}
-#ilustres .ilu-id{min-width:0}
-#ilustres .ilu-era-tag{font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;font-weight:600;color:var(--e);margin-bottom:4px}
-#ilustres .ilu-id h2{font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:4px}
-#ilustres .ilu-life{color:var(--muted);font-size:.95rem}
-#ilustres .ilu-pers-tag{margin:.3rem 0 0;font-size:.92rem}   /* (18-10) enlace al caso de «Perseguidos por sus ideas» */
-#ilustres .ilu-idea{margin-top:14px;padding:10px 14px;border-inline-start:3px solid var(--e);background:var(--surface-2);border-radius:0 10px 10px 0;font-family:var(--serif);font-size:1.05rem;line-height:1.45}
-#ilustres .ilu-bio p{font-size:1rem;line-height:1.65;margin:0 0 .85em;max-width:70ch}
-#ilustres .ilu-sec{margin-top:18px}
-#ilustres .ilu-sec h3{font-size:1rem;margin-bottom:8px}
-#ilustres .ilu-obras{margin:0;padding-inline-start:1.2em;line-height:1.6}
-#ilustres .ilu-obras li{font-style:italic}
-#ilustres .ilu-temas{display:flex;flex-wrap:wrap;gap:8px}
-#ilustres .ilu-tema{display:flex;flex-direction:column;align-items:flex-start;text-align:start;gap:1px;padding:7px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);font:inherit;font-size:.88rem;color:var(--ink);max-width:100%}
-#ilustres .ilu-tema span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-#ilustres .ilu-tema:hover{border-color:var(--accent)}
+#ilustres .bio-nav{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:18px 0 14px}
+#ilustres .bio-pn{display:flex;gap:8px}
+#ilustres .bio-ficha{border:1px solid var(--line);border-top:4px solid var(--e);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow);padding:22px 24px 24px;max-width:860px}
+#ilustres .bio-head{display:flex;gap:22px;align-items:flex-start;margin-bottom:16px}
+#ilustres .bio-portrait{flex:none;width:170px;margin:0}
+#ilustres .bio-portrait .bio-img{width:170px;height:210px;object-fit:cover;object-position:50% 20%;border-radius:10px;border:1px solid var(--line-soft);cursor:zoom-in;display:block}
+#ilustres .bio-portrait .bio-mono{display:grid;place-items:center;width:170px;height:170px;border-radius:50%;background:var(--surface-2);border:2px solid var(--e);font-size:3rem}
+#ilustres .bio-portrait figcaption{font-size:11px;line-height:1.35;color:var(--muted);margin-top:6px;overflow-wrap:anywhere}
+#ilustres .bio-id{min-width:0}
+#ilustres .bio-era-tag{font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;font-weight:600;color:var(--e);margin-bottom:4px}
+#ilustres .bio-id h2{font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:4px}
+#ilustres .bio-life{color:var(--muted);font-size:.95rem}
+#ilustres .bio-pers-tag{margin:.3rem 0 0;font-size:.92rem}   /* (18-10) enlace al caso de «Perseguidos por sus ideas» */
+#ilustres .bio-idea{margin-top:14px;padding:10px 14px;border-inline-start:3px solid var(--e);background:var(--surface-2);border-radius:0 10px 10px 0;font-family:var(--serif);font-size:1.05rem;line-height:1.45}
+#ilustres .bio-bio p{font-size:1rem;line-height:1.65;margin:0 0 .85em;max-width:70ch}
+#ilustres .bio-sec{margin-top:18px}
+#ilustres .bio-sec h3{font-size:1rem;margin-bottom:8px}
+#ilustres .bio-obras{margin:0;padding-inline-start:1.2em;line-height:1.6}
+#ilustres .bio-obras li{font-style:italic}
+#ilustres .bio-temas{display:flex;flex-wrap:wrap;gap:8px}
+#ilustres .bio-tema{display:flex;flex-direction:column;align-items:flex-start;text-align:start;gap:1px;padding:7px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);font:inherit;font-size:.88rem;color:var(--ink);max-width:100%}
+#ilustres .bio-tema span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+#ilustres .bio-tema:hover{border-color:var(--accent)}
 
 /* tira «Ilustres de este tema» al final de cada unidad de la teoría */
-.ilu-strip{margin:28px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
-.ilu-strip h3{font-size:1rem;margin-bottom:10px}
-.ilu-strip-list{display:flex;flex-wrap:wrap;gap:8px}
-.ilu-strip-list button{display:flex;flex-direction:column;align-items:flex-start;gap:0;padding:6px 12px;border:1px solid var(--line);border-inline-start:3px solid var(--e);border-radius:10px;background:var(--surface);font:inherit;font-size:.9rem;font-weight:600;color:var(--ink);line-height:1.3}
-.ilu-strip-list button span{font-size:.75rem;font-weight:400;color:var(--muted)}
-.ilu-strip-list button:hover{border-color:var(--e)}
+.bio-strip{margin:28px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
+.bio-strip h3{font-size:1rem;margin-bottom:10px}
+.bio-strip-list{display:flex;flex-wrap:wrap;gap:8px}
+.bio-strip-list button{display:flex;flex-direction:column;align-items:flex-start;gap:0;padding:6px 12px;border:1px solid var(--line);border-inline-start:3px solid var(--e);border-radius:10px;background:var(--surface);font:inherit;font-size:.9rem;font-weight:600;color:var(--ink);line-height:1.3}
+.bio-strip-list button span{font-size:.75rem;font-weight:400;color:var(--muted)}
+.bio-strip-list button:hover{border-color:var(--e)}
 
 @media (max-width:600px){
-  #ilustres .ilu-grid{grid-template-columns:minmax(0,1fr)}
-  #ilustres .ilu-card{min-width:0}
-  #ilustres .ilu-ficha{padding:16px}
-  #ilustres .ilu-head{flex-direction:column;align-items:center;text-align:center}
-  #ilustres .ilu-idea{text-align:start}
-  #ilustres .ilu-portrait figcaption{text-align:center}
+  #ilustres .bio-grid{grid-template-columns:minmax(0,1fr)}
+  #ilustres .bio-card{min-width:0}
+  #ilustres .bio-ficha{padding:16px}
+  #ilustres .bio-head{flex-direction:column;align-items:center;text-align:center}
+  #ilustres .bio-idea{text-align:start}
+  #ilustres .bio-portrait figcaption{text-align:center}
 }
 
 @media print{
-  .ilu-strip{display:none !important}
-  #ilustres .ilu-nav, #ilustres .ilu-tools, #ilustres .ilu-sec-temas{display:none !important}
-  #ilustres .ilu-ficha{box-shadow:none;border-color:#999;max-width:none}
-  #ilustres .ilu-card{box-shadow:none;break-inside:avoid}
-  #ilustres .ilu-grid{grid-template-columns:repeat(3,1fr)}
+  .bio-strip{display:none !important}
+  #ilustres .bio-nav, #ilustres .bio-tools, #ilustres .bio-sec-temas{display:none !important}
+  #ilustres .bio-ficha{box-shadow:none;border-color:#999;max-width:none}
+  #ilustres .bio-card{box-shadow:none;break-inside:avoid}
+  #ilustres .bio-grid{grid-template-columns:repeat(3,1fr)}
 }
 
 /* anécdota (ficha) */
-#ilustres .ilu-anec{margin-top:18px;padding:12px 16px 12px;border:1px dashed var(--e);border-radius:12px;background:var(--surface-2)}
-#ilustres .ilu-anec h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
-#ilustres .ilu-anec h3::before{content:"✦";color:var(--e)}
-#ilustres .ilu-trad{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
-#ilustres .ilu-anec p{font-size:.97rem;line-height:1.6;margin:0 0 .5em;max-width:70ch}
-#ilustres .ilu-anec .ilu-fuente{font-size:.8rem;color:var(--muted);margin:0}
+#ilustres .bio-anec{margin-top:18px;padding:12px 16px 12px;border:1px dashed var(--e);border-radius:12px;background:var(--surface-2)}
+#ilustres .bio-anec h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
+#ilustres .bio-anec h3::before{content:"✦";color:var(--e)}
+#ilustres .bio-trad{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
+#ilustres .bio-anec p{font-size:.97rem;line-height:1.6;margin:0 0 .5em;max-width:70ch}
+#ilustres .bio-anec .bio-fuente{font-size:.8rem;color:var(--muted);margin:0}
 
 /* (29-09) Frases del pensador en su ficha: mismo estilo que la sección Frases (citasview.js) */
-#ilustres .ilu-cits{display:flex;flex-direction:column;gap:12px}
-#ilustres .ilu-cit{margin:0;background:var(--surface);border:1px solid var(--line);border-inline-start:4px solid var(--accent);border-radius:12px;padding:16px 18px 14px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
-#ilustres .ilu-cit-q{margin:0;font-family:var(--serif,Georgia,serif);font-style:italic;font-size:1.08rem;line-height:1.45;color:var(--ink)}
-#ilustres .ilu-cit-q::before{content:"\201C";color:var(--accent);font-size:1.3em;line-height:0;vertical-align:-.25em;margin-inline-end:.05em}
-#ilustres .ilu-cit-o{color:var(--muted);font-style:italic;font-size:.9rem}
-#ilustres .ilu-cit-dest{border-inline-start-width:6px;background:linear-gradient(0deg,var(--surface),var(--surface-2))}
-#ilustres .ilu-cit-dest .ilu-cit-q{font-size:1.3rem;font-style:normal;font-weight:500}
-#ilustres .ilu-cit-badge{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--on-accent,#fff);background:var(--accent);border-radius:999px;padding:3px 10px}
+#ilustres .bio-cits{display:flex;flex-direction:column;gap:12px}
+#ilustres .bio-cit{margin:0;background:var(--surface);border:1px solid var(--line);border-inline-start:4px solid var(--accent);border-radius:12px;padding:16px 18px 14px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+#ilustres .bio-cit-q{margin:0;font-family:var(--serif,Georgia,serif);font-style:italic;font-size:1.08rem;line-height:1.45;color:var(--ink)}
+#ilustres .bio-cit-q::before{content:"\201C";color:var(--accent);font-size:1.3em;line-height:0;vertical-align:-.25em;margin-inline-end:.05em}
+#ilustres .bio-cit-o{color:var(--muted);font-style:italic;font-size:.9rem}
+#ilustres .bio-cit-dest{border-inline-start-width:6px;background:linear-gradient(0deg,var(--surface),var(--surface-2))}
+#ilustres .bio-cit-dest .bio-cit-q{font-size:1.3rem;font-style:normal;font-weight:500}
+#ilustres .bio-cit-badge{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--on-accent,#fff);background:var(--accent);border-radius:999px;padding:3px 10px}
 /* (01-10) «Su vida en fechas» (iluVida en biografiasview.js): una línea vertical hacia abajo, con el color de la época */
 #ilustres .vida-linea{list-style:none;margin:6px 0 0;padding:0 0 0 22px;position:relative}
 #ilustres .vida-linea::before{content:"";position:absolute;inset-inline-start:6px;top:8px;bottom:8px;width:2px;background:var(--e);border-radius:1px}
@@ -3490,30 +3553,30 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #ilustres .vida-t{font-family:var(--serif);font-size:1rem;color:var(--ink)}
 
 /* (10-10) «Afines y opuestos» y «Conceptos del glosario» al final de la ficha: texto con enlaces, sin chips */
-#ilustres .ilu-rel-list, #ilustres .ilu-rel-tesis{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;line-height:1.5}
-#ilustres .ilu-rel h4{font-size:.9rem;margin:14px 0 6px;color:var(--muted)}
-#ilustres .ilu-rel-a, #ilustres .ilu-conc-a{background:none;border:0;padding:0;font:inherit;color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
-#ilustres .ilu-rel-a:hover, #ilustres .ilu-conc-a:hover{text-decoration-thickness:2px}
-#ilustres .ilu-rel-linea{font-size:.78rem;font-weight:600;color:var(--muted);margin-inline-end:4px}
-#ilustres .ilu-rel-linea::before{content:"";display:inline-block;width:.7em;height:.7em;border-radius:50%;background:var(--l);margin-inline-end:5px;vertical-align:-.05em}
-#ilustres .ilu-rel-op, #ilustres .ilu-rel-tipo{font-size:.78rem;font-weight:600;margin-inline-end:4px}
-#ilustres .ilu-rel-op, #ilustres .ilu-rel-no .ilu-rel-tipo{color:var(--bad)}
-#ilustres .ilu-rel-si .ilu-rel-tipo{color:var(--ok)}
-#ilustres .ilu-rel-por{display:block;font-size:.9rem;color:var(--muted);max-width:70ch}
-#ilustres .ilu-conc-txt{margin:0;line-height:1.7;max-width:70ch}
-#ilustres .ilu-conc-mas{display:inline}
-#ilustres .ilu-conc-mas summary{display:inline;cursor:pointer;color:var(--muted);font-size:.9rem}
-#ilustres .ilu-conc-mas[open] summary{display:none}
+#ilustres .bio-rel-list, #ilustres .bio-rel-tesis{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;line-height:1.5}
+#ilustres .bio-rel h4{font-size:.9rem;margin:14px 0 6px;color:var(--muted)}
+#ilustres .bio-rel-a, #ilustres .bio-conc-a{background:none;border:0;padding:0;font:inherit;color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+#ilustres .bio-rel-a:hover, #ilustres .bio-conc-a:hover{text-decoration-thickness:2px}
+#ilustres .bio-rel-linea{font-size:.78rem;font-weight:600;color:var(--muted);margin-inline-end:4px}
+#ilustres .bio-rel-linea::before{content:"";display:inline-block;width:.7em;height:.7em;border-radius:50%;background:var(--l);margin-inline-end:5px;vertical-align:-.05em}
+#ilustres .bio-rel-op, #ilustres .bio-rel-tipo{font-size:.78rem;font-weight:600;margin-inline-end:4px}
+#ilustres .bio-rel-op, #ilustres .bio-rel-no .bio-rel-tipo{color:var(--bad)}
+#ilustres .bio-rel-si .bio-rel-tipo{color:var(--ok)}
+#ilustres .bio-rel-por{display:block;font-size:.9rem;color:var(--muted);max-width:70ch}
+#ilustres .bio-conc-txt{margin:0;line-height:1.7;max-width:70ch}
+#ilustres .bio-conc-mas{display:inline}
+#ilustres .bio-conc-mas summary{display:inline;cursor:pointer;color:var(--muted);font-size:.9rem}
+#ilustres .bio-conc-mas[open] summary{display:none}
 
 /* (10-10) Fichas de época: el título de la época (listado) y la etiqueta de época (ficha) abren la ficha, sin botones nuevos */
-#ilustres .ilu-era-btn{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:start}
-#ilustres .ilu-era-btn span{color:var(--e);font-weight:400}
-#ilustres .ilu-era-btn:hover{color:var(--e)}
-#ilustres .ilu-era-link{background:none;border:0;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
-#ilustres .ilu-epo-head{margin-bottom:6px}
-#ilustres .ilu-epo-head h2{font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:4px}
-#ilustres .ilu-epoca .ilu-sec p, #ilustres .ilu-epoca .ilu-sec li{font-size:1rem;line-height:1.65;max-width:70ch}
-#ilustres .ilu-epoca .ilu-sec ul{padding-inline-start:1.2em;margin:0}
+#ilustres .bio-era-btn{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:start}
+#ilustres .bio-era-btn span{color:var(--e);font-weight:400}
+#ilustres .bio-era-btn:hover{color:var(--e)}
+#ilustres .bio-era-link{background:none;border:0;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+#ilustres .bio-epo-head{margin-bottom:6px}
+#ilustres .bio-epo-head h2{font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:4px}
+#ilustres .bio-epoca .bio-sec p, #ilustres .bio-epoca .bio-sec li{font-size:1rem;line-height:1.65;max-width:70ch}
+#ilustres .bio-epoca .bio-sec ul{padding-inline-start:1.2em;margin:0}
 
 /* (12-10) Vista «Épocas»: tarjetas de las fichas de época con su color y el dibujo de su cosmos */
 #epocas [data-b="ant"]{--e:var(--e-ant)} #epocas [data-b="med"]{--e:var(--e-med)} #epocas [data-b="ren"]{--e:var(--e-ren)}
@@ -3521,8 +3584,8 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #epocasbox{display:grid;gap:18px;max-width:860px}
 #epocas .epo-card{border:1px solid var(--line);border-top:4px solid var(--e);border-radius:var(--radius);background:var(--surface);padding:16px 20px}
 #epocas .epo-card h2{margin:0;font-size:1.25rem} #epocas .epo-card h2 a{color:inherit;text-decoration:none} #epocas .epo-card h2 a:hover{text-decoration:underline}
-#epocas .ilu-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--e);margin-inline-end:8px;vertical-align:2px}
-#epocas .ilu-life{margin:4px 0 0;color:var(--muted)} #epocas .figwrap{margin:12px 0} #epocas .epo-ir{margin:0}
+#epocas .bio-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--e);margin-inline-end:8px;vertical-align:2px}
+#epocas .bio-life{margin:4px 0 0;color:var(--muted)} #epocas .figwrap{margin:12px 0} #epocas .epo-ir{margin:0}
 [dir="rtl"] #epocas .epo-arr{display:inline-block;transform:scaleX(-1)}
 
 

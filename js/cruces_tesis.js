@@ -84,7 +84,7 @@ function cruHayRed(){ return typeof GEN_TESIS !== "undefined" && cruVista("genea
 /* bloque «En la historia de la filosofía»: las tesis y, entre ellas, sus enlaces de acuerdo o desacuerdo con su porqué */
 function cruTesisHtml(ids, titulo){
   if (!cruHayRed() || !ids || !ids.length) return "";
-  const I = typeof ILUSTRES !== "undefined" ? ILUSTRES : {}, ts = [...new Set(ids)].map(cruTesis).filter(Boolean);
+  const I = typeof BIOGRAFIAS !== "undefined" ? BIOGRAFIAS : {}, ts = [...new Set(ids)].map(cruTesis).filter(Boolean);
   if (!ts.length) return "";
   const enl = GEN_TESIS.enlaces.filter(e => { const [a, b] = e.k.split("|"); return ts.some(t => t.id === a) && ts.some(t => t.id === b); });
   return '<div class="cru-box"><b>' + cruT(titulo || "historia") + '</b><ul>' + ts.map(t =>

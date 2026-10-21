@@ -1,6 +1,6 @@
 "use strict";
 /* ===== Genealogías · «Red de tesis» y «¿Verde o roja?» (09-10) ===== depende de: genealogias_tesis.js (GEN_TESIS),
-   biografias.js (ILUSTRES; opcional loadIlustre). La llama genealogiasview.js según el modo.
+   biografias.js (BIOGRAFIAS; opcional loadBiografia). La llama genealogiasview.js según el modo.
    · Red de tesis: las tesis en orden cronológico, agrupadas por autor; a la derecha, arcos verdes (acuerdo) y
      rojos (desacuerdo) entre tesis. Al pulsar una tesis se apaga lo demás y se despliegan sus enlaces con su «por qué».
      En pantallas estrechas no hay arcos: solo el desplegable.
@@ -19,7 +19,7 @@ const GT_TXT = {
 };
 const gtT = (k, v) => String(GT_TXT[k] || k).replace(/\{(\w+)\}/g, (_, x) => (v && v[x] != null ? v[x] : ""));
 const GT = { sel: null, ver: new Set(["acuerdo", "desacuerdo"]), vr: null };
-function gtP(id){ return typeof ILUSTRES !== "undefined" && ILUSTRES[id] ? ILUSTRES[id] : null; }
+function gtP(id){ return typeof BIOGRAFIAS !== "undefined" && BIOGRAFIAS[id] ? BIOGRAFIAS[id] : null; }
 function gtTesis(id){ return GEN_TESIS.tesis.find(t => t.id === id); }
 function gtPar(e){ return e.k.split("|"); }
 function gtEsc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
@@ -109,7 +109,7 @@ document.addEventListener("click", e => {
   const box = document.getElementById("gentesisbox"); if (!box || !box.contains(e.target)) return;
   const b = e.target.closest("button"); if (!b) return;
   if (b.dataset.gtfil){ const k = b.dataset.gtfil; GT.ver.has(k) ? GT.ver.delete(k) : GT.ver.add(k); genTesisRender(gtModo()); return; }
-  if (b.dataset.gtilu && typeof loadIlustre === "function"){ (window.show || show)("ilustres"); loadIlustre(b.dataset.gtilu); return; }
+  if (b.dataset.gtilu && typeof loadBiografia === "function"){ (window.show || show)("biografias"); loadBiografia(b.dataset.gtilu); return; }
   if (b.dataset.gtgo){ GT.sel = b.dataset.gtgo; genTesisRender(gtModo()); const el = box.querySelector('.gt-tesis[data-gt="' + GT.sel + '"]'); if (el) el.scrollIntoView({ block: "center", behavior: "smooth" }); return; }
   if (b.classList.contains("gt-t")){ const id = b.closest(".gt-tesis").dataset.gt; GT.sel = GT.sel === id ? null : id; genTesisRender(gtModo()); const el = box.querySelector('.gt-tesis[data-gt="' + id + '"] > .gt-t'); if (el) el.focus(); return; }
   const v = b.dataset.gtvr;

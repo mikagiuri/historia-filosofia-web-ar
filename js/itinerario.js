@@ -87,7 +87,7 @@
      y comparten los recursos de los temas 6 y 7. */
   var SIGLA_TEMA = { AP: 6, AA: 7, M: 3.5 }, SIGLA_ORDEN = { AP: 5.1, AA: 5.2, M: 3.5 };  /* M: metafísica de Filosofía 1.º, entre T3 y T4 */
   function esAnexo(o){ return !!o && typeof o.temaN === "number"; }
-  var THEORY_EXTRA = { "fil-presocraticos": 1, "fil-comunidades-perseguidos": 1, "hf-comunidades-perseguidos": 1, "fil-helenismo": 5, "fil-discriminacion": 6, "hf-descartes-makro": 14, "hf-platon-superficie": 6, "hf-descartes-simulacion": 14, "hf-platon-agustin": 11, "hf-platon-prejuicio": 6, "hf-montaigne-ensayos": 13, "hf-renacimiento-magia": 13, "fil-spinoza-sistema": 1, "fil-grandes-preguntas": 1, "fil-marxismos": 6, "hf-marxismos": 21, "hf-spinoza-sistema": 15, "hf-kant-juicios": 19, "hf-kant-poetas": 19, "hf-marx-biblioteca": 21, "hf-spinoza-universal": 15, "hf-corazon-piedra": 21, "hf-aristoteles-arabe": 12, "hf-verdad-no-contradice": 12, "hf-islam-ideas": 12, "hf-toledo-traductores": 12, "hf-judios-andalus": 12, "hf-beefs": 2, "hf-euskal-herria": 1, "fil-montaigne-ensayos": 1 };
+  var THEORY_EXTRA = { "fil-presocraticos": 1, "fil-comunidades-perseguidos": 1, "hf-comunidades-perseguidos": 1, "fil-helenismo": 5, "fil-discriminacion": 6, "hf-descartes-makro": 14, "hf-platon-superficie": 6, "hf-descartes-simulacion": 14, "hf-platon-agustin": 11, "hf-platon-prejuicio": 6, "hf-montaigne-ensayos": 13, "hf-renacimiento-magia": 13, "fil-spinoza-sistema": 1, "fil-grandes-preguntas": 1, "fil-marxismos": 6, "hf-marxismos": 21, "hf-spinoza-sistema": 15, "hf-kant-juicios": 19, "hf-kant-poetas": 19, "hf-marx-biblioteca": 21, "hf-spinoza-universal": 15, "hf-corazon-piedra": 21, "hf-aristoteles-arabe": 12, "hf-verdad-no-contradice": 12, "hf-islam-ideas": 12, "hf-toledo-traductores": 12, "hf-judios-andalus": 12, "hf-beefs": 2, "hf-euskal-herria": 1, "hf-confucio": 1, "hf-schmitt": 16, "fil-montaigne-ensayos": 1 };
   /* (18-10) un anexo que no está en la lista va a su tema por su temaN (antes salía suelto al principio de la ficha) */
   function extraDe(key, o){ return THEORY_EXTRA[key] || (esAnexo(o) ? o.temaN : 0); }
   /* unidades del curso de 2.º ESO («Clases») → tema */
@@ -178,12 +178,12 @@
     return epo && EF[epo] ? epo : null;
   }
   function epocasDeTeoria(key, subject, tema){
-    var EF = G("EPOCAS_FICHAS"); if (!EF || !view("ilustres")) return [];
+    var EF = G("EPOCAS_FICHAS"); if (!EF || !view("biografias")) return [];
     var m = EPOCA_FIL[key]; if (m) return (m === "*" ? Object.keys(EF) : m).filter(function(k){ return EF[k]; });
     var e = epocaFicha(subject, tema); return e ? [e] : [];
   }
-  function nombreEpoca(k){ return typeof iluNombreFicha === "function" ? iluNombreFicha(k) : k; }
-  function epocaItem(k){ return { go: "ilustres", arg: "epoca-" + k, label: t("epocaDe", { e: nombreEpoca(k) }) }; }
+  function nombreEpoca(k){ return typeof bioNombreFicha === "function" ? bioNombreFicha(k) : k; }
+  function epocaItem(k){ return { go: "biografias", arg: "epoca-" + k, label: t("epocaDe", { e: nombreEpoca(k) }) }; }
   /* pasos (para la tira de una línea de Tarjetas, Cuestionarios y Clases) */
   function itinerario(subject, tema){
     var pre = function(arr, key){ return arr.map(function(r){ r.label = t(key) + " · " + r.label; return r; }); };
@@ -450,7 +450,7 @@
     /* (07-10) anexos de este tema: fuera de la secuencia, aquí y en el índice de temas */
     var anexosArr = !esAnexo(T[key]) ? Object.keys(T).filter(function(k){ return T[k].subject === subject && esAnexo(T[k]) && T[k].temaN === tema; })
       .map(function(k){ return { go: "teoria", arg: k, label: strip(T[k].title).replace(/^(Exploración|Esplorazioa|Exploration|Anexo|Eranskina|Annexe|Annex|Appendix)\s*-\s*/, "") }; }) : [];
-    var epocaArr = epocasDeTeoria(key, subject, tema).map(function(k){ return { go: "ilustres", arg: "epoca-" + k, label: nombreEpoca(k) }; });   // (11-10) con / con2 y Filosofía 1.º
+    var epocaArr = epocasDeTeoria(key, subject, tema).map(function(k){ return { go: "biografias", arg: "epoca-" + k, label: nombreEpoca(k) }; });   // (11-10) con / con2 y Filosofía 1.º
     /* (18-10) vídeos en euskera de Ikusgela del tema (videos_eu.js): enlaces externos; en euskera, con su título original */
     var V = G("VIDEOS_EU"), euWeb = (document.documentElement.lang || "").slice(0, 2) === "eu";
     var videosArr = Array.isArray(V) ? V.filter(function(v){ return (v.temas || []).indexOf(key) >= 0; }) : [];
@@ -510,12 +510,12 @@
   }
   function renderDeck(k){
     var host = document.getElementById("itin-tarjetas"), tm = itemTema("tarjetas", k); if (!host) return;
-    var pasos = tm && tm.tema != null ? itinerario(tm.subject, tm.tema) : [], ep = tm && view("ilustres") ? epocaFicha(tm.subject, tm.tema) : null;
+    var pasos = tm && tm.tema != null ? itinerario(tm.subject, tm.tema) : [], ep = tm && view("biografias") ? epocaFicha(tm.subject, tm.tema) : null;
     host.innerHTML = pasos.length > 1 || ep ? stripHtml(pasos, { go: "tarjetas", arg: k }, ep ? [epocaItem(ep)] : null) : "";
   }
   function renderQuiz(k){
     var host = document.getElementById("itin-quiz"), tm = itemTema("cuestionarios", k); if (!host) return;
-    var pasos = tm && tm.tema != null ? itinerario(tm.subject, tm.tema) : [], ep = tm && view("ilustres") ? epocaFicha(tm.subject, tm.tema) : null;
+    var pasos = tm && tm.tema != null ? itinerario(tm.subject, tm.tema) : [], ep = tm && view("biografias") ? epocaFicha(tm.subject, tm.tema) : null;
     host.innerHTML = pasos.length > 1 || ep ? stripHtml(pasos, { go: "cuestionarios", arg: k }, ep ? [epocaItem(ep)] : null) : "";
   }
   function renderClase(k){

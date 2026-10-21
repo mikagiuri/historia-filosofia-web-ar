@@ -1,5 +1,5 @@
 "use strict";
-/* ===== Vista Genealogías ===== depende de: genealogias.js (GENEALOGIAS), biografias.js (ILUSTRES; opcional loadIlustre)
+/* ===== Vista Genealogías ===== depende de: genealogias.js (GENEALOGIAS), biografias.js (BIOGRAFIAS; opcional loadBiografia)
    (29-09) Plano de «metro» diacrónico: cada tradición es una línea horizontal de color y sus
    estaciones son pensadores, colocados en el orden en que nacieron (sin escala de años: lo que
    importa es la sucesión). Un pensador en varias líneas es un transbordo (cápsula vertical). Las
@@ -28,7 +28,7 @@ function genModos(){
 }
 
 function genEsc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
-function genPerson(id){ return typeof ILUSTRES !== "undefined" && ILUSTRES[id] ? ILUSTRES[id] : null; }
+function genPerson(id){ return typeof BIOGRAFIAS !== "undefined" && BIOGRAFIAS[id] ? BIOGRAFIAS[id] : null; }
 
 /* (18-10) selector de plano: el general y los temáticos */
 function genPlanos(){
@@ -191,7 +191,7 @@ document.addEventListener("click", e => {
     return;
   }
   const st = e.target.closest && e.target.closest("#geneabox .gen-st[data-ilu]");
-  if (st && typeof loadIlustre === "function"){ (window.show || show)("ilustres"); loadIlustre(st.dataset.ilu); }
+  if (st && typeof loadBiografia === "function"){ (window.show || show)("biografias"); loadBiografia(st.dataset.ilu); }
 });
 document.addEventListener("keydown", e => {
   const st = e.target.closest && e.target.closest("#geneabox .gen-st[data-ilu]");

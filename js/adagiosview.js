@@ -77,7 +77,7 @@ function adgHayFrases(){ return typeof CITAS !== "undefined" && CITAS && CITAS.l
 
 function adgEsc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 function adgBox(){ return document.getElementById("adagiosbox"); }
-function adgHayIlu(id){ return typeof ILUSTRES !== "undefined" && ILUSTRES[id] && typeof loadIlustre === "function"; }
+function adgHayIlu(id){ return typeof BIOGRAFIAS !== "undefined" && BIOGRAFIAS[id] && typeof loadBiografia === "function"; }
 
 /* texto escapado con el primer nombre de cada pensador convertido en botón (hechos = los ya enlazados en la ficha) */
 function adgNombres(txt, hechos){
@@ -87,7 +87,7 @@ function adgNombres(txt, hechos){
     /* seguido de un número de pasaje es el título de una obra (Platón, «Protágoras 343b»), no la persona */
     const rx = new RegExp("(^|[^\\p{L}>])(" + n + ")(?![\\p{L}<])(?!\\s*\\d)", "u");
     if (!rx.test(s)) return;
-    s = s.replace(rx, (m, a, b) => a + '<button class="adg-ilu" data-ilu="' + id + '" title="' + adgEsc(adgT("verBio", { n: ILUSTRES[id].name })) + '">' + b + '</button>');
+    s = s.replace(rx, (m, a, b) => a + '<button class="adg-ilu" data-ilu="' + id + '" title="' + adgEsc(adgT("verBio", { n: BIOGRAFIAS[id].name })) + '">' + b + '</button>');
     hechos.add(id);
   });
   return s;
@@ -200,7 +200,7 @@ function adgRender(){
     const l = e.target.closest(".adg-lam");
     if (l){ const g = l.closest(".adg-card").querySelector(".adg-orig"); g.hidden = !g.hidden; l.setAttribute("aria-expanded", String(!g.hidden)); return; }
     const i = e.target.closest("[data-ilu]");
-    if (i){ (window.show || show)("ilustres"); loadIlustre(i.dataset.ilu); return; }
+    if (i){ (window.show || show)("biografias"); loadBiografia(i.dataset.ilu); return; }
     const t = e.target.closest("[data-th]");
     if (t){ (window.show || show)("teoria"); if (typeof window.loadTheory === "function") window.loadTheory(t.dataset.th); }
   });

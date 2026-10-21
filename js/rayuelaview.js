@@ -1,6 +1,6 @@
 "use strict";
 /* ===== «Rayuela filosófica» (HF 2.º) ===== depende de: rayuela_hf.js (RAYUELA_HF), store.js;
-   usa ILUSTRES y THEORY si existen (enlaces de los finales).
+   usa BIOGRAFIAS y THEORY si existen (enlaces de los finales).
    Un viaje por una red de metro de ideas: cada estación plantea una pregunta con tres respuestas
    y cada respuesta lleva a otra estación. Hay estaciones-vida (episodios de los filósofos) y de
    contradicción (en rojo: te enseñan las respuestas tuyas que chocan). Al final llegas a una terminal
@@ -281,8 +281,8 @@ function rayTerminar(){
   renderRayFinal(!antes.has(ray.fin));
 }
 function rayLinks(autores, temas){
-  const I = typeof ILUSTRES !== "undefined" ? ILUSTRES : {}, TH = typeof THEORY !== "undefined" ? THEORY : {};
-  const a = (autores || []).filter(x => I[x.id]).map(x => '<a href="#ilustres/' + x.id + '">' + rayEsc(I[x.id].name) + '</a>');
+  const I = typeof BIOGRAFIAS !== "undefined" ? BIOGRAFIAS : {}, TH = typeof THEORY !== "undefined" ? THEORY : {};
+  const a = (autores || []).filter(x => I[x.id]).map(x => '<a href="#biografias/' + x.id + '">' + rayEsc(I[x.id].name) + '</a>');
   const t = (temas || []).filter(k => TH[k]).map(k => '<a href="#teoria/' + k + '">' + rayEsc(TH[k].title) + '</a>');
   return (a.length ? '<p class="ray-links"><b>' + RAY_TXT.coinciden + ':</b> ' + a.join(" · ") + '</p>' : "") +
          (t.length ? '<p class="ray-links"><b>' + RAY_TXT.estudia + ':</b> ' + t.join(" · ") + '</p>' : "");
