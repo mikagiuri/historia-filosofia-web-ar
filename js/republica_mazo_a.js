@@ -100,6 +100,7 @@ const REP_MAZO_A = {
   },
   {
    "id": "a_fundar_colonia",
+   "img": "ac-fundar-colonia",
    "v": "a",
    "ap": 2,
    "name": "تأسيس مستعمرة",
@@ -120,6 +121,7 @@ const REP_MAZO_A = {
  "eventos": [
   {
    "id": "a_ev_dos_pueblos",
+   "img": "ev-dos-pueblos",
    "v": "a",
    "name": "الشعبان",
    "loc": "الجمهورية VIII، 551d",
@@ -147,6 +149,7 @@ const REP_MAZO_A = {
   },
   {
    "id": "a_ev_libertad_extrema",
+   "img": "ev-libertad-extrema",
    "v": "a",
    "name": "الحرية التي تنقلب عبودية",
    "loc": "الجمهورية VIII، 563e-564a",
@@ -170,6 +173,7 @@ const REP_MAZO_A = {
   },
   {
    "id": "a_ev_escolta_tirano",
+   "img": "ev-escolta-tirano",
    "v": "a",
    "name": "الطاغية يطلب حرسًا",
    "loc": "الجمهورية VIII، 565d-566d",

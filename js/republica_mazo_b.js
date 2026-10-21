@@ -3,6 +3,7 @@ const REP_MAZO_B = {
  "acciones": [
   {
    "id": "oficio",
+   "img": "ac-oficio",
    "v": "b",
    "fase": 0,
    "ap": 1,
@@ -23,6 +24,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_mercado",
+   "img": "ac-mercado",
    "v": "b",
    "fase": 0,
    "ap": 1,
@@ -37,6 +39,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_labranza",
+   "img": "ac-labranza",
    "v": "b",
    "fase": 0,
    "ap": 1,
@@ -57,6 +60,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_frugalidad",
+   "img": "ac-frugalidad",
    "v": "b",
    "fase": 0,
    "ap": 1,
@@ -78,6 +82,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "musica",
+   "img": "ac-musica",
    "v": "b",
    "fase": 1,
    "ap": 1,
@@ -114,6 +119,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_equilibrio_guardian",
+   "img": "ac-equilibrio-guardian",
    "v": "b",
    "fase": 1,
    "ap": 2,
@@ -134,6 +140,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "pruebas",
+   "img": "ac-pruebas",
    "v": "b",
    "fase": 1,
    "ap": 2,
@@ -159,6 +166,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "mito",
+   "img": "ac-mito",
    "v": "b",
    "fase": 1,
    "ap": 1,
@@ -179,6 +187,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_hijo_bronce",
+   "img": "ac-hijo-bronce",
    "v": "b",
    "fase": 1,
    "ap": 1,
@@ -204,6 +213,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "comun",
+   "img": "ac-comun",
    "v": "b",
    "fase": 1,
    "ap": 2,
@@ -219,6 +229,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "rey",
+   "img": "ac-rey",
    "v": "b",
    "fase": 2,
    "ap": 3,
@@ -234,6 +245,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "bajar",
+   "img": "ac-bajar",
    "v": "b",
    "fase": 2,
    "ap": 2,
@@ -258,6 +270,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_consejo",
+   "img": "ac-consejo-delibera",
    "v": "b",
    "fase": 2,
    "ap": 1,
@@ -273,6 +286,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_unidad",
+   "img": "ac-unidad",
    "v": "b",
    "fase": 2,
    "ap": 2,
@@ -299,6 +313,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_tamano",
+   "img": "ac-tamano",
    "v": "b",
    "fase": 2,
    "ap": 1,
@@ -318,6 +333,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_cada_cual_lo_suyo",
+   "img": "ac-cada-cual",
    "v": "b",
    "fase": 3,
    "ap": 2,
@@ -338,6 +354,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_armonia_alma",
+   "img": "ac-armonia-alma",
    "v": "b",
    "fase": 3,
    "ap": 2,
@@ -362,6 +379,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_salud_alma",
+   "img": "ac-salud-alma",
    "v": "b",
    "fase": 3,
    "ap": 1,
@@ -382,6 +400,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_reparto_virtud",
+   "img": "ac-reparto-virtud",
    "v": "b",
    "fase": 3,
    "ap": 1,
@@ -401,6 +420,7 @@ const REP_MAZO_B = {
  "eventos": [
   {
    "id": "b_ev_entrometimiento",
+   "img": "ev-entrometimiento",
    "v": "b",
    "name": "الإسكافي يريد أن يحكم",
    "loc": "الجمهورية IV، 434a-c",
@@ -423,6 +443,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_ev_hinchada",
+   "img": "ev-hinchada",
    "v": "b",
    "name": "المدينة المنتفخة",
    "loc": "الجمهورية II، 372e-373e",
@@ -471,6 +492,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_ev_faccion",
+   "img": "ev-faccion",
    "v": "b",
    "name": "فصيل في الحكم (στάσις, *stásis*)",
    "loc": "الجمهورية III، 417a-b",
@@ -500,6 +522,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_ev_sofistas",
+   "img": "ev-halaga-fiera",
    "v": "b",
    "name": "المعلّم الذي يتملّق الوحش",
    "loc": "الجمهورية VI، 493a-c",
@@ -601,6 +624,7 @@ const REP_MAZO_B = {
   },
   {
    "id": "b_ev_tres_olas",
+   "img": "ev-tres-olas",
    "v": "b",
    "name": "الأمواج الثلاث",
    "loc": "الجمهورية V، 457b-c؛ 472b-473c",
