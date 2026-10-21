@@ -306,7 +306,7 @@
   }
   /* rótulo de una sección tal como lo pone el menú (ya traducido); si no está en el menú, el de TXT */
   function navLabel(v, k){ var b = document.querySelector('#tabs [data-view="' + v + '"]'); return b ? strip(b.textContent) : t(k || v); }
-  function logicaDe(subject, tema){ return subject === "fil" && tema === 4 && view("logica") ? [{ go: "logica", arg: "", label: navLabel("logica", "logica") }] : []; }
+  function logicaDe(subject, tema){ return subject === "fil" && tema === 4 && view("logica") ? [{ go: "logica", arg: "portada", label: navLabel("logica", "logica") }] : []; }
   /* polémicas, comunidades y perseguidos declaran sus temas (claves de THEORY) en «temas» */
   function porTemas(name, go_, teoriaKeys, label){
     var A = G(name); if (!Array.isArray(A) || !view(go_) || !teoriaKeys.length) return [];

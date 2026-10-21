@@ -95,6 +95,14 @@ const LOG_TXT = {
   coEuTrampa: "انتبهوا: في حالة «{c}» تتطابقان فعلًا. ومن لم يرسم إلا هذه الحالة لظنّ أنها قانون.",
   coEuTres: "التحقق بمخطط أويلر يكون بمجموعتين (A وB): مع ثلاث مجموعات تكثر الحالات الممكنة. وللمجموعات الثلاث، مخطط فن هو الذي يبرهن.",
   coDifieren: "المناطق التي تختلفان فيها", coUnivVacio: "U = المجموعة الشاملة: كل ما نتحدث عنه. يدلّ اللون على المنطقة الناتجة.",
+  /* (20-10) portada de la sección: presenta las familias de herramientas (reutiliza los rótulos de las pestañas) */
+  pIntro: "يجمع ركن المنطق أدوات للاستدلال: جرّبها بصيغك وجُملك. اختر من أين تبدأ.",
+  pPortada: "الواجهة", pEntrar: "افتح",
+  pDescClasica: "القياسات ومربع التقابل وقوانين المجموعات، مع مخطّطات أويلر وفِن.",
+  pDescModerna: "جداول الصدق والصورنة وقواعد الاستدلال والقوانين المنطقية والمكمِّمات والبوابات المنطقية.",
+  pDescFalacias: "الحجج التي تبدو صحيحة وليست كذلك: تعلَّم كيف تتعرّف عليها وتحقّق بنفسك.",
+  pDescParad: "مفارقات وتمارين وحجج لمؤلفين كلاسيكيين، محلَّلة بالأدوات نفسها.",
+  pDescLab: "خمس طاولات للتمرّن: الحديث بمنطق، وأشجار الصدق، وعوالم الأشكال، والعلاقات، والبراهين الموجَّهة.",
   /* (09-10) guía larga y sencilla de cada pestaña, plegada bajo la introducción */
   guiaTit: "دليل: كيف يُستعمل ولماذا",
   guiaTablas: "<h3>لماذا نستعملها؟</h3><p>حين نفكر ونستدل، نربط الجمل بكلمات مثل «لا» و«و» و«أو» و«إذا…، فإنّ». يفيدنا جدول الصدق في أن نرى، دون أن نخطئ، متى تكون الجملة المركبة صادقة ومتى تكون كاذبة. ويفيدنا أيضًا في التأكد من صحة الاستدلال: أي هل <em>يجب</em> أن تكون النتيجة صادقة كلما كانت المقدمات صادقة.</p><h3>قبل أن نبدأ: نعوّض الجمل بحروف</h3><p>نعوّض كل جملة بسيطة بحرف. مثلًا: «تمطر» = <em>p</em> و«الأرض مبتلّة» = <em>q</em>. وتسمى الكلمات التي تربط الجمل أدوات الربط:</p><ul><li><strong>¬</strong> «لا»: ¬p = «لا تمطر».</li><li><strong>∧</strong> «و»: p ∧ q = «تمطر والأرض مبتلّة». لا تكون صادقة إلا إذا صدق الجزآن معًا.</li><li><strong>∨</strong> «أو»: p ∨ q. تكون صادقة إذا صدق أحد الجزأين على الأقل.</li><li><strong>→</strong> «إذا…، فإنّ»: p → q = «إذا أمطرت، فالأرض مبتلّة». لا تكون كاذبة إلا في حالة واحدة: حين تمطر والأرض ليست مبتلّة.</li><li><strong>↔</strong> «إذا وفقط إذا»: تكون صادقة حين يكون للجزأين القيمة نفسها (كلاهما ص أو كلاهما خ).</li></ul><h3>خطوة بخطوة</h3><ol><li>انقروا على أحد الأمثلة أو اكتبوا صيغتكم في خانة «الصيغة». الرموز غير الموجودة في لوحة المفاتيح لها أزرار تحت الخانة.</li><li>استعملوا الأقواس للتجميع، كما في الرياضيات: (p ∨ q) ∧ r ليست مثل p ∨ (q ∧ r).</li><li>يُرسم الجدول تلقائيًا أثناء الكتابة. كل سطر هو احتمال، أي تركيبة من ص وخ للحروف: مع حرفين يكون هناك 4 أسطر، ومع ثلاثة أحرف 8 أسطر.</li><li>انظروا إلى العمود الأخير والرسالة التي تحته. قد تكون الصيغة <strong>تحصيل حاصل</strong> (صادقة دائمًا) أو <strong>تناقضًا</strong> (كاذبة دائمًا) أو <strong>ممكنة</strong> (تتوقف على حال العالم).</li><li>في الأسفل، في «هل هذه الحجة صحيحة؟»، اكتبوا المقدمات يفصل بينها فاصلة منقوطة، ثم النتيجة، وانقروا على «تحقّق». إذا وُجد سطر تكون فيه كل المقدمات صادقة والنتيجة كاذبة، فسيظهر بالأحمر. هذا هو <strong>المثال المضاد</strong>: الحجة غير صحيحة.</li></ol><h3>تجربة للبداية</h3><p>في أمثلة الحجة، انقروا على «إثبات التالي»: «إذا أمطرت، فالأرض مبتلّة؛ الأرض مبتلّة؛ إذن تمطر». يبدو هذا معقولًا، لكن الجدول يجد المثال المضاد: قد تكون الأرض مبتلّة لأن أحدًا سقاها. قارنوه بـ«Modus ponens» الذي هو صحيح فعلًا.</p><p class=\"lg-nota\">انتبهوا: كون الحجة صحيحة لا يعني أن نتيجتها صادقة. يعني أنه، <em>إذا</em> كانت المقدمات صادقة، فالنتيجة صادقة أيضًا.</p>",
@@ -106,7 +114,7 @@ const LOG_TXT = {
 };
 const logT = (k, v) => String(LOG_TXT[k] || k).replace(/\{(\w+)\}/g, (_, x) => (v && v[x] != null ? v[x] : ""));
 const logEsc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const LOG = { parGrupo: "all", tab: "tablas", formula: "(p → q) ∧ p → q", prem: "p → q; p", concl: "q",
+const LOG = { parGrupo: "all", tab: "portada", formula: "(p → q) ∧ p → q", prem: "p → q; p", concl: "q",
   sil: { S: "", P: "", M: "", may: "A", men: "A", con: "A", fig: 1 }, cu: { tipo: "A", val: true, trad: true, ej: 1 }, co: { izq: "(A ∪ B)ᶜ", der: "Aᶜ ∩ Bᶜ" }, gate: "AND", gA: 1, gB: 0, circ: {} };
 const logGuia = k => '<details class="lg-guia"><summary>' + logT("guiaTit") + "</summary>" + logT(k) + "</details>";
 const logBox = () => document.getElementById("logicabox");
@@ -662,8 +670,27 @@ const LOG_SUB_SIL = ["silogismos", "cuadrado", "conjuntos"];
 const LOG_SUB_MOD = ["tablas", "formalizar", "inferencia", "leyes", "cuantificadores", "puertas"];   /* (18-10) + «Leyes lógicas» */
 const LOG_INTRO = { tablas: "introTablas", silogismos: "introSilog", cuadrado: "introCuadrado", conjuntos: "introConjuntos", puertas: "introPuertas", ejercicios: "introEjerc", clasicos: "introClasicos", formalizar: "introFormalizar", inferencia: "introInferencia", leyes: "introLeyes", cuantificadores: "introCuantificadores", falacias: "introFalacias" };
 const LOG_GUIA = { tablas: "guiaTablas", silogismos: "guiaSilog", puertas: "guiaPuertas", ejercicios: "guiaEjerc", clasicos: "guiaClasicos" };
+/* (20-10) portada de la sección: una tarjeta por familia de herramientas, con enlaces a cada una.
+   Los rótulos se reutilizan de las pestañas (logT/lbT); solo las descripciones son texto nuevo. */
+function logRenderPortada(){
+  const hayLab = typeof labMontar === "function" && typeof LAB !== "undefined";
+  const hayMod = typeof logRenderFormalizar === "function";
+  const hayFal = typeof logRenderFalacias === "function";
+  const rot = l => (hayLab && /^(tabLab|mesa)/.test(l) ? lbT(l) : logT(l));
+  const chips = arr => '<div class="lg-pchips">' + arr.map(([k, l]) => '<button type="button" class="chip" data-lgtab="' + k + '">' + rot(l) + "</button>").join("") + "</div>";
+  const card = (tit, desc, arr) => '<section class="lg-pcard"><h2>' + rot(tit) + "</h2><p>" + logT(desc) + "</p>" + chips(arr) + "</section>";
+  const mod = [["tablas", "tabTablas"]].concat(hayMod ? [["formalizar", "tabFormalizar"], ["inferencia", "tabInferencia"], ["leyes", "tabLeyes"], ["cuantificadores", "tabCuantificadores"]] : []).concat([["puertas", "tabPuertas"]]);
+  let html = '<p class="lg-intro">' + logT("pIntro") + '</p><div class="lg-portada">';
+  html += card("tabClasica", "pDescClasica", [["silogismos", "tabSilog"], ["cuadrado", "tabCuadrado"], ["conjuntos", "tabConjuntos"]]);
+  html += card("tabModerna", "pDescModerna", mod);
+  if (hayFal) html += card("tabFalacias", "pDescFalacias", [["falacias", "pEntrar"]]);
+  html += card("tabParad", "pDescParad", [["paradojas", "tabParad"], ["ejercicios", "tabEjerc"], ["clasicos", "tabClasicos"]]);
+  if (hayLab) html += card("tabLab", "pDescLab", [["hablamos", "mesaHablamos"], ["arbol", "mesaArbol"], ["mundo", "mesaMundo"], ["relaciones", "mesaRelaciones"], ["demos", "mesaDemos"]]);
+  return html + "</div>";
+}
 function logRender(){
   const box = logBox(); if (!box) return;
+  if (LOG.tab === "portada"){ box.innerHTML = logRenderPortada(); return; }   /* (20-10) estado inicial de la sección */
   /* (12-10) arriba: «Lógica clásica» y «Lógica moderna», cada una con sus subpestañas (no más de 6 pestañas arriba) */
   /* (20-10) + «Laboratorio» (laboratorioview.js: cinco mesas); para no pasar de seis arriba, Paradojas · Ejercicios ·
      Argumentos clásicos van juntas como subpestañas de «Paradojas» (las tres ya eran la misma vista: logRenderParadojas) */
@@ -679,7 +706,7 @@ function logRender(){
   const cuerpo = esLab ? '<div id="lb-box" class="lb-box"></div>' : LOG.tab === "silogismos" ? logRenderSil() : LOG.tab === "cuadrado" ? logRenderCuadrado() + (typeof logmConversion === "function" ? logmConversion() : "") : LOG.tab === "conjuntos" ? logRenderConjuntos() : LOG.tab === "puertas" ? logRenderPuertas()
     : LOG.tab === "formalizar" && typeof logRenderFormalizar === "function" ? logRenderFormalizar() : LOG.tab === "inferencia" && typeof logRenderInferencia === "function" ? logRenderInferencia() : LOG.tab === "leyes" && typeof logRenderLeyes === "function" ? logRenderLeyes() : LOG.tab === "cuantificadores" && typeof logRenderCuantificadores === "function" ? logRenderCuantificadores() : LOG.tab === "falacias" && typeof logRenderFalacias === "function" ? logRenderFalacias()
     : LOG_PAR_VISTAS.includes(LOG.tab) ? logRenderParadojas(LOG.tab) : logRenderTablas();
-  box.innerHTML = '<div class="fgroup lg-tabs" role="tablist">' + tabs.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (grupo === k) + '">' + rotulo(l) + "</button>").join("") + "</div>" +
+  box.innerHTML = '<div class="fgroup lg-tabs" role="tablist"><button type="button" class="fbtn lg-home" data-lgtab="portada" title="' + logT("pPortada") + '">‹ ' + logT("pPortada") + '</button>' + tabs.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (grupo === k) + '">' + rotulo(l) + "</button>").join("") + "</div>" +
     (sub ? '<div class="fgroup lg-subtabs">' + sub.map(([k, l]) => '<button type="button" class="fbtn" data-lgtab="' + k + '" aria-pressed="' + (LOG.tab === k) + '">' + rotulo(l) + "</button>").join("") + "</div>" : "") +
     /* (08-10) una introducción breve en cada pestaña, por si se llega a ella sin contexto (Paradojas ya tiene la suya) */
     (LOG_INTRO[LOG.tab] ? '<p class="lg-intro">' + logT(LOG_INTRO[LOG.tab]) + "</p>" + (LOG_GUIA[LOG.tab] ? logGuia(LOG_GUIA[LOG.tab]) : "") : "") +
@@ -740,7 +767,8 @@ function loadLogica(arg){
   const m = /^(?:paradojas|ejercicios|clasicos)\/([\w-]+)$/.exec(arg || ""), ficha = m && typeof PARADOJAS !== "undefined" ? PARADOJAS.find(p => p.id === m[1]) : null;
   const grupo = ficha && typeof PARADOJAS_GRUPOS !== "undefined" ? PARADOJAS_GRUPOS.find(g => g.id === ficha.grupo) : null;
   if (ficha){ LOG.tab = (grupo && grupo.view) || "paradojas"; LOG.parGrupo = ficha.grupo; }
-  else if (arg && ["tablas", "silogismos", "cuadrado", "conjuntos", "puertas", "formalizar", "inferencia", "cuantificadores", "falacias", ...LOG_PAR_VISTAS, ...(typeof LB_MESAS !== "undefined" ? LB_MESAS : [])].includes(arg)){ LOG.tab = arg; LOG.parGrupo = "all"; }   /* (20-10) #logica/hablamos|arbol|mundo|relaciones|demos */
+  else if (!arg || arg === "portada"){ LOG.tab = "portada"; LOG.parGrupo = "all"; }   /* (20-10) #logica → portada de la sección */
+  else if (arg && ["tablas", "silogismos", "cuadrado", "conjuntos", "puertas", "formalizar", "inferencia", "leyes", "cuantificadores", "falacias", ...LOG_PAR_VISTAS, ...(typeof LB_MESAS !== "undefined" ? LB_MESAS : [])].includes(arg)){ LOG.tab = arg; LOG.parGrupo = "all"; }   /* (20-10) #logica/hablamos|arbol|mundo|relaciones|demos */
   logRender(); logWire();
   if (ficha){ const el = document.getElementById("par-" + ficha.id); if (el) el.scrollIntoView({ block: "start" }); }
 }

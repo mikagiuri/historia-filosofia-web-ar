@@ -2293,6 +2293,13 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #logica .lg-eu-v{ margin:.3rem 0 0; font-weight:700 }
 #logica .lg-eu-si .lg-eu-v{ color:var(--ok) }
 #logica .lg-eu-no .lg-eu-v{ color:var(--bad) }
+/* (20-10) Portada de la sección: una tarjeta por familia de herramientas, con enlaces a cada una */
+#logica .lg-portada{ display:grid; grid-template-columns:repeat(auto-fit,minmax(16rem,1fr)); gap:1rem; margin:.4rem 0 1rem }
+#logica .lg-pcard{ background:var(--surface); border:1px solid var(--line); border-inline-start:4px solid var(--r-log, var(--fil)); border-radius:var(--radius); padding:1rem 1.1rem; display:flex; flex-direction:column; gap:.5rem }
+#logica .lg-pcard h2{ margin:.1rem 0; font-size:1.15rem }
+#logica .lg-pcard p{ margin:0; color:var(--muted); line-height:1.5; flex:1 }
+#logica .lg-pchips{ display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.2rem }
+#logica .lg-tabs .lg-home{ color:var(--muted) }
 
 
 /* ==== css/leibniz.css ==== */
