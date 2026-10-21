@@ -201,6 +201,10 @@
       Q4: { vars: [['x', 'C'], ['y_', 'C']], cuerpo: (L, e) => si(L.Crea(e.x, e.y_), no(L.DuraMas(e.y_, e.x))) },
       Q5: { vars: [['x', 'C'], ['y_', 'C']], cuerpo: (L, e) => si(L.Antes(e.x, e.y_), L.DuraMas(e.x, e.y_)) },
       Q6: { vars: [], cuerpo: L => L.algunaCosa(x => L.increado(x)) },
+      // Q8 es una posibilidad: se busca un mundo en el que OCURRA (lo creado dura más que su creador).
+      Q8: { vars: [], posible: true, cuerpo: L => L.algunaCosa(x => L.algunaCosa(z => y(L.Crea(x, z), L.DuraMas(z, x)))) },
+      // Q9, otra posibilidad: algo con dos creadores distintos (hacen falta tres cosas).
+      Q9: { vars: [], posible: true, cuerpo: L => L.algunaCosa(x => L.algunaCosa(z => L.algunaCosa(w => y(L.distinto(x, z), L.Crea(x, w), L.Crea(z, w))))) },
       Q7: { vars: [['x', 'C'], ['y_', 'C']], cuerpo: (L, e) => si(y(L.increado(e.x), L.increado(e.y_)), L.igual(e.x, e.y_)) },
     },
     clase: (L, x, verdad) => (evaluar(L.increado(x), verdad) ? 'increado' : 'creado'),
@@ -351,8 +355,9 @@
     const partes = premisas.map(p => teo.PREMISAS[p](L));
     if (objetivo) {
       const obj = teo.OBJETIVOS[objetivo];
-      // ¬ ∀ vars. cuerpo  ≡  ∃ caso. ¬cuerpo
-      partes.push(o(casos(m, obj.vars).map(e => no(obj.cuerpo(L, e)))));
+      // Posibilidad: ∃ caso. cuerpo (un mundo en que ocurre). Si no: ¬ ∀ vars. cuerpo  ≡  ∃ caso. ¬cuerpo
+      if (obj.posible) partes.push(o(casos(m, obj.vars).map(e => obj.cuerpo(L, e))));
+      else partes.push(o(casos(m, obj.vars).map(e => no(obj.cuerpo(L, e)))));
     }
     return { L, formula: y(partes) };
   }
@@ -403,7 +408,7 @@
     const verdad = id => sol[id] === 1;
     const clase = m.C.map(x => teo.clase(L, x, verdad));
     const obj = objetivo && teo.OBJETIVOS[objetivo];
-    const fallo = (obj && casos(m, obj.vars).find(e => !evaluar(obj.cuerpo(L, e), verdad))) || {};
+    const fallo = (obj && !obj.posible && casos(m, obj.vars).find(e => !evaluar(obj.cuerpo(L, e), verdad))) || {};
     return { n: m.n, k: m.k, hechos, clase, fallo };
   }
 
@@ -526,6 +531,8 @@ const TMP_FORMAL = {
   Q5: "∀x y. Antes(x, y) → DuraMas(x, y)",
   Q6: "∃x. increado(x)",
   Q7: "∀x y. increado(x) ∧ increado(y) → x = y",
+  Q8: "∃x y. Crea(x, y) ∧ DuraMas(y, x)",
+  Q9: "∃x y z. x ≠ y ∧ Crea(x, z) ∧ Crea(y, z)",
 };
 const TMP_DEF = { increado: "increado(x) :⟺ ¬∃y. Crea(y, x)" };
 const TMP_REL = { Antes: "Antes(x, y)", DuraMas: "DuraMas(x, y)", Crea: "Crea(x, y)" };
@@ -536,6 +543,13 @@ const TMP_ISABELLE = {
 };
 /* Para lo que Isabelle no demuestra, se empieza con todas las premisas compatibles (sin «todo ha sido creado»). */
 const TMP_COMPATIBLES = ["T_irreflexiva", "T_transitiva", "D_irreflexiva", "D_transitiva", "C_creador_anterior", "C_un_creador", "C_creador_dura_mas"];
+/* La 4 y la 5 empiezan SIN la premisa discutible (petición del profesor, 21-10): lo primero que se ve es que lo creado
+   puede durar más que su creador; admitirla es una decisión del alumno. «Las que usó Isabelle» la sigue marcando en la 4. */
+const TMP_SIN_DISCUTIBLE = TMP_COMPATIBLES.filter((x) => x !== "C_creador_dura_mas");
+const TMP_DEFECTO = { Q4: TMP_SIN_DISCUTIBLE, Q8: TMP_SIN_DISCUTIBLE, Q9: TMP_COMPATIBLES.filter((x) => x !== "C_un_creador") };
+/* Posibilidades: Isabelle construye el mundo (teorema) y demuestra que las premisas «impide» lo hacen imposible. */
+const TMP_POSIBLE = { Q8: { teorema: "Q8_posible", impide: ["C_creador_dura_mas", "D_irreflexiva", "D_transitiva"], teoremaNo: "Q8_imposible_con_dura_mas" },
+  Q9: { teorema: "Q9_posible", impide: ["C_un_creador"], teoremaNo: "Q9_imposible_con_un_creador" } };
 
 /* Fórmulas de las premisas del mundo de práctica y su forma (entrada del repaso que abre la etiqueta). */
 const TMP_PREMISA_FORMAL = {
@@ -650,7 +664,7 @@ const LB_SPZ = (() => {
     tiempo: {
       textos: () => LABSPZ.tiempo, formal: TMP_FORMAL, def: TMP_DEF, isabelle: TMP_ISABELLE, teorema: { Q6: "Q6_finito" }, alt: {},
       premisaFormal: TMP_PREMISA_FORMAL, premisaForma: TMP_PREMISA_FORMA,
-      estilos: ESTILOS_TMP, maxA: 1, porDefecto: (id) => (TMP_ISABELLE[id] || TMP_COMPATIBLES).slice(), inicio: { prop: "Q2", marcadas: ["C_creador_anterior", "T_irreflexiva"] },
+      estilos: ESTILOS_TMP, maxA: 1, porDefecto: (id) => (TMP_DEFECTO[id] || TMP_ISABELLE[id] || TMP_COMPATIBLES).slice(), posibles: TMP_POSIBLE, inicio: { prop: "Q2", marcadas: ["C_creador_anterior", "T_irreflexiva"] },
       nombreCosa: (i) => "ABCD"[i] || "c" + i,
       formulaDef: (d) => TMP_DEF[d.id] || TMP_REL[d.id],
       clases: { increado: ["clIncreado", "doble"], creado: ["clCreado", "simple"] },
@@ -666,7 +680,7 @@ const LB_SPZ = (() => {
     },
     spinoza: {
       textos: () => LABSPZ, formal: SPZ_FORMAL, def: SPZ_DEF, isabelle: SPZ_ISABELLE, teorema: SPZ_TEOREMA, alt: SPZ_ALT,
-      estilos: ESTILOS_SPZ, maxA: 2, porDefecto: (id) => (SPZ_ISABELLE[id] || []).slice(), inicio: { prop: "P5", marcadas: ["H_individuacion_por_atributos"] },
+      estilos: ESTILOS_SPZ, maxA: 2, porDefecto: (id) => (SPZ_ISABELLE[id] || []).slice(), posibles: {}, inicio: { prop: "P5", marcadas: ["H_individuacion_por_atributos"] },
       nombreCosa: (i) => (i === 0 ? spzT("Dios") : "c" + i),
       formulaDef: (d) => (SPZ_PREMISA_DEF[d.id] ? SPZ_PREMISA_DEF[d.id] + "   (" + spzT("casilla", { x: d.id }) + ")" : SPZ_DEF[d.id]),
       clases: { sustancia: ["clSustancia", "doble"], modo: ["clModo", "simple"], ninguna: ["clNinguna", "discontinuo"] },
@@ -759,6 +773,7 @@ const LB_SPZ = (() => {
   function veredicto() {
     const p = prop(), M = W(), isa = M.isabelle[p.id], alt = M.alt[p.id], el = S().marcadas, mundo = st.mundo;
     const teorema = M.teorema[p.id] || p.id;
+    if (p.posible) return posibilidad(p, M, el, mundo);
     if (isa && contiene(el, isa)) return demostrado(teorema, p.prueba, isa, p.pasos);
     if (alt && contiene(el, alt.premisas)) return demostrado(p.teoremaAlt || alt.teorema, p.pruebaAlt, alt.premisas);
     const miTurno = ++st.turno;
@@ -770,6 +785,34 @@ const LB_SPZ = (() => {
       if (r.encontrado) return contramodelo(r.mundo, Math.round(performance.now() - t0));
       const h = MotorMundos.hayMundo(el, op), ms = Math.round(performance.now() - t0);
       if (!h.hay && h.completo) incompatibles(h, ms); else sinMundo(r, ms);
+    }, 20);
+  }
+  /* Posibilidad: ¿hay un mundo con estas premisas en el que ocurra? */
+  function posibilidad(p, M, el, mundo) {
+    const P = M.posibles[p.id];
+    if (P && contiene(el, P.impide)) {
+      st.turno++;
+      return pintarResultado(`<div class="lb-aviso lb-mal"><span class="spz-sello">${esc(spzT("selloOk"))}</span><h3 class="spz-h">${esc(spzT("noPuede"))}</h3>
+        ${p.notaNo ? `<p>${p.notaNo}</p>` : ""}<p class="lb-nota">${esc(spzT("imposibleIsa", { x: P.impide.join(", "), t: P.teoremaNo }))}</p></div>`);
+    }
+    const miTurno = ++st.turno;
+    pintarResultado(`<p class="lb-nota">${esc(spzT("buscando"))}</p>`);
+    setTimeout(() => {
+      if (miTurno !== st.turno || mundo !== st.mundo) return;
+      const t0 = performance.now(), op = { teoria: mundo, maxCosas: 4, maxAtributos: M.maxA };
+      const r = MotorMundos.buscarContramodelo(el, p.id, op), ms = Math.round(performance.now() - t0);
+      if (r.encontrado) {
+        const m = r.mundo;
+        return pintarResultado(`<div class="lb-aviso lb-ok"><span class="spz-sello">${esc(spzT("selloPosible"))}</span><h3 class="spz-h">${esc(spzT("puedeOcurrir"))}</h3>
+          <p>${esc(spzT("posibleTxt", { n: m.n === 1 ? spzT("unaCosa") : spzT("nCosas", { n: m.n }) }))}</p>${p.nota ? `<p>${p.nota}</p>` : ""}
+          ${P ? `<p class="lb-nota">${esc(spzT("posibleIsa", { t: P.teorema }))}</p>` : ""}</div>
+          <div class="lb-scroll spz-lienzo">${dibujar(m)}</div><div class="spz-leyenda">${leyenda(m)}</div>${hechos(m)}
+          <p class="lb-nota">${esc(spzT("encontrado", { ms }))}</p>`);
+      }
+      const h = MotorMundos.hayMundo(el, op);
+      if (!h.hay && h.completo) return incompatibles(h, ms);
+      pintarResultado(`<div class="lb-aviso lb-warn"><span class="spz-sello">${esc(spzT("selloDuda"))}</span><h3 class="spz-h">${esc(spzT("noPuede"))}</h3>
+        <p>${esc(spzT("imposibleTxt", { c: r.maxC }))}</p>${p.notaNo ? `<p>${p.notaNo}</p>` : ""}<p class="lb-nota">${esc(spzT("busqueda", { ms }))}</p></div>`);
     }, 20);
   }
   function demostrado(teorema, prueba, usadas, pasos) {
@@ -844,6 +887,13 @@ const LB_SPZ = (() => {
       <h4>${esc(R.tSimbolos)}</h4><dl class="spz-simbolos">${G.simbolos.map((x) => `<div><dt class="lb-sim">${esc(x.s)}</dt><dd>${esc(x.t)}</dd></div>`).join("")}</dl>
       <div class="lb-fila"><button type="button" class="btn ghost" data-spz-ir="relaciones">${esc(R.bPracticar)}</button></div></details>`;
   }
+  /* Sobre Isabelle y agradecimientos (LABSPZ.isabelle). */
+  function sobreIsabelle() {
+    const I = LABSPZ.isabelle;
+    return `<details class="lb-saber spz-isabelle"><summary>${esc(I.titulo)}</summary>${I.parrafos.map((x) => `<p>${x}</p>`).join("")}
+      <p class="spz-gracias">${I.gracias}</p><h4>${esc(I.tEnlaces)}</h4>
+      <ul>${I.enlaces.map((e) => `<li><a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.txt)}</a></li>`).join("")}</ul></details>`;
+  }
   /* Una fórmula con su lectura debajo. */
   function conLectura(f, clase) {
     const l = spzLeer(f);
@@ -870,11 +920,13 @@ const LB_SPZ = (() => {
     const botonMundo = (id, k) => `<button type="button" class="fbtn" data-spz-mundo="${id}" aria-pressed="${st.mundo === id}">${esc(spzT(k))}</button>`;
     const abierta = box.querySelector(".spz-guia") && box.querySelector(".spz-guia").open;
     const repAbierto = box.querySelector(".spz-repaso") && box.querySelector(".spz-repaso").open;
+    const isaAbierto = box.querySelector(".spz-isabelle") && box.querySelector(".spz-isabelle").open;
     box.innerHTML = `<div class="lb-fila spz-mundos" role="group" aria-label="${esc(spzT("mundo"))}"><span class="lb-et">${esc(spzT("mundo"))}</span>${botonMundo("tiempo", "mundoTiempo")}${botonMundo("spinoza", "mundoSpinoza")}</div>
       <p class="lg-intro">${esc(spzT(M.lede))}</p>
       <div class="lb-aviso lb-warn"><span class="spz-sello">${esc(spzT("enDesarrollo"))}</span> ${spzT("avisoDesarrollo")}</div>
       ${guia()}
       ${repaso()}
+      ${sobreIsabelle()}
       <section class="lb-mesa"><h3>${esc(spzT("tDefiniciones"))}</h3><p class="lb-nota">${spzT(M.notaDefs)}</p>
         ${M.secciones().map(([k, lista]) => `<p class="spz-sub">${esc(spzT(k))}</p><ul class="spz-defs">${lista.map(defFila).join("")}</ul>`).join("")}</section>
       <div class="lb-dos">
@@ -883,8 +935,8 @@ const LB_SPZ = (() => {
           ${p.cita ? `<blockquote class="spz-cita">«${esc(p.cita)}»</blockquote>` : ""}
           <div class="spz-formal">${defs.length ? `<span class="spz-sub">${esc(spzT("defsUsa"))}</span><div class="spz-lista">${defs.map((d) => conLectura(d)).join("")}</div>` : ""}
             <span class="spz-sub">${esc(spzT("enLogica"))}</span>${conLectura(M.formal[p.id])}</div>
-          <p class="lb-pregunta">${spzT("seComprueba", { x: p.pregunta })}</p>
-          <p class="lb-nota">${esc(isa ? (isa.length ? spzT("necesitaCon", { x: isa.join(", ") }) : spzT("necesitaSin")) : spzT("necesitaNo"))}</p>
+          <p class="lb-pregunta">${spzT(p.posible ? "seCompruebaPos" : "seComprueba", { x: p.pregunta })}</p>
+          <p class="lb-nota">${esc(p.posible && M.posibles[p.id] ? spzT("posibleIsa", { t: M.posibles[p.id].teorema }) : isa ? (isa.length ? spzT("necesitaCon", { x: isa.join(", ") }) : spzT("necesitaSin")) : spzT("necesitaNo"))}</p>
           <div class="lb-fila"><button type="button" class="btn ghost" data-spz="isabelle">${esc(spzT("bIsabelle"))}</button><button type="button" class="btn ghost" data-spz="todas">${esc(spzT("bTodas"))}</button><button type="button" class="btn ghost" data-spz="ninguna">${esc(spzT("bNinguna"))}</button></div>
           <div class="spz-premisas">${premisas}</div>
           <div class="lb-fila"><button type="button" class="btn" data-spz="probar">${esc(spzT("bProbar"))}</button></div>
@@ -894,6 +946,7 @@ const LB_SPZ = (() => {
       <p class="lb-nota">${esc(spzT(M.pie))}</p>`;
     if (abierta) box.querySelector(".spz-guia").open = true;
     if (repAbierto) box.querySelector(".spz-repaso").open = true;
+    if (isaAbierto) box.querySelector(".spz-isabelle").open = true;
     /* Las etiquetas de las premisas despliegan, justo debajo, la entrada del repaso que toca (sin marcar la casilla). */
     box.querySelectorAll("[data-spz-rep]").forEach((b) => b.addEventListener("click", (e) => {
       e.preventDefault(); e.stopPropagation();
