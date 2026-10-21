@@ -2113,6 +2113,11 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #pistas .pis-rep label{ display:flex; gap:.55rem; align-items:flex-start; cursor:pointer; line-height:1.45; }
 #pistas .pis-rep input{ width:18px; height:18px; margin-top:.15rem; flex:none; accent-color:var(--pc, var(--hf)); }
 #pistas .pis-fb-glo:empty{ display:none; }
+/* (21-10) puente con Genealogías: al cierre, las líneas del mapa de ideas en que aparece el autor de la tarjeta */
+#pistas .pis-mapa{ margin:1rem 0 .2rem; padding-top:.8rem; border-top:1px dashed var(--line); display:grid; gap:.45rem; }
+#pistas .pis-mapa-ls{ display:flex; flex-wrap:wrap; gap:.45rem; }
+#pistas .pis-mapa-a{ display:inline-block; padding:.35rem .75rem; border:1px solid var(--line); border-inline-start:4px solid var(--lc, var(--hf)); border-radius:10px; background:var(--surface-2); color:var(--ink); text-decoration:none; font-size:.92rem; }
+#pistas .pis-mapa-a:hover, #pistas .pis-mapa-a:focus-visible{ border-color:var(--lc, var(--hf)); }
 
 
 /* ==== css/logica.css ==== */
