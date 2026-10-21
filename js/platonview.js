@@ -92,8 +92,12 @@ function repUpdReg(){   // la ciudad solo baja de régimen, nunca sube (546a: «
   const n=Math.max(rep.reg, (rep.armonia<=0||repPop()<3) ? repD().regimenes.length-1 : repRegFor(rep.armonia));
   if(n>rep.reg){ rep.regLog.push({ n:rep.turn+1, from:rep.reg, to:n }); rep.reg=n; return true; } return false; }
 function repGloName(id){ try{ const g=(typeof GLOSARIO!=="undefined") && GLOSARIO.find(x=>x.id===id); return g ? g.t : null; }catch(e){ return null; } }
-function repGloLinks(ids){ const L=(ids||[]).map(id=>({ id, t:repGloName(id) })).filter(x=>x.t);
-  return L.length ? '<p class="rep-glo">📖 '+L.map(x=>'<a href="#glosario/'+x.id+'">'+x.t+'</a>').join(" · ")+'</p>' : ""; }
+function repGloLinks(ids, temas){ const L=(ids||[]).map(id=>({ id, t:repGloName(id) })).filter(x=>x.t);
+  return repTemaLinks(temas) + (L.length ? '<p class="rep-glo">📖 '+L.map(x=>'<a href="#glosario/'+x.id+'">'+x.t+'</a>').join(" · ")+'</p>' : ""); }
+/* (21-10) enlaces a la teoría: el tema de Platón (hf-platon) y el de política clásica (hf-politica); el título sale de THEORY, ya traducido */
+const REP_TEMA_PLATON = "hf-platon", REP_TEMA_POLITICA = "hf-politica";
+function repTemaLinks(keys){ let TH=null; try{ TH=(typeof THEORY!=="undefined")?THEORY:null; }catch(e){} if(!TH) return "";
+  const L=(keys||[]).filter(k=>TH[k]&&TH[k].title); return L.length ? '<p class="rep-glo rep-tema">📘 '+L.map(k=>'<a href="#teoria/'+k+'">'+TH[k].title+'</a>').join(" · ")+'</p>' : ""; }
 function repLadder(){ const D=repD(); if(!D) return ""; if(rep.juego==="clases") return repFuncBar();
   return '<div class="rep-ladder" role="list" aria-label="'+D.ui.regTitulo+'"><span class="rep-ladder-h">'+D.ui.hudReg+'</span>'+D.regimenes.map((r,i)=>
     '<span role="listitem" class="rep-lr'+(i===rep.reg?' on':'')+(i<rep.reg?' past':'')+'" title="'+r.lema+'">'+r.emoji+' '+r.name+'</span>').join('<i aria-hidden="true">›</i>')+'</div>'; }
@@ -161,11 +165,11 @@ function repRenderDialog(d){
   const U=repD().ui;
   repBox().innerHTML='<div class="rep-wrap">'+repHud()+'<div class="rep-dialog reveal">'+
     '<div class="rep-dl-h"><span class="rep-dl-ic" aria-hidden="true">'+d.emoji+'</span><div><span class="rep-ev-tag">'+U.dialogo+' · '+d.loc+'</span><h3>'+d.quien+'</h3></div></div>'+
-    '<p class="rep-dl-sit">'+d.situacion+'</p>'+
-    '<blockquote class="rep-dl-cita">'+d.cita+' <cite>'+d.loc+'</cite></blockquote>'+
+    '<p class="rep-dl-sit">'+repMd(d.situacion)+'</p>'+
+    '<blockquote class="rep-dl-cita">'+repMd(d.cita)+' <cite>'+d.loc+'</cite></blockquote>'+
     (d.griego?'<p class="rep-dl-gr">'+repMd(d.griego)+'</p>':'')+
-    '<p class="rep-dl-q"><b>'+d.pregunta+'</b> '+U.elige+'</p>'+
-    '<div class="rep-dl-opts">'+d.opts.map((o,i)=>'<button class="rep-dl-opt" data-dopt="'+i+'"><b>'+o.t+'</b><span>'+U.porque+': '+o.razon+'</span></button>').join("")+'</div>'+
+    '<p class="rep-dl-q"><b>'+repMd(d.pregunta)+'</b> '+U.elige+'</p>'+
+    '<div class="rep-dl-opts">'+d.opts.map((o,i)=>'<button class="rep-dl-opt" data-dopt="'+i+'"><b>'+repMd(o.t)+'</b><span>'+U.porque+': '+repMd(o.razon)+'</span></button>').join("")+'</div>'+
     '<p class="rep-dl-note">'+U.abierto+'</p></div></div>';
   repBox().querySelectorAll("[data-dopt]").forEach(b=>b.addEventListener("click",()=>repChooseDialog(d,+b.dataset.dopt)));
 }
@@ -179,11 +183,11 @@ function repChooseDialog(d,i){
   const s=rep.armonia-before, cls=s<0?"bad":s>0?"good":"ok";
   repBox().innerHTML='<div class="rep-wrap">'+repHud()+'<div class="rep-dialog">'+
     '<div class="rep-dl-h"><span class="rep-dl-ic" aria-hidden="true">'+d.emoji+'</span><div><span class="rep-ev-tag">'+U.dialogo+' · '+d.loc+'</span><h3>'+d.quien+'</h3></div></div>'+
-    '<div class="rep-dl-chosen"><b>'+o.t+'</b><span>'+U.porque+': '+o.razon+'</span></div>'+
-    '<div class="rep-dl-sec"><span class="rep-ev-tag">'+U.resultado+'</span><div class="rep-status '+cls+'">'+br.r+'</div></div>'+
+    '<div class="rep-dl-chosen"><b>'+repMd(o.t)+'</b><span>'+U.porque+': '+repMd(o.razon)+'</span></div>'+
+    '<div class="rep-dl-sec"><span class="rep-ev-tag">'+U.resultado+'</span><div class="rep-status '+cls+'">'+repMd(br.r)+'</div></div>'+
     '<div class="rep-dl-sec"><span class="rep-ev-tag">'+U.responde+'</span><blockquote class="rep-dl-cita">'+repMd(d.platon.txt)+' <cite>'+d.platon.loc+'</cite></blockquote></div>'+
     '<div class="rep-dl-sec"><span class="rep-ev-tag">'+U.objeta+' · '+d.critica.autor+'</span><blockquote class="rep-dl-cita crit">'+repMd(d.critica.txt)+' <cite>'+d.critica.loc+'</cite></blockquote></div>'+
-    repGloLinks(d.glo)+
+    repGloLinks(d.glo, [REP_TEMA_PLATON])+
     '<div class="rep-resolve"><button id="repNext">'+U.seguir+'</button></div></div></div>';
   document.getElementById("repNext").addEventListener("click",()=>{
     if(repEnded()) repResult(); else if(rep.reg>prev) repRenderDegen(prev); else repRenderTurn(); });
@@ -192,7 +196,7 @@ function repRenderDegen(from){
   const D=repD(), U=D.ui, steps=D.regimenes.slice(from+1, rep.reg+1);
   repBox().innerHTML='<div class="rep-wrap">'+repHud()+'<div class="rep-degen reveal"><span class="rep-ev-tag fate">'+U.degenera+'</span>'+
     steps.map(r=>'<div class="rep-degen-step"><h3>'+r.emoji+' '+r.name+'</h3><p class="rep-dl-sit"><b>'+r.lema+'</b> '+repMd(r.causa)+'</p>'+
-      '<blockquote class="rep-dl-cita">'+r.cita+' <cite>'+r.loc+'</cite></blockquote>'+repGloLinks(r.glo)+'</div>').join("")+
+      '<blockquote class="rep-dl-cita">'+r.cita+' <cite>'+r.loc+'</cite></blockquote>'+repGloLinks(r.glo, [REP_TEMA_POLITICA, REP_TEMA_PLATON])+'</div>').join("")+
     '<div class="rep-resolve"><button id="repNext">'+U.seguir+'</button></div></div></div>';
   document.getElementById("repNext").addEventListener("click",()=>{ if(repEnded()) repResult(); else repRenderTurn(); });
 }
@@ -244,9 +248,9 @@ const REP_EVENTS = [
   { id:"corrupcion", name:"الفساد", src:"Rep. I", img:"ev-corrupcion",
     threat:"تخسرون نقطة واحدة عن كل حارس ليس عادلًا تمامًا (SJ<5).",
     effect:()=>{ const x=rep.t.Z.n-rep.t.Z.just; return { d:-x, msg:x?("−"+x+" بسبب حرّاس غير عادلين بما يكفي"):"كل حرّاسكم عادلون." }; } },
-  { id:"caverna", name:"ظلال في الكهف", src:"Rep. VII", img:"ev-sabiduria",
-    threat:"إذا كان متوسط الحكمة-العدالة في المدينة منخفضًا (<3,8)، تبقى في الظلال.",
-    effect:()=>{ const avg=repSum("sj")/Math.max(1,repPop()); return avg<3.8 ? { d:-2, msg:"الجهل: −2." } : { d:0, msg:"المدينة تبحث عن النور." }; } },
+  { id:"caverna", name:"ظلال في الكهف", src:"Rep. VII, 514a-520d", img:"ev-sabiduria",   // (21-10) no castiga la ignorancia de la masa, sino que no haya filósofos que vuelvan a bajar (519c-520d)
+    threat:"على الذين خرجوا من الكهف أن يعودوا إليه ليحكموا. فإن لم يكن بين الحرّاس من بلغ الحكمة التامة، حكم الذين لم يروا إلا الظلال.",
+    effect:()=>{ return rep.t.Z.max>=5 && rep.t.Z.n>0 ? { d:1, msg:"يعود الذين رأوا النور ليحكموا: +1." } : { d:-2, msg:"لم يخرج أحد من الكهف: الظلال هي التي تحكم. −2." }; } },
   // — Aristóteles / muertes / tamaño —
   { id:"ataque", name:"هجوم خارجي", src:"Pol. VII", img:"ev-ataque",
     threat:"إذا كان المدافعون قلة (المحاربون < المنتجون ÷ 2,5)، يدخل العدو ويقتل.",
@@ -261,10 +265,10 @@ const REP_EVENTS = [
     threat:"المدينة الصغيرة لا تكفي نفسها: كلما قل السكان عن 30، ساءت الحال (÷2).",
     effect:()=>{ const x=F(Math.max(0,REP_TARGET-repPop())/2); return { d:-x, msg:x?("ضعف ("+repPop()+" ساكن): −"+x):"مدينة مكتفية ذاتيًا." }; } },
   // — positivos —
-  { id:"alianza", name:"تحالف تجاري", src:"Rep.", img:"ev-corrupcion",
+  { id:"alianza", name:"تحالف تجاري", src:"Rep. II, 371a-d", img:"ev-corrupcion",   // (21-10) los comerciantes y el mercado de la ciudad sana
     threat:"إذا كان المنتجون هم الأغلبية (≥60%)، تزدهر التجارة.",
     effect:()=>{ return rep.t.E.n >= 0.6*repPop() ? { d:2, msg:"تجارة مزدهرة: +2." } : { d:0, msg:"لا أغلبية منتجة." }; } },
-  { id:"victoria", name:"نصر عسكري", src:"—", img:"ev-golpe",
+  { id:"victoria", name:"نصر عسكري", src:"Rep. IV, 422a-d", img:"ev-golpe",   // (21-10) los «atletas de la guerra» frente a ciudades más ricas
     threat:"جيش قوي (المحاربون ≥ الحرّاس ×3) يربح حربًا.",
     effect:()=>{ return repNGeff() >= rep.t.Z.n*3 ? { d:1, msg:"نصر: +1." } : { d:0, msg:"لا قوة كافية للانتصار." }; } },
   { id:"reforma", name:"إصلاح عادل", src:"Rep.", img:"ev-sabiduria",
@@ -457,13 +461,13 @@ function repDrawTurn(ev){
   const good=pre.d>0, bad=pre.d<0; const evb=document.getElementById("repEvent");
   evb.classList.toggle("danger",bad); evb.classList.toggle("safe",!bad);
   evb.innerHTML='<img class="rep-ev-img" src="'+REP_IMG+ev.img+'.jpg" alt="">'+
-    '<div class="rep-ev-body"><span class="rep-ev-tag'+(ev.fate?' fate':'')+'">'+(ev.fate?'🎴 بطاقة القدر · لا مفرّ منها':'🃏 حدث الدور'+(ev.src&&ev.src!=="—"?' · '+ev.src:''))+'</span><h3>'+ev.name+'</h3>'+
-    '<div class="threat">'+ev.threat+'</div>'+
-    '<div class="rep-status '+(bad?"bad":good?"good":"ok")+'">'+(bad?"⚠ ":good?"✓ ":"• ")+pre.msg+'</div></div>';
+    '<div class="rep-ev-body"><span class="rep-ev-tag'+(ev.fate?' fate':'')+'">'+(ev.fate?'🎴 بطاقة القدر · لا مفرّ منها':'🃏 حدث الدور'+(ev.src&&ev.src!=="—"?' · '+ev.src:''))+'</span><h3>'+repMd(ev.name)+'</h3>'+
+    '<div class="threat">'+repMd(ev.threat)+'</div>'+(/^(Rep\.|Rép\.|Errep\.|República|Republic|République|Errepublika|الجمهورية)/.test(String(ev.src||""))?repTemaLinks([REP_TEMA_PLATON]):"")+
+    '<div class="rep-status '+(bad?"bad":good?"good":"ok")+'">'+(bad?"⚠ ":good?"✓ ":"• ")+repMd(pre.msg)+'</div></div>';
   if(rep.acciones==="si"){ const acts=document.getElementById("repActs");
     const MX=repD()?REP_V2.maxActs:2;
     acts.innerHTML=repActsFor().map(a=>{ const dis=rep.apTurn>=MX||rep.used.has(a.id)||rep.ap<a.ap||(a.ok&&!a.ok());
-      return '<button class="rep-act" data-act="'+a.id+'"'+(dis?" disabled":"")+(a.src?' title="'+a.src+'"':'')+'>'+(a.img?'<span class="rep-act-art"><img src="'+REP_IMG+a.img+'.jpg" alt="" onerror="this.parentNode.remove()"></span>':'')+'<span class="rep-act-b"><b>'+a.name+' <span class="ap">'+a.ap+' AP</span></b><span class="d">'+a.d+'</span></span></button>'; }).join("");
+      return '<button class="rep-act" data-act="'+a.id+'"'+(dis?" disabled":"")+(a.src?' title="'+a.src+'"':'')+'>'+(a.img?'<span class="rep-act-art"><img src="'+REP_IMG+a.img+'.jpg" alt="" onerror="this.parentNode.remove()"></span>':'')+'<span class="rep-act-b"><b>'+repMd(a.name)+' <span class="ap">'+a.ap+' AP</span></b><span class="d">'+repMd(a.d)+'</span></span></button>'; }).join("");
     acts.querySelectorAll("[data-act]").forEach(b=>b.addEventListener("click",()=>repDoAct(b.dataset.act,ev))); }
 }
 function repDoAct(id,ev){ const a=repActsFor().find(x=>x.id===id); const MX=repD()?REP_V2.maxActs:2;
@@ -626,7 +630,7 @@ function repFinalBlocks(){   // (20-10) régimen final, posturas y guion de dise
       (rep.posturas.length ? '<ol class="rep-cr-list">'+rep.posturas.map(p=>'<li class="rep-cr-item"><div class="rep-cr-h"><span class="rep-cr-n">T'+p.n+'</span><b>'+p.quien+'</b> <span class="rep-cr-badge">'+p.loc+'</span></div>'+
         '<div class="rep-cr-msg"><b>'+p.t+'</b> '+U.porque+': '+p.razon+'</div><div class="rep-cr-acts">'+U.objeta+' ('+p.critica.autor+'): '+repMd(p.critica.txt)+' <cite>'+p.critica.loc+'</cite></div></li>').join("")+'</ol>'
         : '<p class="rep-dl-note">'+U.sinDialogos+'</p>')+'</div>'+
-    '<div class="rep-diser"><div class="rep-cr-title">✍️ '+U.disertacion+'</div><ol><li>'+U.dTesis+'</li><li>'+U.dPlaton+'</li><li>'+U.dObjecion+'</li><li>'+U.dTuya+'</li></ol>'+repGloLinks(glo)+'</div>';
+    '<div class="rep-diser"><div class="rep-cr-title">✍️ '+U.disertacion+'</div>'+repTemaLinks([REP_TEMA_PLATON, REP_TEMA_POLITICA])+'<ol><li>'+U.dTesis+'</li><li>'+U.dPlaton+'</li><li>'+U.dObjecion+'</li><li>'+U.dTuya+'</li></ol>'+repGloLinks(glo)+'</div>';
 }
 function repResult(){
   const a=rep.armonia; let emoji,rank;
@@ -649,9 +653,9 @@ function repResult(){
     "هل صحيح، كما قال أفلاطون، أن المجتمع لا يمكن أن يخلص دون حكام فلاسفة؟",
     "هل تستحق المدينة العادلة العناء إذا كان تحقيقها يقتضي التخلي عن المساواة بين الطبقات؟"];
   const chronicle=rep.log.map(e=>{ const s=e.after-e.before, cls=s<0?"bad":s>0?"good":"ok";
-    return '<li class="rep-cr-item'+(e.fate?" fate":"")+'"><div class="rep-cr-h"><span class="rep-cr-n">T'+e.n+'</span><b>'+e.ev+'</b>'+(e.fate?' <span class="rep-cr-badge">القدر</span>':'')+'<span class="rep-cr-arm '+cls+'">'+repFmt(e.before)+'→'+repFmt(e.after)+'</span></div>'+
-      '<div class="rep-cr-msg">'+e.msg+'</div>'+
-      (e.acts.length?'<div class="rep-cr-acts">🔧 '+e.acts.join(", ")+'</div>':'')+'</li>'; }).join("");
+    return '<li class="rep-cr-item'+(e.fate?" fate":"")+'"><div class="rep-cr-h"><span class="rep-cr-n">T'+e.n+'</span><b>'+repMd(e.ev)+'</b>'+(e.fate?' <span class="rep-cr-badge">القدر</span>':'')+'<span class="rep-cr-arm '+cls+'">'+repFmt(e.before)+'→'+repFmt(e.after)+'</span></div>'+
+      '<div class="rep-cr-msg">'+repMd(e.msg)+'</div>'+
+      (e.acts.length?'<div class="rep-cr-acts">🔧 '+repMd(e.acts.join(", "))+'</div>':'')+'</li>'; }).join("");
   repBox().innerHTML='<div class="rep-wrap"><div class="rep-result">'+
     '<div class="rep-badge">'+emoji+'</div><div class="rep-rank">'+rank+'</div>'+
     '<div class="rep-final">'+repFmt(Math.max(0,a))+' <span>من الانسجام</span></div>'+
@@ -671,7 +675,7 @@ function repResult(){
 }
 function renderRepChuleta(){   // (20-10) chuleta: todas las reglas y fórmulas de las dos versiones
   const D=repD(), box=repBox(); if(!D||!box) return; const U=D.ui, V=D.versiones;
-  const actRow=a=>'<tr><td><b>'+a.name+'</b>'+(a.fase!=null&&D.fases[a.fase]?' <span class="rep-cr-badge">'+U.fase+' '+(a.fase+1)+'</span>':'')+(a.src?'<br><cite>'+a.src+'</cite>':'')+'</td><td class="c">'+a.ap+'</td><td>'+a.d+(a.cita?'<br><cite>'+repMd(a.cita)+'</cite>':'')+'</td></tr>';
+  const actRow=a=>'<tr><td><b>'+repMd(a.name)+'</b>'+(a.fase!=null&&D.fases[a.fase]?' <span class="rep-cr-badge">'+U.fase+' '+(a.fase+1)+'</span>':'')+(a.src?'<br><cite>'+a.src+'</cite>':'')+'</td><td class="c">'+a.ap+'</td><td>'+a.d+(a.cita?'<br><cite>'+repMd(a.cita)+'</cite>':'')+'</td></tr>';
   const byV=(v,fn)=>{ const j=rep.juego; rep.juego=(v==="b"?"clases":"degen"); try{ return fn(); } finally{ rep.juego=j; } };
   const MA=(typeof REP_MAZO_A!=="undefined")?REP_MAZO_A:{}, MB=(typeof REP_MAZO_B!=="undefined")?REP_MAZO_B:{};
   const tabla=(rows,cols)=>rows&&rows.length?'<table class="rep-ch-t">'+rows.map(r=>'<tr>'+cols.map((c,i)=>'<td>'+(i===0?'<b>':'')+repMd(r[c]||'')+(i===0?'</b>':'')+'</td>').join("")+'</tr>').join("")+'</table>':'';
@@ -691,7 +695,7 @@ function renderRepChuleta(){   // (20-10) chuleta: todas las reglas y fórmulas 
     '<p>'+D.fases.map((f,i)=>'<b>'+(i+1)+'. '+f.name+'</b>: '+f.lema).join("<br>")+'</p><p>'+repMd(D.doxa)+'</p>'+
     cartas(MB.clases)+tabla(MB.tabla,["name","alma","virtud","cumple","desborda","falta"])+
     actTable(byV("b",()=>repActsFor(true)))+
-    '<h4>'+U.cEventos+'</h4><table class="rep-ch-t">'+REP_EVENTS.concat((MA.eventos||[]).concat(MB.eventos||[]).map(e=>Object.assign({ src:e.loc||"", threat:e.threat||(e.elige&&e.elige.situacion)||"" }, e))).map(e=>'<tr><td><b>'+e.name+'</b>'+evV(e)+'<br><cite>'+e.src+'</cite></td><td colspan="2">'+e.threat+'</td></tr>').join("")+'</table>'+
+    '<h4>'+U.cEventos+'</h4><table class="rep-ch-t">'+REP_EVENTS.concat((MA.eventos||[]).concat(MB.eventos||[]).map(e=>Object.assign({ src:e.loc||"", threat:e.threat||(e.elige&&e.elige.situacion)||"" }, e))).map(e=>'<tr><td><b>'+repMd(e.name)+'</b>'+evV(e)+'<br><cite>'+e.src+'</cite></td><td colspan="2">'+e.threat+'</td></tr>').join("")+'</table>'+
     '<p>'+U.cDestino+'</p><p>'+U.cDialogos+'</p></div>';
   document.getElementById("repChBack").addEventListener("click",()=>renderRepStart(rep.juego?true:false));
 }
