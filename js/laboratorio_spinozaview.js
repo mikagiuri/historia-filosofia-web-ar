@@ -467,15 +467,15 @@ const SPZ_FORMAL = {
   P36: "∀x. ∃y. Causa(x, y)",
 };
 const SPZ_DEF = {
-  sustancia: "sustancia(x) :⟺ En(x, x) ∧ SeConcibePor(x, x) ∧ ∀y. (En(x, y) → y = x) ∧ ∀y. (SeConcibePor(x, y) → y = x)",
+  sustancia: "sustancia(x) :⟺ En(x, x) ∧ SeConcibePor(x, x) ∧ (∀y. En(x, y) → y = x) ∧ (∀y. SeConcibePor(x, y) → y = x)",
   modo: "modo(x) :⟺ ∃y. y ≠ x ∧ En(x, y) ∧ SeConcibePor(x, y)",
   afeccion: "afeccion(m, s) :⟺ m ≠ s ∧ En(m, s) ∧ SeConcibePor(m, s)",
   anterior_por_naturaleza: "anterior_por_naturaleza(x, y) :⟺ SeConcibePor(y, x) ∧ ¬SeConcibePor(x, y)",
   finita: "finita(x) :⟺ ∃y. y ≠ x ∧ Limita(y, x) ∧ ∃a. (TieneAtributo(y, a) ∧ TieneAtributo(x, a))",
   divisible: "divisible(x) :⟺ ∃p. p ≠ x ∧ EsParteDe(p, x)",
-  libre: "libre(x) :⟺ EsenciaImplicaExistencia(x) ∧ ∀y. (Causa(y, x) → y = x)",
+  libre: "libre(x) :⟺ EsenciaImplicaExistencia(x) ∧ (∀y. Causa(y, x) → y = x)",
   eterno: "eterno(x) :⟺ EsenciaImplicaExistencia(x)",
-  atributo_eterno: "atributo_eterno(a) :⟺ ∀s. (TieneAtributo(s, a) → eterno(s))",
+  atributo_eterno: "atributo_eterno(a) :⟺ ∀s. TieneAtributo(s, a) → eterno(s)",
   causa_inmanente: "causa_inmanente(y, x) :⟺ Causa(y, x) ∧ En(x, y)",
   causa_transitiva: "causa_transitiva(y, x) :⟺ Causa(y, x) ∧ ¬En(x, y)",
   contingente: "contingente(x) :⟺ ¬EsenciaImplicaExistencia(x) ∧ ¬∃y. Causa(y, x)",
@@ -537,6 +537,92 @@ const TMP_ISABELLE = {
 /* Para lo que Isabelle no demuestra, se empieza con todas las premisas compatibles (sin «todo ha sido creado»). */
 const TMP_COMPATIBLES = ["T_irreflexiva", "T_transitiva", "D_irreflexiva", "D_transitiva", "C_creador_anterior", "C_un_creador", "C_creador_dura_mas"];
 
+/* Fórmulas de las premisas del mundo de práctica y su forma (entrada del repaso que abre la etiqueta). */
+const TMP_PREMISA_FORMAL = {
+  T_irreflexiva: "∀x. ¬Antes(x, x)", T_transitiva: "∀x y z. Antes(x, y) ∧ Antes(y, z) → Antes(x, z)",
+  D_irreflexiva: "∀x. ¬DuraMas(x, x)", D_transitiva: "∀x y z. DuraMas(x, y) ∧ DuraMas(y, z) → DuraMas(x, z)",
+  C_creador_anterior: "∀x y. Crea(x, y) → Antes(x, y)", C_un_creador: "∀x y z. Crea(x, z) ∧ Crea(y, z) → x = y",
+  C_creador_dura_mas: "∀x y. Crea(x, y) → DuraMas(x, y)", C_todo_creado: "∀x. ∃y. Crea(y, x)",
+};
+const TMP_PREMISA_FORMA = {
+  T_irreflexiva: "irrefl", T_transitiva: "trans", D_irreflexiva: "irrefl", D_transitiva: "trans",
+  C_creador_anterior: "inclusion", C_un_creador: "unico", C_creador_dura_mas: "inclusion", C_todo_creado: "serie",
+};
+
+/* Lee una fórmula en voz alta con las plantillas de LABSPZ.lectura (traducibles). Devuelve null si no sabe leerla. */
+function spzLeer(f) {
+  /* Devuelve HTML: las plantillas se escapan y las variables van en cursiva (<var>) para no confundirlas con «y». */
+  const escL = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  const LX = LABSPZ.lectura, tpl = (s, v) => escL(s).replace(/\{(\w+)\}/g, (_, k) => (v[k] != null ? v[k] : ""));
+  const lista = (xs, k) => (xs.length < 3 ? xs.reduce((a, b) => tpl(LX[k], { a, b })) : tpl(LX[k], { a: xs.slice(0, -1).join(", "), b: xs[xs.length - 1] }));
+  const nombre = (x) => (x === "Dios" ? escL(LX.Dios) : "<var>" + escL(x) + "</var>");
+  const esAtr = (v) => v === "a" || v === "b";
+  /* Lo compuesto que va dentro de otra cosa, entre paréntesis para que no se mezcle. */
+  const leer = (e, ctx) => {
+    const s = e.at ? e.pos : e.txt;
+    const par = ctx && (e.k === "q" || e.k === "si" || e.k === "sii" || (e.k === "kO" && ctx === "kY") || (e.k === "kY" && ctx === "kO"));
+    return par ? "(" + s + ")" : s;
+  };
+  function analizar(src) {
+    const toks = src.match(/[∀∃¬∧∨→↔≠=(),.]|[A-Za-zÀ-ÿ_]\w*|\S/g) || [];
+    let i = 0;
+    const ver = () => toks[i], tomar = (x) => { if (i >= toks.length || (x && toks[i] !== x)) throw 0; return toks[i++]; };
+    function cuant(negado) {
+      const q = tomar(), vs = [];
+      while (ver() && ver() !== ".") { const v = tomar(); if (v !== ",") vs.push(v); }
+      tomar(".");
+      const cs = vs.filter((v) => !esAtr(v)), as = vs.filter(esAtr), partes = [], nom = (xs) => lista(xs.map(nombre), "conY");
+      if (negado && cs.length + as.length === 1) partes.push(tpl(cs.length ? LX.noHay : LX.noHayAtr, { v: nom(cs.length ? cs : as) }));
+      else if (negado) throw 0;
+      else if (q === "∃" && cs.length && as.length) partes.push(tpl(LX.hayMixto, { c: nom(cs), a: nom(as) }));
+      else if (q === "∀") {
+        if (cs.length) partes.push(tpl(cs.length === 1 ? LX.paraToda : LX.paraTodas, { v: nom(cs) }));
+        if (as.length) partes.push(tpl(as.length === 1 ? LX.paraTodo : LX.paraTodos, { v: nom(as) }));
+      } else {
+        if (cs.length) partes.push(tpl(cs.length === 1 ? LX.hayUna : LX.hayVarias, { v: nom(cs) }));
+        if (as.length) partes.push(tpl(as.length === 1 ? LX.hayAtr : LX.hayAtrs, { v: nom(as) }));
+      }
+      const cab = lista(partes, "conY"), cuerpo = leer(expr());
+      return { k: "q", txt: q === "∀" && !negado ? tpl(LX.trasTodo, { a: cab, b: cuerpo }) : cab + " " + cuerpo };
+    }
+    function atomo() {
+      const n = tomar();
+      if (!/^[A-Za-zÀ-ÿ_]/.test(n)) throw 0;
+      if (ver() === "(") {
+        tomar("("); const args = [];
+        while (ver() !== ")") { const a = tomar(); if (a !== ",") args.push(nombre(a)); }
+        tomar(")");
+        const r = LX.rel[n]; if (!r) throw 0;
+        return { at: true, pos: tpl(r[0], { 1: args[0], 2: args[1] }), neg: tpl(r[1], { 1: args[0], 2: args[1] }) };
+      }
+      if (ver() === "=" || ver() === "≠") {
+        const op = tomar(), v = { 1: nombre(n), 2: nombre(tomar()) };
+        return op === "=" ? { at: true, pos: tpl(LX.igual, v), neg: tpl(LX.distinto, v) } : { at: true, pos: tpl(LX.distinto, v), neg: tpl(LX.igual, v) };
+      }
+      throw 0;
+    }
+    function un() {
+      const x = ver();
+      if (x === "¬" && toks[i + 1] === "∃") { tomar(); return cuant(true); }
+      if (x === "¬") { tomar(); const e = un(); return e.at ? { at: true, pos: e.neg, neg: e.pos } : { k: "لا", txt: tpl(LX.noEs, { a: leer(e, "لا") }) }; }
+      if (x === "∀" || x === "∃") return cuant();
+      if (x === "(") { tomar("("); const e = expr(); tomar(")"); return e; }
+      return atomo();
+    }
+    const cadena = (sig, op, k, tipo) => () => { const xs = [sig()]; while (ver() === op) { tomar(); xs.push(sig()); } return xs.length === 1 ? xs[0] : { k: tipo, txt: lista(xs.map((e) => leer(e, tipo)), k) }; };
+    const conj = cadena(un, "∧", "conY", "kY"), disy = cadena(conj, "∨", "conO", "kO");
+    function impl() { const a = disy(); if (ver() === "→") { tomar(); const b = impl(); return { k: "si", txt: tpl(LX.si, { a: leer(a, "si"), b: leer(b) }) }; } return a; }
+    function expr() { const a = impl(); if (ver() === "↔") { tomar(); const b = impl(); return { k: "sii", txt: tpl(LX.sii, { a: leer(a, "sii"), b: leer(b, "sii") }) }; } return a; }
+    const r = expr(); if (i !== toks.length) throw 0;
+    return r;
+  }
+  try {
+    if (f.includes(":⟺")) { const [izq, der] = f.split(":⟺"); return tpl(LX.define, { a: leer(analizar(izq)), b: leer(analizar(der)) }) + "."; }
+    const s = leer(analizar(f));
+    return (/^[a-zà-ÿ]/.test(s) ? s.charAt(0).toUpperCase() + s.slice(1) : s) + ".";
+  } catch (e) { return null; }
+}
+
 const LB_SPZ = (() => {
   let box = null;
   const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
@@ -563,6 +649,7 @@ const LB_SPZ = (() => {
   const MUNDOS = {
     tiempo: {
       textos: () => LABSPZ.tiempo, formal: TMP_FORMAL, def: TMP_DEF, isabelle: TMP_ISABELLE, teorema: { Q6: "Q6_finito" }, alt: {},
+      premisaFormal: TMP_PREMISA_FORMAL, premisaForma: TMP_PREMISA_FORMA,
       estilos: ESTILOS_TMP, maxA: 1, porDefecto: (id) => (TMP_ISABELLE[id] || TMP_COMPATIBLES).slice(), inicio: { prop: "Q2", marcadas: ["C_creador_anterior", "T_irreflexiva"] },
       nombreCosa: (i) => "ABCD"[i] || "c" + i,
       formulaDef: (d) => TMP_DEF[d.id] || TMP_REL[d.id],
@@ -672,7 +759,7 @@ const LB_SPZ = (() => {
   function veredicto() {
     const p = prop(), M = W(), isa = M.isabelle[p.id], alt = M.alt[p.id], el = S().marcadas, mundo = st.mundo;
     const teorema = M.teorema[p.id] || p.id;
-    if (isa && contiene(el, isa)) return demostrado(teorema, p.prueba, isa);
+    if (isa && contiene(el, isa)) return demostrado(teorema, p.prueba, isa, p.pasos);
     if (alt && contiene(el, alt.premisas)) return demostrado(p.teoremaAlt || alt.teorema, p.pruebaAlt, alt.premisas);
     const miTurno = ++st.turno;
     pintarResultado(`<p class="lb-nota">${esc(spzT("buscando"))}</p>`);
@@ -685,10 +772,13 @@ const LB_SPZ = (() => {
       if (!h.hay && h.completo) incompatibles(h, ms); else sinMundo(r, ms);
     }, 20);
   }
-  function demostrado(teorema, prueba, usadas) {
+  function demostrado(teorema, prueba, usadas, pasos) {
     st.turno++;
-    const sobran = S().marcadas.filter((x) => !usadas.includes(x));
-    pintarResultado(`<div class="lb-aviso lb-ok"><span class="spz-sello">${esc(spzT("selloOk"))}</span><h3 class="spz-h">${esc(spzT("seSigue"))}</h3><p>${prueba}</p>
+    const sobran = S().marcadas.filter((x) => !usadas.includes(x)), R = LABSPZ.repaso, M = W();
+    const etq = (k) => (k === "hip" ? `<span class="spz-paso-et">${esc(R.pHip)}</span>` : k === "fin" ? `<span class="spz-paso-et">${esc(R.pFin)}</span>`
+      : `<span class="lb-mono spz-paso-pr">${esc(k)}</span>` + (M.premisaForma && M.premisaForma[k] ? ` <button type="button" class="spz-forma" aria-expanded="false" data-spz-rep="${M.premisaForma[k]}">${esc(formaNombre(M.premisaForma[k]))}</button>` : ""));
+    const cuerpo = pasos ? `<p class="spz-sub">${esc(R.tPasos)}</p><ol class="spz-pasos">${pasos.map((s) => `<li><span>${sim(s.txt)}</span> ${etq(s.k)}</li>`).join("")}</ol>` : `<p>${prueba}</p>`;
+    pintarResultado(`<div class="lb-aviso lb-ok"><span class="spz-sello">${esc(spzT("selloOk"))}</span><h3 class="spz-h">${esc(spzT("seSigue"))}</h3>${cuerpo}
       <p class="lb-nota">${esc(spzT("teorema", { t: teorema, x: usadas.length ? usadas.join(", ") : spzT("ningunaAnadida") }))}${sobran.length ? " " + esc(spzT("sobran")) : ""}</p></div>`);
   }
   function contramodelo(m, ms) {
@@ -700,9 +790,24 @@ const LB_SPZ = (() => {
     pintarResultado(`<div class="lb-aviso lb-mal"><span class="spz-sello">${esc(spzT("selloMal"))}</span><h3 class="spz-h">${esc(spzT("noSeSigue"))}</h3><p>${esc(W().tam(m))}</p>
       ${faltan.length ? `<p class="lb-nota">${esc(spzT("usoTambien", { x: faltan.join(", ") }))}</p>` : ""}${p.nota ? `<p>${p.nota}</p>` : ""}${lecc}</div>
       <div class="lb-scroll spz-lienzo">${dibujar(m)}</div><div class="spz-leyenda">${leyenda(m)}</div>
-      <p class="lb-res spz-falla">${esc(fallo.length ? spzT("fallaCon", { x: fallo.join(", ") }) : spzT("fallaTal"))}</p>${hechos(m)}
+      <p class="lb-res spz-falla">${esc(fallo.length ? spzT("fallaCon", { x: fallo.join(", ") }) : spzT("fallaTal"))}</p>${conCosas(m)}${hechos(m)}
       ${W().extraContramodelo(m, S().marcadas)}
       <p class="lb-nota">${esc(spzT("encontrado", { ms }))}</p>`);
+  }
+  /* Quita los «para todo» del principio y lee la proposición con las cosas en que falla (x = A, y = B…). */
+  function conCosas(m) {
+    let f = W().formal[prop().id];
+    const pre = f.match(/^∀([^.]*)\.\s*/);
+    if (!pre || !Object.keys(m.fallo).length) return "";
+    f = f.slice(pre[0].length);
+    const nombre = W().nombreCosa;
+    for (const [v, val] of Object.entries(m.fallo)) {
+      const n = v.replace(/_$/, ""), por = n === "a" || n === "b" ? nombreAtr(val) : nombre(val);
+      f = f.replace(new RegExp("(^|[^A-Za-z_])" + n + "(?![A-Za-z_])", "g"), (_, a) => a + "§" + por);
+    }
+    const l = spzLeer(f.replace(/§/g, ""));
+    const sust = Object.entries(m.fallo).map(([v, val]) => v.replace(/_$/, "") + " = " + (v === "a" || v === "b" ? nombreAtr(val) : nombre(val))).join(", ");
+    return l ? `<p class="spz-lee"><span class="spz-lee-et">${esc(LABSPZ.repaso.conCosas.replace("{x}", sust))}:</span> ${l} <span class="lb-nota">${esc(LABSPZ.repaso.falsoAqui)}</span></p>` : "";
   }
   function sinMundo(r, ms) {
     const isa = W().isabelle[prop().id];
@@ -722,12 +827,37 @@ const LB_SPZ = (() => {
     const G = LABSPZ.guia;
     const sec = (s) => `<h4>${esc(s.titulo)}</h4>` + (s.parrafos || []).map((x) => `<p>${x}</p>`).join("") + (s.lista ? `<ul>${s.lista.map((x) => `<li>${x}</li>`).join("")}</ul>` : "");
     return `<details class="lb-saber spz-guia"><summary>${esc(G.titulo)}</summary>${G.secciones.map(sec).join("")}
-      <h4>${esc(G.tSimbolos)}</h4><dl class="spz-simbolos">${G.simbolos.map((x) => `<div><dt class="lb-sim">${esc(x.s)}</dt><dd>${esc(x.t)}</dd></div>`).join("")}</dl>
       <h4>${esc(G.tRecorrido)}</h4><ol>${G.recorrido.map((x) => `<li>${x}</li>`).join("")}</ol></details>`;
   }
 
+  /* Una entrada del repaso; con «suelta», sin id, para desplegarla bajo una premisa. */
+  function bloqueRepaso(b, suelta) {
+    const RP = (typeof LAB !== "undefined" && LAB.reProps) || {};
+    const tit = RP[b.id] ? RP[b.id].nom : b.titulo, dice = RP[b.id] ? RP[b.id].dice : "";
+    return `<div class="spz-rep${suelta ? " spz-rep-suelta" : ""}"${suelta ? "" : ` id="spz-rep-${b.id}"`}><h4>${esc(tit)}</h4>${dice ? `<p>${esc(dice.charAt(0).toUpperCase() + dice.slice(1))}.</p>` : ""}${b.txt ? `<p>${b.txt}</p>` : ""}${b.lista ? `<ul>${b.lista.map((x) => `<li>${sim(x)}</li>`).join("")}</ul>` : ""}${b.ej ? `<p class="spz-rep-ej">${sim(b.ej)}</p>` : ""}</div>`;
+  }
+  function repaso() {
+    const R = LABSPZ.repaso, bloque = (b) => bloqueRepaso(b);
+    const G = LABSPZ.guia;
+    return `<details class="lb-saber spz-repaso"><summary>${esc(R.titulo)}</summary><p class="lb-nota">${esc(R.intro)}</p>
+      <div class="spz-reps">${R.bloques.map(bloque).join("")}</div>
+      <h4>${esc(R.tSimbolos)}</h4><dl class="spz-simbolos">${G.simbolos.map((x) => `<div><dt class="lb-sim">${esc(x.s)}</dt><dd>${esc(x.t)}</dd></div>`).join("")}</dl>
+      <div class="lb-fila"><button type="button" class="btn ghost" data-spz-ir="relaciones">${esc(R.bPracticar)}</button></div></details>`;
+  }
+  /* Una fórmula con su lectura debajo. */
+  function conLectura(f, clase) {
+    const l = spzLeer(f);
+    return `<p class="lb-res ${clase || ""}">${sim(f)}</p>` + (l ? `<p class="spz-lee"><span class="spz-lee-et">${esc(LABSPZ.repaso.tLectura)}:</span> ${l}</p>` : "");
+  }
+
+  function formaNombre(id) {
+    const RP = (typeof LAB !== "undefined" && LAB.reProps) || {}, b = LABSPZ.repaso.bloques.find((x) => x.id === id);
+    return RP[id] ? RP[id].nom : b ? b.titulo : id;
+  }
+
   function defFila(d) {
-    return `<li><span class="spz-origen">${esc(d.origen)}</span><span class="spz-texto">${d.texto}</span><span class="lb-res">${sim(W().formulaDef(d))}</span></li>`;
+    const f = W().formulaDef(d), l = /:⟺/.test(f) ? spzLeer(f) : null;
+    return `<li><span class="spz-origen">${esc(d.origen)}</span><span class="spz-texto">${d.texto}</span><span class="lb-res">${sim(f)}</span>${l ? `<span class="spz-lee"><span class="spz-lee-et">${esc(LABSPZ.repaso.tLectura)}:</span> ${l}</span>` : ""}</li>`;
   }
 
   function pintar() {
@@ -736,21 +866,23 @@ const LB_SPZ = (() => {
     const premisas = X.grupos.map((g) => `<fieldset class="spz-grupo"><legend>${esc(g.nom)}</legend>` +
       X.premisas.filter((x) => x.grupo === g.id).map((x) => `<label class="spz-premisa${isa && isa.includes(x.id) ? " spz-isa" : ""}" for="spz-pr-${x.id}">
         <input type="checkbox" id="spz-pr-${x.id}" value="${x.id}"${el.includes(x.id) ? " checked" : ""}>
-        <span class="lb-mono spz-nom">${x.id}${isa && isa.includes(x.id) ? ` <span class="spz-usada">· ${esc(spzT("usoIsabelle"))}</span>` : ""}</span><span class="spz-que">${esc(x.que)}</span></label>`).join("") + "</fieldset>").join("");
+        <span class="lb-mono spz-nom">${x.id}${isa && isa.includes(x.id) ? ` <span class="spz-usada">· ${esc(spzT("usoIsabelle"))}</span>` : ""}</span><span class="spz-que">${esc(x.que)}</span>${M.premisaFormal && M.premisaFormal[x.id] ? `<span class="spz-pf">${sim(M.premisaFormal[x.id])}${M.premisaForma[x.id] ? ` <button type="button" class="spz-forma" aria-expanded="false" data-spz-rep="${M.premisaForma[x.id]}">${esc(formaNombre(M.premisaForma[x.id]))}</button>` : ""}</span>` : ""}</label>`).join("") + "</fieldset>").join("");
     const botonMundo = (id, k) => `<button type="button" class="fbtn" data-spz-mundo="${id}" aria-pressed="${st.mundo === id}">${esc(spzT(k))}</button>`;
     const abierta = box.querySelector(".spz-guia") && box.querySelector(".spz-guia").open;
+    const repAbierto = box.querySelector(".spz-repaso") && box.querySelector(".spz-repaso").open;
     box.innerHTML = `<div class="lb-fila spz-mundos" role="group" aria-label="${esc(spzT("mundo"))}"><span class="lb-et">${esc(spzT("mundo"))}</span>${botonMundo("tiempo", "mundoTiempo")}${botonMundo("spinoza", "mundoSpinoza")}</div>
       <p class="lg-intro">${esc(spzT(M.lede))}</p>
       <div class="lb-aviso lb-warn"><span class="spz-sello">${esc(spzT("enDesarrollo"))}</span> ${spzT("avisoDesarrollo")}</div>
       ${guia()}
+      ${repaso()}
       <section class="lb-mesa"><h3>${esc(spzT("tDefiniciones"))}</h3><p class="lb-nota">${spzT(M.notaDefs)}</p>
         ${M.secciones().map(([k, lista]) => `<p class="spz-sub">${esc(spzT(k))}</p><ul class="spz-defs">${lista.map(defFila).join("")}</ul>`).join("")}</section>
       <div class="lb-dos">
         <section class="lb-mesa"><h3>${esc(spzT("tPregunta"))}</h3>
           <label class="lb-et-campo" for="spz-prop">${esc(spzT("proposicion"))}<select id="spz-prop">${M.grupos().map(([k, parte]) => `<optgroup label="${esc(spzT(k))}">${opciones(parte)}</optgroup>`).join("")}</select></label>
           ${p.cita ? `<blockquote class="spz-cita">«${esc(p.cita)}»</blockquote>` : ""}
-          <div class="spz-formal">${defs.length ? `<span class="spz-sub">${esc(spzT("defsUsa"))}</span><ul class="lb-res spz-lista">${defs.map((d) => `<li>${sim(d)}</li>`).join("")}</ul>` : ""}
-            <span class="spz-sub">${esc(spzT("enLogica"))}</span><p class="lb-res">${sim(M.formal[p.id])}</p></div>
+          <div class="spz-formal">${defs.length ? `<span class="spz-sub">${esc(spzT("defsUsa"))}</span><div class="spz-lista">${defs.map((d) => conLectura(d)).join("")}</div>` : ""}
+            <span class="spz-sub">${esc(spzT("enLogica"))}</span>${conLectura(M.formal[p.id])}</div>
           <p class="lb-pregunta">${spzT("seComprueba", { x: p.pregunta })}</p>
           <p class="lb-nota">${esc(isa ? (isa.length ? spzT("necesitaCon", { x: isa.join(", ") }) : spzT("necesitaSin")) : spzT("necesitaNo"))}</p>
           <div class="lb-fila"><button type="button" class="btn ghost" data-spz="isabelle">${esc(spzT("bIsabelle"))}</button><button type="button" class="btn ghost" data-spz="todas">${esc(spzT("bTodas"))}</button><button type="button" class="btn ghost" data-spz="ninguna">${esc(spzT("bNinguna"))}</button></div>
@@ -761,6 +893,24 @@ const LB_SPZ = (() => {
       </div>
       <p class="lb-nota">${esc(spzT(M.pie))}</p>`;
     if (abierta) box.querySelector(".spz-guia").open = true;
+    if (repAbierto) box.querySelector(".spz-repaso").open = true;
+    /* Las etiquetas de las premisas despliegan, justo debajo, la entrada del repaso que toca (sin marcar la casilla). */
+    box.querySelectorAll("[data-spz-rep]").forEach((b) => b.addEventListener("click", (e) => {
+      e.preventDefault(); e.stopPropagation();
+      const et = b.closest(".spz-premisa"), sig = et.nextElementSibling;   /* premisas; los pasos, abajo (delegado) */
+      if (sig && sig.classList.contains("spz-rep-suelta")) { sig.remove(); b.setAttribute("aria-expanded", "false"); return; }
+      const bl = LABSPZ.repaso.bloques.find((x) => x.id === b.dataset.spzRep);
+      if (bl) { et.insertAdjacentHTML("afterend", bloqueRepaso(bl, true)); b.setAttribute("aria-expanded", "true"); }
+    }));
+    const res = box.querySelector("#spz-resultado");
+    res.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-spz-rep]"); if (!b) return;
+      const li = b.closest("li"), sig = li.lastElementChild;
+      if (sig && sig.classList.contains("spz-rep-suelta")) { sig.remove(); b.setAttribute("aria-expanded", "false"); return; }
+      const bl = LABSPZ.repaso.bloques.find((x) => x.id === b.dataset.spzRep);
+      if (bl) { li.insertAdjacentHTML("beforeend", bloqueRepaso(bl, true)); b.setAttribute("aria-expanded", "true"); }
+    });
+    box.querySelectorAll("[data-spz-ir]").forEach((b) => b.addEventListener("click", () => { location.hash = "#logica/" + b.dataset.spzIr; }));
     box.querySelectorAll("[data-spz-mundo]").forEach((b) => b.addEventListener("click", () => {
       if (st.mundo === b.dataset.spzMundo) return;
       st.mundo = b.dataset.spzMundo; st.turno++; pintar(); if (!S().html) veredicto();

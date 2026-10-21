@@ -3042,6 +3042,27 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .spz-simbolos > div{ display:flex; gap:.6rem; align-items:baseline }
 .spz-simbolos dt{ min-width:2.2rem; direction:ltr; unicode-bidi:isolate }
 .spz-simbolos dd{ margin:0 }
+/* (21-10) Mesa «Spinoza»: lectura de las fórmulas, repaso de cosas, propiedades y relaciones, y forma de cada premisa */
+.spz-lee{ display:block; font-family:var(--serif); font-size:.95rem; line-height:1.5; margin:.15rem 0 .35rem; color:var(--ink) }
+.spz-lee var{ font-style:italic; font-family:var(--serif); color:var(--lb) }
+.spz-lee-et{ font-family:var(--sans); font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-inline-end:.2rem }
+.spz-lista{ display:grid; gap:.2rem; font-size:.88rem }
+.spz-repaso h4{ font-family:var(--sans); font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:.2rem 0 .25rem }
+.spz-reps{ display:grid; grid-template-columns:repeat(auto-fill, minmax(16rem, 1fr)); gap:.6rem }
+.spz-rep{ border:1px solid var(--line-soft); border-radius:10px; padding:.5rem .7rem; font-size:.9rem; line-height:1.5 }
+.spz-rep p{ margin:.2rem 0 }
+.spz-rep ul{ margin:.2rem 0; padding-inline-start:1.1rem; display:grid; gap:.2rem }
+.spz-rep-ej{ color:var(--muted); font-size:.86rem }
+.spz-rep-luz{ border-color:var(--lb); background:var(--lb-suave) }
+.spz-pf{ grid-column:2; display:flex; flex-wrap:wrap; gap:.2rem .5rem; align-items:baseline; font:.78rem var(--mono); color:var(--muted); direction:ltr; unicode-bidi:isolate }
+.spz-forma{ font:500 .72rem var(--sans); color:var(--lb); background:none; border:1px solid var(--lb); border-radius:999px; padding:.05rem .5rem; cursor:pointer }
+.spz-forma:hover, .spz-forma:focus-visible{ background:var(--lb-suave) }
+.spz-rep-suelta{ margin:.1rem 0 .4rem 1.6rem; background:var(--lb-suave); border-color:var(--lb) }
+.spz-pasos{ margin:.3rem 0 .4rem; padding-inline-start:1.4rem; display:grid; gap:.35rem; font-size:.92rem }
+.spz-pasos li > span:first-child{ margin-inline-end:.3rem }
+.spz-paso-et{ font:500 .72rem var(--sans); color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:.05rem .45rem }
+.spz-paso-pr{ font-size:.75rem; color:var(--ok) }
+.spz-pasos .spz-rep-suelta{ margin:.3rem 0 .1rem }
 
 
 /* ==== css/rescritura.css ==== */
