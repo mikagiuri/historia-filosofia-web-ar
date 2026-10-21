@@ -3068,6 +3068,15 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .spz-isabelle h4{ font-family:var(--sans); font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:.8rem 0 .3rem }
 .spz-isabelle ul{ margin:.2rem 0; padding-inline-start:1.2rem; display:grid; gap:.3rem; font-size:.92rem }
 .spz-gracias{ font-family:var(--serif); font-style:italic; border-inline-start:3px solid var(--lb); padding-inline-start:.7rem }
+/* (21-10) Mesa «Spinoza»: escribir la proposición y las premisas propias */
+.spz-editor{ display:grid; gap:.5rem; background:var(--surface-2); border-radius:10px; padding:.7rem .8rem }
+.spz-escribe, #spz-nueva{ width:100%; font-size:1rem; padding:.45rem .6rem; border-radius:8px; border:1px solid var(--line); background:var(--surface); color:var(--ink); direction:ltr }
+.spz-escribe:focus, #spz-nueva:focus{ outline:2px solid var(--lb); outline-offset:1px }
+.spz-teclado{ gap:.3rem }
+.spz-tecla{ font-family:var(--mono); min-width:2.2rem; padding:.2rem .5rem }
+.spz-modo{ display:inline-flex; gap:.35rem; align-items:center; font-size:.9rem; cursor:pointer }
+.spz-mias .spz-premisa .spz-pf{ grid-column:2 }
+.spz-mias .lb-err:empty{ display:none }
 
 
 /* ==== css/rescritura.css ==== */

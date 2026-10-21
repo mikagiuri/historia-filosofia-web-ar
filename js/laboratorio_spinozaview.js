@@ -209,9 +209,55 @@
     },
     clase: (L, x, verdad) => (evaluar(L.increado(x), verdad) ? 'increado' : 'creado'),
   };
+  // ---------- Tercer mundo: el tiempo, definido (Mundo_tiempo_definido.thy) ----------
+  // Los «atributos» de este mundo son instantes 0, 1, 2…; cada cosa empieza y acaba en un instante.
+  // Antes, DuraMas, Sobrevive y ExisteEn son definiciones; las condiciones del tiempo (FIJAS) van siempre.
+  const RELOJ = {
+    RELACIONES: { Empieza: ['C', 'A'], Acaba: ['C', 'A'], Crea: ['C', 'C'] },
+    maxAtributos: 4,
+    lenguaje(m) {
+      const L = base(m, RELOJ.RELACIONES), I = m.A;
+      const cuando = (rel, x, f) => o(I.map(t => y(L[rel](x, t), f(t))));
+      L.Antes = (x, z) => cuando('Empieza', x, t => cuando('Empieza', z, u => (t < u ? T : F)));
+      L.Sobrevive = (x, z) => cuando('Acaba', x, t => cuando('Acaba', z, u => (u < t ? T : F)));
+      L.DuraMas = (x, z) => cuando('Empieza', x, a => cuando('Acaba', x, b => cuando('Empieza', z, c2 => cuando('Acaba', z, d => (b - a > d - c2 ? T : F)))));
+      L.ExisteEn = (x, t) => cuando('Empieza', x, a => cuando('Acaba', x, b => (a <= t && t <= b ? T : F)));
+      L.increado = x => no(L.algunaCosa(z => L.Crea(z, x)));
+      return L;
+    },
+    FIJAS: [
+      L => L.todaCosa(x => L.algunAtr(t => L.Empieza(x, t))),
+      L => L.todaCosa(x => L.todoAtr(t => L.todoAtr(u => si(y(L.Empieza(x, t), L.Empieza(x, u)), L.igual(t, u))))),
+      L => L.todaCosa(x => L.algunAtr(t => L.Acaba(x, t))),
+      L => L.todaCosa(x => L.todoAtr(t => L.todoAtr(u => si(y(L.Acaba(x, t), L.Acaba(x, u)), L.igual(t, u))))),
+      L => L.todaCosa(x => L.todoAtr(t => L.todoAtr(u => si(y(L.Empieza(x, t), L.Acaba(x, u)), t <= u ? T : F)))),
+    ],
+    PREMISAS: {
+      K_existe: L => L.todaCosa(x => L.todaCosa(z => si(L.Crea(x, z), L.algunAtr(t => y(L.Empieza(z, t), L.ExisteEn(x, t)))))),
+      K_antes: L => L.todaCosa(x => L.todaCosa(z => si(L.Crea(x, z), L.Antes(x, z)))),
+      // Más débil: quien crea no empieza después (puede crear a la vez que empieza lo creado, o crearse a sí mismo).
+      K_no_despues: L => L.todaCosa(x => L.todaCosa(z => si(L.Crea(x, z), no(L.Antes(z, x))))),
+      K_un_creador: L => L.todaCosa(x => L.todaCosa(z => L.todaCosa(w => si(y(L.Crea(x, w), L.Crea(z, w)), L.igual(x, z))))),
+      K_todo_creado: L => L.todaCosa(x => L.algunaCosa(z => L.Crea(z, x))),
+    },
+    OBJETIVOS: {
+      R1: { vars: [['x', 'C']], cuerpo: (L, e) => no(L.Antes(e.x, e.x)) },
+      R2: { vars: [['x', 'C'], ['y_', 'C'], ['z', 'C']], cuerpo: (L, e) => si(y(L.Antes(e.x, e.y_), L.Antes(e.y_, e.z)), L.Antes(e.x, e.z)) },
+      R3: { vars: [['x', 'C'], ['y_', 'C']], cuerpo: (L, e) => si(L.Antes(e.x, e.y_), no(L.Antes(e.y_, e.x))) },
+      R4: { vars: [['x', 'C']], cuerpo: (L, e) => no(L.Crea(e.x, e.x)) },
+      R5: { vars: [], posible: true, cuerpo: L => L.algunaCosa(x => L.algunaCosa(z => y(L.Crea(x, z), L.Sobrevive(z, x)))) },
+      R6: { vars: [], posible: true, cuerpo: L => L.algunaCosa(x => L.algunaCosa(z => y(L.Crea(x, z), L.DuraMas(z, x)))) },
+      R7: { vars: [['x', 'C'], ['y_', 'C']], cuerpo: (L, e) => si(L.Sobrevive(e.x, e.y_), L.DuraMas(e.x, e.y_)) },
+      R8: { vars: [['x', 'C'], ['y_', 'C']], cuerpo: (L, e) => si(y(L.Antes(e.x, e.y_), L.Sobrevive(e.x, e.y_)), L.DuraMas(e.x, e.y_)) },
+      R9: { vars: [], cuerpo: L => L.algunaCosa(x => L.increado(x)) },
+      // R10, posibilidad: todo tiene creador (sin K_antes: crear a la vez, o crearse a sí mismo).
+      R10: { vars: [], posible: true, cuerpo: L => L.todaCosa(x => L.algunaCosa(z => L.Crea(z, x))) },
+    },
+    clase: (L, x, verdad) => (evaluar(L.increado(x), verdad) ? 'increado' : 'creado'),
+  };
   const SPINOZA = { RELACIONES, lenguaje, PREMISAS, OBJETIVOS,
     clase: (L, x, verdad) => (evaluar(L.sustancia(x), verdad) ? 'sustancia' : evaluar(L.modo(x), verdad) ? 'modo' : 'ninguna') };
-  const TEORIAS = { spinoza: SPINOZA, tiempo: TIEMPO };
+  const TEORIAS = { spinoza: SPINOZA, tiempo: TIEMPO, reloj: RELOJ };
   const teoria = op => TEORIAS[(op && op.teoria) || 'spinoza'];
 
   function casos(m, vars) {
@@ -350,11 +396,15 @@
   }
 
   // ---------- Búsqueda de contramodelo ----------
+  // Una premisa es el nombre de una de la teoría o una función L => término (escrita por el alumno);
+  // un objetivo, el nombre de uno de la teoría o un objeto { vars, cuerpo, posible }.
+  const premisa = (teo, p) => (typeof p === 'function' ? p : teo.PREMISAS[p]);
+  const objetivoDe = (teo, o) => (o && typeof o === 'object' ? o : teo.OBJETIVOS[o]);
   function construir(m, premisas, objetivo, teo) {
     const L = teo.lenguaje(m);
-    const partes = premisas.map(p => teo.PREMISAS[p](L));
+    const partes = [...(teo.FIJAS || []).map(f => f(L)), ...premisas.map(p => premisa(teo, p)(L))];
     if (objetivo) {
-      const obj = teo.OBJETIVOS[objetivo];
+      const obj = objetivoDe(teo, objetivo);
       // Posibilidad: ∃ caso. cuerpo (un mundo en que ocurre). Si no: ¬ ∀ vars. cuerpo  ≡  ∃ caso. ¬cuerpo
       if (obj.posible) partes.push(o(casos(m, obj.vars).map(e => obj.cuerpo(L, e))));
       else partes.push(o(casos(m, obj.vars).map(e => no(obj.cuerpo(L, e)))));
@@ -407,7 +457,7 @@
     }
     const verdad = id => sol[id] === 1;
     const clase = m.C.map(x => teo.clase(L, x, verdad));
-    const obj = objetivo && teo.OBJETIVOS[objetivo];
+    const obj = objetivo && objetivoDe(teo, objetivo);
     const fallo = (obj && !obj.posible && casos(m, obj.vars).find(e => !evaluar(obj.cuerpo(L, e), verdad))) || {};
     return { n: m.n, k: m.k, hechos, clase, fallo };
   }
@@ -420,7 +470,7 @@
     const ciertos = new Set();
     for (const [rel, lista] of Object.entries(mundo.hechos)) for (const args of lista) ciertos.add(m.v(rel, ...args).id);
     const verdad = id => ciertos.has(id);
-    return premisas.every(p => evaluar(teo.PREMISAS[p](L), verdad));
+    return [...(teo.FIJAS || []), ...premisas.map(p => premisa(teo, p))].every(f => evaluar(f(L), verdad));
   }
 
   const API = { buscarContramodelo, hayMundo, evaluarPremisasEn, PREMISAS, OBJETIVOS, RELACIONES, TEORIAS,
@@ -551,6 +601,37 @@ const TMP_DEFECTO = { Q4: TMP_SIN_DISCUTIBLE, Q8: TMP_SIN_DISCUTIBLE, Q9: TMP_CO
 const TMP_POSIBLE = { Q8: { teorema: "Q8_posible", impide: ["C_creador_dura_mas", "D_irreflexiva", "D_transitiva"], teoremaNo: "Q8_imposible_con_dura_mas" },
   Q9: { teorema: "Q9_posible", impide: ["C_un_creador"], teoremaNo: "Q9_imposible_con_un_creador" } };
 
+/* Tercer mundo: el tiempo, definido (Mundo_tiempo_definido.thy). Los instantes son las variables t, u, v, w. */
+const SPZ_VARS_A = { tiempo: [], spinoza: ["a", "b"], reloj: ["t", "u", "v", "w"] };
+let SPZ_MUNDO_LECTURA = null;   /* el mundo que se está leyendo (lo fija la vista); sin él, a y b son atributos */
+const REL_FORMAL = {
+  R1: "∀x. ¬Antes(x, x)", R2: "∀x y z. Antes(x, y) ∧ Antes(y, z) → Antes(x, z)", R3: "∀x y. Antes(x, y) → ¬Antes(y, x)",
+  R4: "∀x. ¬Crea(x, x)", R5: "∃x y. Crea(x, y) ∧ Sobrevive(y, x)", R6: "∃x y. Crea(x, y) ∧ DuraMas(y, x)",
+  R7: "∀x y. Sobrevive(x, y) → DuraMas(x, y)", R8: "∀x y. Antes(x, y) ∧ Sobrevive(x, y) → DuraMas(x, y)", R9: "∃x. increado(x)",
+  R10: "∀x. ∃y. Crea(y, x)",
+};
+const REL_DEF = {
+  Antes: "Antes(x, y) :⟺ ∃t u. Empieza(x, t) ∧ Empieza(y, u) ∧ t < u",
+  Sobrevive: "Sobrevive(x, y) :⟺ ∃t u. Acaba(x, t) ∧ Acaba(y, u) ∧ u < t",
+  ExisteEn: "ExisteEn(x, t) :⟺ ∃u v. Empieza(x, u) ∧ Acaba(x, v) ∧ u ≤ t ∧ t ≤ v",
+  DuraMas: "DuraMas(x, y) :⟺ acaba(x) − empieza(x) > acaba(y) − empieza(y)",
+  increado: "increado(x) :⟺ ¬∃y. Crea(y, x)",
+};
+const REL_FIJAS_FORMAL = { F_instantes: "0 < 1 < 2 < 3 < …", F_vida: "∀x. ∃t u. Empieza(x, t) ∧ Acaba(x, u) ∧ t ≤ u" };
+const REL_PREMISA_FORMAL = {
+  K_existe: "∀x y. Crea(x, y) → ∃t. Empieza(y, t) ∧ ExisteEn(x, t)", K_antes: "∀x y. Crea(x, y) → Antes(x, y)",
+  K_no_despues: "∀x y. Crea(x, y) → ¬Antes(y, x)",
+  K_un_creador: "∀x y z. Crea(x, z) ∧ Crea(y, z) → x = y", K_todo_creado: "∀x. ∃y. Crea(y, x)",
+};
+const REL_PREMISA_FORMA = { K_antes: "inclusion", K_un_creador: "unico", K_todo_creado: "serie" };
+/* R1-R3 y R8 salen sin premisa ninguna: de lo que es el tiempo. */
+const REL_ISABELLE = { R1: [], R2: [], R3: [], R4: ["K_antes"], R7: null, R8: [], R9: ["K_antes"] };
+const REL_COMPATIBLES = ["K_existe", "K_antes", "K_un_creador"];
+/* La 10 (todo puede tener creador) solo es posible sin K_antes: se empieza con la premisa más débil, K_no_despues. */
+const REL_DEFECTO = { R10: ["K_existe", "K_no_despues", "K_un_creador"] };
+const REL_POSIBLE = { R5: { teorema: "R5_posible" }, R6: { teorema: "R6_posible" },
+  R10: { teorema: "R10_posible", impide: ["K_antes"], teoremaNo: "todo_creado_incompatible" } };
+
 /* Fórmulas de las premisas del mundo de práctica y su forma (entrada del repaso que abre la etiqueta). */
 const TMP_PREMISA_FORMAL = {
   T_irreflexiva: "∀x. ¬Antes(x, x)", T_transitiva: "∀x y z. Antes(x, y) ∧ Antes(y, z) → Antes(x, z)",
@@ -570,7 +651,8 @@ function spzLeer(f) {
   const LX = LABSPZ.lectura, tpl = (s, v) => escL(s).replace(/\{(\w+)\}/g, (_, k) => (v[k] != null ? v[k] : ""));
   const lista = (xs, k) => (xs.length < 3 ? xs.reduce((a, b) => tpl(LX[k], { a, b })) : tpl(LX[k], { a: xs.slice(0, -1).join(", "), b: xs[xs.length - 1] }));
   const nombre = (x) => (x === "Dios" ? escL(LX.Dios) : "<var>" + escL(x) + "</var>");
-  const esAtr = (v) => v === "a" || v === "b";
+  const mundoL = SPZ_MUNDO_LECTURA, deInst = mundoL === "reloj";
+  const esAtr = (v) => (mundoL ? SPZ_VARS_A[mundoL] : ["a", "b"]).includes(v);
   /* Lo compuesto que va dentro de otra cosa, entre paréntesis para que no se mezcle. */
   const leer = (e, ctx) => {
     const s = e.at ? e.pos : e.txt;
@@ -578,7 +660,7 @@ function spzLeer(f) {
     return par ? "(" + s + ")" : s;
   };
   function analizar(src) {
-    const toks = src.match(/[∀∃¬∧∨→↔≠=(),.]|[A-Za-zÀ-ÿ_]\w*|\S/g) || [];
+    const toks = src.match(/[∀∃¬∧∨→↔≠=<≤(),.]|[A-Za-zÀ-ÿ_]\w*|\S/g) || [];
     let i = 0;
     const ver = () => toks[i], tomar = (x) => { if (i >= toks.length || (x && toks[i] !== x)) throw 0; return toks[i++]; };
     function cuant(negado) {
@@ -586,15 +668,18 @@ function spzLeer(f) {
       while (ver() && ver() !== ".") { const v = tomar(); if (v !== ",") vs.push(v); }
       tomar(".");
       const cs = vs.filter((v) => !esAtr(v)), as = vs.filter(esAtr), partes = [], nom = (xs) => lista(xs.map(nombre), "conY");
-      if (negado && cs.length + as.length === 1) partes.push(tpl(cs.length ? LX.noHay : LX.noHayAtr, { v: nom(cs.length ? cs : as) }));
+      /* En el mundo del tiempo definido, lo que en Spinoza son atributos son instantes. */
+      const K = deInst ? { todo1: LX.paraTodoI, todos: LX.paraTodosI, hay1: LX.hayInst, hays: LX.hayInsts, mixto: LX.hayMixtoI, no: LX.noHayInst }
+        : { todo1: LX.paraTodo, todos: LX.paraTodos, hay1: LX.hayAtr, hays: LX.hayAtrs, mixto: LX.hayMixto, no: LX.noHayAtr };
+      if (negado && cs.length + as.length === 1) partes.push(tpl(cs.length ? LX.noHay : K.no, { v: nom(cs.length ? cs : as) }));
       else if (negado) throw 0;
-      else if (q === "∃" && cs.length && as.length) partes.push(tpl(LX.hayMixto, { c: nom(cs), a: nom(as) }));
+      else if (q === "∃" && cs.length && as.length) partes.push(tpl(K.mixto, { c: nom(cs), a: nom(as) }));
       else if (q === "∀") {
         if (cs.length) partes.push(tpl(cs.length === 1 ? LX.paraToda : LX.paraTodas, { v: nom(cs) }));
-        if (as.length) partes.push(tpl(as.length === 1 ? LX.paraTodo : LX.paraTodos, { v: nom(as) }));
+        if (as.length) partes.push(tpl(as.length === 1 ? K.todo1 : K.todos, { v: nom(as) }));
       } else {
         if (cs.length) partes.push(tpl(cs.length === 1 ? LX.hayUna : LX.hayVarias, { v: nom(cs) }));
-        if (as.length) partes.push(tpl(as.length === 1 ? LX.hayAtr : LX.hayAtrs, { v: nom(as) }));
+        if (as.length) partes.push(tpl(as.length === 1 ? K.hay1 : K.hays, { v: nom(as) }));
       }
       const cab = lista(partes, "conY"), cuerpo = leer(expr());
       return { k: "q", txt: q === "∀" && !negado ? tpl(LX.trasTodo, { a: cab, b: cuerpo }) : cab + " " + cuerpo };
@@ -612,6 +697,10 @@ function spzLeer(f) {
       if (ver() === "=" || ver() === "≠") {
         const op = tomar(), v = { 1: nombre(n), 2: nombre(tomar()) };
         return op === "=" ? { at: true, pos: tpl(LX.igual, v), neg: tpl(LX.distinto, v) } : { at: true, pos: tpl(LX.distinto, v), neg: tpl(LX.igual, v) };
+      }
+      if (ver() === "<" || ver() === "≤") {
+        const op = tomar(), v = { 1: nombre(n), 2: nombre(tomar()) };
+        return { at: true, pos: tpl(op === "<" ? LX.menorI : LX.menorIgI, v), neg: tpl(LX.noEs, { a: tpl(op === "<" ? LX.menorI : LX.menorIgI, v) }) };
       }
       throw 0;
     }
@@ -635,6 +724,152 @@ function spzLeer(f) {
     const s = leer(analizar(f));
     return (/^[a-zà-ÿ]/.test(s) ? s.charAt(0).toUpperCase() + s.slice(1) : s) + ".";
   } catch (e) { return null; }
+}
+
+/* Lo que escribe el alumno: texto → árbol → fórmula del motor (y su forma canónica, para leerla en voz alta).
+   Atajos: ~ ! no (¬), & (∧), | (∨), -> (→), <-> (↔), != (≠), todo (∀), hay (∃). Variables: letras minúsculas. */
+function spzVocabulario(mundo) {
+  const T = MotorMundos.TEORIAS[mundo], voc = {};
+  for (const [n, tipos] of Object.entries(T.RELACIONES)) voc[n] = tipos;
+  const defs = mundo === "tiempo" ? TMP_DEF : mundo === "reloj" ? REL_DEF : SPZ_DEF;
+  for (const [n, f] of Object.entries(defs)) {
+    const m = f.match(/^\w+\(([^)]*)\)/), args = m ? m[1].split(",").map((x) => x.trim()) : [];
+    voc[n] = args.map((a) => (SPZ_VARS_A[mundo].includes(a) ? "A" : "C"));
+  }
+  return voc;
+}
+function spzCompilar(texto, mundo) {
+  const voc = spzVocabulario(mundo), nombres = Object.keys(voc);
+  const plano = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const canon = Object.fromEntries(nombres.map((n) => [plano(n), n]));
+  const esVar = (t) => /^[a-z]\d*$/.test(t) && !canon[t];
+  const esAtr = (v) => SPZ_VARS_A[mundo].includes(v);
+  const constantes = mundo === "spinoza" ? { dios: "Dios", [plano(spzT("Dios"))]: "Dios" } : {};
+  const err = (k, v) => { throw { k, v: v || {} }; };
+  const src = String(texto || "").replace(/<->|<=>/g, "↔").replace(/->|=>/g, "→").replace(/!=/g, "≠").replace(/<=/g, "≤").replace(/[~!]/g, "¬").replace(/&/g, "∧").replace(/\|/g, "∨");
+  const toks = src.match(/[∀∃¬∧∨→↔≠=<≤(),.:]|[A-Za-zÀ-ÿ؀-ۿ_][\wÀ-ÿ؀-ۿ]*|\S/g) || [];   // también letras árabes (palabras clave traducidas)
+  if (!toks.length) return { ok: false, error: { k: "errVacio", v: {} } };
+  /* Palabras para ∀, ∃ y ¬: las de la lengua de la web (palTodo, palHay, palNo) y, de respaldo, castellano e inglés. */
+  const PAL = { todo: "∀", todos: "∀", all: "∀", forall: "∀", hay: "∃", existe: "∃", exists: "∃", some: "∃", no: "¬", not: "¬",
+    [plano(spzT("palTodo"))]: "∀", [plano(spzT("palHay"))]: "∃", [plano(spzT("palNo"))]: "¬" };
+  for (let k = 0; k < toks.length; k++) if (PAL[plano(toks[k])] && toks[k + 1] !== "(") toks[k] = PAL[plano(toks[k])];
+  let i = 0;
+  const ver = () => toks[i], tomar = () => toks[i++];
+  const libres = [], ligadas = [];
+  function termino(tipo, nombre, lugar) {
+    const t = tomar();
+    if (t == null) err("errFin");
+    const c = constantes[plano(t)];
+    if (c) { if (tipo === "A") err("errTipo", { x: nombre, n: lugar }); return { c }; }
+    if (!esVar(t)) err("errEsperabaCosa", { x: t, y: nombre });
+    if (tipo === "C" && esAtr(t)) err(mundo === "reloj" ? "errTipoCI" : "errTipoC", { x: nombre, n: lugar });
+    if (tipo === "A" && !esAtr(t)) err(mundo === "reloj" ? "errTipoI" : "errTipo", { x: nombre, n: lugar });
+    if (!ligadas.includes(t) && !libres.includes(t)) libres.push(t);
+    return { v: t };
+  }
+  function atomo() {
+    const t = tomar();
+    if (t == null) err("errFin");
+    if (t === ")") err("errAbre");
+    if (/^[∧∨→↔.,:=≠<≤]$/.test(t)) err("errEsperaba", { x: t });
+    const n = canon[plano(t)];
+    if (n && ver() === "(") {
+      tomar(); const tipos = voc[n], args = [];
+      while (ver() !== ")") {
+        if (ver() == null) err("errParen");
+        if (args.length && tomar() !== ",") err("errArgs", { x: n, n: tipos.length });
+        if (args.length >= tipos.length) err("errArgs", { x: n, n: tipos.length });
+        args.push(termino(tipos[args.length], n, args.length + 1));
+      }
+      tomar();
+      if (args.length !== tipos.length) err("errArgs", { x: n, n: tipos.length });
+      return { at: n, args };
+    }
+    if (n) err("errFaltaParen", { x: n });
+    if (esVar(t) || constantes[plano(t)]) {
+      i--; const a = termino(null, "=", 1), op = tomar();
+      if (op !== "=" && op !== "≠" && op !== "<" && op !== "≤") err(op == null ? "errFin" : "errSobra", { x: op });
+      const b = termino(null, op, 2);
+      if ((op === "<" || op === "≤") && !(a.v && esAtr(a.v) && b.v && esAtr(b.v))) err("errComp", { x: op });
+      return { eq: op, a, b };
+    }
+    if (/^[A-Za-zÀ-ÿ]/.test(t)) err("errNombre", { x: t, y: nombres.join(", ") });
+    err("errSimbolo", { x: t });
+  }
+  function cuant() {
+    const q = tomar(), vs = [];
+    while (ver() != null && esVar(ver())) vs.push(tomar());
+    if (!vs.length) err("errCuant", { x: q });
+    if (ver() === "." || ver() === ":") tomar();
+    ligadas.push(...vs);
+    const cuerpo = expr();
+    vs.forEach(() => ligadas.pop());
+    return { q, vs, cuerpo };
+  }
+  function un() {
+    const t = ver();
+    if (t === "¬") { tomar(); return { no: un() }; }
+    if (t === "∀" || t === "∃") return cuant();
+    if (t === "(") { tomar(); const e = expr(); if (tomar() !== ")") err("errParen"); return e; }
+    return atomo();
+  }
+  const cadena = (sig, op, k) => () => { const xs = [sig()]; while (ver() === op) { tomar(); xs.push(sig()); } return xs.length === 1 ? xs[0] : { [k]: xs }; };
+  const conj = cadena(un, "∧", "kY"), disy = cadena(conj, "∨", "kO");
+  function impl() { const a = disy(); if (ver() === "→") { tomar(); return { si: [a, impl()] }; } return a; }
+  function expr() { const a = impl(); if (ver() === "↔") { tomar(); return { sii: [a, impl()] }; } return a; }
+  let arbol;
+  try {
+    arbol = expr();
+    if (i < toks.length) err(toks[i] === ")" ? "errAbre" : "errSobra", { x: toks[i] });
+  } catch (e) { if (e && e.k) return { ok: false, error: e }; throw e; }
+
+  /* Forma canónica (para mostrarla y leerla) */
+  const nivel = (n) => (n.q ? 0 : n.sii ? 1 : n.si ? 2 : n.kO ? 3 : n.kY ? 4 : n.no ? 5 : 6);
+  const ter = (t) => t.c || t.v;
+  function imp(n, min) {
+    let s;
+    if (n.q) s = n.q + n.vs.join(" ") + ". " + imp(n.cuerpo, 0);
+    else if (n.sii) s = imp(n.sii[0], 2) + " ↔ " + imp(n.sii[1], 2);
+    else if (n.si) s = imp(n.si[0], 3) + " → " + imp(n.si[1], 2);
+    else if (n.kO) s = n.kO.map((x) => imp(x, 4)).join(" ∨ ");
+    else if (n.kY) s = n.kY.map((x) => imp(x, 5)).join(" ∧ ");
+    else if (n.no) s = "¬" + imp(n.no, 5);
+    else if (n.eq) s = ter(n.a) + " " + n.eq + " " + ter(n.b);
+    else s = n.at + "(" + n.args.map(ter).join(", ") + ")";
+    return nivel(n) < min ? "(" + s + ")" : s;
+  }
+  const normal = imp(arbol, 0);
+
+  /* Fórmula del motor: ev(nodo, L, entorno) */
+  const { y, o, no, si, sii } = MotorMundos._internos;
+  function ev(n, L, env) {
+    if (n.q) {
+      const cierra = (k, e2) => {
+        if (k === n.vs.length) return ev(n.cuerpo, L, e2);
+        const v = n.vs[k], dom = esAtr(v) ? (n.q === "∀" ? L.todoAtr : L.algunAtr) : (n.q === "∀" ? L.todaCosa : L.algunaCosa);
+        return dom((d) => cierra(k + 1, { ...e2, [v]: d }));
+      };
+      return cierra(0, env);
+    }
+    if (n.no) return no(ev(n.no, L, env));
+    if (n.kY) return y(n.kY.map((x) => ev(x, L, env)));
+    if (n.kO) return o(n.kO.map((x) => ev(x, L, env)));
+    if (n.si) return si(ev(n.si[0], L, env), ev(n.si[1], L, env));
+    if (n.sii) return sii(ev(n.sii[0], L, env), ev(n.sii[1], L, env));
+    const val = (t) => (t.c ? L[t.c] : env[t.v]);
+    if (n.eq === "<" || n.eq === "≤") { const A = val(n.a), B = val(n.b); return (n.eq === "<" ? A < B : A <= B) ? MotorMundos._internos.T : MotorMundos._internos.F; }
+    if (n.eq) return n.eq === "=" ? L.igual(val(n.a), val(n.b)) : L.distinto(val(n.a), val(n.b));
+    return L[n.at](...n.args.map(val));
+  }
+  const tipoV = (v) => (esAtr(v) ? "A" : "C");
+  const vars = libres.map((v) => [v, tipoV(v)]);
+  /* Como premisa, las variables libres se leen como «para todo». */
+  const cerrado = libres.length ? { q: "∀", vs: libres.slice(), cuerpo: arbol } : arbol;
+  return {
+    ok: true, normal, libres, normalCerrada: imp(cerrado, 0),
+    objetivo: (posible) => ({ vars, posible: !!posible, cuerpo: (L, e) => ev(arbol, L, e) }),
+    premisa: (L) => ev(cerrado, L, {}),
+  };
 }
 
 const LB_SPZ = (() => {
@@ -662,7 +897,8 @@ const LB_SPZ = (() => {
   /* Lo que cambia de un mundo a otro. */
   const MUNDOS = {
     tiempo: {
-      textos: () => LABSPZ.tiempo, formal: TMP_FORMAL, def: TMP_DEF, isabelle: TMP_ISABELLE, teorema: { Q6: "Q6_finito" }, alt: {},
+      textos: () => LABSPZ.tiempo, formal: TMP_FORMAL, def: TMP_DEF, isabelle: TMP_ISABELLE, teorema: { Q6: "Q6_finito" },
+      alt: { Q1: { premisas: ["C_creador_dura_mas", "D_irreflexiva"], teorema: "Q1_por_duracion" } },   /* el camino de la duración, propuesto por el profesor */
       premisaFormal: TMP_PREMISA_FORMAL, premisaForma: TMP_PREMISA_FORMA,
       estilos: ESTILOS_TMP, maxA: 1, porDefecto: (id) => (TMP_DEFECTO[id] || TMP_ISABELLE[id] || TMP_COMPATIBLES).slice(), posibles: TMP_POSIBLE, inicio: { prop: "Q2", marcadas: ["C_creador_anterior", "T_irreflexiva"] },
       nombreCosa: (i) => "ABCD"[i] || "c" + i,
@@ -677,6 +913,56 @@ const LB_SPZ = (() => {
       tam: (m) => spzT("hayMundoT", { n: m.n === 1 ? spzT("unaCosa") : spzT("nCosas", { n: m.n }) }),
       grupos: () => [["grupoT", 1]], pie: "notaPieT", lede: "ledeTiempo", notaDefs: "notaDefsTiempo",
       secciones: () => [["defsTiempo", LABSPZ.tiempo.defs]], extraContramodelo: () => "",
+    },
+    reloj: {
+      textos: () => LABSPZ.reloj, formal: REL_FORMAL, def: REL_DEF, isabelle: REL_ISABELLE, teorema: {}, alt: {},
+      premisaFormal: REL_PREMISA_FORMAL, premisaForma: REL_PREMISA_FORMA,
+      estilos: { Crea: { color: "var(--r-pol)", guion: "", grosor: 2.6, k: "lyCrea" } }, maxA: 4,
+      porDefecto: (id) => (REL_DEFECTO[id] || REL_ISABELLE[id] || REL_COMPATIBLES).slice(), posibles: REL_POSIBLE, inicio: { prop: "R1", marcadas: [] },
+      nombreCosa: (i) => "ABCD"[i] || "c" + i,
+      formulaDef: (d) => REL_FIJAS_FORMAL[d.id] || REL_DEF[d.id],
+      clases: { increado: ["clIncreado", "doble"], creado: ["clCreado", "simple"] },
+      leyendaFija: ["lyVida", "lyIncreadoR"],
+      etiquetas: () => [],
+      vidas(H) {
+        const ini = {}, fin = {};
+        for (const [x, i] of H.Empieza || []) ini[x] = i;
+        for (const [x, i] of H.Acaba || []) fin[x] = i;
+        return { ini, fin };
+      },
+      hechos(H, n) {
+        const { ini, fin } = MUNDOS.reloj.vidas(H), cosas = Object.keys(ini).map(Number).sort();
+        const par = (f, k) => cosas.flatMap((a) => cosas.filter((b) => a !== b && f(a, b)).map((b) => spzT(k, { a: n(a), b: n(b) })));
+        return [
+          ["hVidas", cosas.map((a) => spzT("fVida", { a: n(a), b: ini[a], c: fin[a] }))],
+          ["hCreacion", (H.Crea || []).map(([a, b]) => (a === b ? spzT("fCreaSi", { a: n(a) }) : spzT("fCrea", { a: n(a), b: n(b) })))],
+          ["hRelReloj", [...par((a, b) => ini[a] < ini[b], "fAntes"), ...par((a, b) => fin[a] > fin[b], "fSobrevive"), ...par((a, b) => fin[a] - ini[a] > fin[b] - ini[b], "fDura")]],
+        ];
+      },
+      tam: (m) => spzT("hayMundoR", { n: m.n === 1 ? spzT("unaCosa") : spzT("nCosas", { n: m.n }), k: m.k === 1 ? spzT("unInst") : spzT("nInst", { n: m.k }) }),
+      sinTxt: (r) => spzT("sinMundoCompletoR", { c: r.maxC, a: r.maxA }),
+      grupos: () => [["grupoR", 1]], pie: "notaPieR", lede: "ledeReloj", notaDefs: "notaDefsReloj",
+      secciones: () => [["defsTiempoFijo", LABSPZ.reloj.fijas], ["defsReloj", LABSPZ.reloj.defs]], extraContramodelo: () => "",
+      /* Dibujo: cada cosa es una barra sobre la línea del tiempo; las flechas, «creó a». */
+      dibujar(m) {
+        const { ini, fin } = MUNDOS.reloj.vidas(m.hechos), nombre = MUNDOS.reloj.nombreCosa;
+        const Wd = 560, fila = 52, x0 = 70, x1 = 520, H = 40 + m.n * fila + 40, k = Math.max(m.k, 1);
+        const xi = (i) => x0 + (k === 1 ? 0 : (i * (x1 - x0)) / (k - 1)), yf = (c) => 30 + c * fila;
+        let s = `<svg class="spz-svg" viewBox="0 0 ${Wd} ${H}" role="img" aria-label="${esc(spzT("dibujoAria"))}"><defs><marker id="spz-fl-CreaR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--r-pol)"/></marker></defs>`;
+        for (let i = 0; i < k; i++) s += `<line x1="${xi(i)}" y1="20" x2="${xi(i)}" y2="${H - 30}" stroke="var(--line-soft)" stroke-dasharray="2 4"/><text class="spz-etq" x="${xi(i)}" y="${H - 14}" text-anchor="middle">${i}</text>`;
+        s += `<text class="spz-etq" x="${(x0 + x1) / 2}" y="${H - 1}" text-anchor="middle">${esc(spzT("ejeInst"))}</text>`;
+        for (let c2 = 0; c2 < m.n; c2++) {
+          const a = xi(ini[c2] ?? 0), b = xi(fin[c2] ?? 0), y = yf(c2), doble = m.clase[c2] === "increado";
+          s += `<text class="spz-nodo" x="22" y="${y + 19}" text-anchor="middle">${esc(nombre(c2))}</text>`;
+          s += `<rect x="${a - 6}" y="${y + 4}" width="${Math.max(b - a, 0) + 12}" height="22" rx="8" fill="var(--lb-suave)" stroke="${doble ? "var(--lb)" : "var(--ink)"}" stroke-width="${doble ? 3 : 1.5}"/>`;
+        }
+        for (const [a, b] of m.hechos.Crea || []) {
+          const x = xi(ini[b] ?? 0), ya = yf(a) + 15, yb = yf(b) + 15;
+          s += a === b ? `<path d="M${x - 8},${ya - 12} C${x - 30},${ya - 34} ${x + 30},${ya - 34} ${x + 8},${ya - 12}" stroke="var(--r-pol)" stroke-width="2.4" fill="none" marker-end="url(#spz-fl-CreaR)"/>`
+            : `<path d="M${x + 10},${ya} C${x + 34},${ya} ${x + 34},${yb} ${x + 8},${yb}" stroke="var(--r-pol)" stroke-width="2.4" fill="none" marker-end="url(#spz-fl-CreaR)"/>`;
+        }
+        return s + "</svg>";
+      },
     },
     spinoza: {
       textos: () => LABSPZ, formal: SPZ_FORMAL, def: SPZ_DEF, isabelle: SPZ_ISABELLE, teorema: SPZ_TEOREMA, alt: SPZ_ALT,
@@ -712,9 +998,23 @@ const LB_SPZ = (() => {
     },
   };
   const st = { mundo: "tiempo", turno: 0, porMundo: {} };
-  for (const [id, M] of Object.entries(MUNDOS)) st.porMundo[id] = { prop: M.inicio.prop, marcadas: M.inicio.marcadas.slice(), html: "" };
+  for (const [id, M] of Object.entries(MUNDOS)) st.porMundo[id] = { prop: M.inicio.prop, marcadas: M.inicio.marcadas.slice(), html: "",
+    propia: { texto: "", modo: "sigue" }, mias: [], nMias: 0 };
   const W = () => MUNDOS[st.mundo], S = () => st.porMundo[st.mundo];
-  const prop = () => W().textos().props.find((p) => p.id === S().prop);
+  /* «✎ Escribe tu propia proposición»: se compila lo escrito y se trata como una proposición más (sin Isabelle). */
+  const PROPIA = "propia_";
+  function propia() {
+    const P = S().propia, cmp = spzCompilar(P.texto, st.mundo);
+    return { id: PROPIA, propia: true, nombre: spzT("propiaNombre"), posible: P.modo === "posible", comp: cmp,
+      formal: cmp.ok ? cmp.normal : null, pregunta: cmp.ok ? spzLeer(cmp.normal) || esc(cmp.normal) : "" };
+  }
+  const prop = () => (S().prop === PROPIA ? propia() : W().textos().props.find((p) => p.id === S().prop));
+  const formalDe = (p) => p.formal || W().formal[p.id];
+  /* Premisas para el motor: las escritas por el alumno se compilan; las demás, por su nombre. */
+  const motorPrem = (el) => el.map((id) => { const m = S().mias.find((x) => x.id === id); return m ? spzCompilar(m.texto, st.mundo).premisa : id; });
+  const objDe = (p) => (p.comp ? p.comp.objetivo(p.posible) : p.id);
+  const escA = (s) => esc(s).replace(/"/g, "&quot;");
+  const SIMBOLOS = ["∀", "∃", "¬", "∧", "∨", "→", "↔", "=", "≠", "(", ")", ","];
 
   function definicionesDe(f) {
     const D = W().def, vistas = [], pend = [f];
@@ -726,6 +1026,7 @@ const LB_SPZ = (() => {
   }
 
   function dibujar(m) {
+    if (W().dibujar) return W().dibujar(m);
     const E = W().estilos, nombre = W().nombreCosa;
     const Wd = 560, H = m.n === 1 ? 270 : 390, cx = Wd / 2, cy = H / 2 + 6, R = m.n === 1 ? 0 : 118, r = 28;
     const inicio = m.n === 2 ? Math.PI : -Math.PI / 2;
@@ -771,26 +1072,28 @@ const LB_SPZ = (() => {
   }
 
   function veredicto() {
+    SPZ_MUNDO_LECTURA = st.mundo;
     const p = prop(), M = W(), isa = M.isabelle[p.id], alt = M.alt[p.id], el = S().marcadas, mundo = st.mundo;
     const teorema = M.teorema[p.id] || p.id;
+    if (p.propia && !p.comp.ok) { st.turno++; return pintarResultado(`<p class="lb-err">${esc(spzT(p.comp.error.k, p.comp.error.v))}</p>`); }
     if (p.posible) return posibilidad(p, M, el, mundo);
     if (isa && contiene(el, isa)) return demostrado(teorema, p.prueba, isa, p.pasos);
-    if (alt && contiene(el, alt.premisas)) return demostrado(p.teoremaAlt || alt.teorema, p.pruebaAlt, alt.premisas);
+    if (alt && contiene(el, alt.premisas)) return demostrado(p.teoremaAlt || alt.teorema, p.pruebaAlt, alt.premisas, p.pasosAlt);
     const miTurno = ++st.turno;
     pintarResultado(`<p class="lb-nota">${esc(spzT("buscando"))}</p>`);
     setTimeout(() => {
       if (miTurno !== st.turno || mundo !== st.mundo) return;
       const t0 = performance.now(), op = { teoria: mundo, maxCosas: 4, maxAtributos: M.maxA };
-      const r = MotorMundos.buscarContramodelo(el, p.id, op);
+      const r = MotorMundos.buscarContramodelo(motorPrem(el), objDe(p), op);
       if (r.encontrado) return contramodelo(r.mundo, Math.round(performance.now() - t0));
-      const h = MotorMundos.hayMundo(el, op), ms = Math.round(performance.now() - t0);
+      const h = MotorMundos.hayMundo(motorPrem(el), op), ms = Math.round(performance.now() - t0);
       if (!h.hay && h.completo) incompatibles(h, ms); else sinMundo(r, ms);
     }, 20);
   }
   /* Posibilidad: ¿hay un mundo con estas premisas en el que ocurra? */
   function posibilidad(p, M, el, mundo) {
     const P = M.posibles[p.id];
-    if (P && contiene(el, P.impide)) {
+    if (P && P.impide && contiene(el, P.impide)) {
       st.turno++;
       return pintarResultado(`<div class="lb-aviso lb-mal"><span class="spz-sello">${esc(spzT("selloOk"))}</span><h3 class="spz-h">${esc(spzT("noPuede"))}</h3>
         ${p.notaNo ? `<p>${p.notaNo}</p>` : ""}<p class="lb-nota">${esc(spzT("imposibleIsa", { x: P.impide.join(", "), t: P.teoremaNo }))}</p></div>`);
@@ -800,7 +1103,7 @@ const LB_SPZ = (() => {
     setTimeout(() => {
       if (miTurno !== st.turno || mundo !== st.mundo) return;
       const t0 = performance.now(), op = { teoria: mundo, maxCosas: 4, maxAtributos: M.maxA };
-      const r = MotorMundos.buscarContramodelo(el, p.id, op), ms = Math.round(performance.now() - t0);
+      const r = MotorMundos.buscarContramodelo(motorPrem(el), objDe(p), op), ms = Math.round(performance.now() - t0);
       if (r.encontrado) {
         const m = r.mundo;
         return pintarResultado(`<div class="lb-aviso lb-ok"><span class="spz-sello">${esc(spzT("selloPosible"))}</span><h3 class="spz-h">${esc(spzT("puedeOcurrir"))}</h3>
@@ -809,7 +1112,7 @@ const LB_SPZ = (() => {
           <div class="lb-scroll spz-lienzo">${dibujar(m)}</div><div class="spz-leyenda">${leyenda(m)}</div>${hechos(m)}
           <p class="lb-nota">${esc(spzT("encontrado", { ms }))}</p>`);
       }
-      const h = MotorMundos.hayMundo(el, op);
+      const h = MotorMundos.hayMundo(motorPrem(el), op);
       if (!h.hay && h.completo) return incompatibles(h, ms);
       pintarResultado(`<div class="lb-aviso lb-warn"><span class="spz-sello">${esc(spzT("selloDuda"))}</span><h3 class="spz-h">${esc(spzT("noPuede"))}</h3>
         <p>${esc(spzT("imposibleTxt", { c: r.maxC }))}</p>${p.notaNo ? `<p>${p.notaNo}</p>` : ""}<p class="lb-nota">${esc(spzT("busqueda", { ms }))}</p></div>`);
@@ -839,7 +1142,8 @@ const LB_SPZ = (() => {
   }
   /* Quita los «para todo» del principio y lee la proposición con las cosas en que falla (x = A, y = B…). */
   function conCosas(m) {
-    let f = W().formal[prop().id];
+    let f = formalDe(prop());
+    if (!f) return "";
     const pre = f.match(/^∀([^.]*)\.\s*/);
     if (!pre || !Object.keys(m.fallo).length) return "";
     f = f.slice(pre[0].length);
@@ -855,7 +1159,7 @@ const LB_SPZ = (() => {
   function sinMundo(r, ms) {
     const isa = W().isabelle[prop().id];
     pintarResultado(`<div class="lb-aviso lb-warn"><span class="spz-sello">${esc(spzT("selloDuda"))}</span><h3 class="spz-h">${esc(spzT("sinMundo"))}</h3>
-      <p>${esc(r.completo ? (W().maxA === 1 ? spzT("sinMundoCompletoT", { c: r.maxC }) : spzT("sinMundoCompleto", { c: r.maxC, a: r.maxA })) : spzT("sinMundoCortado"))} ${esc(spzT("noDemuestra"))}</p>
+      <p>${esc(r.completo ? (W().sinTxt ? W().sinTxt(r) : W().maxA === 1 ? spzT("sinMundoCompletoT", { c: r.maxC }) : spzT("sinMundoCompleto", { c: r.maxC, a: r.maxA })) : spzT("sinMundoCortado"))} ${esc(spzT("noDemuestra"))}</p>
       ${isa ? `<p class="lb-nota">${esc(isa.length ? spzT("necesitaCon", { x: isa.join(", ") }) : spzT("necesitaSin"))}</p>` : ""}
       <p class="lb-nota">${esc(spzT("busqueda", { ms }))}</p></div>`);
   }
@@ -905,13 +1209,47 @@ const LB_SPZ = (() => {
     return RP[id] ? RP[id].nom : b ? b.titulo : id;
   }
 
+  function vistaPropia() {
+    const P = S().propia;
+    if (!P.texto.trim()) return "";
+    const cmp = spzCompilar(P.texto, st.mundo);
+    if (!cmp.ok) return `<p class="lb-err">${esc(spzT(cmp.error.k, cmp.error.v))}</p>`;
+    return `<span class="spz-sub">${esc(spzT("hasEscrito"))}</span>${conLectura(cmp.normal)}` +
+      (cmp.libres.length ? `<p class="lb-nota">${esc(spzT("libresTodo", { x: cmp.libres.join(", ") }))}</p>` : "");
+  }
+  const tecla = (s, destino, etiqueta) => `<button type="button" class="fbtn spz-tecla" data-ins="${escA(s)}"${destino ? ` data-dest="${destino}"` : ""}>${esc(etiqueta || s)}</button>`;
+  function editor() {
+    const P = S().propia, voc = Object.keys(spzVocabulario(st.mundo));
+    return `<div class="spz-editor">
+      <label class="lb-et-campo" for="spz-escribe">${esc(spzT("tEscribe"))}<input id="spz-escribe" class="lb-mono spz-escribe" type="text" spellcheck="false" autocomplete="off" autocapitalize="off" dir="ltr" value="${escA(P.texto)}" placeholder="${escA(spzT("phEscribe"))}"></label>
+      <div class="lb-fila spz-teclado" role="group" aria-label="${escA(spzT("tTeclado"))}">${SIMBOLOS.map((s) => tecla(s)).join("")}</div>
+      <div class="lb-fila spz-teclado" role="group" aria-label="${escA(spzT("tVocabulario"))}">${voc.map((n) => tecla(n + "(", null, n)).join("")}${st.mundo === "spinoza" ? tecla(spzT("Dios")) : ""}</div>
+      <p class="lb-nota">${esc(spzT("atajos", { t: spzT("palTodo"), h: spzT("palHay"), n: spzT("palNo") }))}</p>
+      <div id="spz-vista-propia" aria-live="polite">${vistaPropia()}</div>
+      <div class="lb-fila" role="radiogroup">${[["sigue", "modoSigue"], ["posible", "modoPosible"]].map(([v, k]) => `<label class="spz-modo"><input type="radio" name="spz-modo" value="${v}"${P.modo === v ? " checked" : ""}> ${esc(spzT(k))}</label>`).join("")}</div>
+      <p class="lb-nota">${esc(spzT("sinIsabelle"))}</p></div>`;
+  }
+  function misPremisas(el) {
+    const mias = S().mias.map((m) => {
+      const cmp = spzCompilar(m.texto, st.mundo), f = cmp.ok ? cmp.normalCerrada : m.texto, l = cmp.ok ? spzLeer(f) : "";
+      return `<label class="spz-premisa" for="spz-pr-${m.id}"><input type="checkbox" id="spz-pr-${m.id}" value="${m.id}"${el.includes(m.id) ? " checked" : ""}>
+        <span class="lb-res spz-pf">${sim(f)}</span><span class="spz-que">${l || ""}</span>
+        <span class="spz-pf"><button type="button" class="spz-forma" data-quitar="${m.id}">${esc(spzT("bQuitar"))}</button></span></label>`;
+    }).join("");
+    return `<fieldset class="spz-grupo spz-mias"><legend>${esc(spzT("tTusPremisas"))}</legend>${mias || `<p class="lb-nota">${esc(spzT("noHayPropias"))}</p>`}
+      <div class="lb-fila"><input id="spz-nueva" class="lb-mono lb-crece" type="text" spellcheck="false" autocomplete="off" autocapitalize="off" dir="ltr" placeholder="${escA(spzT("phPremisa"))}"><button type="button" class="btn ghost" data-spz-anadir="1">${esc(spzT("bAnadir"))}</button></div>
+      <div class="lb-fila spz-teclado">${SIMBOLOS.map((s) => tecla(s, "nueva")).join("")}</div>
+      <p id="spz-nueva-err" class="lb-err" aria-live="polite"></p></fieldset>`;
+  }
+
   function defFila(d) {
     const f = W().formulaDef(d), l = /:⟺/.test(f) ? spzLeer(f) : null;
     return `<li><span class="spz-origen">${esc(d.origen)}</span><span class="spz-texto">${d.texto}</span><span class="lb-res">${sim(f)}</span>${l ? `<span class="spz-lee"><span class="spz-lee-et">${esc(LABSPZ.repaso.tLectura)}:</span> ${l}</span>` : ""}</li>`;
   }
 
   function pintar() {
-    const M = W(), X = M.textos(), p = prop(), isa = M.isabelle[p.id], defs = definicionesDe(M.formal[p.id]), el = S().marcadas;
+    SPZ_MUNDO_LECTURA = st.mundo;
+    const M = W(), X = M.textos(), p = prop(), isa = M.isabelle[p.id], defs = definicionesDe(formalDe(p) || ""), el = S().marcadas;
     const opciones = (parte) => X.props.filter((x) => (x.parte || 1) === parte).map((x) => `<option value="${x.id}"${x.id === p.id ? " selected" : ""}>${esc(x.nombre)}</option>`).join("");
     const premisas = X.grupos.map((g) => `<fieldset class="spz-grupo"><legend>${esc(g.nom)}</legend>` +
       X.premisas.filter((x) => x.grupo === g.id).map((x) => `<label class="spz-premisa${isa && isa.includes(x.id) ? " spz-isa" : ""}" for="spz-pr-${x.id}">
@@ -921,7 +1259,7 @@ const LB_SPZ = (() => {
     const abierta = box.querySelector(".spz-guia") && box.querySelector(".spz-guia").open;
     const repAbierto = box.querySelector(".spz-repaso") && box.querySelector(".spz-repaso").open;
     const isaAbierto = box.querySelector(".spz-isabelle") && box.querySelector(".spz-isabelle").open;
-    box.innerHTML = `<div class="lb-fila spz-mundos" role="group" aria-label="${esc(spzT("mundo"))}"><span class="lb-et">${esc(spzT("mundo"))}</span>${botonMundo("tiempo", "mundoTiempo")}${botonMundo("spinoza", "mundoSpinoza")}</div>
+    box.innerHTML = `<div class="lb-fila spz-mundos" role="group" aria-label="${esc(spzT("mundo"))}"><span class="lb-et">${esc(spzT("mundo"))}</span>${botonMundo("tiempo", "mundoTiempo")}${botonMundo("reloj", "mundoReloj")}${botonMundo("spinoza", "mundoSpinoza")}</div>
       <p class="lg-intro">${esc(spzT(M.lede))}</p>
       <div class="lb-aviso lb-warn"><span class="spz-sello">${esc(spzT("enDesarrollo"))}</span> ${spzT("avisoDesarrollo")}</div>
       ${guia()}
@@ -931,14 +1269,14 @@ const LB_SPZ = (() => {
         ${M.secciones().map(([k, lista]) => `<p class="spz-sub">${esc(spzT(k))}</p><ul class="spz-defs">${lista.map(defFila).join("")}</ul>`).join("")}</section>
       <div class="lb-dos">
         <section class="lb-mesa"><h3>${esc(spzT("tPregunta"))}</h3>
-          <label class="lb-et-campo" for="spz-prop">${esc(spzT("proposicion"))}<select id="spz-prop">${M.grupos().map(([k, parte]) => `<optgroup label="${esc(spzT(k))}">${opciones(parte)}</optgroup>`).join("")}</select></label>
-          ${p.cita ? `<blockquote class="spz-cita">«${esc(p.cita)}»</blockquote>` : ""}
+          <label class="lb-et-campo" for="spz-prop">${esc(spzT("proposicion"))}<select id="spz-prop">${M.grupos().map(([k, parte]) => `<optgroup label="${esc(spzT(k))}">${opciones(parte)}</optgroup>`).join("")}<option value="${PROPIA}"${p.propia ? " selected" : ""}>${esc(spzT("propiaNombre"))}</option></select></label>
+          ${p.propia ? editor() : `${p.cita ? `<blockquote class="spz-cita">«${esc(p.cita)}»</blockquote>` : ""}
           <div class="spz-formal">${defs.length ? `<span class="spz-sub">${esc(spzT("defsUsa"))}</span><div class="spz-lista">${defs.map((d) => conLectura(d)).join("")}</div>` : ""}
             <span class="spz-sub">${esc(spzT("enLogica"))}</span>${conLectura(M.formal[p.id])}</div>
           <p class="lb-pregunta">${spzT(p.posible ? "seCompruebaPos" : "seComprueba", { x: p.pregunta })}</p>
-          <p class="lb-nota">${esc(p.posible && M.posibles[p.id] ? spzT("posibleIsa", { t: M.posibles[p.id].teorema }) : isa ? (isa.length ? spzT("necesitaCon", { x: isa.join(", ") }) : spzT("necesitaSin")) : spzT("necesitaNo"))}</p>
-          <div class="lb-fila"><button type="button" class="btn ghost" data-spz="isabelle">${esc(spzT("bIsabelle"))}</button><button type="button" class="btn ghost" data-spz="todas">${esc(spzT("bTodas"))}</button><button type="button" class="btn ghost" data-spz="ninguna">${esc(spzT("bNinguna"))}</button></div>
-          <div class="spz-premisas">${premisas}</div>
+          <p class="lb-nota">${esc(p.posible && M.posibles[p.id] ? spzT("posibleIsa", { t: M.posibles[p.id].teorema }) : isa ? (isa.length ? spzT("necesitaCon", { x: isa.join(", ") }) : spzT("necesitaSin")) : spzT("necesitaNo"))}</p>`}
+          <div class="lb-fila">${p.propia ? "" : `<button type="button" class="btn ghost" data-spz="isabelle">${esc(spzT("bIsabelle"))}</button>`}<button type="button" class="btn ghost" data-spz="todas">${esc(spzT("bTodas"))}</button><button type="button" class="btn ghost" data-spz="ninguna">${esc(spzT("bNinguna"))}</button></div>
+          <div class="spz-premisas">${premisas}${misPremisas(el)}</div>
           <div class="lb-fila"><button type="button" class="btn" data-spz="probar">${esc(spzT("bProbar"))}</button></div>
         </section>
         <section class="lb-mesa" aria-live="polite"><h3>${esc(spzT("tResultado"))}</h3><div id="spz-resultado">${S().html}</div></section>
@@ -963,6 +1301,37 @@ const LB_SPZ = (() => {
       const bl = LABSPZ.repaso.bloques.find((x) => x.id === b.dataset.spzRep);
       if (bl) { li.insertAdjacentHTML("beforeend", bloqueRepaso(bl, true)); b.setAttribute("aria-expanded", "true"); }
     });
+    /* Escribir: proposición propia, teclado de símbolos, modo y premisas propias */
+    const ed = box.querySelector("#spz-escribe"), nueva = box.querySelector("#spz-nueva");
+    if (ed) {
+      ed.addEventListener("input", () => { S().propia.texto = ed.value; box.querySelector("#spz-vista-propia").innerHTML = vistaPropia(); });
+      ed.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); veredicto(); } });
+    }
+    box.querySelectorAll("[data-ins]").forEach((b) => b.addEventListener("click", (e) => {
+      e.preventDefault();
+      const campo = b.dataset.dest ? nueva : ed; if (!campo) return;
+      const v = campo.value, a = campo.selectionStart == null ? v.length : campo.selectionStart, z = campo.selectionEnd == null ? a : campo.selectionEnd;
+      campo.value = v.slice(0, a) + b.dataset.ins + v.slice(z);
+      campo.focus(); campo.setSelectionRange(a + b.dataset.ins.length, a + b.dataset.ins.length);
+      campo.dispatchEvent(new Event("input"));
+    }));
+    box.querySelectorAll('input[name="spz-modo"]').forEach((r) => r.addEventListener("change", () => { S().propia.modo = r.value; }));
+    const anadir = () => {
+      const cmp = spzCompilar(nueva.value, st.mundo), er = box.querySelector("#spz-nueva-err");
+      if (!cmp.ok) { er.textContent = spzT(cmp.error.k, cmp.error.v); return; }
+      const id = "mia" + ++S().nMias;
+      S().mias.push({ id, texto: nueva.value }); S().marcadas.push(id);
+      pintar(); const n2 = box.querySelector("#spz-nueva"); if (n2) n2.focus();
+    };
+    box.querySelector("[data-spz-anadir]").addEventListener("click", anadir);
+    nueva.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); anadir(); } });
+    nueva.addEventListener("input", () => { box.querySelector("#spz-nueva-err").textContent = ""; });
+    box.querySelectorAll("[data-quitar]").forEach((b) => b.addEventListener("click", (e) => {
+      e.preventDefault(); e.stopPropagation();
+      const id = b.dataset.quitar;
+      S().mias = S().mias.filter((x) => x.id !== id); S().marcadas = S().marcadas.filter((x) => x !== id);
+      pintar();
+    }));
     box.querySelectorAll("[data-spz-ir]").forEach((b) => b.addEventListener("click", () => { location.hash = "#logica/" + b.dataset.spzIr; }));
     box.querySelectorAll("[data-spz-mundo]").forEach((b) => b.addEventListener("click", () => {
       if (st.mundo === b.dataset.spzMundo) return;
@@ -973,7 +1342,7 @@ const LB_SPZ = (() => {
     box.querySelectorAll("[data-spz]").forEach((b) => b.addEventListener("click", () => {
       const a = b.dataset.spz;
       if (a === "isabelle") S().marcadas = (W().isabelle[S().prop] || []).slice();
-      if (a === "todas") S().marcadas = W().textos().premisas.map((x) => x.id);
+      if (a === "todas") S().marcadas = [...W().textos().premisas.map((x) => x.id), ...S().mias.map((x) => x.id)];
       if (a === "ninguna") S().marcadas = [];
       if (a !== "probar") box.querySelectorAll(".spz-premisa input").forEach((i) => { i.checked = S().marcadas.includes(i.value); });
       veredicto();
