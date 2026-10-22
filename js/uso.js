@@ -4,8 +4,10 @@
    ({ url, grupos, version }) desde tools/uso_config.json. Sin USO_CONFIG o con url vacía, este módulo no hace
    NADA: ni muestra la línea de la ficha ni envía datos (así quedan la web maestra, la ESO y las webs mientras el
    profesor no lo active).
-   Versión restrictiva (docs/36, 18-10): voluntario y desactivado por defecto (solo envía si el alumno pulsa
-   «Compartir datos de uso»); sin identificador de visita ni de persona, sin aparato, sin cookies, sin IP (Apps
+   Opt-out (docs/36, cambio del 22-10): registra por defecto de forma anónima, con el botón «Dejar de compartir»
+   y el enlace «Qué registra esta web» siempre a la vista; el alumno que guarde «off» no se registra en ese
+   navegador. Antes (18-10) era opt-in. En todo lo demás sigue igual de restrictivo: sin identificador de visita
+   ni de persona, sin aparato, sin cookies, sin IP (Apps
    Script no la ve), sin texto escrito por el alumno; día y franja (mañana, tarde, noche) en vez de hora; grupo
    opcional. Cada lote lleva los campos comunes una vez y una lista de eventos con claves de la web y números.
    Eventos: vista (sección y pieza, del hash), caja_tema (bloque y destino del enlace pulsado), ampliar,
@@ -23,7 +25,8 @@
   var KEY = "aula-uso", COLA = "aula-uso-cola", MAX_COLA = 200, MAX_LOTE = 50;
   function leer(k, def){ try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch (e){ return def; } }
   function guardar(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch (e){} }
-  function estado(){ var s = leer(KEY, null); return s && typeof s === "object" ? s : { on: false, grupo: "" }; }
+  /* opt-out (22-10): por defecto encendido; solo queda apagado si el alumno guardó «off» en este navegador */
+  function estado(){ var s = leer(KEY, null); return s && typeof s === "object" ? s : { on: true, grupo: "" }; }
   function esc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g, function(c){ return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   /* solo claves de la web: letras, números, guiones, barras y puntos (nunca texto libre) */
   function clave(s){ s = String(s == null ? "" : s); try { s = decodeURIComponent(s); } catch (e){} return /^[\w.\/-]{1,80}$/.test(s) ? s : ""; }

@@ -27,7 +27,7 @@ const CONMUTADORES = [
   { entry: "dilemas",      modos: [["dilemas", "معضلات"], ["polemicas", "سجالات"], ["duelo", "مبارزة"], ["nudos", "عُقَد"]] },
   { entry: "epocas",       modos: [["epocas", "بطاقات"], ["cronogramas", "الجداول الزمنية"], ["genealogias", "الأنساب الفكرية"]] },
   { entry: "biografias",     modos: [["biografias", "الكل"], ["perseguidos", "المضطهَدون"], ["comunidades", "الجماعات"]] },
-  { entry: "leibniz",      modos: [["leibniz", "ورشة لايبنتز"], ["universo", "الكون الأرسطي"], ["palabra", "فنّ الكلام"], ["afectos", "الانفعالات عند اسبينوزا"]] }   // (20-10) + afectos; (19-10) «Talleres»: unidades transversales
+  { entry: "leibniz",      modos: [["leibniz", "ورشة لايبنتز"], ["universo", "الكون الأرسطي"], ["palabra", "فنّ الكلام"], ["afectos", "الانفعالات عند اسبينوزا"], ["hegel", "ورشة هيغل"]] }   // (22-10) + hegel (solo HF); (20-10) + afectos; (19-10) «Talleres»: unidades transversales
 ];
 
 /* índices vista → { entrada, rótulo, grupo } */

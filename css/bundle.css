@@ -3107,6 +3107,106 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .spz-mias .lb-err:empty{ display:none }
 
 
+/* ==== css/hegel.css ==== */
+/* Taller de Hegel (22-10, solo HF): tres mesas en pestañas. Solo tokens de styles.css: el acento es el de la época
+   contemporánea (--e-con); las cinco partes del camino de la Fenomenología toman colores ya existentes y llevan
+   siempre su nombre escrito al lado; el aviso «a contrapelo» usa el ámbar de la Antigüedad (--e-ant). */
+#hegel{
+  --hg-acc:var(--e-con); --hg-suave:color-mix(in srgb,var(--e-con) 13%,var(--surface));
+  --hg-warn:var(--e-ant); --hg-warn-bg:color-mix(in srgb,var(--e-ant) 12%,var(--surface));
+  --hg-c:var(--r-con); --hg-a:var(--r-ant); --hg-r:var(--r-log); --hg-e:var(--e-con); --hg-s:var(--hf);
+}
+#hegel #hegelbox{ display:grid; gap:18px; max-width:56rem; margin-top:14px }
+#hegel #hegelbox > *, #hegel .hg-panel > *, #hegel .hg-mesa > *{ min-width:0 }
+#hegel .hg-intro{ font-size:1.05rem; line-height:1.6; margin:0; max-width:68ch }
+#hegel .hg-lede{ color:var(--muted); margin:0; max-width:68ch }
+#hegel .hg-panel{ display:grid; gap:16px }
+#hegel .hg-mesa{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:18px; display:grid; gap:14px }
+#hegel .hg-mesa h3{ font-family:var(--sans); font-size:.76rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+#hegel .hg-mesa p{ margin:0; max-width:68ch }
+#hegel .hg-fila{ display:flex; flex-wrap:wrap; gap:8px; align-items:center }
+#hegel .hg-entre{ justify-content:space-between }
+#hegel .hg-arriba{ margin-top:8px }
+#hegel .hg-d{ font-size:.84rem; color:var(--muted) }
+#hegel .btn:disabled{ opacity:.45; cursor:not-allowed }
+#hegel button:focus-visible, #hegel .hg-ev:focus-visible{ outline:2px solid var(--hg-acc); outline-offset:2px }
+
+/* pestañas de las mesas */
+#hegel .hg-pestanas{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:5px }
+#hegel .hg-pestanas button{ all:unset; cursor:pointer; text-align:center; padding:9px 6px; border-radius:8px; font-weight:500; font-size:.92rem; color:var(--muted); display:grid; gap:1px }
+#hegel .hg-pestanas button small{ font-size:.72rem; font-weight:400 }
+#hegel .hg-pestanas button[aria-selected="true"]{ background:var(--surface); color:var(--ink); box-shadow:var(--shadow) }
+#hegel .hg-pestanas button:focus-visible{ outline:2px solid var(--hg-acc); outline-offset:2px }
+@media (max-width:520px){ #hegel .hg-pestanas button small{ display:none } }
+
+#hegel .hg-cita{ margin:0; border-inline-start:3px solid var(--hg-acc); padding:4px 0; padding-inline-start:12px; font-family:var(--serif); font-size:1.05rem; font-style:italic }
+#hegel .hg-cita cite{ display:block; font-family:var(--sans); font-style:normal; font-size:.78rem; color:var(--muted); margin-top:4px }
+#hegel .hg-saber summary{ cursor:pointer; color:var(--hg-acc); font-weight:500 }
+#hegel .hg-saber[open] summary{ margin-bottom:6px }
+#hegel .hg-aviso{ border-radius:10px; padding:10px 12px; font-size:.93rem; border:1px solid var(--line); background:var(--surface-2) }
+#hegel .hg-aviso.hg-ok{ background:var(--ok-bg); border-color:var(--ok) }
+#hegel .hg-aviso.hg-neutro{ background:var(--hg-suave); border-color:var(--hg-acc) }
+#hegel .hg-nm{ font-family:var(--serif); font-size:1.35rem; font-weight:600; line-height:1.2 }
+#hegel .hg-svgtxt{ font-family:var(--sans) }
+#hegel .hg-mono{ font-family:var(--mono) }
+#hegel .hg-scroll{ overflow-x:auto; direction:ltr }   /* las líneas del tiempo y el mapa van de izquierda a derecha también en árabe: el desplazamiento empieza por el principio */
+#hegel .hg-lista{ margin:0; padding-inline-start:20px; display:grid; gap:6px }
+
+/* mesa 1 */
+#hegel .hg-stepper{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:6px }
+#hegel .hg-stepper button{ all:unset; cursor:pointer; text-align:center; font-size:.8rem; padding:6px 4px; border-radius:8px; border:1px solid var(--line); background:var(--surface-2) }
+#hegel .hg-stepper button[aria-pressed="true"]{ border-color:var(--hg-acc); background:var(--hg-suave); font-weight:600 }
+#hegel .hg-m1{ display:grid; grid-template-columns:minmax(0,260px) minmax(0,1fr); gap:18px; align-items:start }
+@media (max-width:640px){ #hegel .hg-m1{ grid-template-columns:1fr } }
+#hegel .hg-circulos{ width:100%; max-width:260px; height:auto; display:block; margin:0 auto }
+#hegel .hg-paso1{ display:grid; gap:8px }
+#hegel .hg-paso1 dl{ margin:0; display:grid; gap:8px }
+#hegel .hg-paso1 dt{ font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--hg-acc); font-weight:600 }
+#hegel .hg-paso1 dd{ margin:0 }
+
+/* mesa 2 */
+#hegel .hg-ancho{ min-width:560px }
+#hegel .hg-camino-svg{ width:100%; height:auto; display:block }
+#hegel .hg-ev{ cursor:pointer }
+#hegel .hg-cam{ display:grid; grid-template-columns:minmax(0,1fr) 230px; gap:18px; align-items:start }
+@media (max-width:700px){ #hegel .hg-cam{ grid-template-columns:1fr } }
+#hegel .hg-est{ display:grid; gap:10px }
+#hegel .hg-tag{ display:inline-flex; gap:6px; align-items:center; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; font-weight:600 }
+#hegel .hg-tag i{ display:inline-block; width:10px; height:10px; border-radius:50% }
+#hegel .hg-cree b{ color:var(--muted); font-weight:500; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; display:block }
+#hegel .hg-q{ font-weight:500 }
+#hegel .hg-ops{ display:grid; gap:6px }
+#hegel .hg-ops button{ all:unset; cursor:pointer; border:1px solid var(--line); border-radius:9px; padding:9px 12px; background:var(--surface-2); font-size:.93rem }
+#hegel .hg-ops button:hover{ border-color:var(--hg-acc) }
+#hegel .hg-ops button:focus-visible{ outline:2px solid var(--hg-acc) }
+#hegel .hg-ops button.hg-descartada{ cursor:default; opacity:.7; text-decoration:line-through; text-decoration-color:var(--bad) }
+#hegel .hg-fallo{ font-size:.88rem; color:var(--bad) }
+#hegel .hg-mochila{ border-inline-start:1px solid var(--line-soft); padding-inline-start:14px; display:grid; gap:8px; align-content:start }
+@media (max-width:700px){ #hegel .hg-mochila{ border-inline-start:0; padding-inline-start:0; border-top:1px solid var(--line-soft); padding-top:10px } }
+#hegel .hg-mochila ol{ margin:0; padding:0; list-style:none; display:grid; gap:6px }
+#hegel .hg-mochila li{ display:grid; grid-template-columns:10px 1fr; gap:8px; font-size:.84rem; align-items:start }
+#hegel .hg-mochila li i{ width:10px; height:10px; border-radius:50%; margin-top:5px }
+#hegel .hg-exp{ display:grid; gap:8px; border:1px dashed var(--hg-acc); border-radius:10px; padding:10px 12px }
+#hegel .hg-reloj{ font-family:var(--mono) }
+#hegel .hg-aufheben{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px }
+@media (max-width:520px){ #hegel .hg-aufheben{ grid-template-columns:1fr } }
+#hegel .hg-aufheben div{ border:1px solid var(--line-soft); border-radius:9px; padding:8px 10px; font-size:.85rem }
+#hegel .hg-aufheben b{ display:block; font-family:var(--serif); font-size:1.05rem }
+
+/* mesa 3 */
+#hegel .hg-linea-svg{ width:100%; min-width:620px; height:auto; display:block }
+#hegel .hg-ficha{ display:grid; gap:8px }
+#hegel .hg-fecha{ font-family:var(--mono); font-size:.82rem; color:var(--muted) }
+#hegel .hg-dos{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px }
+@media (max-width:640px){ #hegel .hg-dos{ grid-template-columns:1fr } }
+#hegel .hg-lect{ border-radius:10px; padding:10px 12px; border:1px solid var(--line); font-size:.92rem; display:grid; gap:4px; align-content:start }
+#hegel .hg-lect h3{ color:var(--ink) }
+#hegel .hg-lect.hg-heg{ background:var(--hg-suave); border-color:var(--hg-acc) }
+#hegel .hg-lect.hg-con{ background:var(--hg-warn-bg); border-color:var(--hg-warn) }
+#hegel .hg-lect.hg-apagada{ opacity:.45 }
+@media (prefers-reduced-motion:reduce){ #hegel *{ animation:none !important; transition:none !important } }
+
+
 /* ==== css/rescritura.css ==== */
 /* «Rescritura» (09-10, Bachillerato): distinguir rescritura de copia, sinonimia y malinterpretación (rescrituraview.js) */
 #rescritura .res-guia{ max-width:62rem; margin:0 0 1rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); line-height:1.55 }
