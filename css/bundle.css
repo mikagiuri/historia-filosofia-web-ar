@@ -3240,6 +3240,43 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 @media (prefers-reduced-motion:reduce){ #hegel *{ animation:none !important; transition:none !important } }
 
 
+/* ==== css/pilares.css ==== */
+/* «Pilares» (22-10, Bachillerato): diez peldaños por la historia de un concepto (pilaresview.js). Color de época en el borde de cada peldaño. */
+#pilares .pl-intro{ max-width:62rem; line-height:1.55; margin-top:.8rem }
+#pilares .pl-como{ max-width:62rem; margin:0 0 1rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); line-height:1.55 }
+#pilares .pl-como > summary{ cursor:pointer; padding:.6rem .9rem; font-weight:600; color:var(--accent) }
+#pilares .pl-como[open] > summary{ border-bottom:1px solid var(--line) }
+#pilares .pl-como ol{ margin:.6rem .9rem .8rem; padding-inline-start:1.4rem; display:grid; gap:.35rem }
+#pilares .pl-pilares{ margin:.4rem 0 1rem }
+#pilares .pl-titulo{ margin:.4rem 0 .2rem; font-family:var(--serif, Georgia, serif) }
+#pilares .pl-voces{ font-size:.95rem; font-weight:400; color:var(--muted); font-family:"Noto Serif", "Times New Roman", "Palatino Linotype", serif }   /* la serif de la web no trae griego politónico (como en adagios.css) */
+#pilares .pl-lema{ max-width:62rem; margin:.2rem 0 .4rem; line-height:1.55 }
+#pilares .pl-prog{ color:var(--muted); font-size:.9rem; margin:.2rem 0 .8rem }
+#pilares .pl-escalera{ display:grid; gap:.5rem; margin:.4rem 0 1rem; max-width:62rem }
+#pilares .pl-nivel{ background:var(--surface); border:1px solid var(--line); border-inline-start:5px solid var(--e, var(--accent)); border-radius:var(--radius); padding:.55rem 1rem }
+#pilares .pl-nivel > summary{ cursor:pointer; line-height:1.4; display:flex; flex-wrap:wrap; align-items:baseline; gap:.15rem .55rem }
+#pilares .pl-nivel[open] > summary{ margin-bottom:.5rem }
+#pilares .pl-n{ font:600 .74rem var(--sans); letter-spacing:.06em; text-transform:uppercase; color:var(--e, var(--muted)) }
+#pilares .pl-tit{ font-weight:600 }
+#pilares .pl-quien{ font-size:.86rem; color:var(--muted) }
+#pilares .pl-hecho > summary .pl-tit::after{ content:" ✓"; color:var(--ok, var(--accent)) }
+#pilares .pl-cuerpo{ display:flex; flex-direction:column; gap:.55rem; line-height:1.55 }
+#pilares .pl-cuerpo p{ margin:0 }
+#pilares .pl-cita{ margin:0; padding:.5rem .8rem; border-inline-start:3px solid var(--e, var(--line)); background:var(--surface-2); border-radius:0 8px 8px 0; font-style:italic }
+#pilares .pl-cita cite{ display:block; margin-top:.25rem; font-style:normal; font-size:.86rem; color:var(--muted) }
+#pilares .pl-tarea{ padding:.5rem .8rem; border-radius:8px; background:var(--surface-2) }
+#pilares .pl-k{ font:600 .78rem var(--sans); letter-spacing:.05em; text-transform:uppercase; color:var(--accent); margin-bottom:.15rem !important }
+#pilares .pl-sale{ margin-top:.35rem }
+#pilares .pl-sale > summary{ cursor:pointer; font-size:.9rem; color:var(--accent) }
+#pilares .pl-sale p{ margin-top:.3rem; font-size:.95rem }
+#pilares .pl-lim{ border-inline-start:3px solid var(--line); padding-inline-start:.6rem; color:var(--muted) }
+#pilares .pl-enl{ font-size:.92rem }
+#pilares .pl-check{ display:inline-flex; gap:.45rem; align-items:center; font-size:.92rem }
+#pilares .pl-cierre{ max-width:62rem; color:var(--muted); line-height:1.55 }
+@media (max-width:600px){ #pilares .pl-nivel{ padding:.5rem .7rem } #pilares .pl-tarea{ padding:.45rem .6rem } }
+@media print{ #pilares .pl-check, #pilares .pl-pilares{ display:none } }
+
+
 /* ==== css/rescritura.css ==== */
 /* «Rescritura» (09-10, Bachillerato): distinguir rescritura de copia, sinonimia y malinterpretación (rescrituraview.js) */
 #rescritura .res-guia{ max-width:62rem; margin:0 0 1rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); line-height:1.55 }

@@ -46,7 +46,7 @@ window.VIEW_LOADERS = {
   pistas: "loadPista", glosario: "loadGlosario", etimos: "loadEtimos",   // (20-10) #glosario/<id> (g-imperativo-categorico)
   logica: "loadLogica", juegosucio: "loadJuegoSucio",   // (08-10) #juegosucio/<estratagema>
       // (01-10) #logica/tablas|silogismos|puertas   // (01-10) #pistas/kant-imperativo
-  leibniz: "loadLeibniz", universo: "loadUniverso", palabra: "loadPalabra", afectos: "loadAfectos", hegel: "loadHegel", rescritura: "loadRescritura", nudos: "loadNudos", adagios: "loadAdagios", polemicas: "loadPolemicas", perseguidos: "loadPerseguidos", comunidades: "loadComunidades", dilemas: "loadDilema", duelo: "loadDuelo", rayuela: "loadRayuela", // (11-10) #rayuela/<estación>   // (09-10) #adagios/<id>
+  leibniz: "loadLeibniz", universo: "loadUniverso", palabra: "loadPalabra", afectos: "loadAfectos", hegel: "loadHegel", pilares: "loadPilares", rescritura: "loadRescritura", nudos: "loadNudos", adagios: "loadAdagios", polemicas: "loadPolemicas", perseguidos: "loadPerseguidos", comunidades: "loadComunidades", dilemas: "loadDilema", duelo: "loadDuelo", rayuela: "loadRayuela", // (11-10) #rayuela/<estación>   // (09-10) #adagios/<id>
     // (09-10) #nudos/mentir|creer
     // (09-10) #rescritura/distinguir|escribir[/texto]
     // (08-10) #leibniz/maquina|binario|alfabeto|tratados|diagramas|calculemos|reverso|newton|voltaire
@@ -89,6 +89,7 @@ const ROUTE_KEY_OK = {
   dilemas: k => typeof DILEMAS === "undefined" || DILEMAS.some(d => d.id === k),
   glosario: k => typeof GLOSARIO === "undefined" || GLOSARIO.some(g => g.id === k),
   etimos: k => typeof ETIMOS === "undefined" || ETIMOS.some(e => e.id === k),   // (20-10) #glosario/<id>   // (20-10) #dilemas/<id>
+  pilares: k => typeof PILARES === "undefined" || PILARES.pilares.some(p => k === p.id || k.indexOf(p.id + "-") === 0),   // (22-10) #pilares/causa, #pilares/causa-4   // (20-10) #glosario/<id>   // (20-10) #dilemas/<id>
   biografias: k => typeof bioList !== "function" || bioList().some(x => x.id === k) || (/^epoca-/.test(k) && typeof EPOCAS_FICHAS !== "undefined" && !!EPOCAS_FICHAS[k.slice(6)])
 };
 function routeNote(msg){
