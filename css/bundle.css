@@ -3482,65 +3482,65 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 /* ==== css/biografias.css ==== */
 /* ===== Ilustres: biografías de los pensadores de la teoría (biografiasview.js) =====
    Colores de época = los del eje cronológico del curso (eje_cronologico.js); en oscuro, tonos claros. */
-#ilustres, .bio-strip{
+#biografias, .bio-strip{
   --e-ant:#8F6600; --e-med:#8A4B84; --e-ren:#B83220; --e-mod:#0A76A0; --e-ilu:#5B4FC4; --e-con:#267A5B;
 }
 @media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) #ilustres, :root:not([data-theme="light"]) .bio-strip{ --e-ant:#E3B23C; --e-med:#C48ABF; --e-ren:#F07A66; --e-mod:#5BC3EA; --e-ilu:#A9A2F2; --e-con:#6FCBA6; }
+  :root:not([data-theme="light"]) #biografias, :root:not([data-theme="light"]) .bio-strip{ --e-ant:#E3B23C; --e-med:#C48ABF; --e-ren:#F07A66; --e-mod:#5BC3EA; --e-ilu:#A9A2F2; --e-con:#6FCBA6; }
 }
-:root[data-theme="dark"] #ilustres, :root[data-theme="dark"] .bio-strip{ --e-ant:#E3B23C; --e-med:#C48ABF; --e-ren:#F07A66; --e-mod:#5BC3EA; --e-ilu:#A9A2F2; --e-con:#6FCBA6; }
-:is(#ilustres, .bio-strip) [data-b="ant"]{ --e:var(--e-ant) } :is(#ilustres, .bio-strip) [data-b="med"]{ --e:var(--e-med) }
-:is(#ilustres, .bio-strip) [data-b="ren"]{ --e:var(--e-ren) } :is(#ilustres, .bio-strip) [data-b="mod"]{ --e:var(--e-mod) }
-:is(#ilustres, .bio-strip) [data-b="ilu"]{ --e:var(--e-ilu) }   /* (29-09) Ilustración */
-:is(#ilustres, .bio-strip) [data-b="con"]{ --e:var(--e-con) }
+:root[data-theme="dark"] #biografias, :root[data-theme="dark"] .bio-strip{ --e-ant:#E3B23C; --e-med:#C48ABF; --e-ren:#F07A66; --e-mod:#5BC3EA; --e-ilu:#A9A2F2; --e-con:#6FCBA6; }
+:is(#biografias, .bio-strip) [data-b="ant"]{ --e:var(--e-ant) } :is(#biografias, .bio-strip) [data-b="med"]{ --e:var(--e-med) }
+:is(#biografias, .bio-strip) [data-b="ren"]{ --e:var(--e-ren) } :is(#biografias, .bio-strip) [data-b="mod"]{ --e:var(--e-mod) }
+:is(#biografias, .bio-strip) [data-b="ilu"]{ --e:var(--e-ilu) }   /* (29-09) Ilustración */
+:is(#biografias, .bio-strip) [data-b="con"]{ --e:var(--e-con) }
 
-#ilustres .filterbar[hidden], #ilustres .bio-count[hidden]{display:none}
-#ilustres .bio-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--e);margin-inline-end:6px;vertical-align:1px}
-#ilustres .bio-tools{display:flex;margin:4px 0 0}
-#ilustres .bio-search{flex:1;min-width:0;max-width:520px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;font:inherit;background:var(--surface);color:var(--ink)}
-#ilustres .bio-search:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
-#ilustres .bio-count{color:var(--muted);font-size:13px;margin:12px 0 4px}
-#ilustres .bio-empty{color:var(--muted);padding:24px 2px}
-#ilustres mark{background:var(--accent);color:var(--on-accent);padding:0 2px;border-radius:3px}
+#biografias .filterbar[hidden], #biografias .bio-count[hidden]{display:none}
+#biografias .bio-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--e);margin-inline-end:6px;vertical-align:1px}
+#biografias .bio-tools{display:flex;margin:4px 0 0}
+#biografias .bio-search{flex:1;min-width:0;max-width:520px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;font:inherit;background:var(--surface);color:var(--ink)}
+#biografias .bio-search:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+#biografias .bio-count{color:var(--muted);font-size:13px;margin:12px 0 4px}
+#biografias .bio-empty{color:var(--muted);padding:24px 2px}
+#biografias mark{background:var(--accent);color:var(--on-accent);padding:0 2px;border-radius:3px}
 
 /* listado */
-#ilustres .bio-era{font-size:1.15rem;margin:26px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--e);color:var(--ink)}
-#ilustres .bio-letra{border-bottom-color:var(--line)}   /* (18-10) orden alfabético: la letra no es una época */
-#ilustres .bio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
-#ilustres .bio-card{display:flex;gap:12px;align-items:center;text-align:start;padding:10px 12px;border:1px solid var(--line);border-inline-start:3px solid var(--e);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow);font:inherit;color:var(--ink);transition:border-color .15s, transform .15s}
-#ilustres .bio-card:hover{border-color:var(--e);transform:translateY(-1px)}
-#ilustres .bio-av{flex:none;width:52px;height:52px;border-radius:50%;overflow:hidden;background:var(--surface-2);display:grid;place-items:center;border:1px solid var(--line-soft)}
-#ilustres .bio-av .bio-img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
-#ilustres .bio-mono{font-family:var(--serif);font-weight:600;font-size:1.1rem;color:var(--e)}
-#ilustres .bio-txt{display:flex;flex-direction:column;min-width:0;line-height:1.3}
-#ilustres .bio-txt b{font-family:var(--serif);font-size:1.02rem;font-weight:600}
-#ilustres .bio-dates{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
-#ilustres .bio-role{font-size:.8rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#biografias .bio-era{font-size:1.15rem;margin:26px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--e);color:var(--ink)}
+#biografias .bio-letra{border-bottom-color:var(--line)}   /* (18-10) orden alfabético: la letra no es una época */
+#biografias .bio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+#biografias .bio-card{display:flex;gap:12px;align-items:center;text-align:start;padding:10px 12px;border:1px solid var(--line);border-inline-start:3px solid var(--e);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow);font:inherit;color:var(--ink);transition:border-color .15s, transform .15s}
+#biografias .bio-card:hover{border-color:var(--e);transform:translateY(-1px)}
+#biografias .bio-av{flex:none;width:52px;height:52px;border-radius:50%;overflow:hidden;background:var(--surface-2);display:grid;place-items:center;border:1px solid var(--line-soft)}
+#biografias .bio-av .bio-img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+#biografias .bio-mono{font-family:var(--serif);font-weight:600;font-size:1.1rem;color:var(--e)}
+#biografias .bio-txt{display:flex;flex-direction:column;min-width:0;line-height:1.3}
+#biografias .bio-txt b{font-family:var(--serif);font-size:1.02rem;font-weight:600}
+#biografias .bio-dates{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+#biografias .bio-role{font-size:.8rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* ficha */
-#ilustres .bio-nav{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:18px 0 14px}
-#ilustres .bio-pn{display:flex;gap:8px}
-#ilustres .bio-ficha{border:1px solid var(--line);border-top:4px solid var(--e);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow);padding:22px 24px 24px;max-width:860px}
-#ilustres .bio-head{display:flex;gap:22px;align-items:flex-start;margin-bottom:16px}
-#ilustres .bio-portrait{flex:none;width:170px;margin:0}
-#ilustres .bio-portrait .bio-img{width:170px;height:210px;object-fit:cover;object-position:50% 20%;border-radius:10px;border:1px solid var(--line-soft);cursor:zoom-in;display:block}
-#ilustres .bio-portrait .bio-mono{display:grid;place-items:center;width:170px;height:170px;border-radius:50%;background:var(--surface-2);border:2px solid var(--e);font-size:3rem}
-#ilustres .bio-portrait figcaption{font-size:11px;line-height:1.35;color:var(--muted);margin-top:6px;overflow-wrap:anywhere}
-#ilustres .bio-id{min-width:0}
-#ilustres .bio-era-tag{font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;font-weight:600;color:var(--e);margin-bottom:4px}
-#ilustres .bio-id h2{font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:4px}
-#ilustres .bio-life{color:var(--muted);font-size:.95rem}
-#ilustres .bio-pers-tag{margin:.3rem 0 0;font-size:.92rem}   /* (18-10) enlace al caso de «Perseguidos por sus ideas» */
-#ilustres .bio-idea{margin-top:14px;padding:10px 14px;border-inline-start:3px solid var(--e);background:var(--surface-2);border-radius:0 10px 10px 0;font-family:var(--serif);font-size:1.05rem;line-height:1.45}
-#ilustres .bio-bio p{font-size:1rem;line-height:1.65;margin:0 0 .85em;max-width:70ch}
-#ilustres .bio-sec{margin-top:18px}
-#ilustres .bio-sec h3{font-size:1rem;margin-bottom:8px}
-#ilustres .bio-obras{margin:0;padding-inline-start:1.2em;line-height:1.6}
-#ilustres .bio-obras li{font-style:italic}
-#ilustres .bio-temas{display:flex;flex-wrap:wrap;gap:8px}
-#ilustres .bio-tema{display:flex;flex-direction:column;align-items:flex-start;text-align:start;gap:1px;padding:7px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);font:inherit;font-size:.88rem;color:var(--ink);max-width:100%}
-#ilustres .bio-tema span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-#ilustres .bio-tema:hover{border-color:var(--accent)}
+#biografias .bio-nav{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin:18px 0 14px}
+#biografias .bio-pn{display:flex;gap:8px}
+#biografias .bio-ficha{border:1px solid var(--line);border-top:4px solid var(--e);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow);padding:22px 24px 24px;max-width:860px}
+#biografias .bio-head{display:flex;gap:22px;align-items:flex-start;margin-bottom:16px}
+#biografias .bio-portrait{flex:none;width:170px;margin:0}
+#biografias .bio-portrait .bio-img{width:170px;height:210px;object-fit:cover;object-position:50% 20%;border-radius:10px;border:1px solid var(--line-soft);cursor:zoom-in;display:block}
+#biografias .bio-portrait .bio-mono{display:grid;place-items:center;width:170px;height:170px;border-radius:50%;background:var(--surface-2);border:2px solid var(--e);font-size:3rem}
+#biografias .bio-portrait figcaption{font-size:11px;line-height:1.35;color:var(--muted);margin-top:6px;overflow-wrap:anywhere}
+#biografias .bio-id{min-width:0}
+#biografias .bio-era-tag{font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;font-weight:600;color:var(--e);margin-bottom:4px}
+#biografias .bio-id h2{font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:4px}
+#biografias .bio-life{color:var(--muted);font-size:.95rem}
+#biografias .bio-pers-tag{margin:.3rem 0 0;font-size:.92rem}   /* (18-10) enlace al caso de «Perseguidos por sus ideas» */
+#biografias .bio-idea{margin-top:14px;padding:10px 14px;border-inline-start:3px solid var(--e);background:var(--surface-2);border-radius:0 10px 10px 0;font-family:var(--serif);font-size:1.05rem;line-height:1.45}
+#biografias .bio-bio p{font-size:1rem;line-height:1.65;margin:0 0 .85em;max-width:70ch}
+#biografias .bio-sec{margin-top:18px}
+#biografias .bio-sec h3{font-size:1rem;margin-bottom:8px}
+#biografias .bio-obras{margin:0;padding-inline-start:1.2em;line-height:1.6}
+#biografias .bio-obras li{font-style:italic}
+#biografias .bio-temas{display:flex;flex-wrap:wrap;gap:8px}
+#biografias .bio-tema{display:flex;flex-direction:column;align-items:flex-start;text-align:start;gap:1px;padding:7px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);font:inherit;font-size:.88rem;color:var(--ink);max-width:100%}
+#biografias .bio-tema span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+#biografias .bio-tema:hover{border-color:var(--accent)}
 
 /* tira «Ilustres de este tema» al final de cada unidad de la teoría */
 .bio-strip{margin:28px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
@@ -3551,73 +3551,73 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .bio-strip-list button:hover{border-color:var(--e)}
 
 @media (max-width:600px){
-  #ilustres .bio-grid{grid-template-columns:minmax(0,1fr)}
-  #ilustres .bio-card{min-width:0}
-  #ilustres .bio-ficha{padding:16px}
-  #ilustres .bio-head{flex-direction:column;align-items:center;text-align:center}
-  #ilustres .bio-idea{text-align:start}
-  #ilustres .bio-portrait figcaption{text-align:center}
+  #biografias .bio-grid{grid-template-columns:minmax(0,1fr)}
+  #biografias .bio-card{min-width:0}
+  #biografias .bio-ficha{padding:16px}
+  #biografias .bio-head{flex-direction:column;align-items:center;text-align:center}
+  #biografias .bio-idea{text-align:start}
+  #biografias .bio-portrait figcaption{text-align:center}
 }
 
 @media print{
   .bio-strip{display:none !important}
-  #ilustres .bio-nav, #ilustres .bio-tools, #ilustres .bio-sec-temas{display:none !important}
-  #ilustres .bio-ficha{box-shadow:none;border-color:#999;max-width:none}
-  #ilustres .bio-card{box-shadow:none;break-inside:avoid}
-  #ilustres .bio-grid{grid-template-columns:repeat(3,1fr)}
+  #biografias .bio-nav, #biografias .bio-tools, #biografias .bio-sec-temas{display:none !important}
+  #biografias .bio-ficha{box-shadow:none;border-color:#999;max-width:none}
+  #biografias .bio-card{box-shadow:none;break-inside:avoid}
+  #biografias .bio-grid{grid-template-columns:repeat(3,1fr)}
 }
 
 /* anécdota (ficha) */
-#ilustres .bio-anec{margin-top:18px;padding:12px 16px 12px;border:1px dashed var(--e);border-radius:12px;background:var(--surface-2)}
-#ilustres .bio-anec h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
-#ilustres .bio-anec h3::before{content:"✦";color:var(--e)}
-#ilustres .bio-trad{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
-#ilustres .bio-anec p{font-size:.97rem;line-height:1.6;margin:0 0 .5em;max-width:70ch}
-#ilustres .bio-anec .bio-fuente{font-size:.8rem;color:var(--muted);margin:0}
+#biografias .bio-anec{margin-top:18px;padding:12px 16px 12px;border:1px dashed var(--e);border-radius:12px;background:var(--surface-2)}
+#biografias .bio-anec h3{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
+#biografias .bio-anec h3::before{content:"✦";color:var(--e)}
+#biografias .bio-trad{font-family:var(--sans);font-size:.72rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
+#biografias .bio-anec p{font-size:.97rem;line-height:1.6;margin:0 0 .5em;max-width:70ch}
+#biografias .bio-anec .bio-fuente{font-size:.8rem;color:var(--muted);margin:0}
 
 /* (29-09) Frases del pensador en su ficha: mismo estilo que la sección Frases (citasview.js) */
-#ilustres .bio-cits{display:flex;flex-direction:column;gap:12px}
-#ilustres .bio-cit{margin:0;background:var(--surface);border:1px solid var(--line);border-inline-start:4px solid var(--accent);border-radius:12px;padding:16px 18px 14px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
-#ilustres .bio-cit-q{margin:0;font-family:var(--serif,Georgia,serif);font-style:italic;font-size:1.08rem;line-height:1.45;color:var(--ink)}
-#ilustres .bio-cit-q::before{content:"\201C";color:var(--accent);font-size:1.3em;line-height:0;vertical-align:-.25em;margin-inline-end:.05em}
-#ilustres .bio-cit-o{color:var(--muted);font-style:italic;font-size:.9rem}
-#ilustres .bio-cit-dest{border-inline-start-width:6px;background:linear-gradient(0deg,var(--surface),var(--surface-2))}
-#ilustres .bio-cit-dest .bio-cit-q{font-size:1.3rem;font-style:normal;font-weight:500}
-#ilustres .bio-cit-badge{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--on-accent,#fff);background:var(--accent);border-radius:999px;padding:3px 10px}
+#biografias .bio-cits{display:flex;flex-direction:column;gap:12px}
+#biografias .bio-cit{margin:0;background:var(--surface);border:1px solid var(--line);border-inline-start:4px solid var(--accent);border-radius:12px;padding:16px 18px 14px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+#biografias .bio-cit-q{margin:0;font-family:var(--serif,Georgia,serif);font-style:italic;font-size:1.08rem;line-height:1.45;color:var(--ink)}
+#biografias .bio-cit-q::before{content:"\201C";color:var(--accent);font-size:1.3em;line-height:0;vertical-align:-.25em;margin-inline-end:.05em}
+#biografias .bio-cit-o{color:var(--muted);font-style:italic;font-size:.9rem}
+#biografias .bio-cit-dest{border-inline-start-width:6px;background:linear-gradient(0deg,var(--surface),var(--surface-2))}
+#biografias .bio-cit-dest .bio-cit-q{font-size:1.3rem;font-style:normal;font-weight:500}
+#biografias .bio-cit-badge{align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--on-accent,#fff);background:var(--accent);border-radius:999px;padding:3px 10px}
 /* (01-10) «Su vida en fechas» (iluVida en biografiasview.js): una línea vertical hacia abajo, con el color de la época */
-#ilustres .vida-linea{list-style:none;margin:6px 0 0;padding:0 0 0 22px;position:relative}
-#ilustres .vida-linea::before{content:"";position:absolute;inset-inline-start:6px;top:8px;bottom:8px;width:2px;background:var(--e);border-radius:1px}
-#ilustres .vida-linea li{position:relative;display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline;padding:4px 0 10px}
-#ilustres .vida-linea li::before{content:"";position:absolute;inset-inline-start:-21px;top:9px;width:10px;height:10px;border-radius:50%;background:var(--surface);border:2px solid var(--e)}
-#ilustres .vida-linea li.vida-extremo::before{background:var(--e)}
-#ilustres .vida-a{font:600 .82rem var(--mono);color:var(--e);min-width:10.5em}
-#ilustres .vida-t{font-family:var(--serif);font-size:1rem;color:var(--ink)}
+#biografias .vida-linea{list-style:none;margin:6px 0 0;padding:0 0 0 22px;position:relative}
+#biografias .vida-linea::before{content:"";position:absolute;inset-inline-start:6px;top:8px;bottom:8px;width:2px;background:var(--e);border-radius:1px}
+#biografias .vida-linea li{position:relative;display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline;padding:4px 0 10px}
+#biografias .vida-linea li::before{content:"";position:absolute;inset-inline-start:-21px;top:9px;width:10px;height:10px;border-radius:50%;background:var(--surface);border:2px solid var(--e)}
+#biografias .vida-linea li.vida-extremo::before{background:var(--e)}
+#biografias .vida-a{font:600 .82rem var(--mono);color:var(--e);min-width:10.5em}
+#biografias .vida-t{font-family:var(--serif);font-size:1rem;color:var(--ink)}
 
 /* (10-10) «Afines y opuestos» y «Conceptos del glosario» al final de la ficha: texto con enlaces, sin chips */
-#ilustres .bio-rel-list, #ilustres .bio-rel-tesis{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;line-height:1.5}
-#ilustres .bio-rel h4{font-size:.9rem;margin:14px 0 6px;color:var(--muted)}
-#ilustres .bio-rel-a, #ilustres .bio-conc-a{background:none;border:0;padding:0;font:inherit;color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
-#ilustres .bio-rel-a:hover, #ilustres .bio-conc-a:hover{text-decoration-thickness:2px}
-#ilustres .bio-rel-linea{font-size:.78rem;font-weight:600;color:var(--muted);margin-inline-end:4px}
-#ilustres .bio-rel-linea::before{content:"";display:inline-block;width:.7em;height:.7em;border-radius:50%;background:var(--l);margin-inline-end:5px;vertical-align:-.05em}
-#ilustres .bio-rel-op, #ilustres .bio-rel-tipo{font-size:.78rem;font-weight:600;margin-inline-end:4px}
-#ilustres .bio-rel-op, #ilustres .bio-rel-no .bio-rel-tipo{color:var(--bad)}
-#ilustres .bio-rel-si .bio-rel-tipo{color:var(--ok)}
-#ilustres .bio-rel-por{display:block;font-size:.9rem;color:var(--muted);max-width:70ch}
-#ilustres .bio-conc-txt{margin:0;line-height:1.7;max-width:70ch}
-#ilustres .bio-conc-mas{display:inline}
-#ilustres .bio-conc-mas summary{display:inline;cursor:pointer;color:var(--muted);font-size:.9rem}
-#ilustres .bio-conc-mas[open] summary{display:none}
+#biografias .bio-rel-list, #biografias .bio-rel-tesis{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;line-height:1.5}
+#biografias .bio-rel h4{font-size:.9rem;margin:14px 0 6px;color:var(--muted)}
+#biografias .bio-rel-a, #biografias .bio-conc-a{background:none;border:0;padding:0;font:inherit;color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+#biografias .bio-rel-a:hover, #biografias .bio-conc-a:hover{text-decoration-thickness:2px}
+#biografias .bio-rel-linea{font-size:.78rem;font-weight:600;color:var(--muted);margin-inline-end:4px}
+#biografias .bio-rel-linea::before{content:"";display:inline-block;width:.7em;height:.7em;border-radius:50%;background:var(--l);margin-inline-end:5px;vertical-align:-.05em}
+#biografias .bio-rel-op, #biografias .bio-rel-tipo{font-size:.78rem;font-weight:600;margin-inline-end:4px}
+#biografias .bio-rel-op, #biografias .bio-rel-no .bio-rel-tipo{color:var(--bad)}
+#biografias .bio-rel-si .bio-rel-tipo{color:var(--ok)}
+#biografias .bio-rel-por{display:block;font-size:.9rem;color:var(--muted);max-width:70ch}
+#biografias .bio-conc-txt{margin:0;line-height:1.7;max-width:70ch}
+#biografias .bio-conc-mas{display:inline}
+#biografias .bio-conc-mas summary{display:inline;cursor:pointer;color:var(--muted);font-size:.9rem}
+#biografias .bio-conc-mas[open] summary{display:none}
 
 /* (10-10) Fichas de época: el título de la época (listado) y la etiqueta de época (ficha) abren la ficha, sin botones nuevos */
-#ilustres .bio-era-btn{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:start}
-#ilustres .bio-era-btn span{color:var(--e);font-weight:400}
-#ilustres .bio-era-btn:hover{color:var(--e)}
-#ilustres .bio-era-link{background:none;border:0;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
-#ilustres .bio-epo-head{margin-bottom:6px}
-#ilustres .bio-epo-head h2{font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:4px}
-#ilustres .bio-epoca .bio-sec p, #ilustres .bio-epoca .bio-sec li{font-size:1rem;line-height:1.65;max-width:70ch}
-#ilustres .bio-epoca .bio-sec ul{padding-inline-start:1.2em;margin:0}
+#biografias .bio-era-btn{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:start}
+#biografias .bio-era-btn span{color:var(--e);font-weight:400}
+#biografias .bio-era-btn:hover{color:var(--e)}
+#biografias .bio-era-link{background:none;border:0;padding:0;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+#biografias .bio-epo-head{margin-bottom:6px}
+#biografias .bio-epo-head h2{font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:4px}
+#biografias .bio-epoca .bio-sec p, #biografias .bio-epoca .bio-sec li{font-size:1rem;line-height:1.65;max-width:70ch}
+#biografias .bio-epoca .bio-sec ul{padding-inline-start:1.2em;margin:0}
 
 /* (12-10) Vista «Épocas»: tarjetas de las fichas de época con su color y el dibujo de su cosmos */
 #epocas [data-b="ant"]{--e:var(--e-ant)} #epocas [data-b="med"]{--e:var(--e-med)} #epocas [data-b="ren"]{--e:var(--e-ren)}
