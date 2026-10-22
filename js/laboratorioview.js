@@ -9,7 +9,7 @@
    Textos en laboratorio.js (LAB, memoria de traducción); aquí solo motores, fórmulas y dibujo.
    Se monta desde logicaview.js (logRender → labMontar) en #logicabox; enlace profundo #logica/<mesa>. */
 
-const LB_MESAS = ["hablamos", "arbol", "mundo", "relaciones", "demos", "kant", "spinoza"];   /* (21-10) + «Juicios de Kant»; + «Spinoza» (en desarrollo, laboratorio_spinozaview.js) */
+const LB_MESAS = ["hablamos", "arbol", "deduccion", "induccion", "mundo", "relaciones", "demos", "kant", "spinoza"];   /* (22-10, nube) + «Deducción natural» (laboratorio_deduccionview.js) */   /* (21-10) + «Juicios de Kant»; + «Spinoza» (en desarrollo, laboratorio_spinozaview.js) */
 const lbT = (k, v) => String((LAB.t && LAB.t[k]) || k).replace(/\{(\w+)\}/g, (_, x) => (v && v[x] != null ? v[x] : ""));
 
 /* ---------- PL: lógica proposicional ---------- */
@@ -1082,5 +1082,5 @@ const LB_KANT = (() => {
 /* ---------- montaje (lo llama logRender en logicaview.js) ---------- */
 function labMontar(mesa) {
   const box = document.getElementById("lb-box"); if (!box) return;
-  ({ hablamos: LB_HBU, arbol: LB_ARU, mundo: LB_MUU, relaciones: LB_REU, demos: LB_DEU, kant: LB_KANT, spinoza: LB_SPZ }[mesa] || LB_HBU).montar(box);
+  ({ hablamos: LB_HBU, arbol: LB_ARU, deduccion: typeof LB_DNU !== "undefined" ? LB_DNU : null, induccion: typeof LB_INU !== "undefined" ? LB_INU : null, mundo: LB_MUU, relaciones: LB_REU, demos: LB_DEU, kant: LB_KANT, spinoza: LB_SPZ }[mesa] || LB_HBU).montar(box);
 }

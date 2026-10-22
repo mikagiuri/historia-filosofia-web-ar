@@ -2307,6 +2307,7 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #logica .lg-pcard-itin{ grid-column:1 / -1; border-inline-start-color:var(--ok, var(--fil)) }
 #logica .lg-itin-tit{ margin:.6rem 0 .3rem }
 #logica .lg-itin{ display:grid; gap:.5rem; margin:.4rem 0 1rem }
+#logica .lg-itin > *{ min-width:0 }   /* (22-10, nube) sin esto, la tabla de puentes del nivel 5 ensanchaba la columna y la página en el móvil */
 #logica .lg-itin-nivel{ background:var(--surface); border:1px solid var(--line); border-inline-start:4px solid var(--r-log, var(--fil)); border-radius:var(--radius); padding:.55rem 1rem }
 #logica .lg-itin-nivel summary{ cursor:pointer; font-weight:600; line-height:1.4 }
 #logica .lg-itin-nivel[open] summary{ margin-bottom:.4rem }
@@ -2321,12 +2322,29 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #logica .lg-itin-puentes th, #logica .lg-itin-puentes td{ border:1px solid var(--line); padding:.25rem .5rem; text-align:start; vertical-align:top }
 #logica .lg-itin-puentes th{ background:var(--surface); font-weight:600 }
 #logica .lg-itin-check{ display:inline-flex; gap:.45rem; align-items:center; font-size:.92rem; margin-top:.2rem }
+/* (22-10) mapa del itinerario y página por nivel */
+#logica .lg-itin-mapa{ display:grid; gap:.9rem; margin:.4rem 0 1rem }
+#logica .lg-itin-etapa h3{ font-size:1rem; margin:.1rem 0 .4rem }
+#logica .lg-itin-tiles{ display:grid; grid-template-columns:repeat(auto-fill,minmax(12.5rem,1fr)); gap:.5rem }
+#logica a.lg-itin-tile{ display:flex; flex-direction:column; gap:.15rem; padding:.6rem .8rem; border:1px solid var(--line); border-inline-start:4px solid var(--r-log, var(--fil)); border-radius:var(--radius); background:var(--surface); color:inherit; text-decoration:none; line-height:1.35 }
+#logica a.lg-itin-tile:hover, #logica a.lg-itin-tile:focus-visible{ border-color:var(--r-log, var(--fil)) }
+#logica a.lg-itin-tile.lg-itin-hecho{ border-inline-start-color:var(--ok, var(--fil)) }
+#logica a.lg-itin-tile.lg-itin-sig{ box-shadow:0 0 0 2px var(--r-log, var(--fil)) }
+#logica .lg-itin-tt{ font-weight:600 }
+#logica .lg-itin-est{ font-size:.8rem; color:var(--muted) }
+#logica .lg-itin-nav{ display:flex; flex-wrap:wrap; gap:.5rem; justify-content:space-between; align-items:center; margin:.6rem 0 }
+#logica .lg-itin-nav .fbtn{ text-decoration:none }
+@media (max-width: 640px){ #logica .lg-itin-navt{ display:none } #logica .lg-itin-nav{ flex-wrap:nowrap; gap:.3rem } #logica .lg-itin-nav .fbtn{ font-size:.85rem; padding-inline:.6rem } }
+#logica .lg-itin-pag{ margin:.4rem 0 }
+#logica .lg-itin-pag .lg-itin-tit{ margin-top:.2rem }
 #logica .lg-itin-ramas{ display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:.6rem; margin-bottom:1rem }
 #logica .lg-itin-rama{ border:1px solid var(--line); border-radius:var(--radius); padding:.5rem .9rem }
 #logica .lg-itin-rama h4{ margin:.1rem 0 .3rem }
 #logica .lg-itin-rama p{ margin:.2rem 0 }
 #logica .lg-pchips{ display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.2rem }
 #logica .lg-tabs .lg-home{ color:var(--muted) }
+#logica .lg-itin-rub th{ white-space:nowrap; vertical-align:top; text-align:start }   /* (22-10, nube) rúbricas de las guías 9-12 */
+#logica .lg-itin-rub td{ vertical-align:top }
 
 
 /* ==== css/leibniz.css ==== */
@@ -3105,6 +3123,21 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .spz-modo{ display:inline-flex; gap:.35rem; align-items:center; font-size:.9rem; cursor:pointer }
 .spz-mias .spz-premisa .spz-pf{ grid-column:2 }
 .spz-mias .lb-err:empty{ display:none }
+
+/* (22-10, nube) mesa «Deducción natural»: líneas numeradas; los supuestos, sangrados con una barra a la izquierda */
+.lb-dn-enun{ margin:0; font-size:1.02rem }
+.lb-dn-lineas{ list-style:none; margin:0; padding:0; display:grid; gap:.3rem }
+.lb-dn-l{ display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:.6rem; align-items:center; margin-inline-start:calc(var(--dn, 0) * 1.4rem); padding-inline-start:calc(var(--dn, 0) * .1rem) }
+.lb-dn-l[style*="--dn:1"], .lb-dn-l[style*="--dn:2"], .lb-dn-l[style*="--dn:3"]{ border-inline-start:3px solid var(--lb); padding-inline-start:.5rem }
+.lb-dn-sup .lb-dn-f{ font-style:italic }
+.lb-dn-cerrada{ opacity:.55 }
+.lb-dn-num{ min-width:2.6rem; justify-content:center }
+.lb-dn-f{ overflow-wrap:anywhere }
+.lb-dn-j{ white-space:nowrap }
+.lb-dn-sol{ margin:0; padding-inline-start:1.6rem; display:grid; gap:.2rem }
+.lb-dn-tabla td{ vertical-align:top }
+@media (max-width:520px){ .lb-dn-l{ grid-template-columns:auto minmax(0,1fr) } .lb-dn-j{ grid-column:2; white-space:normal } }
+.lb-in-caso{ margin:0; font-size:1.02rem; line-height:1.55; border-inline-start:3px solid var(--lb); padding-inline-start:.7rem }   /* (22-10, nube) mesa «Inducción y abducción» */
 
 
 /* ==== css/hegel.css ==== */
