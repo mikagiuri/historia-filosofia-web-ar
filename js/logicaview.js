@@ -707,6 +707,22 @@ function logItinHay(h){
   const ok = typeof ROUTE_KEY_OK !== "undefined" && ROUTE_KEY_OK[m[1]];
   return !m[2] || !ok || ok(m[2]);
 }
+/* (22-10, docs/39) Piezas que solo existen en la web de 1.º (tema 4, cuestionarios fil-*, Pistas fil-validez, falacias
+   g-fil-* de la nómina): en hf (y en la ESO) no están. En vez de dejarlas sin enlace, se enlazan a la web de 1.º en la
+   misma lengua, en pestaña nueva, con la nota «(en la web de 1.º)». La web de 1.º (aula-de-filosofia-web) existe en es,
+   eu, fr, en y ar, igual que la de hf; en la propia web de 1.º logItinHay ya es true, así que no se autoenlaza. */
+function logItinEs1o(h){ return /^#[\w-]+\/(?:fil|g-fil)-/.test(h || ""); }
+function logItin1oUrl(h){
+  const lang = (document.documentElement.lang || "es").slice(0, 2);
+  return "https://mikagiuri.github.io/aula-de-filosofia-web" + (lang === "es" ? "" : "-" + lang) + "/" + h;
+}
+function logItinEnlace(p){
+  const I = LOG_ITIN, e = logEsc;
+  if (!p.h) return e(p.t);
+  if (logItinHay(p.h)) return '<a href="' + p.h + '">' + e(p.t) + "</a>";
+  if (logItinEs1o(p.h)) return '<a href="' + logItin1oUrl(p.h) + '" target="_blank" rel="noopener">' + e(p.t) + ' <span class="lg-nota">(' + e(I.enLaDe1o) + ")</span></a>";
+  return e(p.t) + ' <span class="lg-nota">(' + e(I.noAqui) + ")</span>";
+}
 function logItinProgreso(){
   const n = logItinHechos().length;
   return n ? logItinF(LOG_ITIN.progreso, { n, t: LOG_ITIN.niveles.length }) : LOG_ITIN.progresoNada;
@@ -748,7 +764,7 @@ function logItinGuia(g){
    página, #logica/itinerario/N, con navegación al anterior, al mapa y al siguiente. */
 function logItinNivel(v){
   const I = LOG_ITIN, hechos = logItinHechos(), e = logEsc, L = I.niveles, i = L.indexOf(v);
-  const enlace = p => (p.h && logItinHay(p.h) ? '<a href="' + p.h + '">' + e(p.t) + "</a>" : e(p.t) + (p.h ? ' <span class="lg-nota">(' + e(I.noAqui) + ")</span>" : ""));
+  const enlace = logItinEnlace;
   const lista = ps => "<ol>" + ps.map(p => "<li>" + enlace(p) + "</li>").join("") + "</ol>";
   const ir = (w, k, flecha) => (w ? '<a class="fbtn" href="#logica/itinerario/' + w.n + '">' + (flecha === "<" ? "← " : "") + e(I[k]) + '<span class="lg-itin-navt">: ' + e(w.titulo) + "</span>" + (flecha === ">" ? " →" : "") + "</a>" : "<span></span>");
   const nav = '<nav class="lg-itin-nav" aria-label="' + e(I.titulo) + '">' + ir(L[i - 1], "anterior", "<") + '<a class="fbtn" href="#logica/itinerario">' + e(I.volverMapa) + "</a>" + ir(L[i + 1], "siguiente", ">") + "</nav>";
@@ -768,7 +784,7 @@ function logRenderItinerario(){
   const casa = '<div class="fgroup lg-tabs"><button type="button" class="fbtn lg-home" data-lgtab="portada" title="' + logT("pPortada") + '">‹ ' + logT("pPortada") + "</button></div>";
   if (v) return casa + logItinNivel(v);
   const hechos = logItinHechos(), sig = (I.niveles.find(x => !hechos.includes(x.n)) || {}).n;
-  const enlace = p => (p.h && logItinHay(p.h) ? '<a href="' + p.h + '">' + e(p.t) + "</a>" : e(p.t) + (p.h ? ' <span class="lg-nota">(' + e(I.noAqui) + ")</span>" : ""));
+  const enlace = logItinEnlace;
   const casilla = x => '<a class="lg-itin-tile' + (hechos.includes(x.n) ? " lg-itin-hecho" : "") + (x.n === sig ? " lg-itin-sig" : "") + '" href="#logica/itinerario/' + x.n + '">' +
     '<span class="lg-itin-n">' + e(logItinF(I.nivel, { n: x.n })) + "</span><span class=\"lg-itin-tt\">" + e(x.titulo) + "</span>" +
     (hechos.includes(x.n) ? '<span class="lg-itin-est">✓ ' + e(I.estHecho) + "</span>" : x.n === sig ? '<span class="lg-itin-est">→ ' + e(I.estSig) + "</span>" : "") + "</a>";
