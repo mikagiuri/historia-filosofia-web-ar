@@ -613,6 +613,15 @@ const SPZ_ISABELLE = {
   P28: ["D6", "A4", "D1", "H_por_si_excluye_por_otro", "H_modo_de_atributo_es_modo", "H_limitar_es_determinar", "H_lo_que_limita_es_finito", "H_absoluto_solo_de_Dios", "H_mediato_de_Dios_y_su_modificacion", "H_dos_maneras_de_seguirse"],
   P29: ["H_todo_tiene_causa"], P32: ["A4", "D1", "H_por_si_excluye_por_otro"], P36: null,
 };
+/* Premisas que Isabelle demuestra que sobran (Spinoza_redundancia.thy): cada una por separado, no todas a la vez. */
+const SPZ_SOBRA = {
+  P16c1: { A1: "R_P16_cor1_sin_A1", H_ser_en_implica_concebirse: "R_P16_cor1_sin_concebirse" },
+  P17c2: { A1: "R_P17_cor2_sin_A1", H_solo_en_si_solo_por_si: "R_P17_cor2_sin_solo_en_si", H_modo_en_sustancia: "R_P17_cor2_sin_modo_en_sustancia" },
+  P21e: { A4: "R_P21e_sin_A4", H_por_si_excluye_por_otro: "R_P21e_sin_por_si_excluye" },
+};
+/* Mapa de propiedades de las relaciones (Propiedades_relaciones.thy): lema de cada fila de LABSPZ.repaso.mapa, en orden. */
+const SPZ_MAPA_LEMAS = ["M1_irreflexiva_transitiva_asimetrica", "M2_asimetrica_irreflexiva", "M3_sin_regreso_asimetrica", "M4_sin_regreso_hay_primero",
+  "M5_finito_sin_regreso", "M6_finito_total_maximo", "N1_asimetrica_no_transitiva", "N2_irreflexiva_no_asimetrica", "N3_transitiva_no_irreflexiva", "N4_infinito_con_regreso"];
 const SPZ_TEOREMA = { TB: "todo_sustancia_o_modo", P6: "P6_cor", P10d: "P10_debil", P16c1: "P16_cor1", P17c2: "P17_cor2", P21e: "P21_doble_eternidad" };
 /* Caminos alternativos también demostrados en Isabelle. */
 const SPZ_ALT = {
@@ -1110,7 +1119,7 @@ const LB_SPZ = (() => {
       },
     },
     spinoza: {
-      textos: () => LABSPZ, formal: SPZ_FORMAL, def: SPZ_DEF, isabelle: SPZ_ISABELLE, teorema: SPZ_TEOREMA, alt: SPZ_ALT,
+      textos: () => LABSPZ, formal: SPZ_FORMAL, def: SPZ_DEF, isabelle: SPZ_ISABELLE, teorema: SPZ_TEOREMA, alt: SPZ_ALT, sobra: SPZ_SOBRA,
       estilos: ESTILOS_SPZ, maxA: 2, porDefecto: (id) => (SPZ_ISABELLE[id] || []).slice(), posibles: {}, inicio: { prop: "P5", marcadas: ["H_individuacion_por_atributos"] },
       nombreCosa: (i) => (i === 0 ? spzT("Dios") : "c" + i),
       formulaDef: (d) => (SPZ_PREMISA_DEF[d.id] ? SPZ_PREMISA_DEF[d.id] + "   (" + spzT("casilla", { x: d.id }) + ")" : SPZ_DEF[d.id]),
@@ -1224,7 +1233,7 @@ const LB_SPZ = (() => {
     const teorema = M.teorema[p.id] || p.id;
     if (p.propia && !p.comp.ok) { st.turno++; return pintarResultado(`<p class="lb-err">${esc(spzT(p.comp.error.k, p.comp.error.v))}</p>`); }
     if (p.posible) return posibilidad(p, M, el, mundo);
-    if (isa && contiene(el, isa)) return demostrado(teorema, p.prueba, isa, p.pasos);
+    if (isa && contiene(el, isa)) return demostrado(teorema, p.prueba, isa, p.pasos, M.sobra && M.sobra[p.id]);
     if (alt && contiene(el, alt.premisas)) return demostrado(p.teoremaAlt || alt.teorema, p.pruebaAlt, alt.premisas, p.pasosAlt);
     const miTurno = ++st.turno;
     pintarResultado(`<p class="lb-nota">${esc(spzT("buscando"))}</p>`);
@@ -1234,7 +1243,7 @@ const LB_SPZ = (() => {
       const r = MotorMundos.buscarContramodelo(motorPrem(el), objDe(p), op);
       if (r.encontrado) return contramodelo(r.mundo, Math.round(performance.now() - t0));
       const h = MotorMundos.hayMundo(motorPrem(el), op), ms = Math.round(performance.now() - t0);
-      if (!h.hay && h.completo) incompatibles(h, ms); else sinMundo(r, ms);
+      if (!h.hay && h.completo) incompatibles(h, ms, el, op); else sinMundo(r, ms);
     }, 20);
   }
   /* Posibilidad: ¿hay un mundo con estas premisas en el que ocurra? */
@@ -1260,19 +1269,40 @@ const LB_SPZ = (() => {
           <p class="lb-nota">${esc(spzT("encontrado", { ms }))}</p>`);
       }
       const h = MotorMundos.hayMundo(motorPrem(el), op);
-      if (!h.hay && h.completo) return incompatibles(h, ms);
+      if (!h.hay && h.completo) return incompatibles(h, ms, el, op);
       pintarResultado(`<div class="lb-aviso lb-warn"><span class="spz-sello">${esc(spzT("selloDuda"))}</span><h3 class="spz-h">${esc(spzT("noPuede"))}</h3>
         <p>${esc(spzT("imposibleTxt", { c: r.maxC }))}</p>${p.notaNo ? `<p>${p.notaNo}</p>` : ""}<p class="lb-nota">${esc(spzT("busqueda", { ms }))}</p></div>`);
     }, 20);
   }
-  function demostrado(teorema, prueba, usadas, pasos) {
+  function demostrado(teorema, prueba, usadas, pasos, sobra) {
     st.turno++;
     const sobran = S().marcadas.filter((x) => !usadas.includes(x)), R = LABSPZ.repaso, M = W();
     const etq = (k) => (k === "hip" ? `<span class="spz-paso-et">${esc(R.pHip)}</span>` : k === "fin" ? `<span class="spz-paso-et">${esc(R.pFin)}</span>`
       : `<span class="lb-mono spz-paso-pr">${esc(k)}</span>` + (M.premisaForma && M.premisaForma[k] ? ` <button type="button" class="spz-forma" aria-expanded="false" data-spz-rep="${M.premisaForma[k]}">${esc(formaNombre(M.premisaForma[k]))}</button>` : ""));
     const cuerpo = pasos ? `<p class="spz-sub">${esc(R.tPasos)}</p><ol class="spz-pasos">${pasos.map((s) => `<li><span>${sim(s.txt)}</span> ${etq(s.k)}</li>`).join("")}</ol>` : `<p>${prueba}</p>`;
     pintarResultado(`<div class="lb-aviso lb-ok"><span class="spz-sello">${esc(spzT("selloOk"))}</span><h3 class="spz-h">${esc(spzT("seSigue"))}</h3>${cuerpo}
-      <p class="lb-nota">${esc(spzT("teorema", { t: teorema, x: usadas.length ? usadas.join(", ") : spzT("ningunaAnadida") }))}${sobran.length ? " " + esc(spzT("sobran")) : ""}</p></div>`);
+      <p class="lb-nota">${esc(spzT("teorema", { t: teorema, x: usadas.length ? usadas.join(", ") : spzT("ningunaAnadida") }))}${sobran.length ? " " + esc(spzT("sobran")) : ""}</p>
+      ${sobra ? `<p class="spz-sub">${esc(spzT("sobraIsa"))}</p><ul class="spz-sobra">${Object.entries(sobra).map(([x, t]) => `<li>${esc(spzT("sobraItem", { x, t }))}</li>`).join("")}</ul>` : ""}
+      ${usadas.length > 1 ? botonSobra() : ""}</div>`);
+  }
+  /* Capas (22-10): ¿sobra alguna premisa? Se quita cada una y se busca un contramodelo en mundos pequeños. No demuestra nada. */
+  const botonSobra = () => `<div class="lb-fila"><button type="button" class="btn ghost" data-spz-sobra="1">${esc(spzT("bSobra"))}</button></div><div id="spz-sobra-res" aria-live="polite"></div>`;
+  const nombrePrem = (id) => { const m = S().mias.find((x) => x.id === id); return m ? m.texto : id; };
+  function buscarSobrantes() {
+    const caja = box.querySelector("#spz-sobra-res"); if (!caja) return;
+    const p = prop(), M = W(), el = S().marcadas, mundo = st.mundo, turno = st.turno;
+    caja.innerHTML = `<p class="lb-nota">${esc(spzT("buscando"))}</p>`;
+    setTimeout(() => {
+      if (turno !== st.turno || mundo !== st.mundo) return;
+      const op = { teoria: mundo, maxCosas: 4, maxAtributos: M.maxA }, sin = [];
+      let completo = true, maxC = 0;
+      for (const x of el) {
+        const r = MotorMundos.buscarContramodelo(motorPrem(el.filter((y) => y !== x)), objDe(p), op);
+        if (!r.encontrado) { sin.push(nombrePrem(x)); completo = completo && r.completo; maxC = r.maxC; }
+      }
+      caja.innerHTML = sin.length ? `<p>${esc(spzT("sobraPosible", { x: sin.join(", "), c: maxC || 4 }))}</p><p class="lb-nota">${esc(spzT(completo ? "sobraNoDemuestra" : "sinMundoCortado"))}</p>`
+        : `<p>${esc(spzT("sobraNinguna"))}</p>`;
+    }, 20);
   }
   function contramodelo(m0, ms) {
     const m = ver(m0), p = prop(), isa = W().isabelle[p.id] || [];
@@ -1304,15 +1334,23 @@ const LB_SPZ = (() => {
     return l ? `<p class="spz-lee"><span class="spz-lee-et">${esc(LABSPZ.repaso.conCosas.replace("{x}", sust))}:</span> ${l} <span class="lb-nota">${esc(LABSPZ.repaso.falsoAqui)}</span></p>` : "";
   }
   function sinMundo(r, ms) {
-    const isa = W().isabelle[prop().id];
+    const isa = W().isabelle[prop().id], varias = S().marcadas.length > 1;
     pintarResultado(`<div class="lb-aviso lb-warn"><span class="spz-sello">${esc(spzT("selloDuda"))}</span><h3 class="spz-h">${esc(spzT("sinMundo"))}</h3>
       <p>${esc(r.completo ? (W().sinTxt ? W().sinTxt(r) : W().maxA === 1 ? spzT("sinMundoCompletoT", { c: r.maxC }) : spzT("sinMundoCompleto", { c: r.maxC, a: r.maxA })) : spzT("sinMundoCortado"))} ${esc(spzT("noDemuestra"))}</p>
       ${isa ? `<p class="lb-nota">${esc(isa.length ? spzT("necesitaCon", { x: isa.join(", ") }) : spzT("necesitaSin"))}</p>` : ""}
-      <p class="lb-nota">${esc(spzT("busqueda", { ms }))}</p></div>`);
+      <p class="lb-nota">${esc(spzT("busqueda", { ms }))}</p>${varias ? botonSobra() : ""}</div>`);
   }
-  function incompatibles(h, ms) {
+  /* Capas (22-10): de las premisas que no caben juntas, el grupo mínimo que choca (se quitan una a una mientras siga el choque). */
+  function incompatibles(h, ms, el, op) {
+    let nucleo = el.slice();
+    for (const x of el) {
+      const resto = nucleo.filter((y) => y !== x), h2 = MotorMundos.hayMundo(motorPrem(resto), op);
+      if (!h2.hay && h2.completo) nucleo = resto;
+    }
     pintarResultado(`<div class="lb-aviso lb-warn"><span class="spz-sello">${esc(spzT("selloNada"))}</span><h3 class="spz-h">${esc(spzT("incompatibles"))}</h3>
-      <p>${esc(spzT("incompatiblesTxt", { c: h.maxC }))}</p><p class="lb-nota">${esc(spzT("busqueda", { ms }))}</p></div>`);
+      <p>${esc(spzT("incompatiblesTxt", { c: h.maxC }))}</p>
+      ${nucleo.length && nucleo.length < el.length ? `<p>${esc(spzT("chocan", { x: nucleo.map(nombrePrem).join(", ") }))}</p>` : nucleo.length ? `<p>${esc(spzT("chocanTodas"))}</p>` : `<p>${esc(spzT("chocanFijas"))}</p>`}
+      <p class="lb-nota">${esc(spzT("busqueda", { ms }))}</p></div>`);
   }
   function pintarResultado(html) { S().html = html; const r = box && box.querySelector("#spz-resultado"); if (r) r.innerHTML = html; }
 
@@ -1335,6 +1373,9 @@ const LB_SPZ = (() => {
     const G = LABSPZ.guia;
     return `<details class="lb-saber spz-repaso"><summary>${esc(R.titulo)}</summary><p class="lb-nota">${esc(R.intro)}</p>
       <div class="spz-reps">${R.bloques.map(bloque).join("")}</div>
+      <h4>${esc(R.tMapa)}</h4><p class="lb-nota">${esc(R.introMapa)}</p>
+      <ul class="spz-mapa">${R.mapa.map((f, i) => `<li class="${f.sigue ? "lb-ok" : "lb-mal"}"><span class="spz-sello">${esc(spzT(f.sigue ? "selloOk" : "selloMal"))}</span>
+        <span>${esc(f.si)} <span class="lb-sim">${f.sigue ? "⇒" : "⇏"}</span> ${esc(f.da)}.${f.ej ? ` <span class="lb-nota">${esc(f.ej)}</span>` : ""}<span class="lb-mono spz-lema">${SPZ_MAPA_LEMAS[i]}</span></span></li>`).join("")}</ul>
       <h4>${esc(R.tSimbolos)}</h4><dl class="spz-simbolos">${G.simbolos.map((x) => `<div><dt class="lb-sim">${esc(x.s)}</dt><dd>${esc(x.t)}</dd></div>`).join("")}</dl>
       <div class="lb-fila"><button type="button" class="btn ghost" data-spz-ir="relaciones">${esc(R.bPracticar)}</button></div></details>`;
   }
@@ -1442,6 +1483,7 @@ const LB_SPZ = (() => {
     }));
     const res = box.querySelector("#spz-resultado");
     res.addEventListener("click", (e) => {
+      if (e.target.closest("[data-spz-sobra]")) return buscarSobrantes();
       const b = e.target.closest("[data-spz-rep]"); if (!b) return;
       const li = b.closest("li"), sig = li.lastElementChild;
       if (sig && sig.classList.contains("spz-rep-suelta")) { sig.remove(); b.setAttribute("aria-expanded", "false"); return; }

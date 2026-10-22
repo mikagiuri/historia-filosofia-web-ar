@@ -3048,6 +3048,12 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .spz-lee-et{ font-family:var(--sans); font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-inline-end:.2rem }
 .spz-lista{ display:grid; gap:.2rem; font-size:.88rem }
 .spz-repaso h4{ font-family:var(--sans); font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:.2rem 0 .25rem }
+.spz-mapa{ list-style:none; padding:0; margin:.3rem 0 .6rem; display:grid; gap:.35rem }
+.spz-mapa li{ display:grid; grid-template-columns:auto 1fr; gap:.2rem .5rem; align-items:baseline }
+.spz-mapa .spz-sello{ justify-self:start; white-space:nowrap }
+.spz-lema{ display:block; font-size:.78rem; color:var(--muted) }
+@media (max-width: 560px){ .spz-mapa li{ grid-template-columns:1fr } }
+.spz-sobra{ margin:.2rem 0; padding-inline-start:1.1rem }
 .spz-reps{ display:grid; grid-template-columns:repeat(auto-fill, minmax(16rem, 1fr)); gap:.6rem }
 .spz-rep{ border:1px solid var(--line-soft); border-radius:10px; padding:.5rem .7rem; font-size:.9rem; line-height:1.5 }
 .spz-rep p{ margin:.2rem 0 }
