@@ -255,9 +255,56 @@
     },
     clase: (L, x, verdad) => (evaluar(L.increado(x), verdad) ? 'increado' : 'creado'),
   };
+  // ---------- Cuarto mundo: las cinco vías (Cinco_vias.thy) ----------
+  // Los «atributos» son niveles (vías 1 y 2: el orden de las causas por sí, sin tiempo) o instantes (vía 3).
+  // «Sin regreso al infinito»: en un mundo finito equivale a que haya niveles, y que quien mueve o causa esté en un nivel anterior.
+  const VIAS = {
+    RELACIONES: { Mueve: ['C', 'C'], Causa: ['C', 'C'], NivelM: ['C', 'A'], NivelC: ['C', 'A'], ExisteEn: ['C', 'A'],
+      MasPerfecto: ['C', 'C'], TiendeAFin: ['C'], Conoce: ['C'], Dirige: ['C', 'C'] },
+    ocultas: ['NivelM', 'NivelC'],   // solo sirven para escribir «sin regreso al infinito»: no se escriben ni se dibujan
+    maxAtributos: 4,
+    lenguaje(m) {
+      const L = base(m, VIAS.RELACIONES);
+      L.movido = x => L.algunaCosa(z => L.Mueve(z, x));
+      L.causado = x => L.algunaCosa(z => L.Causa(z, x));
+      L.contingente = x => L.algunAtr(t => no(L.ExisteEn(x, t)));
+      L.necesario = x => L.todoAtr(t => L.ExisteEn(x, t));
+      L.maximo = x => L.todaCosa(z => si(L.distinto(z, x), L.MasPerfecto(x, z)));
+      L.primerMotor = x => y(no(L.movido(x)), L.algunaCosa(z => L.Mueve(x, z)));
+      L.primeraCausa = x => y(no(L.causado(x)), L.algunaCosa(z => L.Causa(x, z)));
+      return L;
+    },
+    PREMISAS: {
+      V1_hay_movimiento: L => L.algunaCosa(x => L.movido(x)),
+      V1_sin_regreso: L => y(L.todaCosa(x => L.algunAtr(t => L.NivelM(x, t))),
+        L.todaCosa(x => L.todaCosa(z => L.todoAtr(t => L.todoAtr(u => si(y(L.Mueve(x, z), L.NivelM(x, t), L.NivelM(z, u)), t < u ? T : F)))))),
+      V2_hay_causas: L => L.algunaCosa(x => L.causado(x)),
+      V2_sin_regreso: L => y(L.todaCosa(x => L.algunAtr(t => L.NivelC(x, t))),
+        L.todaCosa(x => L.todaCosa(z => L.todoAtr(t => L.todoAtr(u => si(y(L.Causa(x, z), L.NivelC(x, t), L.NivelC(z, u)), t < u ? T : F)))))),
+      V3_siempre_algo: L => L.todoAtr(t => L.algunaCosa(x => L.ExisteEn(x, t))),
+      V3_paso_de_Tomas: L => si(L.todaCosa(x => L.contingente(x)), L.algunAtr(t => L.todaCosa(x => no(L.ExisteEn(x, t))))),
+      V4_orden: L => y(L.todaCosa(x => no(L.MasPerfecto(x, x))),
+        L.todaCosa(x => L.todaCosa(z => L.todaCosa(w => si(y(L.MasPerfecto(x, z), L.MasPerfecto(z, w)), L.MasPerfecto(x, w)))))),
+      V4_comparables: L => L.todaCosa(x => L.todaCosa(z => si(L.distinto(x, z), o(L.MasPerfecto(x, z), L.MasPerfecto(z, x))))),
+      V5_hay_fines: L => L.algunaCosa(x => y(L.TiendeAFin(x), no(L.Conoce(x)))),
+      V5_dirigido: L => L.todaCosa(x => si(y(L.TiendeAFin(x), no(L.Conoce(x))), L.algunaCosa(z => y(L.Conoce(z), L.Dirige(z, x))))),
+    },
+    OBJETIVOS: {
+      W1: { vars: [], cuerpo: L => L.algunaCosa(x => L.primerMotor(x)) },
+      W1b: { vars: [['x', 'C']], cuerpo: (L, e) => no(L.Mueve(e.x, e.x)) },
+      W2: { vars: [], cuerpo: L => L.algunaCosa(x => L.primeraCausa(x)) },
+      W3: { vars: [], cuerpo: L => L.algunaCosa(x => L.necesario(x)) },
+      W3s: { vars: [], cuerpo: L => si(L.todaCosa(x => L.contingente(x)), L.algunAtr(t => L.todaCosa(x => no(L.ExisteEn(x, t))))) },
+      W4: { vars: [], cuerpo: L => L.algunaCosa(x => L.maximo(x)) },
+      W4u: { vars: [['x', 'C'], ['y_', 'C']], cuerpo: (L, e) => si(y(L.maximo(e.x), L.maximo(e.y_)), L.igual(e.x, e.y_)) },
+      W5: { vars: [], cuerpo: L => L.algunaCosa(z => y(L.Conoce(z), L.algunaCosa(x => L.Dirige(z, x)))) },
+      WD: { vars: [['x', 'C'], ['y_', 'C']], cuerpo: (L, e) => si(y(L.primerMotor(e.x), L.primeraCausa(e.y_)), L.igual(e.x, e.y_)) },
+    },
+    clase: (L, x, verdad) => (evaluar(L.primerMotor(x), verdad) || evaluar(L.primeraCausa(x), verdad) ? 'primero' : 'otro'),
+  };
   const SPINOZA = { RELACIONES, lenguaje, PREMISAS, OBJETIVOS,
     clase: (L, x, verdad) => (evaluar(L.sustancia(x), verdad) ? 'sustancia' : evaluar(L.modo(x), verdad) ? 'modo' : 'ninguna') };
-  const TEORIAS = { spinoza: SPINOZA, tiempo: TIEMPO, reloj: RELOJ };
+  const TEORIAS = { spinoza: SPINOZA, tiempo: TIEMPO, reloj: RELOJ, vias: VIAS };
   const teoria = op => TEORIAS[(op && op.teoria) || 'spinoza'];
 
   function casos(m, vars) {
@@ -481,7 +528,8 @@
 })(typeof self !== 'undefined' ? self : this);
 
 /* ---------- Vista de la mesa «Spinoza» del Laboratorio (Rincón de lógica) ----------
-   Dos mundos: el de práctica (tiempo, duración y creación) y la Parte I de la Ética.
+   Cuatro mundos: el de práctica (tiempo, duración y creación), el del tiempo definido, la Parte I de la Ética
+   y las cinco vías de Tomás de Aquino.
    Textos en laboratorio_spinoza.js (LABSPZ, traducibles); aquí, fórmulas, premisas de Isabelle y dibujo.
    Usa los estilos .lb-* de css/laboratorio.css y los suyos .spz-*. Se monta desde labMontar("spinoza"). */
 const spzT = (k, v) => String((LABSPZ.t && LABSPZ.t[k]) || k).replace(/\{(\w+)\}/g, (_, x) => (v && v[x] != null ? v[x] : ""));
@@ -602,7 +650,8 @@ const TMP_POSIBLE = { Q8: { teorema: "Q8_posible", impide: ["C_creador_dura_mas"
   Q9: { teorema: "Q9_posible", impide: ["C_un_creador"], teoremaNo: "Q9_imposible_con_un_creador" } };
 
 /* Tercer mundo: el tiempo, definido (Mundo_tiempo_definido.thy). Los instantes son las variables t, u, v, w. */
-const SPZ_VARS_A = { tiempo: [], spinoza: ["a", "b"], reloj: ["t", "u", "v", "w"] };
+const SPZ_VARS_A = { tiempo: [], spinoza: ["a", "b"], reloj: ["t", "u", "v", "w"], vias: ["t", "u", "v", "w"] };
+const SPZ_DE_INSTANTES = ["reloj", "vias"];   /* mundos en que lo que en Spinoza son atributos son instantes */
 let SPZ_MUNDO_LECTURA = null;   /* el mundo que se está leyendo (lo fija la vista); sin él, a y b son atributos */
 const REL_FORMAL = {
   R1: "∀x. ¬Antes(x, x)", R2: "∀x y z. Antes(x, y) ∧ Antes(y, z) → Antes(x, z)", R3: "∀x y. Antes(x, y) → ¬Antes(y, x)",
@@ -632,6 +681,42 @@ const REL_DEFECTO = { R10: ["K_existe", "K_no_despues", "K_un_creador"] };
 const REL_POSIBLE = { R5: { teorema: "R5_posible" }, R6: { teorema: "R6_posible" },
   R10: { teorema: "R10_posible", impide: ["K_antes"], teoremaNo: "todo_creado_incompatible" } };
 
+/* Cuarto mundo: las cinco vías de Tomás de Aquino (Cinco_vias.thy). Solo la tercera usa instantes (t, u, v, w).
+   «Sin regreso al infinito» no se escribe en primer orden: en Isabelle es «la relación está bien fundada»; en la mesa,
+   cada cosa lleva un número de orden y el motor siempre uno menor que lo movido (en un mundo finito es lo mismo). */
+const VIA_FORMAL = {
+  W1: "∃x. primerMotor(x)", W1b: "∀x. ¬Mueve(x, x)", W2: "∃x. primeraCausa(x)", W3: "∃x. necesario(x)",
+  W3s: "(∀x. contingente(x)) → ∃t. ∀x. ¬ExisteEn(x, t)", W4: "∃x. maximo(x)", W4u: "∀x y. maximo(x) ∧ maximo(y) → x = y",
+  W5: "∃y. Conoce(y) ∧ ∃x. Dirige(y, x)", WD: "∀x y. primerMotor(x) ∧ primeraCausa(y) → x = y",
+};
+const VIA_DEF = {
+  movido: "movido(x) :⟺ ∃y. Mueve(y, x)",
+  primerMotor: "primerMotor(x) :⟺ ¬movido(x) ∧ ∃y. Mueve(x, y)",
+  causado: "causado(x) :⟺ ∃y. Causa(y, x)",
+  primeraCausa: "primeraCausa(x) :⟺ ¬causado(x) ∧ ∃y. Causa(x, y)",
+  contingente: "contingente(x) :⟺ ∃t. ¬ExisteEn(x, t)",
+  necesario: "necesario(x) :⟺ ∀t. ExisteEn(x, t)",
+  maximo: "maximo(x) :⟺ ∀y. y ≠ x → MasPerfecto(x, y)",
+};
+const VIA_PREMISA_FORMAL = {
+  V1_hay_movimiento: "∃x. movido(x)", V1_sin_regreso: "wf(Mueve)",
+  V2_hay_causas: "∃x. causado(x)", V2_sin_regreso: "wf(Causa)",
+  V3_siempre_algo: "∀t. ∃x. ExisteEn(x, t)", V3_paso_de_Tomas: "(∀x. contingente(x)) → ∃t. ∀x. ¬ExisteEn(x, t)",
+  V4_orden: "(∀x. ¬MasPerfecto(x, x)) ∧ (∀x y z. MasPerfecto(x, y) ∧ MasPerfecto(y, z) → MasPerfecto(x, z))",
+  V4_comparables: "∀x y. x ≠ y → MasPerfecto(x, y) ∨ MasPerfecto(y, x)",
+  V5_hay_fines: "∃x. TiendeAFin(x) ∧ ¬Conoce(x)", V5_dirigido: "∀x. TiendeAFin(x) ∧ ¬Conoce(x) → ∃y. Conoce(y) ∧ Dirige(y, x)",
+};
+const VIA_PREMISA_FORMA = { V4_orden: "trans" };
+/* W4: Isabelle lo demuestra en un mundo finito (via4_finito); con infinitas cosas no vale (via4_sin_maximo). */
+const VIA_ISABELLE = { W1: ["V1_hay_movimiento", "V1_sin_regreso"], W1b: ["V1_sin_regreso"], W2: ["V2_hay_causas", "V2_sin_regreso"],
+  W3: ["V3_siempre_algo", "V3_paso_de_Tomas"], W3s: null, W4: ["V4_orden", "V4_comparables"], W4u: ["V4_orden"],
+  W5: ["V5_hay_fines", "V5_dirigido"], WD: null };
+const VIA_TEOREMA = { W1: "via1", W1b: "via1_irreflexiva", W2: "via2", W3: "via3", W4: "via4_finito", W4u: "via4_unico", W5: "via5" };
+const VIA_COMPATIBLES = ["V1_hay_movimiento", "V1_sin_regreso", "V2_hay_causas", "V2_sin_regreso", "V3_siempre_algo", "V3_paso_de_Tomas",
+  "V4_orden", "V4_comparables", "V5_hay_fines", "V5_dirigido"];
+/* La 5 empieza sin el paso discutido (si no, se sigue de sí mismo); la 9, con las dos primeras vías completas. */
+const VIA_DEFECTO = { W3s: ["V3_siempre_algo"], WD: ["V1_hay_movimiento", "V1_sin_regreso", "V2_hay_causas", "V2_sin_regreso"] };
+
 /* Fórmulas de las premisas del mundo de práctica y su forma (entrada del repaso que abre la etiqueta). */
 const TMP_PREMISA_FORMAL = {
   T_irreflexiva: "∀x. ¬Antes(x, x)", T_transitiva: "∀x y z. Antes(x, y) ∧ Antes(y, z) → Antes(x, z)",
@@ -651,7 +736,7 @@ function spzLeer(f) {
   const LX = LABSPZ.lectura, tpl = (s, v) => escL(s).replace(/\{(\w+)\}/g, (_, k) => (v[k] != null ? v[k] : ""));
   const lista = (xs, k) => (xs.length < 3 ? xs.reduce((a, b) => tpl(LX[k], { a, b })) : tpl(LX[k], { a: xs.slice(0, -1).join(", "), b: xs[xs.length - 1] }));
   const nombre = (x) => (x === "Dios" ? escL(LX.Dios) : "<var>" + escL(x) + "</var>");
-  const mundoL = SPZ_MUNDO_LECTURA, deInst = mundoL === "reloj";
+  const mundoL = SPZ_MUNDO_LECTURA, deInst = SPZ_DE_INSTANTES.includes(mundoL);
   const esAtr = (v) => (mundoL ? SPZ_VARS_A[mundoL] : ["a", "b"]).includes(v);
   /* Lo compuesto que va dentro de otra cosa, entre paréntesis para que no se mezcle. */
   const leer = (e, ctx) => {
@@ -730,8 +815,8 @@ function spzLeer(f) {
    Atajos: ~ ! no (¬), & (∧), | (∨), -> (→), <-> (↔), != (≠), todo (∀), hay (∃). Variables: letras minúsculas. */
 function spzVocabulario(mundo) {
   const T = MotorMundos.TEORIAS[mundo], voc = {};
-  for (const [n, tipos] of Object.entries(T.RELACIONES)) voc[n] = tipos;
-  const defs = mundo === "tiempo" ? TMP_DEF : mundo === "reloj" ? REL_DEF : SPZ_DEF;
+  for (const [n, tipos] of Object.entries(T.RELACIONES)) if (!(T.ocultas || []).includes(n)) voc[n] = tipos;
+  const defs = { tiempo: TMP_DEF, reloj: REL_DEF, vias: VIA_DEF }[mundo] || SPZ_DEF;
   for (const [n, f] of Object.entries(defs)) {
     const m = f.match(/^\w+\(([^)]*)\)/), args = m ? m[1].split(",").map((x) => x.trim()) : [];
     voc[n] = args.map((a) => (SPZ_VARS_A[mundo].includes(a) ? "A" : "C"));
@@ -762,8 +847,8 @@ function spzCompilar(texto, mundo) {
     const c = constantes[plano(t)];
     if (c) { if (tipo === "A") err("errTipo", { x: nombre, n: lugar }); return { c }; }
     if (!esVar(t)) err("errEsperabaCosa", { x: t, y: nombre });
-    if (tipo === "C" && esAtr(t)) err(mundo === "reloj" ? "errTipoCI" : "errTipoC", { x: nombre, n: lugar });
-    if (tipo === "A" && !esAtr(t)) err(mundo === "reloj" ? "errTipoI" : "errTipo", { x: nombre, n: lugar });
+    if (tipo === "C" && esAtr(t)) err(SPZ_DE_INSTANTES.includes(mundo) ? "errTipoCI" : "errTipoC", { x: nombre, n: lugar });
+    if (tipo === "A" && !esAtr(t)) err(SPZ_DE_INSTANTES.includes(mundo) ? "errTipoI" : "errTipo", { x: nombre, n: lugar });
     if (!ligadas.includes(t) && !libres.includes(t)) libres.push(t);
     return { v: t };
   }
@@ -893,6 +978,20 @@ const LB_SPZ = (() => {
     DuraMas: { color: "var(--e-ant)", guion: "1 3", grosor: 1.8, k: "lyDura" },
     Crea: { color: "var(--r-pol)", guion: "", grosor: 2.6, k: "lyCrea" },
   };
+  const ESTILOS_VIAS = {
+    Mueve: { color: "var(--r-pol)", guion: "", grosor: 2.4, k: "lyMueve" },
+    Causa: { color: "var(--e-ant)", guion: "6 3", grosor: 2, k: "lyCausa" },
+    MasPerfecto: { color: "var(--r-con)", guion: "1 3", grosor: 1.8, k: "lyPerfecto" },
+    Dirige: { color: "var(--lb)", guion: "8 3 2 3", grosor: 1.8, k: "lyDirige" },
+  };
+  /* En las vías solo se enseña lo que nombran la proposición, sus definiciones y las premisas marcadas:
+     las demás relaciones el buscador las rellena al azar y despistarían. */
+  function viasRelevantes() {
+    const p = prop(), f = formalDe(p) || "";
+    const txt = [f, ...S().marcadas.map((id) => VIA_PREMISA_FORMAL[id] || (S().mias.find((x) => x.id === id) || {}).texto || "")].join(" ");
+    const todo = [txt, ...definicionesDe(txt)].join(" "), T = MotorMundos.TEORIAS.vias;
+    return Object.keys(T.RELACIONES).filter((r) => !T.ocultas.includes(r) && new RegExp("(^|[^A-Za-z_])" + r + "(?![A-Za-z_])", "i").test(todo));
+  }
 
   /* Lo que cambia de un mundo a otro. */
   const MUNDOS = {
@@ -964,6 +1063,52 @@ const LB_SPZ = (() => {
         return s + "</svg>";
       },
     },
+    vias: {
+      textos: () => LABSPZ.vias, formal: VIA_FORMAL, def: VIA_DEF, isabelle: VIA_ISABELLE, teorema: VIA_TEOREMA, alt: {},
+      premisaFormal: VIA_PREMISA_FORMAL, premisaForma: VIA_PREMISA_FORMA,
+      estilos: ESTILOS_VIAS, maxA: 4,
+      porDefecto: (id) => (VIA_DEFECTO[id] || VIA_ISABELLE[id] || VIA_COMPATIBLES).slice(), posibles: {}, inicio: { prop: "W1", marcadas: ["V1_hay_movimiento"] },
+      nombreCosa: (i) => "ABCD"[i] || "c" + i,
+      formulaDef: (d) => VIA_DEF[d.id],
+      clases: { primero: ["clPrimero", "doble"], otro: ["", "simple"] },
+      leyendaFija: (m) => (m.clase.includes("primero") ? ["lyPrimero"] : []),
+      /* Se quitan las relaciones que no vienen al caso; «primero» se recalcula con lo que queda. */
+      filtrar(m) {
+        const rel = viasRelevantes(), H = {};
+        for (const r of rel) H[r] = m.hechos[r] || [];
+        const primero = (r, i) => H[r] && H[r].some(([a]) => a === i) && !H[r].some(([, b]) => b === i);
+        const clase = [...Array(m.n).keys()].map((i) => (primero("Mueve", i) || primero("Causa", i) ? "primero" : "otro"));
+        return { ...m, hechos: H, clase };
+      },
+      etiquetas(m, i) {
+        const H = m.hechos, de = (r) => (H[r] || []).filter(([c]) => c === i), ex = de("ExisteEn").map(([, t]) => t).sort();
+        return [[de("TiendeAFin").length ? spzT("eFin") : "", de("Conoce").length ? spzT("eConoce") : ""].filter(Boolean).join(" · "),
+          H.ExisteEn ? (ex.length ? spzT("eExiste", { x: ex.join(", ") }) : spzT("eNunca")) : ""];
+      },
+      hechos(H, n) {
+        const r2 = (rel, si, no) => (H[rel] || []).map(([a, b]) => (a === b ? spzT(si, { a: n(a) }) : spzT(no, { a: n(a), b: n(b) })));
+        const r1 = (rel, k) => (H[rel] || []).map(([a]) => spzT(k, { a: n(a) }));
+        const ex = {};
+        for (const [c, t] of H.ExisteEn || []) (ex[c] = ex[c] || []).push(t);
+        return [["hMovimiento", r2("Mueve", "fMueveSi", "fMueve")], ["hCausas", r2("Causa", "fCausaSi", "fCausa")],
+          ["hExistencia", Object.keys(ex).map(Number).sort().map((c) => spzT("fExisteV", { a: n(c), x: ex[c].sort().join(", ") }))],
+          ["hPerfeccion", r2("MasPerfecto", "fPerfSi", "fPerf")],
+          ["hFines", [...r1("TiendeAFin", "fFin"), ...r1("Conoce", "fConoce"), ...r2("Dirige", "fDirigeSi", "fDirige")]]];
+      },
+      tam: (m) => (m.hechos.ExisteEn ? spzT("hayMundoR", { n: m.n === 1 ? spzT("unaCosa") : spzT("nCosas", { n: m.n }), k: m.k === 1 ? spzT("unInst") : spzT("nInst", { n: m.k }) })
+        : spzT("hayMundoT", { n: m.n === 1 ? spzT("unaCosa") : spzT("nCosas", { n: m.n }) })),
+      sinTxt: (r) => spzT("sinMundoCompletoR", { c: r.maxC, a: r.maxA }),
+      grupos: () => [["grupoV1", 1], ["grupoV2", 2], ["grupoV3", 3], ["grupoV4", 4], ["grupoV5", 5], ["grupoVD", 6]],
+      pie: "notaPieV", lede: "ledeVias", notaDefs: "notaDefsVias",
+      secciones: () => [["defsVias", LABSPZ.vias.defs]], extraContramodelo: () => "",
+      /* Enlaces a la exploración de Teoría y al plano de Genealogías, si esta web los tiene. */
+      cabecera() {
+        const ex = typeof THEORY !== "undefined" && THEORY["hf-cinco-vias"];
+        const gen = typeof GENEALOGIAS_PLANOS !== "undefined" && GENEALOGIAS_PLANOS.some((x) => x.id === "dios");
+        const l = [ex ? `<a href="#teoria/hf-cinco-vias">${esc(spzT("verExploVias"))} →</a>` : "", gen ? `<a href="#genealogias/plano/dios">${esc(spzT("verPlanoDios"))} →</a>` : ""].filter(Boolean);
+        return l.length ? `<p class="lb-nota">${l.join(" · ")}</p>` : "";
+      },
+    },
     spinoza: {
       textos: () => LABSPZ, formal: SPZ_FORMAL, def: SPZ_DEF, isabelle: SPZ_ISABELLE, teorema: SPZ_TEOREMA, alt: SPZ_ALT,
       estilos: ESTILOS_SPZ, maxA: 2, porDefecto: (id) => (SPZ_ISABELLE[id] || []).slice(), posibles: {}, inicio: { prop: "P5", marcadas: ["H_individuacion_por_atributos"] },
@@ -1025,6 +1170,8 @@ const LB_SPZ = (() => {
     return vistas.map((n) => D[n]);
   }
 
+  /* Lo que se enseña del mundo encontrado (en las vías, sin las relaciones que no vienen al caso). */
+  const ver = (m) => (W().filtrar ? W().filtrar(m) : m);
   function dibujar(m) {
     if (W().dibujar) return W().dibujar(m);
     const E = W().estilos, nombre = W().nombreCosa;
@@ -1064,7 +1211,7 @@ const LB_SPZ = (() => {
   function leyenda(m) {
     return Object.entries(W().estilos).filter(([rel]) => (m.hechos[rel] || []).length)
       .map(([, e]) => `<span><svg width="30" height="10" aria-hidden="true"><line x1="0" y1="5" x2="30" y2="5" stroke="${e.color}" stroke-width="${e.grosor}" ${e.guion ? `stroke-dasharray="${e.guion}"` : ""}/></svg>${esc(spzT(e.k))}</span>`).join("") +
-      W().leyendaFija.map((k) => `<span>${esc(spzT(k))}</span>`).join("");
+      (typeof W().leyendaFija === "function" ? W().leyendaFija(m) : W().leyendaFija).map((k) => `<span>${esc(spzT(k))}</span>`).join("");
   }
   function hechos(m) {
     const g = W().hechos(m.hechos, W().nombreCosa);
@@ -1105,7 +1252,7 @@ const LB_SPZ = (() => {
       const t0 = performance.now(), op = { teoria: mundo, maxCosas: 4, maxAtributos: M.maxA };
       const r = MotorMundos.buscarContramodelo(motorPrem(el), objDe(p), op), ms = Math.round(performance.now() - t0);
       if (r.encontrado) {
-        const m = r.mundo;
+        const m = ver(r.mundo);
         return pintarResultado(`<div class="lb-aviso lb-ok"><span class="spz-sello">${esc(spzT("selloPosible"))}</span><h3 class="spz-h">${esc(spzT("puedeOcurrir"))}</h3>
           <p>${esc(spzT("posibleTxt", { n: m.n === 1 ? spzT("unaCosa") : spzT("nCosas", { n: m.n }) }))}</p>${p.nota ? `<p>${p.nota}</p>` : ""}
           ${P ? `<p class="lb-nota">${esc(spzT("posibleIsa", { t: P.teorema }))}</p>` : ""}</div>
@@ -1127,8 +1274,8 @@ const LB_SPZ = (() => {
     pintarResultado(`<div class="lb-aviso lb-ok"><span class="spz-sello">${esc(spzT("selloOk"))}</span><h3 class="spz-h">${esc(spzT("seSigue"))}</h3>${cuerpo}
       <p class="lb-nota">${esc(spzT("teorema", { t: teorema, x: usadas.length ? usadas.join(", ") : spzT("ningunaAnadida") }))}${sobran.length ? " " + esc(spzT("sobran")) : ""}</p></div>`);
   }
-  function contramodelo(m, ms) {
-    const p = prop(), isa = W().isabelle[p.id] || [];
+  function contramodelo(m0, ms) {
+    const m = ver(m0), p = prop(), isa = W().isabelle[p.id] || [];
     const faltan = isa.filter((x) => !S().marcadas.includes(x));
     const lecc = faltan.map((x) => (p.leccion && p.leccion[x] ? `<p><b>${esc(spzT("sin", { x }))}</b> ${p.leccion[x]}</p>` : "")).join("");
     const nombre = W().nombreCosa;
@@ -1259,8 +1406,8 @@ const LB_SPZ = (() => {
     const abierta = box.querySelector(".spz-guia") && box.querySelector(".spz-guia").open;
     const repAbierto = box.querySelector(".spz-repaso") && box.querySelector(".spz-repaso").open;
     const isaAbierto = box.querySelector(".spz-isabelle") && box.querySelector(".spz-isabelle").open;
-    box.innerHTML = `<div class="lb-fila spz-mundos" role="group" aria-label="${esc(spzT("mundo"))}"><span class="lb-et">${esc(spzT("mundo"))}</span>${botonMundo("tiempo", "mundoTiempo")}${botonMundo("reloj", "mundoReloj")}${botonMundo("spinoza", "mundoSpinoza")}</div>
-      <p class="lg-intro">${esc(spzT(M.lede))}</p>
+    box.innerHTML = `<div class="lb-fila spz-mundos" role="group" aria-label="${esc(spzT("mundo"))}"><span class="lb-et">${esc(spzT("mundo"))}</span>${botonMundo("tiempo", "mundoTiempo")}${botonMundo("reloj", "mundoReloj")}${botonMundo("spinoza", "mundoSpinoza")}${botonMundo("vias", "mundoVias")}</div>
+      <p class="lg-intro">${esc(spzT(M.lede))}</p>${M.cabecera ? M.cabecera() : ""}
       <div class="lb-aviso lb-warn"><span class="spz-sello">${esc(spzT("enDesarrollo"))}</span> ${spzT("avisoDesarrollo")}</div>
       ${guia()}
       ${repaso()}
