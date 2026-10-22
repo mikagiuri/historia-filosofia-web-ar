@@ -2303,6 +2303,28 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #logica .lg-pcard{ background:var(--surface); border:1px solid var(--line); border-inline-start:4px solid var(--r-log, var(--fil)); border-radius:var(--radius); padding:1rem 1.1rem; display:flex; flex-direction:column; gap:.5rem }
 #logica .lg-pcard h2{ margin:.1rem 0; font-size:1.15rem }
 #logica .lg-pcard p{ margin:0; color:var(--muted); line-height:1.5; flex:1 }
+/* (22-10) itinerario «de cero a experto» (docs/39) */
+#logica .lg-pcard-itin{ grid-column:1 / -1; border-inline-start-color:var(--ok, var(--fil)) }
+#logica .lg-itin-tit{ margin:.6rem 0 .3rem }
+#logica .lg-itin{ display:grid; gap:.5rem; margin:.4rem 0 1rem }
+#logica .lg-itin-nivel{ background:var(--surface); border:1px solid var(--line); border-inline-start:4px solid var(--r-log, var(--fil)); border-radius:var(--radius); padding:.55rem 1rem }
+#logica .lg-itin-nivel summary{ cursor:pointer; font-weight:600; line-height:1.4 }
+#logica .lg-itin-nivel[open] summary{ margin-bottom:.4rem }
+#logica .lg-itin-hecho{ border-inline-start-color:var(--ok, var(--fil)) }
+#logica .lg-itin-hecho summary::after{ content:" ✓"; color:var(--ok, var(--fil)) }
+#logica .lg-itin-n{ font:600 .74rem var(--sans); letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-inline-end:.5rem }
+#logica .lg-itin-sub{ font-weight:600; margin:.5rem 0 .15rem }
+#logica .lg-itin ol{ margin:.15rem 0 .5rem; padding-inline-start:1.4rem; display:grid; gap:.15rem }
+#logica .lg-itin-lim{ border-inline-start:3px solid var(--line); padding-inline-start:.6rem; color:var(--muted) }
+#logica .lg-itin-puentes{ overflow-x:auto; margin:.2rem 0 .3rem }
+#logica .lg-itin-puentes table{ border-collapse:collapse; font-size:.88rem; min-width:34rem }
+#logica .lg-itin-puentes th, #logica .lg-itin-puentes td{ border:1px solid var(--line); padding:.25rem .5rem; text-align:start; vertical-align:top }
+#logica .lg-itin-puentes th{ background:var(--surface); font-weight:600 }
+#logica .lg-itin-check{ display:inline-flex; gap:.45rem; align-items:center; font-size:.92rem; margin-top:.2rem }
+#logica .lg-itin-ramas{ display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:.6rem; margin-bottom:1rem }
+#logica .lg-itin-rama{ border:1px solid var(--line); border-radius:var(--radius); padding:.5rem .9rem }
+#logica .lg-itin-rama h4{ margin:.1rem 0 .3rem }
+#logica .lg-itin-rama p{ margin:.2rem 0 }
 #logica .lg-pchips{ display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.2rem }
 #logica .lg-tabs .lg-home{ color:var(--muted) }
 

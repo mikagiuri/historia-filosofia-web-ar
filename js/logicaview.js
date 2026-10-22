@@ -681,6 +681,8 @@ function logRenderPortada(){
   const card = (tit, desc, arr) => '<section class="lg-pcard"><h2>' + rot(tit) + "</h2><p>" + logT(desc) + "</p>" + chips(arr) + "</section>";
   const mod = [["tablas", "tabTablas"]].concat(hayMod ? [["formalizar", "tabFormalizar"], ["inferencia", "tabInferencia"], ["leyes", "tabLeyes"], ["cuantificadores", "tabCuantificadores"]] : []).concat([["puertas", "tabPuertas"]]);
   let html = '<p class="lg-intro">' + logT("pIntro") + '</p><div class="lg-portada">';
+  /* (22-10) el itinerario, primero y a lo ancho: es la puerta para quien no sabe por dónde empezar */
+  if (typeof LOG_ITIN !== "undefined") html += '<section class="lg-pcard lg-pcard-itin"><h2>' + logEsc(LOG_ITIN.titulo) + "</h2><p>" + logEsc(LOG_ITIN.tarjeta) + '</p><div class="lg-pchips"><button type="button" class="chip" data-lgtab="itinerario">' + logEsc(LOG_ITIN.abrir) + " →</button></div></section>";
   html += card("tabClasica", "pDescClasica", [["silogismos", "tabSilog"], ["cuadrado", "tabCuadrado"], ["conjuntos", "tabConjuntos"]]);
   html += card("tabModerna", "pDescModerna", mod);
   if (hayFal) html += card("tabFalacias", "pDescFalacias", [["falacias", "pEntrar"]]);
@@ -688,9 +690,57 @@ function logRenderPortada(){
   if (hayLab) html += card("tabLab", "pDescLab", [["hablamos", "mesaHablamos"], ["arbol", "mesaArbol"], ["mundo", "mesaMundo"], ["relaciones", "mesaRelaciones"], ["demos", "mesaDemos"], ["kant", "mesaKant"], ["spinoza", "mesaSpinoza"]]);
   return html + "</div>";
 }
+/* (22-10) Itinerario «de cero a experto» (logica_itinerario.js, docs/39): ocho niveles en orden, con sus enlaces y su
+   punto de control. Solo se enlaza lo que existe en la web en que se abre; el progreso, solo en este navegador. */
+const LOG_ITIN_CLAVE = "lgItinerario";
+function logItinHechos(){ try { const l = JSON.parse(localStorage.getItem(LOG_ITIN_CLAVE) || "[]"); return Array.isArray(l) ? l : []; } catch (e) { return []; } }
+function logItinGuardar(l){ try { localStorage.setItem(LOG_ITIN_CLAVE, JSON.stringify(l)); } catch (e) { /* sin almacenamiento: no se recuerda */ } }
+const logItinF = (s, v) => String(s).replace(/\{(\w+)\}/g, (_, x) => (v && v[x] != null ? v[x] : ""));
+function logItinHay(h){
+  const m = /^#([\w-]+)(?:\/(.+))?$/.exec(h || ""); if (!m) return false;
+  if (m[1] === "logica") return true;
+  const VL = window.VIEW_LOADERS || {}, ld = VL[m[1]];
+  if (!ld || typeof window[ld] !== "function") return false;
+  if (m[1] === "pistas" && m[2]) return typeof PISTAS !== "undefined" && PISTAS.some(x => x.id === m[2]);   /* ROUTE_KEY_OK no las comprueba */
+  const ok = typeof ROUTE_KEY_OK !== "undefined" && ROUTE_KEY_OK[m[1]];
+  return !m[2] || !ok || ok(m[2]);
+}
+function logItinProgreso(){
+  const n = logItinHechos().length;
+  return n ? logItinF(LOG_ITIN.progreso, { n, t: LOG_ITIN.niveles.length }) : LOG_ITIN.progresoNada;
+}
+/* La tabla de puentes del nivel 5: la misma ley en enunciados, conjuntos, Boole, números con 0 y 1 y puertas. */
+function logItinPuentes(){
+  const P = LOG_ITIN.puentes, e = logEsc;
+  return '<p class="lg-itin-sub">' + e(LOG_ITIN.puentesTit) + '</p><div class="lg-itin-puentes"><table><thead><tr>' + P.cab.map(c => "<th>" + e(c) + "</th>").join("") + "</tr></thead><tbody>" +
+    P.filas.map(f => "<tr>" + f.map(c => "<td>" + e(c) + "</td>").join("") + "</tr>").join("") + "</tbody></table></div>" + '<p class="lg-nota">' + e(P.nota) + "</p>";
+}
+function logRenderItinerario(){
+  const I = LOG_ITIN, hechos = logItinHechos(), e = logEsc;
+  const enlace = p => (p.h && logItinHay(p.h) ? '<a href="' + p.h + '">' + e(p.t) + "</a>" : e(p.t) + (p.h ? ' <span class="lg-nota">(' + e(I.noAqui) + ")</span>" : ""));
+  const lista = ps => "<ol>" + ps.map(p => "<li>" + enlace(p) + "</li>").join("") + "</ol>";
+  const primero = (I.niveles.find(v => !hechos.includes(v.n)) || {}).n;
+  const nivel = v => '<details class="lg-itin-nivel' + (hechos.includes(v.n) ? " lg-itin-hecho" : "") + '" id="lg-itin-' + v.n + '"' + (v.n === primero ? " open" : "") + ">" +
+    '<summary><span class="lg-itin-n">' + e(logItinF(I.nivel, { n: v.n })) + "</span>" + e(v.titulo) + "</summary>" +
+    "<p><strong>" + e(I.meta) + "</strong> " + e(v.meta) + "</p>" + (v.donde ? '<p class="lg-nota">' + e(v.donde) + "</p>" : "") +
+    '<p class="lg-itin-sub">' + e(I.pasos) + "</p>" + lista(v.pasos) +
+    (v.puentes && I.puentes ? logItinPuentes() : "") +
+    "<p><strong>" + e(I.control) + "</strong> " + enlace(v.control) + "</p>" +
+    (v.limite ? '<p class="lg-itin-lim"><strong>' + e(I.limite) + "</strong> " + e(v.limite) + "</p>" : "") +
+    (v.falta ? '<p class="lg-nota"><strong>' + e(I.falta) + "</strong> " + e(v.falta) + "</p>" : "") +
+    '<label class="lg-itin-check"><input type="checkbox" data-lgitin="' + v.n + '"' + (hechos.includes(v.n) ? " checked" : "") + "> " + e(I.hecho) + "</label></details>";
+  const rama = r => '<section class="lg-itin-rama"><h4>' + e(r.titulo) + ' <span class="lg-itin-n">' + e(logItinF(I.desde, { n: r.desde })) + "</span></h4><p>" + e(r.txt) + "</p>" +
+    '<p class="lg-itin-enl">' + r.pasos.map(enlace).join(" · ") + "</p>" + (r.falta ? '<p class="lg-nota"><strong>' + e(I.falta) + "</strong> " + e(r.falta) + "</p>" : "") + "</section>";
+  return '<div class="fgroup lg-tabs"><button type="button" class="fbtn lg-home" data-lgtab="portada" title="' + logT("pPortada") + '">‹ ' + logT("pPortada") + "</button></div>" +
+    '<h2 class="lg-itin-tit">' + e(I.titulo) + '</h2><p class="lg-intro">' + e(I.intro) + "</p>" +
+    '<p class="lg-nota" id="lg-itin-prog" aria-live="polite">' + e(logItinProgreso()) + "</p>" +
+    '<div class="lg-itin">' + I.niveles.map(nivel).join("") + "</div>" +
+    '<h3 class="lg-itin-tit">' + e(I.ramasTit) + '</h3><p class="lg-nota">' + e(I.ramasIntro) + '</p><div class="lg-itin-ramas">' + I.ramas.map(rama).join("") + "</div>";
+}
 function logRender(){
   const box = logBox(); if (!box) return;
   if (LOG.tab === "portada"){ box.innerHTML = logRenderPortada(); return; }   /* (20-10) estado inicial de la sección */
+  if (LOG.tab === "itinerario" && typeof LOG_ITIN !== "undefined"){ box.innerHTML = logRenderItinerario(); return; }   /* (22-10) docs/39 */
   /* (12-10) arriba: «Lógica clásica» y «Lógica moderna», cada una con sus subpestañas (no más de 6 pestañas arriba) */
   /* (20-10) + «Laboratorio» (laboratorioview.js: cinco mesas); para no pasar de seis arriba, Paradojas · Ejercicios ·
      Argumentos clásicos van juntas como subpestañas de «Paradojas» (las tres ya eran la misma vista: logRenderParadojas) */
@@ -761,6 +811,13 @@ function logWire(){
     const t = ev.target, k = { "lg-may": "may", "lg-men": "men", "lg-con": "con", "lg-fig": "fig" }[t.id];
     if (k){ LOG.sil[k] = k === "fig" ? +t.value : t.value; logRefrescar("lg-sil"); }
     else if (t.id === "lg-pargrupo"){ LOG.parGrupo = t.value; logRender(); }
+    else if (t.dataset && t.dataset.lgitin != null){   /* (22-10) itinerario: nivel superado, sin volver a pintar (no se cierran los desplegables) */
+      const n = +t.dataset.lgitin, l = logItinHechos().filter(x => x !== n);
+      if (t.checked) l.push(n);
+      logItinGuardar(l.sort((a, b) => a - b));
+      const d = t.closest(".lg-itin-nivel"); if (d) d.classList.toggle("lg-itin-hecho", t.checked);
+      const pr = document.getElementById("lg-itin-prog"); if (pr) pr.textContent = logItinProgreso();
+    }
   });
 }
 function loadLogica(arg){
@@ -769,7 +826,7 @@ function loadLogica(arg){
   const grupo = ficha && typeof PARADOJAS_GRUPOS !== "undefined" ? PARADOJAS_GRUPOS.find(g => g.id === ficha.grupo) : null;
   if (ficha){ LOG.tab = (grupo && grupo.view) || "paradojas"; LOG.parGrupo = ficha.grupo; }
   else if (!arg || arg === "portada"){ LOG.tab = "portada"; LOG.parGrupo = "all"; }   /* (20-10) #logica → portada de la sección */
-  else if (arg && ["tablas", "silogismos", "cuadrado", "conjuntos", "puertas", "formalizar", "inferencia", "leyes", "cuantificadores", "falacias", ...LOG_PAR_VISTAS, ...(typeof LB_MESAS !== "undefined" ? LB_MESAS : [])].includes(arg)){ LOG.tab = arg; LOG.parGrupo = "all"; }   /* (20-10) #logica/hablamos|arbol|mundo|relaciones|demos */
+  else if (arg && ["itinerario", "tablas", "silogismos", "cuadrado", "conjuntos", "puertas", "formalizar", "inferencia", "leyes", "cuantificadores", "falacias", ...LOG_PAR_VISTAS, ...(typeof LB_MESAS !== "undefined" ? LB_MESAS : [])].includes(arg)){ LOG.tab = arg; LOG.parGrupo = "all"; }   /* (20-10) #logica/hablamos|arbol|mundo|relaciones|demos */
   logRender(); logWire();
   if (ficha){ const el = document.getElementById("par-" + ficha.id); if (el) el.scrollIntoView({ block: "start" }); }
 }
