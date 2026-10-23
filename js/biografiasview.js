@@ -207,7 +207,7 @@ function renderBioList(){
   });
   html += "</div>";
   box.innerHTML = html;
-  box.querySelectorAll("[data-bio]").forEach(b => b.addEventListener("click", () => loadBiografia(b.dataset.ilu)));
+  box.querySelectorAll("[data-bio]").forEach(b => b.addEventListener("click", () => loadBiografia(b.dataset.bio)));
   box.querySelectorAll("[data-epoca]").forEach(b => b.addEventListener("click", () => loadBiografia("epoca-" + b.dataset.epoca)));
 }
 
@@ -453,7 +453,7 @@ function bioInjectTheory(){
   body.appendChild(strip);
   strip.querySelectorAll("[data-bio]").forEach(b => b.addEventListener("click", () => {
     (window.show || show)("biografias");
-    loadBiografia(b.dataset.ilu);
+    loadBiografia(b.dataset.bio);
   }));
 }
 if (typeof loadTheory === "function"){
