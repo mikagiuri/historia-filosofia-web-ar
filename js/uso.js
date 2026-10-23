@@ -22,7 +22,11 @@
     compartes: "تشاركون بيانات الاستخدام دون الكشف عن هويتكم.", grupo: "مجموعتكم:", noDecir: "أفضّل عدم الإفصاح",
     queRegistra: "ما الذي يسجّله هذا الموقع"
   };
-  var KEY = "aula-uso", COLA = "aula-uso-cola", MAX_COLA = 200, MAX_LOTE = 50;
+  var KEY = "aula-uso", COLA = "aula-uso-cola", TEST = "aula-uso-test", MAX_COLA = 200, MAX_LOTE = 50;
+  /* modo prueba (nuestro trasteo): ?usotest=1 lo activa en este navegador, ?usotest=0 lo quita. En ese modo el
+     lote lleva sim:1 → el servidor pone simulado=«sí» y la fila NO cuenta en el análisis (resumirSemanas la ignora). */
+  try { var _ut = /[?&]usotest=([01])/.exec(location.search); if (_ut){ if (_ut[1] === "1") localStorage.setItem(TEST, "1"); else localStorage.removeItem(TEST); } } catch (e){}
+  function esPrueba(){ try { return localStorage.getItem(TEST) === "1"; } catch (e){ return false; } }
   function leer(k, def){ try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : def; } catch (e){ return def; } }
   function guardar(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch (e){} }
   /* opt-out (22-10): por defecto encendido; solo queda apagado si el alumno guardó «off» en este navegador */
@@ -48,7 +52,7 @@
     if (!pend.length) return;
     var s = estado(), lote = pend.slice(0, MAX_LOTE), resto = pend.slice(MAX_LOTE);
     var cuerpo = JSON.stringify({ v: 1, web: web(), lengua: (document.documentElement.lang || "es").slice(0, 2), grupo: s.grupo || "",
-      fecha: hoy(), franja: franja(), version: clave(CFG.version), ev: lote });
+      fecha: hoy(), franja: franja(), version: clave(CFG.version), sim: esPrueba() ? 1 : undefined, ev: lote });
     var ok = false;
     try { ok = navigator.sendBeacon && navigator.sendBeacon(CFG.url, new Blob([cuerpo], { type: "text/plain;charset=utf-8" })); } catch (e){ ok = false; }
     guardar(COLA, (ok ? resto : pend).slice(-MAX_COLA));
