@@ -383,7 +383,9 @@
       { k: "hf-existencialismo", n: 25, tit: "الوجودية: هايدغر وسارتر والفلسفة الإسبانية", txt: "في السنة الأولى رأيتم منظورية أورتيغا إي غاسيت: «أنا هو أنا وظرفي»؛ وفي السنة الثانية سترونها إلى جانب الوجوديين، مع أونامونو وماريا زامبرانو." }
     ],
     "fil-t4": [
-      { k: "hf-analitica", n: 24, tit: "الفلسفة التحليلية: فيتغنشتاين والمنعطف اللغوي", txt: "في السنة الأولى رأيتم المنطق الرمزي عند فريجه وراسل، الذي يترجم اللغة إلى صيغ؛ وفي السنة الثانية سترون كيف يستعمل راسل وفيتغنشتاين الأول هذا التحليل المنطقي بحثًا عن لغة كاملة: إنه المنعطف اللغوي للفلسفة التحليلية." }
+      { k: "hf-aa", n: "AA", tit: "أرسطو: المنظومة الكاملة", txt: "En 1.º viste los silogismos y el cuadrado de oposición (en el Rincón de lógica); en 2.º verás la lógica dentro del sistema de Aristóteles: el Órganon, la clasificación de las ciencias, las categorías y cómo la teoría del silogismo se enlaza con su metafísica." },
+      { k: "hf-racionalismo", n: 14, tit: "العقلانية والتجريبية: ديكارت وهيوم", txt: "En 1.º viste el álgebra de Boole, que convierte la lógica en un cálculo con 1 y 0; en 2.º verás la mathesis universalis de Descartes, su sueño de una ciencia universal del orden. Leibniz, que en ese tema aparece con las mónadas, lo llevó más lejos: imaginó una lengua en la que razonar fuera calcular." },
+      { k: "hf-analitica", n: 24, tit: "الفلسفة التحليلية: فيتغنشتاين والمنعطف اللغوي", txt: "En 1.º viste la lógica de las conectivas y sus tablas de verdad, los cuantificadores y la lógica simbólica de Frege y de Russell; en 2.º verás cómo Russell y el primer Wittgenstein usan ese análisis lógico del lenguaje para buscar un lenguaje perfecto: es el giro lingüístico de la filosofía analítica." }
     ],
     "fil-t5": [
       { k: "hf-etica", n: 8, tit: "الأخلاق الكلاسيكية: المذهب العقلي والفضائل والسعادة (eudaimonía)", txt: "في السنة الأولى رأيتم الفضيلة بوصفها وسطًا وعقلانية سقراط الأخلاقية؛ وفي السنة الثانية ستقرؤون الأخلاق الكلاسيكية كلها: الأريتيه (areté) واليودايمونيا (eudaimonía) وأجوبة سقراط وأفلاطون وأرسطو." },
@@ -400,7 +402,8 @@
       { k: "hf-ilustracion", n: 18, tit: "مشروع التنوير: قوة العقل وحدوده", txt: "في السنة الأولى رأيتم حقوق الإنسان والعقد الاجتماعي والموجة النسوية الأولى عند أولمب دي غوج وولستونكرافت؛ وفي السنة الثانية سترون مشروع التنوير الذي تنبثق منه تلك الحقوق وذلك النقد: الثقة بالعقل وحدوده." }
     ],
     "hf-aa": [
-      { k: "fil-metafisica", n: "M", tit: "الواقع: ما الموجود وكيف هو؟ (الميتافيزيقا)", txt: "سبق أن رأيتم في السنة الأولى الجوهر والماهية والانتقال من القوة إلى الفعل؛ وهنا درستم منظومة أرسطو الكاملة: المقولات والعلل الأربع والغائية." }
+      { k: "fil-metafisica", n: "M", tit: "الواقع: ما الموجود وكيف هو؟ (الميتافيزيقا)", txt: "سبق أن رأيتم في السنة الأولى الجوهر والماهية والانتقال من القوة إلى الفعل؛ وهنا درستم منظومة أرسطو الكاملة: المقولات والعلل الأربع والغائية." },
+      { k: "fil-t4", n: 4, tit: "المنطق والحجاج", txt: "Ya viste en 1.º los silogismos y el cuadrado de oposición (en el Rincón de lógica); aquí has visto esa lógica dentro del sistema de Aristóteles: el Órganon, la clasificación de las ciencias, las categorías y la teoría del silogismo ligada a su metafísica." }
     ],
     "hf-analitica": [
       { k: "fil-t4", n: 4, tit: "المنطق والحجاج", txt: "سبق أن رأيتم في السنة الأولى المنطق الرمزي عند فريجه وراسل؛ وهنا رأيتم كيف يفضي هذا التحليل المنطقي للغة إلى المنعطف اللغوي عند راسل وفيتغنشتاين." }
@@ -463,7 +466,8 @@
       { k: "fil-t1", n: 1, tit: "ما الفلسفة؟", txt: "سبق أن رأيتم في السنة الأولى أرخي (arché) طاليس بوصفه الخطوة الأولى للوغوس (logos)؛ وهنا تتبعتم أجوبة فلاسفة ما قبل سقراط عن سؤال الواقع ومبدأ كل شيء." }
     ],
     "hf-racionalismo": [
-      { k: "fil-t3", n: 3, tit: "ماذا يمكننا أن نعرف؟", txt: "سبق أن رأيتم في السنة الأولى العقلانية والتجريبية في جدول مصادر المعرفة؛ وهنا قرأتم ديكارت وهيوم قراءة من الداخل: الشك، والكوجيتو (cogito)، ونقد السببية." }
+      { k: "fil-t3", n: 3, tit: "ماذا يمكننا أن نعرف؟", txt: "سبق أن رأيتم في السنة الأولى العقلانية والتجريبية في جدول مصادر المعرفة؛ وهنا قرأتم ديكارت وهيوم قراءة من الداخل: الشك، والكوجيتو (cogito)، ونقد السببية." },
+      { k: "fil-t4", n: 4, tit: "المنطق والحجاج", txt: "Ya viste en 1.º el álgebra de Boole y la lógica binaria (1 y 0); aquí has visto la mathesis universalis de Descartes, el sueño de una ciencia universal del orden. Leibniz, que en este tema aparece con las mónadas, lo llevó más lejos: una lengua en la que razonar fuera calcular." }
     ],
     "hf-sofistas": [
       { k: "fil-t3", n: 3, tit: "ماذا يمكننا أن نعرف؟", txt: "سبق أن رأيتم في السنة الأولى نسبية بروتاغوراس —«الإنسان مقياس كل شيء»— بين المواقف من الحقيقة؛ وهنا وضعتموها في عالمها: التنوير اليوناني ومنعطف السوفسطائيين نحو الإنسان والبوليس (polis)." }
