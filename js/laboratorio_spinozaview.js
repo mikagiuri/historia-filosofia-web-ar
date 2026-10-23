@@ -302,9 +302,128 @@
     },
     clase: (L, x, verdad) => (evaluar(L.primerMotor(x), verdad) || evaluar(L.primeraCausa(x), verdad) ? 'primero' : 'otro'),
   };
+  // ---------- Quinto mundo: las antinomias de Kant (Antinomias_dinamicas.thy y Antinomias_matematicas.thy) ----------
+  // Los instantes (primera antinomia) son el tipo A con su orden numérico. Los niveles NivelC, NivelD y NivelP escriben
+  // «sin regreso al infinito» como en las vías: en un mundo finito, eso es no tener círculos. Ocultos: ni se escriben ni se
+  // dibujan. En un mundo finito siempre hay un primer instante, una primera causa y una parte última: los mundos que no
+  // empiezan o se dividen sin fin son infinitos, y esos los construye Isabelle, no la mesa.
+  const sinRegreso = (L, R, N) => y(L.todaCosa(x => L.algunAtr(t => N(x, t))),
+    L.todaCosa(x => L.todaCosa(z => L.todoAtr(t => L.todoAtr(u => si(y(R(x, z), N(x, t), N(z, u)), t < u ? T : F))))));
+  const ANT = {
+    RELACIONES: { Mundo: ['A'], Parte: ['C', 'C'], EnEspacio: ['C'], Causa: ['C', 'C'], Fen: ['C'], CausaInt: ['C', 'C'],
+      Cond: ['C', 'C'], EnMundo: ['C'], Fund: ['C', 'C'], NivelC: ['C', 'A'], NivelD: ['C', 'A'], NivelP: ['C', 'A'] },
+    ocultas: ['NivelC', 'NivelD', 'NivelP'],
+    maxAtributos: 4,
+    lenguaje(m) {
+      const L = base(m, ANT.RELACIONES);
+      L.libre = x => no(L.algunaCosa(z => L.Causa(z, x)));
+      L.incondicionado = x => no(L.algunaCosa(z => L.Cond(z, x)));
+      L.simple = x => no(L.algunaCosa(z => L.Parte(z, x)));
+      L.compuesto = x => L.algunaCosa(z => L.Parte(z, x));
+      L.comienzo = () => L.algunAtr(t => y(L.Mundo(t), L.todoAtr(u => si(u < t ? T : F, no(L.Mundo(u))))));
+      L.sinComienzo = () => y(L.algunAtr(t => L.Mundo(t)), L.todoAtr(t => si(L.Mundo(t), L.algunAtr(u => y(u < t ? T : F, L.Mundo(u))))));
+      return L;
+    },
+    PREMISAS: {
+      // Primera: en un mundo finito la serie de los estados pasados siempre está completa.
+      T1_sintesis_completa: () => T,
+      A1_tiempo_sin_principio: L => L.todoAtr(t => L.algunAtr(u => (u < t ? T : F))),
+      A1_tiempo_vacio_homogeneo: L => L.todoAtr(t => L.todoAtr(u => si(y(L.Mundo(t), L.todoAtr(v => si(v < t ? T : F, no(L.Mundo(v)))), u < t ? T : F), L.Mundo(u)))),
+      M1_hay_mundo: L => L.algunAtr(t => L.Mundo(t)),
+      // Segunda
+      T2_division_acaba: L => sinRegreso(L, L.Parte, L.NivelP),
+      M_transitiva: L => L.todaCosa(x => L.todaCosa(z => L.todaCosa(w => si(y(L.Parte(x, z), L.Parte(z, w)), L.Parte(x, w))))),
+      M_irreflexiva: L => L.todaCosa(x => no(L.Parte(x, x))),
+      A2_espacio_divisible: L => L.todaCosa(x => si(L.EnEspacio(x), L.algunaCosa(z => y(L.Parte(z, x), L.EnEspacio(z))))),
+      M2_hay_espacio: L => L.algunaCosa(x => L.EnEspacio(x)),
+      // Tercera
+      T3_serie_completa: L => sinRegreso(L, L.Causa, L.NivelC),
+      A3_ley_natural: L => L.todaCosa(x => L.algunaCosa(z => L.Causa(z, x))),
+      S3_ley_de_los_fenomenos: L => L.todaCosa(x => si(L.Fen(x), L.algunaCosa(z => y(L.Fen(z), L.Causa(z, x))))),
+      // Cuarta
+      T4_serie_completa: L => sinRegreso(L, L.Cond, L.NivelD),
+      T4_condicion_en_el_tiempo: L => L.todaCosa(x => L.todaCosa(z => si(y(L.Cond(x, z), L.EnMundo(z)), L.EnMundo(x)))),
+      A4_ley_dinamica: L => L.todaCosa(x => si(L.EnMundo(x), L.algunaCosa(z => L.Cond(z, x)))),
+      M4_hay_mundo: L => L.algunaCosa(x => L.EnMundo(x)),
+      S4_ley_en_el_mundo: L => L.todaCosa(x => si(L.EnMundo(x), L.algunaCosa(z => y(L.EnMundo(z), L.Cond(z, x))))),
+    },
+    OBJETIVOS: {
+      K1T: { vars: [], cuerpo: L => L.comienzo() },
+      K1A: { vars: [], cuerpo: L => no(L.comienzo()) },
+      K1D: { vars: [], cuerpo: L => o(L.comienzo(), L.sinComienzo()) },
+      K1S: { vars: [], posible: true, cuerpo: L => y(no(L.comienzo()), no(L.sinComienzo())) },
+      K2T: { vars: [['x', 'C']], cuerpo: (L, e) => si(L.compuesto(e.x), L.algunaCosa(s => y(L.simple(s), L.Parte(s, e.x)))) },
+      K2A: { vars: [['x', 'C']], cuerpo: (L, e) => si(L.EnEspacio(e.x), no(L.simple(e.x))) },
+      K2M: { vars: [], posible: true, cuerpo: L => y(L.algunaCosa(s => L.simple(s)), L.algunaCosa(x => y(L.compuesto(x), no(L.algunaCosa(s => y(L.simple(s), L.Parte(s, x))))))) },
+      K3T: { vars: [], cuerpo: L => L.algunaCosa(x => L.libre(x)) },
+      K3A: { vars: [['x', 'C']], cuerpo: (L, e) => no(L.libre(e.x)) },
+      K3S: { vars: [], posible: true, cuerpo: L => L.algunaCosa(x => y(no(L.Fen(x)), L.libre(x), L.todaCosa(z => si(L.Fen(z), L.CausaInt(x, z))))) },
+      K4T: { vars: [], cuerpo: L => L.algunaCosa(x => y(L.EnMundo(x), L.incondicionado(x))) },
+      K4A: { vars: [['x', 'C']], cuerpo: (L, e) => si(L.EnMundo(e.x), no(L.incondicionado(e.x))) },
+      K4F: { vars: [['x', 'C']], cuerpo: (L, e) => si(no(L.EnMundo(e.x)), no(L.algunaCosa(z => y(L.EnMundo(z), L.Cond(e.x, z))))) },
+      K4S: { vars: [], posible: true, cuerpo: L => L.algunaCosa(x => y(no(L.EnMundo(x)), L.incondicionado(x), L.todaCosa(z => si(L.EnMundo(z), L.Fund(x, z))))) },
+      // Otras salidas, no las de Kant: soltar la premisa de la tesis. Sus mundos son infinitos (modelo_antitesis1-4).
+      K1C: { vars: [], posible: true, cuerpo: L => L.sinComienzo() },
+      K2C: { vars: [], posible: true, cuerpo: L => y(L.algunaCosa(x => L.compuesto(x)), L.todaCosa(x => no(L.simple(x)))) },
+      K3C: { vars: [], posible: true, cuerpo: L => L.todaCosa(x => no(L.libre(x))) },
+      K4C: { vars: [], posible: true, cuerpo: L => y(L.algunaCosa(x => L.EnMundo(x)), L.todaCosa(x => si(L.EnMundo(x), no(L.incondicionado(x)))),
+        L.todaCosa(x => si(no(L.EnMundo(x)), no(L.algunaCosa(z => y(L.EnMundo(z), L.Cond(x, z))))))) },
+    },
+    clase: () => 'otro',
+  };
+  // ---------- Sexto mundo: del ser al cosmos (Parmenides_herederos.thy y Timeo_demiurgo.thy) ----------
+  // «Es» se lee como «hay»: ExisteEn(x, t). Claro(x, t) hace de una cualidad que cambia (B8, 41: «mudar el color
+  // brillante»). Las relaciones del Timeo no hablan del tiempo, salvo «comienza».
+  const COSMOS = {
+    RELACIONES: { ExisteEn: ['C', 'A'], Claro: ['C', 'A'], Vacio: ['C'], Generado: ['C'], Principio: ['C'], Siempre: ['C'],
+      Deviene: ['C'], Visible: ['C'], Causa: ['C', 'C'], Bello: ['C'], Bueno: ['C'], Copia: ['C', 'C'] },
+    maxAtributos: 3,
+    lenguaje(m) {
+      const L = base(m, COSMOS.RELACIONES);
+      L.cambia = x => y(L.algunAtr(t => L.Claro(x, t)), L.algunAtr(t => no(L.Claro(x, t))));
+      L.siempreEs = x => L.todoAtr(t => L.ExisteEn(x, t));
+      L.comienza = x => L.algunAtr(t => y(L.ExisteEn(x, t), L.todoAtr(u => si(u < t ? T : F, no(L.ExisteEn(x, u))))));
+      return L;
+    },
+    PREMISAS: {
+      P_no_ser: L => L.todaCosa(x => L.todoAtr(t => L.ExisteEn(x, t))),
+      P_salto_otro: L => L.todaCosa(x => L.todaCosa(z => L.todoAtr(t => si(L.distinto(x, z), no(L.ExisteEn(x, t)))))),
+      P_salto_cambio: L => L.todaCosa(x => L.todoAtr(t => si(no(L.Claro(x, t)), no(L.ExisteEn(x, t))))),
+      P_sin_vacio: L => L.todaCosa(x => no(L.Vacio(x))),
+      P_separa: L => L.todaCosa(x => L.todaCosa(z => si(y(L.distinto(x, z), no(L.Vacio(x)), no(L.Vacio(z))), L.algunaCosa(w => L.Vacio(w))))),
+      M_generado_principio: L => L.todaCosa(x => si(L.Generado(x), L.Principio(x))),
+      M_no_generado: L => L.todaCosa(x => no(L.Generado(x))),
+      M_conversa: L => L.todaCosa(x => si(L.Principio(x), L.Generado(x))),
+      D_dos_planos: L => L.todaCosa(x => no(y(L.Siempre(x), L.Deviene(x)))),
+      D_causa: L => L.todaCosa(x => si(L.Deviene(x), L.algunaCosa(d => L.Causa(d, x)))),
+      D_visible: L => L.todaCosa(x => si(L.Visible(x), L.Deviene(x))),
+      D_bello: L => L.todaCosa(x => si(L.Visible(x), L.Bello(x))),
+      D_hacedor_bueno: L => L.todaCosa(d => L.todaCosa(x => si(y(L.Causa(d, x), L.Visible(x)), L.Bueno(d)))),
+      D_modelo: L => L.todaCosa(d => L.todaCosa(x => si(y(L.Causa(d, x), L.Bello(x), L.Bueno(d)), L.algunaCosa(m2 => y(L.Siempre(m2), L.Copia(x, m2)))))),
+      U_dos_copias: L => L.todaCosa(a => L.todaCosa(b => L.todaCosa(m2 => si(y(L.Copia(a, m2), L.Copia(b, m2), L.distinto(a, b)),
+        L.algunaCosa(m3 => y(L.Copia(a, m3), L.distinto(m3, m2))))))),
+      U_un_modelo: L => L.todaCosa(c => L.todaCosa(m2 => L.todaCosa(m3 => si(y(L.Copia(c, m2), L.Copia(c, m3)), L.igual(m2, m3))))),
+      L_literal: L => L.todaCosa(d => L.todaCosa(x => si(L.Causa(d, x), L.comienza(x)))),
+    },
+    OBJETIVOS: {
+      C1: { vars: [['x', 'C']], cuerpo: (L, e) => no(L.cambia(e.x)) },
+      C2: { vars: [['x', 'C'], ['z', 'C']], cuerpo: (L, e) => L.igual(e.x, e.z) },
+      C3: { vars: [], posible: true, cuerpo: L => L.algunaCosa(x => L.algunaCosa(z => y(L.distinto(x, z), L.siempreEs(x), L.siempreEs(z), L.cambia(x)))) },
+      C4: { vars: [['x', 'C'], ['z', 'C']], cuerpo: (L, e) => si(y(no(L.Vacio(e.x)), no(L.Vacio(e.z))), L.igual(e.x, e.z)) },
+      C5: { vars: [], posible: true, cuerpo: L => L.algunaCosa(x => L.algunaCosa(z => L.algunaCosa(w => y(L.distinto(x, z), no(L.Vacio(x)), no(L.Vacio(z)), L.Vacio(w))))) },
+      C6: { vars: [['x', 'C']], cuerpo: (L, e) => no(L.Principio(e.x)) },
+      C7: { vars: [['x', 'C']], cuerpo: (L, e) => si(L.Visible(e.x), L.algunaCosa(d => L.Causa(d, e.x))) },
+      C8: { vars: [['x', 'C']], cuerpo: (L, e) => si(L.Visible(e.x), L.algunaCosa(m2 => y(L.Siempre(m2), L.Copia(e.x, m2)))) },
+      C9: { vars: [['x', 'C']], cuerpo: (L, e) => si(L.Siempre(e.x), no(L.Deviene(e.x))) },
+      C10: { vars: [['x', 'C'], ['z', 'C'], ['w', 'C']], cuerpo: (L, e) => si(y(L.Copia(e.x, e.w), L.Copia(e.z, e.w)), L.igual(e.x, e.z)) },
+      C11: { vars: [], posible: true, cuerpo: L => L.algunaCosa(d => L.algunaCosa(x => y(L.Causa(d, x), L.algunAtr(t => L.ExisteEn(x, t)), no(L.comienza(x))))) },
+      C12: { vars: [], posible: true, cuerpo: L => L.algunaCosa(x => y(L.comienza(x), L.siempreEs(x))) },
+    },
+    clase: () => 'otro',
+  };
   const SPINOZA = { RELACIONES, lenguaje, PREMISAS, OBJETIVOS,
     clase: (L, x, verdad) => (evaluar(L.sustancia(x), verdad) ? 'sustancia' : evaluar(L.modo(x), verdad) ? 'modo' : 'ninguna') };
-  const TEORIAS = { spinoza: SPINOZA, tiempo: TIEMPO, reloj: RELOJ, vias: VIAS };
+  const TEORIAS = { spinoza: SPINOZA, tiempo: TIEMPO, reloj: RELOJ, vias: VIAS, antinomias: ANT, cosmos: COSMOS };
   const teoria = op => TEORIAS[(op && op.teoria) || 'spinoza'];
 
   function casos(m, vars) {
@@ -659,8 +778,8 @@ const TMP_POSIBLE = { Q8: { teorema: "Q8_posible", impide: ["C_creador_dura_mas"
   Q9: { teorema: "Q9_posible", impide: ["C_un_creador"], teoremaNo: "Q9_imposible_con_un_creador" } };
 
 /* Tercer mundo: el tiempo, definido (Mundo_tiempo_definido.thy). Los instantes son las variables t, u, v, w. */
-const SPZ_VARS_A = { tiempo: [], spinoza: ["a", "b"], reloj: ["t", "u", "v", "w"], vias: ["t", "u", "v", "w"] };
-const SPZ_DE_INSTANTES = ["reloj", "vias"];   /* mundos en que lo que en Spinoza son atributos son instantes */
+const SPZ_VARS_A = { tiempo: [], spinoza: ["a", "b"], reloj: ["t", "u", "v", "w"], vias: ["t", "u", "v", "w"], antinomias: ["t", "u", "v", "w"], cosmos: ["t", "u"] };
+const SPZ_DE_INSTANTES = ["reloj", "vias", "antinomias", "cosmos"];   /* mundos en que lo que en Spinoza son atributos son instantes */
 let SPZ_MUNDO_LECTURA = null;   /* el mundo que se está leyendo (lo fija la vista); sin él, a y b son atributos */
 const REL_FORMAL = {
   R1: "∀x. ¬Antes(x, x)", R2: "∀x y z. Antes(x, y) ∧ Antes(y, z) → Antes(x, z)", R3: "∀x y. Antes(x, y) → ¬Antes(y, x)",
@@ -724,7 +843,110 @@ const VIA_TEOREMA = { W1: "via1", W1b: "via1_irreflexiva", W2: "via2", W3: "via3
 const VIA_COMPATIBLES = ["V1_hay_movimiento", "V1_sin_regreso", "V2_hay_causas", "V2_sin_regreso", "V3_siempre_algo", "V3_paso_de_Tomas",
   "V4_orden", "V4_comparables", "V5_hay_fines", "V5_dirigido"];
 /* La 5 empieza sin el paso discutido (si no, se sigue de sí mismo); la 9, con las dos primeras vías completas. */
+/* Quinto mundo: las antinomias de Kant (Antinomias_dinamicas.thy y Antinomias_matematicas.thy). Los instantes de la
+   primera son t, u, v, w; las cosas, x, y, z. «Serie completa» = sin regreso al infinito (interpretación, como en las vías).
+   En un mundo finito no hay regreso sin fin ni división sin fin: esos mundos los construye Isabelle con los enteros. */
+const ANT_FORMAL = {
+  K1T: "∃t. Mundo(t) ∧ ∀u. u < t → ¬Mundo(u)",
+  K1A: "¬∃t. Mundo(t) ∧ ∀u. u < t → ¬Mundo(u)",
+  K1D: "(∃t. Mundo(t) ∧ ∀u. u < t → ¬Mundo(u)) ∨ ((∃t. Mundo(t)) ∧ ∀t. Mundo(t) → ∃u. u < t ∧ Mundo(u))",
+  K1S: "¬(∃t. Mundo(t) ∧ ∀u. u < t → ¬Mundo(u)) ∧ ¬((∃t. Mundo(t)) ∧ ∀t. Mundo(t) → ∃u. u < t ∧ Mundo(u))",
+  K2T: "∀x. compuesto(x) → ∃y. simple(y) ∧ Parte(y, x)",
+  K2A: "∀x. EnEspacio(x) → ¬simple(x)",
+  K2M: "(∃x. simple(x)) ∧ ∃x. compuesto(x) ∧ ¬∃y. simple(y) ∧ Parte(y, x)",
+  K3T: "∃x. libre(x)",
+  K3A: "∀x. ¬libre(x)",
+  K3S: "∃x. ¬Fen(x) ∧ libre(x) ∧ ∀y. Fen(y) → CausaInt(x, y)",
+  K4T: "∃x. EnMundo(x) ∧ incondicionado(x)",
+  K4A: "∀x. EnMundo(x) → ¬incondicionado(x)",
+  K4F: "∀x. ¬EnMundo(x) → ¬∃y. EnMundo(y) ∧ Cond(x, y)",
+  K4S: "∃x. ¬EnMundo(x) ∧ incondicionado(x) ∧ ∀y. EnMundo(y) → Fund(x, y)",
+  K1C: "(∃t. Mundo(t)) ∧ ∀t. Mundo(t) → ∃u. u < t ∧ Mundo(u)",
+  K2C: "(∃x. compuesto(x)) ∧ ∀x. ¬simple(x)",
+  K3C: "∀x. ¬libre(x)",
+  K4C: "(∃x. EnMundo(x)) ∧ (∀x. EnMundo(x) → ¬incondicionado(x)) ∧ ∀x. ¬EnMundo(x) → ¬∃y. EnMundo(y) ∧ Cond(x, y)",
+};
+const ANT_DEF = {
+  libre: "libre(x) :⟺ ¬∃y. Causa(y, x)",
+  incondicionado: "incondicionado(x) :⟺ ¬∃y. Cond(y, x)",
+  simple: "simple(x) :⟺ ¬∃y. Parte(y, x)",
+  compuesto: "compuesto(x) :⟺ ∃y. Parte(y, x)",
+};
+const ANT_PREMISA_FORMAL = {
+  T1_sintesis_completa: "wf(Mundo)", A1_tiempo_sin_principio: "∀t. ∃u. u < t",
+  A1_tiempo_vacio_homogeneo: "∀t u. Mundo(t) ∧ (∀v. v < t → ¬Mundo(v)) ∧ u < t → Mundo(u)", M1_hay_mundo: "∃t. Mundo(t)",
+  T2_division_acaba: "wf(Parte)", M_transitiva: "∀x y z. Parte(x, y) ∧ Parte(y, z) → Parte(x, z)", M_irreflexiva: "∀x. ¬Parte(x, x)",
+  A2_espacio_divisible: "∀x. EnEspacio(x) → ∃y. Parte(y, x) ∧ EnEspacio(y)", M2_hay_espacio: "∃x. EnEspacio(x)",
+  T3_serie_completa: "wf(Causa)", A3_ley_natural: "∀x. ∃y. Causa(y, x)", S3_ley_de_los_fenomenos: "∀x. Fen(x) → ∃y. Fen(y) ∧ Causa(y, x)",
+  T4_serie_completa: "wf(Cond)", T4_condicion_en_el_tiempo: "∀x y. Cond(x, y) ∧ EnMundo(y) → EnMundo(x)",
+  A4_ley_dinamica: "∀x. EnMundo(x) → ∃y. Cond(y, x)", M4_hay_mundo: "∃x. EnMundo(x)",
+  S4_ley_en_el_mundo: "∀x. EnMundo(x) → ∃y. EnMundo(y) ∧ Cond(y, x)",
+};
+const ANT_PREMISA_FORMA = { M_transitiva: "trans", M_irreflexiva: "irrefl" };
+const ANT_ISABELLE = { K1T: ["T1_sintesis_completa", "M1_hay_mundo"], K1A: ["A1_tiempo_sin_principio", "A1_tiempo_vacio_homogeneo"],
+  K1D: ["M1_hay_mundo"], K2T: ["T2_division_acaba", "M_transitiva"], K2A: ["A2_espacio_divisible"], K3T: ["T3_serie_completa"],
+  K3A: ["A3_ley_natural"], K4T: ["T4_serie_completa", "T4_condicion_en_el_tiempo", "M4_hay_mundo"], K4A: ["A4_ley_dinamica"],
+  K4F: ["T4_condicion_en_el_tiempo"] };
+const ANT_TEOREMA = { K1T: "tesis1", K1A: "antitesis1", K1D: "con_mundo_dado_contradictorias", K2T: "tesis2", K2A: "antitesis2",
+  K3T: "tesis3", K3A: "antitesis3", K4T: "tesis4", K4A: "antitesis4_en_el_mundo", K4F: "antitesis4_fuera" };
+/* Posibilidades: las salidas de Kant (K1S, K2M, K3S, K4S) y las otras, soltando la premisa de la tesis (K1C-K4C).
+   infinito: el mundo que lo muestra es infinito, la mesa no lo busca; impide: con esa premisa no puede ocurrir. */
+const ANT_POSIBLE = { K1S: { teorema: "sin_mundo_dado_contrarias", impide: ["M1_hay_mundo"], teoremaNo: "con_mundo_dado_contradictorias" },
+  K2M: { teorema: "mixto_contrarias", infinito: true }, K3S: { teorema: "solucion3" }, K4S: { teorema: "solucion4" },
+  K1C: { teorema: "modelo_antitesis1", infinito: true, impide: ["T1_sintesis_completa"], teoremaNo: "tesis1" },
+  K2C: { teorema: "modelo_antitesis2", infinito: true, impide: ["T2_division_acaba"], teoremaNo: "division_acaba_hay_simple" },
+  K3C: { teorema: "modelo_antitesis3", infinito: true, impide: ["T3_serie_completa"], teoremaNo: "tesis3" },
+  K4C: { teorema: "modelo_antitesis4", infinito: true, impide: ["T4_serie_completa"], teoremaNo: "salida4_con_serie_completa" } };
+/* Los choques que Isabelle demuestra en cualquier mundo, también infinito (choque1-4). */
+const ANT_CHOQUES = [{ p: ["T3_serie_completa", "A3_ley_natural"], t: "choque3" }, { p: ["T2_division_acaba", "A2_espacio_divisible", "M2_hay_espacio"], t: "choque2" },
+  { p: ["T4_serie_completa", "T4_condicion_en_el_tiempo", "A4_ley_dinamica", "M4_hay_mundo"], t: "choque4" },
+  { p: ["T1_sintesis_completa", "A1_tiempo_sin_principio", "A1_tiempo_vacio_homogeneo", "M1_hay_mundo"], t: "choque1" }];
+const ANT_DEFECTO = { K1S: [], K2M: ["M_transitiva", "M_irreflexiva"], K3S: ["S3_ley_de_los_fenomenos"], K4S: ["S4_ley_en_el_mundo", "T4_condicion_en_el_tiempo"],
+  K1C: ["A1_tiempo_sin_principio", "A1_tiempo_vacio_homogeneo", "M1_hay_mundo"], K2C: ["M_transitiva", "M_irreflexiva", "A2_espacio_divisible", "M2_hay_espacio"],
+  K3C: ["A3_ley_natural"], K4C: ["T4_condicion_en_el_tiempo", "A4_ley_dinamica", "M4_hay_mundo"] };
 const VIA_DEFECTO = { W3s: ["V3_siempre_algo"], WD: ["V1_hay_movimiento", "V1_sin_regreso", "V2_hay_causas", "V2_sin_regreso"] };
+
+/* Sexto mundo: del ser al cosmos (Parmenides_herederos.thy y Timeo_demiurgo.thy). Cosas x, y, z, w; instantes t, u.
+   «Es» = «hay»: ExisteEn(x, t). Claro(x, t) hace de una cualidad que cambia. */
+const COS_FORMAL = {
+  C1: "∀x. ¬cambia(x)",
+  C2: "∀x y. x = y",
+  C3: "∃x y. x ≠ y ∧ siempreEs(x) ∧ siempreEs(y) ∧ cambia(x)",
+  C4: "∀x y. ¬Vacio(x) ∧ ¬Vacio(y) → x = y",
+  C5: "∃x y z. x ≠ y ∧ ¬Vacio(x) ∧ ¬Vacio(y) ∧ Vacio(z)",
+  C6: "∀x. ¬Principio(x)",
+  C7: "∀x. Visible(x) → ∃y. Causa(y, x)",
+  C8: "∀x. Visible(x) → ∃y. Siempre(y) ∧ Copia(x, y)",
+  C9: "∀x. Siempre(x) → ¬Deviene(x)",
+  C10: "∀x y z. Copia(x, z) ∧ Copia(y, z) → x = y",
+  C11: "∃x y. Causa(x, y) ∧ (∃t. ExisteEn(y, t)) ∧ ¬comienza(y)",
+  C12: "∃x. comienza(x) ∧ siempreEs(x)",
+};
+const COS_DEF = {
+  cambia: "cambia(x) :⟺ (∃t. Claro(x, t)) ∧ ∃t. ¬Claro(x, t)",
+  siempreEs: "siempreEs(x) :⟺ ∀t. ExisteEn(x, t)",
+  comienza: "comienza(x) :⟺ ∃t. ExisteEn(x, t) ∧ ∀u. u < t → ¬ExisteEn(x, u)",
+};
+const COS_PREMISA_FORMAL = {
+  P_no_ser: "∀x t. ExisteEn(x, t)", P_salto_otro: "∀x y t. x ≠ y → ¬ExisteEn(x, t)", P_salto_cambio: "∀x t. ¬Claro(x, t) → ¬ExisteEn(x, t)",
+  P_sin_vacio: "∀x. ¬Vacio(x)", P_separa: "∀x y. x ≠ y ∧ ¬Vacio(x) ∧ ¬Vacio(y) → ∃z. Vacio(z)",
+  M_generado_principio: "∀x. Generado(x) → Principio(x)", M_no_generado: "∀x. ¬Generado(x)", M_conversa: "∀x. Principio(x) → Generado(x)",
+  D_dos_planos: "∀x. ¬(Siempre(x) ∧ Deviene(x))", D_causa: "∀x. Deviene(x) → ∃y. Causa(y, x)", D_visible: "∀x. Visible(x) → Deviene(x)",
+  D_bello: "∀x. Visible(x) → Bello(x)", D_hacedor_bueno: "∀x y. Causa(x, y) ∧ Visible(y) → Bueno(x)",
+  D_modelo: "∀x y. Causa(x, y) ∧ Bello(y) ∧ Bueno(x) → ∃z. Siempre(z) ∧ Copia(y, z)",
+  U_dos_copias: "∀x y z. Copia(x, z) ∧ Copia(y, z) ∧ x ≠ y → ∃w. Copia(x, w) ∧ w ≠ z",
+  U_un_modelo: "∀x y z. Copia(x, y) ∧ Copia(x, z) → y = z", L_literal: "∀x y. Causa(x, y) → comienza(y)",
+};
+const COS_ISABELLE = { C1: ["P_no_ser", "P_salto_cambio"], C2: ["P_no_ser", "P_salto_otro"], C4: ["P_sin_vacio", "P_separa"],
+  C6: ["M_no_generado", "M_conversa"], C7: ["D_causa", "D_visible"], C8: ["D_causa", "D_visible", "D_bello", "D_hacedor_bueno", "D_modelo"],
+  C9: ["D_dos_planos"], C10: ["U_dos_copias", "U_un_modelo"] };
+const COS_TEOREMA = { C1: "inmovil_mesa", C2: "uno_mesa", C4: "uno_sin_vacio", C6: "Meliso_con_la_conversa", C7: "hay_hacedor_mesa",
+  C8: "modelo_eterno_mesa", C9: "el_modelo_no_deviene", C10: "un_solo_cosmos_mesa" };
+/* Las salidas de los herederos. C11 necesita infinitos instantes hacia atrás: lo construye Isabelle. */
+const COS_POSIBLE = { C3: { teorema: "sin_el_salto" }, C5: { teorema: "muchos_con_vacio" },
+  C11: { teorema: "lectura_dependencia", infinito: true, impide: ["L_literal"], teoremaNo: "literal_comienza" }, C12: { teorema: "tiempo_con_el_cosmos" } };
+/* Meliso viene con sus propias premisas: así sale el contramodelo que le reprocha Aristóteles. */
+const COS_DEFECTO = { C3: ["P_no_ser"], C5: ["P_separa"], C6: ["M_generado_principio", "M_no_generado"], C11: [], C12: [] };
 
 /* Fórmulas de las premisas del mundo de práctica y su forma (entrada del repaso que abre la etiqueta). */
 const TMP_PREMISA_FORMAL = {
@@ -825,7 +1047,7 @@ function spzLeer(f) {
 function spzVocabulario(mundo) {
   const T = MotorMundos.TEORIAS[mundo], voc = {};
   for (const [n, tipos] of Object.entries(T.RELACIONES)) if (!(T.ocultas || []).includes(n)) voc[n] = tipos;
-  const defs = { tiempo: TMP_DEF, reloj: REL_DEF, vias: VIA_DEF }[mundo] || SPZ_DEF;
+  const defs = { tiempo: TMP_DEF, reloj: REL_DEF, vias: VIA_DEF, antinomias: ANT_DEF, cosmos: COS_DEF }[mundo] || SPZ_DEF;
   for (const [n, f] of Object.entries(defs)) {
     const m = f.match(/^\w+\(([^)]*)\)/), args = m ? m[1].split(",").map((x) => x.trim()) : [];
     voc[n] = args.map((a) => (SPZ_VARS_A[mundo].includes(a) ? "A" : "C"));
@@ -1002,6 +1224,30 @@ const LB_SPZ = (() => {
     return Object.keys(T.RELACIONES).filter((r) => !T.ocultas.includes(r) && new RegExp("(^|[^A-Za-z_])" + r + "(?![A-Za-z_])", "i").test(todo));
   }
 
+  const ESTILOS_ANT = {
+    Causa: { color: "var(--e-ant)", guion: "6 3", grosor: 2, k: "lyCausa" },
+    CausaInt: { color: "var(--lb)", guion: "2 3", grosor: 2, k: "lyCausaInt" },
+    Cond: { color: "var(--r-pol)", guion: "", grosor: 2.2, k: "lyCond" },
+    Fund: { color: "var(--lb)", guion: "8 3 2 3", grosor: 2, k: "lyFund" },
+    Parte: { color: "var(--r-con)", guion: "", grosor: 2, k: "lyParte" },
+  };
+  const ESTILOS_COS = {
+    Causa: { color: "var(--r-pol)", guion: "", grosor: 2.4, k: "lyHace" },
+    Copia: { color: "var(--lb)", guion: "6 3", grosor: 2, k: "lyCopia" },
+  };
+  /* Qué relaciones nombran la proposición, sus definiciones y las premisas marcadas (las demás despistarían). */
+  function relevantes(teoria, premisaFormal) {
+    const p = prop(), f = formalDe(p) || "";
+    const txt = [f, ...S().marcadas.map((id) => premisaFormal[id] || (S().mias.find((x) => x.id === id) || {}).texto || "")].join(" ");
+    const todo = [txt, ...definicionesDe(txt)].join(" "), T = MotorMundos.TEORIAS[teoria];
+    return Object.keys(T.RELACIONES).filter((r) => !(T.ocultas || []).includes(r) && new RegExp("(^|[^A-Za-z_])" + r + "(?![A-Za-z_])", "i").test(todo));
+  }
+
+  /* Un desplegable de debate al pie del mundo, sin veredicto; «antes» (los antecedentes) es optativo. */
+  function debate(D) {
+    return `<details class="lb-saber spz-debate"><summary>${esc(D.titulo)}</summary>${D.parrafos.map((x) => `<p>${x}</p>`).join("")}
+      ${D.antes ? `<h4>${esc(D.tAntes)}</h4><ul>${D.antes.map((x) => `<li>${x}</li>`).join("")}</ul>` : ""}</details>`;
+  }
   /* Lo que cambia de un mundo a otro. */
   const MUNDOS = {
     tiempo: {
@@ -1118,6 +1364,103 @@ const LB_SPZ = (() => {
         return l.length ? `<p class="lb-nota">${l.join(" · ")}</p>` : "";
       },
     },
+    cosmos: {
+      textos: () => LABSPZ.cosmos, formal: COS_FORMAL, def: COS_DEF, isabelle: COS_ISABELLE, teorema: COS_TEOREMA, alt: {},
+      premisaFormal: COS_PREMISA_FORMAL, premisaForma: {},
+      estilos: ESTILOS_COS, maxA: 3,
+      porDefecto: (id) => (COS_DEFECTO[id] || COS_ISABELLE[id] || []).slice(), posibles: COS_POSIBLE, inicio: { prop: "C2", marcadas: ["P_no_ser"] },
+      nombreCosa: (i) => "ABCD"[i] || "c" + i,
+      formulaDef: (d) => COS_DEF[d.id],
+      clases: { siempre: ["clSiempre", "doble"], vacio: ["clVacio", "doble"], otro: ["", "simple"] },
+      leyendaFija: (m) => (m.clase.some((c) => c !== "otro") ? ["lyDobleC"] : []),
+      filtrar(m) {
+        const rel = relevantes("cosmos", COS_PREMISA_FORMAL), H = {};
+        for (const r of rel) H[r] = m.hechos[r] || [];
+        const es = (r, i) => (H[r] || []).some(([c2]) => c2 === i);
+        const clase = [...Array(m.n).keys()].map((i) => (es("Siempre", i) ? "siempre" : es("Vacio", i) ? "vacio" : "otro"));
+        return { ...m, hechos: H, clase };
+      },
+      etiquetas(m, i) {
+        const H = m.hechos, es = (r) => (H[r] || []).some(([c2]) => c2 === i), inst = (r) => (H[r] || []).filter(([c2]) => c2 === i).map(([, t2]) => t2).sort();
+        const ex = inst("ExisteEn"), cl = inst("Claro");
+        return [[es("Deviene") ? spzT("eDeviene") : "", es("Visible") ? spzT("eVisible") : "", es("Bello") ? spzT("eBello") : "", es("Bueno") ? spzT("eBueno") : "",
+          es("Generado") ? spzT("eGenerado") : "", es("Principio") ? spzT("ePrincipio") : ""].filter(Boolean).join(" · "),
+          H.ExisteEn ? (ex.length ? spzT("eExiste", { x: ex.join(", ") }) : spzT("eNunca")) : "",
+          H.Claro ? (cl.length ? spzT("eClaro", { x: cl.join(", ") }) : spzT("eNuncaClaro")) : ""];
+      },
+      hechos(H, n) {
+        const r2 = (rel, si, no) => (H[rel] || []).map(([a, b]) => (a === b ? spzT(si, { a: n(a) }) : spzT(no, { a: n(a), b: n(b) })));
+        const r1 = (rel, k) => (H[rel] || []).map(([a]) => spzT(k, { a: n(a) }));
+        const por = (rel) => { const o = {}; for (const [c2, t2] of H[rel] || []) (o[c2] = o[c2] || []).push(t2); return o; };
+        const ex = por("ExisteEn"), cl = por("Claro");
+        return [["hExistencia", Object.keys(ex).map(Number).sort().map((c2) => spzT("fExisteV", { a: n(c2), x: ex[c2].sort().join(", ") }))],
+          ["hClaro", Object.keys(cl).map(Number).sort().map((c2) => spzT("fClaroV", { a: n(c2), x: cl[c2].sort().join(", ") }))],
+          ["hVacio", r1("Vacio", "fVacio")], ["hMeliso", [...r1("Generado", "fGenerado"), ...r1("Principio", "fPrincipio")]],
+          ["hDemiurgo", [...r2("Causa", "fCausaSi", "fCausa"), ...r2("Copia", "fCopiaSi", "fCopia"), ...r1("Siempre", "fSiempre"), ...r1("Deviene", "fDeviene"),
+            ...r1("Visible", "fVisible"), ...r1("Bello", "fBello"), ...r1("Bueno", "fBueno")]]];
+      },
+      tam: (m) => (m.hechos.ExisteEn || m.hechos.Claro ? spzT("hayMundoR", { n: m.n === 1 ? spzT("unaCosa") : spzT("nCosas", { n: m.n }), k: m.k === 1 ? spzT("unInst") : spzT("nInst", { n: m.k }) })
+        : spzT("hayMundoT", { n: m.n === 1 ? spzT("unaCosa") : spzT("nCosas", { n: m.n }) })),
+      sinTxt: (r) => spzT("sinMundoCompletoR", { c: r.maxC, a: r.maxA }),
+      grupos: () => [["grupoC1", 1], ["grupoC2", 2], ["grupoC3", 3], ["grupoC4", 4]],
+      pie: "notaPieC", lede: "ledeCosmos", notaDefs: "notaDefsCosmos",
+      debate: () => debate(LABSPZ.cosmos.debate),
+      secciones: () => [["defsCosmos", LABSPZ.cosmos.defs]], extraContramodelo: () => "",
+    },
+    antinomias: {
+      textos: () => LABSPZ.antinomias, formal: ANT_FORMAL, def: ANT_DEF, isabelle: ANT_ISABELLE, teorema: ANT_TEOREMA, alt: {},
+      premisaFormal: ANT_PREMISA_FORMAL, premisaForma: ANT_PREMISA_FORMA,
+      chequeaChoque: true, choques: ANT_CHOQUES,
+      estilos: ESTILOS_ANT, maxA: 4,
+      porDefecto: (id) => (ANT_DEFECTO[id] || ANT_ISABELLE[id] || []).slice(), posibles: ANT_POSIBLE, inicio: { prop: "K3T", marcadas: [] },
+      nombreCosa: (i) => "ABCD"[i] || "c" + i,
+      formulaDef: (d) => ANT_DEF[d.id],
+      clases: { libre: ["clLibre", "doble"], incond: ["clIncond", "doble"], simple: ["clSimple", "doble"], otro: ["", "simple"] },
+      leyendaFija: (m) => (m.clase.some((c) => c !== "otro") ? ["lyDobleA"] : []),
+      notaSin: "notaSinA",
+      filtrar(m) {
+        const rel = relevantes("antinomias", ANT_PREMISA_FORMAL), H = {};
+        for (const r of rel) H[r] = m.hechos[r] || [];
+        const sin = (r, i) => !H[r].some(([, b]) => b === i);
+        const clase = [...Array(m.n).keys()].map((i) => (H.Causa && sin("Causa", i) ? "libre" : H.Cond && sin("Cond", i) ? "incond" : H.Parte && sin("Parte", i) ? "simple" : "otro"));
+        return { ...m, hechos: H, clase };
+      },
+      etiquetas(m, i) {
+        const H = m.hechos, es = (r) => (H[r] || []).some(([c2]) => c2 === i);
+        return [[es("Fen") ? spzT("eFen") : "", es("EnMundo") ? spzT("eEnMundo") : "", es("EnEspacio") ? spzT("eEspacio") : ""].filter(Boolean).join(" · ")];
+      },
+      hechos(H, n) {
+        const r2 = (rel, si, no) => (H[rel] || []).map(([a, b]) => (a === b ? spzT(si, { a: n(a) }) : spzT(no, { a: n(a), b: n(b) })));
+        const r1 = (rel, k) => (H[rel] || []).map(([a]) => spzT(k, { a: n(a) }));
+        const inst = (H.Mundo || []).map(([t2]) => t2).sort((a, b) => a - b);
+        return [["hTiempoMundo", H.Mundo ? [inst.length ? spzT("fMundoEn", { x: inst.join(", ") }) : spzT("fMundoNunca")] : []],
+          ["hPartes", [...r2("Parte", "fParteSi", "fParte"), ...r1("EnEspacio", "fEspacio")]],
+          ["hCausas", [...r2("Causa", "fCausaSi", "fCausa"), ...r2("CausaInt", "fCausaIntSi", "fCausaInt"), ...r1("Fen", "fFen")]],
+          ["hCondiciones", [...r2("Cond", "fCondSi", "fCond"), ...r2("Fund", "fFundSi", "fFund"), ...r1("EnMundo", "fEnMundo")]]];
+      },
+      tam: (m) => (m.hechos.Mundo ? spzT("tamTiempo", { k: m.k === 1 ? spzT("unInst") : spzT("nInst", { n: m.k }) })
+        : spzT("hayMundoT", { n: m.n === 1 ? spzT("unaCosa") : spzT("nCosas", { n: m.n }) })),
+      sinTxt: (r) => spzT("sinMundoCompletoR", { c: r.maxC, a: r.maxA }),
+      grupos: () => [["grupoA1", 1], ["grupoA2", 2], ["grupoA3", 3], ["grupoA4", 4]],
+      pie: "notaPieA", lede: "ledeAnt", notaDefs: "notaDefsAnt",
+      /* El debate sobre las premisas de Kant y sus antecedentes, sin veredicto. */
+      debate: () => debate(LABSPZ.antinomias.debate),
+      secciones: () => [["defsAnt", LABSPZ.antinomias.defs]], extraContramodelo: () => "",
+      /* En la primera antinomia se dibuja la línea del tiempo; en las demás, el dibujo de siempre. */
+      dibujar(m) {
+        if (!m.hechos.Mundo) return null;
+        const k = Math.max(m.k, 1), Wd = 560, H = 120, x0 = 60, x1 = 500, xi = (i) => x0 + (k === 1 ? (x1 - x0) / 2 : (i * (x1 - x0)) / (k - 1));
+        const vivos = new Set((m.hechos.Mundo || []).map(([t2]) => t2));
+        let s = `<svg class="spz-svg" viewBox="0 0 ${Wd} ${H}" role="img" aria-label="${esc(spzT("dibujoAriaT"))}">`;
+        s += `<line x1="${x0 - 30}" y1="50" x2="${x1 + 30}" y2="50" stroke="var(--line)" stroke-width="2"/>`;
+        for (let i = 0; i < k; i++) {
+          const v = vivos.has(i);
+          s += `<circle cx="${xi(i)}" cy="50" r="14" fill="${v ? "var(--lb)" : "var(--surface)"}" stroke="var(--ink)" stroke-width="1.5"/><text class="spz-etq" x="${xi(i)}" y="86" text-anchor="middle">${i}</text>`;
+        }
+        s += `<text class="spz-etq" x="${(x0 + x1) / 2}" y="110" text-anchor="middle">${esc(spzT("ejeMundo"))}</text>`;
+        return s + "</svg>";
+      },
+    },
     spinoza: {
       textos: () => LABSPZ, formal: SPZ_FORMAL, def: SPZ_DEF, isabelle: SPZ_ISABELLE, teorema: SPZ_TEOREMA, alt: SPZ_ALT, sobra: SPZ_SOBRA,
       estilos: ESTILOS_SPZ, maxA: 2, porDefecto: (id) => (SPZ_ISABELLE[id] || []).slice(), posibles: {}, inicio: { prop: "P5", marcadas: ["H_individuacion_por_atributos"] },
@@ -1182,7 +1525,7 @@ const LB_SPZ = (() => {
   /* Lo que se enseña del mundo encontrado (en las vías, sin las relaciones que no vienen al caso). */
   const ver = (m) => (W().filtrar ? W().filtrar(m) : m);
   function dibujar(m) {
-    if (W().dibujar) return W().dibujar(m);
+    if (W().dibujar) { const d = W().dibujar(m); if (d) return d; }   /* null: el dibujo de siempre */
     const E = W().estilos, nombre = W().nombreCosa;
     const Wd = 560, H = m.n === 1 ? 270 : 390, cx = Wd / 2, cy = H / 2 + 6, R = m.n === 1 ? 0 : 118, r = 28;
     const inicio = m.n === 2 ? Math.PI : -Math.PI / 2;
@@ -1233,6 +1576,11 @@ const LB_SPZ = (() => {
     const teorema = M.teorema[p.id] || p.id;
     if (p.propia && !p.comp.ok) { st.turno++; return pintarResultado(`<p class="lb-err">${esc(spzT(p.comp.error.k, p.comp.error.v))}</p>`); }
     if (p.posible) return posibilidad(p, M, el, mundo);
+    /* (22-10) En las antinomias, lo que se enseña es el choque: si las premisas marcadas no caben juntas, se dice antes de dar nada por demostrado. */
+    if (M.chequeaChoque && el.length > 1) {
+      const op = { teoria: mundo, maxCosas: 4, maxAtributos: M.maxA }, t0 = performance.now(), h = MotorMundos.hayMundo(motorPrem(el), op);
+      if (!h.hay && h.completo) { st.turno++; return incompatibles(h, Math.round(performance.now() - t0), el, op); }
+    }
     if (isa && contiene(el, isa)) return demostrado(teorema, p.prueba, isa, p.pasos, M.sobra && M.sobra[p.id]);
     if (alt && contiene(el, alt.premisas)) return demostrado(p.teoremaAlt || alt.teorema, p.pruebaAlt, alt.premisas, p.pasosAlt);
     const miTurno = ++st.turno;
@@ -1253,6 +1601,12 @@ const LB_SPZ = (() => {
       st.turno++;
       return pintarResultado(`<div class="lb-aviso lb-mal"><span class="spz-sello">${esc(spzT("selloOk"))}</span><h3 class="spz-h">${esc(spzT("noPuede"))}</h3>
         ${p.notaNo ? `<p>${p.notaNo}</p>` : ""}<p class="lb-nota">${esc(spzT("imposibleIsa", { x: P.impide.join(", "), t: P.teoremaNo }))}</p></div>`);
+    }
+    /* (22-10) Un mundo infinito: la mesa no lo busca; lo construye Isabelle (antinomias). */
+    if (P && P.infinito) {
+      st.turno++;
+      return pintarResultado(`<div class="lb-aviso lb-ok"><span class="spz-sello">${esc(spzT("selloPosible"))}</span><h3 class="spz-h">${esc(spzT("puedeOcurrir"))}</h3>
+        <p>${esc(spzT("infinitoTxt", { t: P.teorema }))}</p>${p.nota ? `<p>${p.nota}</p>` : ""}</div>`);
     }
     const miTurno = ++st.turno;
     pintarResultado(`<p class="lb-nota">${esc(spzT("buscando"))}</p>`);
@@ -1338,9 +1692,11 @@ const LB_SPZ = (() => {
     pintarResultado(`<div class="lb-aviso lb-warn"><span class="spz-sello">${esc(spzT("selloDuda"))}</span><h3 class="spz-h">${esc(spzT("sinMundo"))}</h3>
       <p>${esc(r.completo ? (W().sinTxt ? W().sinTxt(r) : W().maxA === 1 ? spzT("sinMundoCompletoT", { c: r.maxC }) : spzT("sinMundoCompleto", { c: r.maxC, a: r.maxA })) : spzT("sinMundoCortado"))} ${esc(spzT("noDemuestra"))}</p>
       ${isa ? `<p class="lb-nota">${esc(isa.length ? spzT("necesitaCon", { x: isa.join(", ") }) : spzT("necesitaSin"))}</p>` : ""}
+      ${W().notaSin ? `<p class="lb-nota">${esc(spzT(W().notaSin))}</p>` : ""}
       <p class="lb-nota">${esc(spzT("busqueda", { ms }))}</p>${varias ? botonSobra() : ""}</div>`);
   }
   /* Capas (22-10): de las premisas que no caben juntas, el grupo mínimo que choca (se quitan una a una mientras siga el choque). */
+  const choqueIsa = (el) => { const ch = (W().choques || []).find((c2) => contiene(el, c2.p)); return ch ? ch.t : null; };
   function incompatibles(h, ms, el, op) {
     let nucleo = el.slice();
     for (const x of el) {
@@ -1350,6 +1706,7 @@ const LB_SPZ = (() => {
     pintarResultado(`<div class="lb-aviso lb-warn"><span class="spz-sello">${esc(spzT("selloNada"))}</span><h3 class="spz-h">${esc(spzT("incompatibles"))}</h3>
       <p>${esc(spzT("incompatiblesTxt", { c: h.maxC }))}</p>
       ${nucleo.length && nucleo.length < el.length ? `<p>${esc(spzT("chocan", { x: nucleo.map(nombrePrem).join(", ") }))}</p>` : nucleo.length ? `<p>${esc(spzT("chocanTodas"))}</p>` : `<p>${esc(spzT("chocanFijas"))}</p>`}
+      ${choqueIsa(el) ? `<p class="lb-nota">${esc(spzT("choqueIsa", { t: choqueIsa(el) }))}</p>` : W().notaSin ? `<p class="lb-nota">${esc(spzT(W().notaSin))}</p>` : ""}
       <p class="lb-nota">${esc(spzT("busqueda", { ms }))}</p></div>`);
   }
   function pintarResultado(html) { S().html = html; const r = box && box.querySelector("#spz-resultado"); if (r) r.innerHTML = html; }
@@ -1447,7 +1804,7 @@ const LB_SPZ = (() => {
     const abierta = box.querySelector(".spz-guia") && box.querySelector(".spz-guia").open;
     const repAbierto = box.querySelector(".spz-repaso") && box.querySelector(".spz-repaso").open;
     const isaAbierto = box.querySelector(".spz-isabelle") && box.querySelector(".spz-isabelle").open;
-    box.innerHTML = `<div class="lb-fila spz-mundos" role="group" aria-label="${esc(spzT("mundo"))}"><span class="lb-et">${esc(spzT("mundo"))}</span>${botonMundo("tiempo", "mundoTiempo")}${botonMundo("reloj", "mundoReloj")}${botonMundo("spinoza", "mundoSpinoza")}${botonMundo("vias", "mundoVias")}</div>
+    box.innerHTML = `<div class="lb-fila spz-mundos" role="group" aria-label="${esc(spzT("mundo"))}"><span class="lb-et">${esc(spzT("mundo"))}</span>${botonMundo("tiempo", "mundoTiempo")}${botonMundo("reloj", "mundoReloj")}${botonMundo("spinoza", "mundoSpinoza")}${botonMundo("vias", "mundoVias")}${botonMundo("antinomias", "mundoAnt")}${botonMundo("cosmos", "mundoCosmos")}</div>
       <p class="lg-intro">${esc(spzT(M.lede))}</p>${M.cabecera ? M.cabecera() : ""}
       <div class="lb-aviso lb-warn"><span class="spz-sello">${esc(spzT("enDesarrollo"))}</span> ${spzT("avisoDesarrollo")}</div>
       ${guia()}
@@ -1469,6 +1826,7 @@ const LB_SPZ = (() => {
         </section>
         <section class="lb-mesa" aria-live="polite"><h3>${esc(spzT("tResultado"))}</h3><div id="spz-resultado">${S().html}</div></section>
       </div>
+      ${M.debate ? M.debate() : ""}
       <p class="lb-nota">${esc(spzT(M.pie))}</p>`;
     if (abierta) box.querySelector(".spz-guia").open = true;
     if (repAbierto) box.querySelector(".spz-repaso").open = true;
