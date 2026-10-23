@@ -312,13 +312,13 @@
   /* (22-10, T9 de docs/nube/logica_huecos_traspaso; enlaces y niveles de la jefa de lógica) siete temas: cada enlace
      [ruta, rótulo, niveles del itinerario (docs/39 §3)], y tras él «Itinerario: nivel N» (#logica/itinerario/N); sin nivel = rama lateral.
      Rótulos ya traducidos: LOG_TXT (por ui), LAB.t, LABSPZ.t, PARADOJAS y PARADOJAS_TXT (por tm); no hay cadenas nuevas.
-     El nivel de cada paradoja es el de su ficha (paradojas.js). Pendiente en hf-kant: las antinomias (mesa Spinoza), cuando estén. */
+     El nivel de cada paradoja es el de su ficha (paradojas.js). En hf-kant, desde la v264, las antinomias (quinto mundo de la mesa Spinoza; no hay ruta a un mundo, se enlaza la mesa). */
   var LOGICA_HF = {
     "hf-metodos": [["inferencia", "tabInferencia", [4]], ["falacias", "tabFalacias", [7]], ["induccion", "mesaInduccion", []]],
     "hf-aa": [["silogismos", "tabSilog", [1, 2]], ["cuadrado", "tabCuadrado", [6]]],
     "hf-cinco-vias": [["spinoza", "spz:mundoVias", [11]], ["paradojas/primermotor", "par:primermotor", [11]], ["deduccion", "mesaDeduccion", [4]]],
     "hf-descartes-makro": [["arbol", "mesaArbol", [7]], ["demos", "mesaDemos", [9]]],
-    "hf-kant": [["kant", "mesaKant", [9]]],
+    "hf-kant": [["kant", "mesaKant", [9]], ["spinoza", "spz:mundoAnt", [11]]],
     "hf-kant-juicios": [["kant", "mesaKant", [9]], ["cuantificadores", "tabCuantificadores", [6]]],
     "hf-analitica": [["tablas", "tabTablas", [3]], ["cuantificadores", "tabCuantificadores", [6]], ["paradojas/barbero", "par:barbero", [5]]]
   };

@@ -6,17 +6,17 @@
   --line:#ddd6c9; --line-soft:#e7e1d6;
   --accent:#1f5d5a; --accent-2:#2b7a75; --on-accent:#f7fbf9;
   --fil:#2f6f6b; --hf:#8a3b3f; --ipc:#976720;  /* antes #9a6a22 (4,44:1 sobre --surface); ahora 4,63:1 */
-  --ok:#2f7a4d; --ok-bg:#e5f0e6; --bad:#a53b34; --bad-bg:#f3e3df; --on-ok:#fff; --on-bad:#fff; --on-hf:#fff; --on-r:#fff;
+  --ok:#2e784c; --ok-bg:#e5f0e6; --bad:#a53b34; --bad-bg:#f3e3df; --on-ok:#fff; --on-bad:#fff; --on-hf:#fff; --on-r:#fff;
   --shadow:0 1px 2px rgba(30,28,22,.05), 0 6px 20px -12px rgba(30,28,22,.28);
   --radius:14px;
   --serif:"Spectral",Georgia,"Times New Roman",serif;
   --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
   /* épocas (30-09): los colores de Ilustres y del eje cronológico, para toda la web (js/epocas.js) */
-  --e-int:#6E6E78; --on-e:#fff;   /* int = temas introductorios de HF (1-2), en gris; --on-e = texto sobre el color */
-  --e-ant:#8F6600; --e-med:#8A4B84; --e-ren:#B83220; --e-mod:#0A76A0; --e-ilu:#5B4FC4; --e-con:#267A5B;
+  --e-int:#696973; --on-e:#fff;   /* int = temas introductorios de HF (1-2), en gris; --on-e = texto sobre el color */
+  --e-ant:#8B6300; --e-med:#8A4B84; --e-ren:#B83220; --e-mod:#0A729B; --e-ilu:#5B4FC4; --e-con:#257859;
   /* ramas (30-09): un color por rama en Filosofía 1.º (js/epocas.js), igual que las épocas en HF */
-  --r-ant:#B0672B; --r-con:#2B6CB0; --r-log:#6D5BA6; --r-eti:#3E8A5B; --r-pol:#C0392B; --r-est:#B04A8A;
+  --r-ant:#9A5A26; --r-con:#2B6CB0; --r-log:#6D5BA6; --r-eti:#35774E; --r-pol:#C0392B; --r-est:#A84784;
   scroll-padding-top:80px;   /* (proto-menu-3) la ficha arranca arriba, sin quedar bajo la cabecera fija */
 }
 @media (prefers-color-scheme:dark){
@@ -187,7 +187,7 @@ table.week tr:last-child td{border-bottom:0}
 .lightbox{position:fixed;inset:0;background:rgba(20,21,25,.88);display:none;align-items:center;justify-content:center;z-index:100;padding:24px}
 .lightbox.open{display:flex}
 .lightbox img{max-width:92vw;max-height:92vh;background:#faf8f3;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
-.lb-close{position:absolute;top:16px;inset-inline-end:16px;background:var(--surface);border:none;border-radius:50%;width:42px;height:42px;font-size:24px;line-height:1;cursor:pointer;color:var(--ink)}
+.lb-close{position:absolute;top:16px;inset-inline-end:16px;background:var(--surface);border:none;border-radius:50%;width:42px;height:42px;font-size:1.5rem;line-height:1;cursor:pointer;color:var(--ink)}
 
 /* Infografías incrustadas en la teoría */
 .figwrap{display:flex;flex-wrap:wrap;gap:16px;margin:22px 0}
@@ -542,10 +542,10 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 }
 
 /* Anexos dados en clase: mini-etiqueta «En clase» */
-.theory-head .en-clase{display:inline-block;margin-inline-start:.5rem;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--on-accent,#fff);background:var(--accent);border-radius:999px;padding:3px 10px;vertical-align:middle}
-.temas-anexo{display:inline-block;margin-inline-start:.4rem;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:1px 7px}
+.theory-head .en-clase{display:inline-block;margin-inline-start:.5rem;font-size:.6875rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--on-accent,#fff);background:var(--accent);border-radius:999px;padding:3px 10px;vertical-align:middle}
+.temas-anexo{display:inline-block;margin-inline-start:.4rem;font-size:.625rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:1px 7px}
 /* (12-10, rediseño Lote 3 · H0) insignia «Lectura PAU» en los temas de HF con lectura de la prueba */
-.temas-pau{display:inline-block;margin-inline-start:.4rem;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#7a5c12;background:#ffe9a8;border:1px solid #e5c35c;border-radius:999px;padding:1px 8px}
+.temas-pau{display:inline-block;margin-inline-start:.4rem;font-size:.625rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#7a5c12;background:#ffe9a8;border:1px solid #e5c35c;border-radius:999px;padding:1px 8px}
 
 /* Cuentos: botón de descarga de la ficha de trabajo (PDF B/N). */
 .cuento-dl{margin:.6rem 0 0}
@@ -623,6 +623,9 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 .uso-linea .uso-l{font-weight:600}
 .uso-linea .fbtn{font-size:.8rem}
 
+/* (DUA D0.2, 23-10) Red de seguridad: con «reducir movimiento» del sistema, ninguna animación ni desplazamiento suave */
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
 
 /* ==== css/mobile.css ==== */
 /* ===== Capa móvil (mobile-first overrides) — Aula de Filosofía =====
@@ -659,7 +662,7 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
     font-size: .92rem; font-weight: 600; color: var(--muted); margin: 0;
     padding: 7px 12px; border: 1px solid transparent; border-radius: 999px;
   }
-  #tabs .navgroup::after { content: "\25BE"; font-size: 10px; opacity: .65; }  /* ▾ */
+  #tabs .navgroup::after { content: "\25BE"; font-size: .625rem; opacity: .65; }  /* ▾ */
   #tabs .navgroup:hover { color: var(--ink); background: var(--surface-2); }
   #tabs .navsec.open > .navgroup { color: var(--ink); background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
   /* pista: resaltar el "cajón" que contiene la vista activa */
@@ -677,10 +680,10 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 @media (max-width: 760px) {
   /* ---- Cabecera compacta: marca · ☰ · tema, en una fila ---- */
   .bar-in { flex-wrap: nowrap; gap: 8px; align-items: center; position: relative; }
-  .brand { flex: 1 1 auto; font-size: 18px; min-width: 0; }
+  .brand { flex: 1 1 auto; font-size: 1.125rem; min-width: 0; }
   .navtoggle {
     display: inline-flex; align-items: center; justify-content: center;
-    min-width: 44px; min-height: 44px; padding: 0 12px; font-size: 20px; line-height: 1;
+    min-width: 44px; min-height: 44px; padding: 0 12px; font-size: 1.25rem; line-height: 1;
     background: var(--surface-2); color: var(--ink);
     border: 1px solid var(--line); border-radius: 12px; cursor: pointer;
   }
@@ -701,7 +704,7 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
   #tabs.open { display: flex; }
   #tabs button {
     width: 100%; text-align: start; min-height: 44px; padding: 11px 14px;
-    border-radius: 10px; font-size: 15px;
+    border-radius: 10px; font-size: .9375rem;
   }
   #tabs button[aria-current="true"] { background: var(--surface-2); }
   /* Grupos plegables (acordeón): al abrir el menú solo se ven Inicio + 5 grupos */
@@ -709,11 +712,11 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
   #tabs .navgroup {
     display: flex; align-items: center; justify-content: space-between; gap: 8px;
     width: 100%; min-height: 46px; padding: 10px 14px; cursor: pointer;
-    font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
     color: var(--muted); border-radius: 10px; margin: 0;
   }
   #tabs .navgroup:hover, #tabs .navsec.open > .navgroup { color: var(--ink); }
-  #tabs .navgroup::after { content: "\25B8"; font-size: 13px; transition: transform .15s ease; }
+  #tabs .navgroup::after { content: "\25B8"; font-size: .8125rem; transition: transform .15s ease; }
   #tabs .navsec.open > .navgroup::after { transform: rotate(90deg); }
   #tabs .navsec > .navmenu { display: none; }
   #tabs .navsec.open > .navmenu { display: block; }
@@ -721,13 +724,13 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
   /* ---- Márgenes y tipografía a escala de teléfono ---- */
   .wrap { padding-inline-start: 16px; padding-inline-end: 16px; }
   .view { padding-top: 8px; }
-  .title { font-size: 30px; line-height: 1.08; }
-  .lead { font-size: 15.5px; }
-  .sec { font-size: 22px; }
+  .title { font-size: 1.875rem; line-height: 1.08; }
+  .lead { font-size: .9688rem; }
+  .sec { font-size: 1.375rem; }
   h1.title, h2.sec { text-wrap: balance; }
 
   /* ---- Objetivos táctiles ≥44px en todos los controles ---- */
-  .chip, .fbtn { min-height: 42px; padding: 9px 14px; font-size: 14px; }
+  .chip, .fbtn { min-height: 42px; padding: 9px 14px; font-size: .875rem; }
   .icon-btn, .known-btn, .btn, .opt, .seslink, .sesbtn { min-height: 44px; }
   .filterbar, .chips { gap: 8px; }
 
@@ -766,11 +769,11 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
   .ctl-toggle, .toc-toggle {
     display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; min-height: 44px;
     margin: 12px 0 0; padding: 9px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
-    color: var(--ink); font: 600 15px/1.3 var(--sans); text-align: start; cursor: pointer;
+    color: var(--ink); font: 600 .9375rem/1.3 var(--sans); text-align: start; cursor: pointer;
   }
   .ctl-toggle[hidden], .toc-toggle[hidden] { display: none; }
   .ctl-toggle .ctl-l, .toc-toggle .ctl-l { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .toc-toggle .ctl-l i, .ctl-toggle .ctl-l i { font-style: normal; font-weight: 500; color: var(--muted); font-size: 13px; }
+  .toc-toggle .ctl-l i, .ctl-toggle .ctl-l i { font-style: normal; font-weight: 500; color: var(--muted); font-size: .8125rem; }
   .ctl-caret { flex: none; color: var(--muted); transition: transform .15s ease; }
   .ctl-open > .ctl-toggle .ctl-caret, .toc-open > .toc-toggle .ctl-caret { transform: rotate(180deg); }
   .view:not(.ctl-open) > .filterbar, .view:not(.ctl-open) > .chips, .view:not(.ctl-open) > .crono-filter, .view:not(.ctl-open) > .crono-chips { display: none; }
@@ -782,9 +785,9 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
   .theory-layout > .toc { margin: 0 0 8px; padding: 8px 4px 0; }
   /* con el plegado, la entradilla de la sección sobra: el contenido ya se explica solo */
   .view:has(> .ctl-toggle:not([hidden])) > .lead { display: none; }
-  .view:has(> .ctl-toggle:not([hidden])) > h1.title { font-size: 24px; }
+  .view:has(> .ctl-toggle:not([hidden])) > h1.title { font-size: 1.5rem; }
   /* la tira «De este tema» y «Siguiente paso» van al final del tema; en móvil, más pequeñas aún */
-  .itin-strip .btn { min-height: 36px; padding: 5px 11px; font-size: 14px; }
+  .itin-strip .btn { min-height: 36px; padding: 5px 11px; font-size: .875rem; }
 }
 
 /* ===== Escritorio (05-10, js/compacto.js): una lista larga de temas/materiales (más de 6) se pliega en una línea con
@@ -794,20 +797,20 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
   .view.ctl-many > .chips-toggle:not([hidden]) {
     display: inline-flex; align-items: center; gap: 12px; max-width: 100%; min-height: 42px;
     margin: 20px 0 4px; padding: 8px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
-    color: var(--ink); font: 600 15px/1.3 var(--sans); text-align: start; cursor: pointer;
+    color: var(--ink); font: 600 .9375rem/1.3 var(--sans); text-align: start; cursor: pointer;
   }
   .view.ctl-many > .chips-toggle:hover { border-color: var(--accent); }
   .chips-toggle .ctl-l { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .chips-toggle .ctl-l i { font-style: normal; font-weight: 500; color: var(--muted); font-size: 13px; margin-inline-start: 4px; }
+  .chips-toggle .ctl-l i { font-style: normal; font-weight: 500; color: var(--muted); font-size: .8125rem; margin-inline-start: 4px; }
   .chips-open > .chips-toggle .ctl-caret { transform: rotate(180deg); }
   .view.ctl-many:not(.chips-open) > .chips, .view.ctl-many:not(.chips-open) > .crono-chips { display: none; }
   .view.ctl-many.chips-open > .chips, .view.ctl-many.chips-open > .crono-chips { margin: 12px 0 18px; }
 }
 
 @media (max-width: 420px) {
-  .title { font-size: 25px; }
-  .sec { font-size: 20px; }
-  .brand .owl { font-size: 18px; }
+  .title { font-size: 1.5625rem; }
+  .sec { font-size: 1.25rem; }
+  .brand .owl { font-size: 1.125rem; }
   .wrap { padding-inline-start: 13px; padding-inline-end: 13px; }
   #sesiones .sescard .top { flex-direction: column; gap: 2px; }
 }
@@ -827,7 +830,7 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
   color: #fff;
   border-radius: 8px;
   text-decoration: none;
-  font: 600 15px/1.2 "IBM Plex Sans", system-ui, sans-serif;
+  font: 600 .9375rem/1.2 "IBM Plex Sans", system-ui, sans-serif;
   transition: top .15s ease;
 }
 .skiplink:focus { top: 8px; outline: 2.5px solid var(--ink, #111); outline-offset: 2px; }
@@ -861,7 +864,7 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
   .brand { flex: 1 1 auto; min-width: 0; }
   .navtoggle {
     display: inline-flex; align-items: center; justify-content: center;
-    min-width: 44px; min-height: 44px; padding: 0 12px; font-size: 20px; line-height: 1;
+    min-width: 44px; min-height: 44px; padding: 0 12px; font-size: 1.25rem; line-height: 1;
     background: var(--surface-2); color: var(--ink);
     border: 1px solid var(--line); border-radius: 12px; cursor: pointer;
   }
@@ -873,17 +876,17 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
     border-radius: 14px; box-shadow: var(--shadow); padding: 8px; z-index: 60;
   }
   #tabs.open { display: flex; }
-  #tabs button { width: 100%; text-align: start; min-height: 44px; padding: 11px 14px; border-radius: 10px; font-size: 15px; }
+  #tabs button { width: 100%; text-align: start; min-height: 44px; padding: 11px 14px; border-radius: 10px; font-size: .9375rem; }
   #tabs button[aria-current="true"] { background: var(--surface-2); }
   #tabs .navsec { display: block; }
   #tabs .navgroup {
     display: flex; align-items: center; justify-content: space-between; gap: 8px;
     width: 100%; min-height: 46px; padding: 10px 14px; cursor: pointer;
-    font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    font-size: .75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
     color: var(--muted); border-radius: 10px; margin: 0;
   }
   #tabs .navgroup:hover, #tabs .navsec.open > .navgroup { color: var(--ink); }
-  #tabs .navgroup::after { content: "\25B8"; font-size: 13px; transition: transform .15s ease; }
+  #tabs .navgroup::after { content: "\25B8"; font-size: .8125rem; transition: transform .15s ease; }
   #tabs .navsec.open > .navgroup::after { transform: rotate(90deg); }
   #tabs .navsec > .navmenu { display: none; }
   #tabs .navsec.open > .navmenu { display: block; }
@@ -892,11 +895,11 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
   .ctl-toggle, .toc-toggle {
     display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; min-height: 44px;
     margin: 12px 0 0; padding: 9px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
-    color: var(--ink); font: 600 15px/1.3 var(--sans); text-align: start; cursor: pointer;
+    color: var(--ink); font: 600 .9375rem/1.3 var(--sans); text-align: start; cursor: pointer;
   }
   .ctl-toggle[hidden], .toc-toggle[hidden] { display: none; }
   .ctl-toggle .ctl-l, .toc-toggle .ctl-l { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .toc-toggle .ctl-l i, .ctl-toggle .ctl-l i { font-style: normal; font-weight: 500; color: var(--muted); font-size: 13px; }
+  .toc-toggle .ctl-l i, .ctl-toggle .ctl-l i { font-style: normal; font-weight: 500; color: var(--muted); font-size: .8125rem; }
   .ctl-caret { flex: none; color: var(--muted); transition: transform .15s ease; }
   .ctl-open > .ctl-toggle .ctl-caret, .toc-open > .toc-toggle .ctl-caret { transform: rotate(180deg); }
   .view:not(.ctl-open) > .filterbar, .view:not(.ctl-open) > .chips, .view:not(.ctl-open) > .crono-filter, .view:not(.ctl-open) > .crono-chips { display: none; }
@@ -929,7 +932,7 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 @media (max-width: 400px) { .bar-in:has(.langmenu) .brand .owl { display: none; } }   /* (11-10) ver el botón de idioma */
 
 /* (proto-menu-3 · opción F) subapartados plegados dentro del desplegable */
-#tabs .navfold-head::after { content: " \25B8"; font-size: 10px; opacity: .65; }
+#tabs .navfold-head::after { content: " \25B8"; font-size: .625rem; opacity: .65; }
 #tabs .navfold.open > .navfold-head::after { content: " \25BE"; }
 #tabs .navfold-body { display: none; padding-inline-start: 8px; }
 #tabs .navfold.open > .navfold-body { display: block; }
@@ -1049,12 +1052,12 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #cronogramas .crono-svg{ width:100%; height:auto; display:block; overflow:visible; }
 #cronogramas .crono-svg .lane-bg{ fill:var(--surface-2); }
 #cronogramas .crono-svg .grid{ stroke:var(--line-soft); stroke-width:1; }
-#cronogramas .crono-svg .tick-lbl{ fill:var(--muted); font-family:var(--mono); font-size:11px; }
-#cronogramas .crono-svg .lane-lbl{ fill:var(--ink); font-family:var(--sans); font-size:13px; }
+#cronogramas .crono-svg .tick-lbl{ fill:var(--muted); font-family:var(--mono); font-size:.6875rem; }
+#cronogramas .crono-svg .lane-lbl{ fill:var(--ink); font-family:var(--sans); font-size:.8125rem; }
 #cronogramas .crono-svg .cbar{ rx:6; }   /* (24-09) no «.bar»: styles.css oculta .bar al imprimir */
 #cronogramas .crono-svg .cbar-claro{ stroke:var(--muted); stroke-width:1; }   /* (07-10) barras blancas: se ven también en claro */
-#cronogramas .crono-svg .bar-lbl{ fill:var(--on-accent); font-family:var(--mono); font-size:10.5px; }
-#cronogramas .crono-svg .bar-yr{ fill:var(--muted); font-family:var(--mono); font-size:10.5px; }
+#cronogramas .crono-svg .bar-lbl{ fill:var(--on-accent); font-family:var(--mono); font-size:.6563rem; }
+#cronogramas .crono-svg .bar-yr{ fill:var(--muted); font-family:var(--mono); font-size:.6563rem; }
 #cronogramas .crono-svg .band{ fill:var(--ink); opacity:.035; }
 #cronogramas .crono-svg .zero{ stroke:var(--bad); stroke-width:1; stroke-dasharray:3 3; opacity:.7; }
 
@@ -1081,17 +1084,17 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #cronogramas .eje-sub{ white-space:normal; }
 #cronogramas .eje-scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin:.2rem 0 .9rem; }
 #cronogramas .eje-svg{ display:block; width:100%; min-width:1000px; height:auto; font-family:var(--sans); }
-#cronogramas .eje-svg .lbl{ fill:var(--pink); font-weight:700; font-size:14px; }
+#cronogramas .eje-svg .lbl{ fill:var(--pink); font-weight:700; font-size:.875rem; }
 #cronogramas .eje-svg .axis{ stroke:var(--ink); stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
 #cronogramas .eje-svg .tick{ stroke:var(--ink); stroke-width:1; }
 #cronogramas .eje-svg .tick.big{ stroke-width:2; }
-#cronogramas .eje-svg .yr{ fill:var(--ink); font-size:13px; }
+#cronogramas .eje-svg .yr{ fill:var(--ink); font-size:.8125rem; }
 #cronogramas .eje-svg .lead{ stroke:var(--muted); stroke-width:1; stroke-dasharray:3 3; }
 #cronogramas .eje-svg .dia{ fill:#6CCB3A; stroke:var(--ink); stroke-width:1.2; }
 #cronogramas .eje-svg .pill{ fill:#C6F68D; }
-#cronogramas .eje-svg .pill-n{ fill:#1E1E1E; font-weight:700; font-size:13px; }
-#cronogramas .eje-svg .pill-d{ fill:#333; font-size:12px; }
-#cronogramas .eje-svg .leg{ fill:var(--muted); font-size:13px; }
+#cronogramas .eje-svg .pill-n{ fill:#1E1E1E; font-weight:700; font-size:.8125rem; }
+#cronogramas .eje-svg .pill-d{ fill:#333; font-size:.75rem; }
+#cronogramas .eje-svg .leg{ fill:var(--muted); font-size:.8125rem; }
 #cronogramas .eje-hint{ display:none; font-size:.8rem; color:var(--muted); text-align:end; margin:-.55rem 0 .7rem; }
 @media (max-width:1100px){ #cronogramas .eje-hint{ display:block; } }
 
@@ -1138,14 +1141,14 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 /* (29-09) escuelas (cronogramas con «groups»): botones para mostrar u ocultar cada una */
 #cronogramas .crono-legend{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:4px 0 12px; }
 #cronogramas .crono-legend .flabel{ margin-inline-end:4px; }
-#cronogramas .crono-leg{ display:inline-flex; align-items:center; gap:6px; font:inherit; font-size:13px; color:var(--ink);
+#cronogramas .crono-leg{ display:inline-flex; align-items:center; gap:6px; font:inherit; font-size:.8125rem; color:var(--ink);
   background:var(--surface-2); border:1px solid var(--line-soft); border-radius:999px; padding:4px 10px; cursor:pointer; }
 #cronogramas .crono-leg i{ width:14px; height:10px; border-radius:3px; display:inline-block; flex:none; }
 #cronogramas .crono-leg[aria-pressed="false"]{ opacity:.45; text-decoration:line-through; }
 #cronogramas .crono-leg[aria-pressed="false"] i{ filter:grayscale(1); }
 #cronogramas .crono-leg-all{ color:var(--muted); }
 #cronogramas .crono-leg:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
-#cronogramas .crono-leg-note{ color:var(--muted); font-size:12px; margin:8px 0 0; }
+#cronogramas .crono-leg-note{ color:var(--muted); font-size:.75rem; margin:8px 0 0; }
 #cronogramas .crono-none{ margin:16px 0; }
 
 /* (10-10) título de periodo del eje: abre la ficha de época en Ilustres; mismo aspecto que el título, con «›» */
@@ -1161,7 +1164,7 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #genealogias{ --e-ant:#8F6600; --e-med:#8A4B84; --e-ren:#B83220; --e-mod:#0A76A0; --e-ilu:#5B4FC4; --e-con:#267A5B; }
 #genealogias .gen-legend{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:8px 0 10px; }
 #genealogias .gen-legend .flabel{ margin-inline-end:4px; }
-#genealogias .gen-leg{ display:inline-flex; align-items:center; gap:6px; font:inherit; font-size:13px; color:var(--ink);
+#genealogias .gen-leg{ display:inline-flex; align-items:center; gap:6px; font:inherit; font-size:.8125rem; color:var(--ink);
   background:var(--surface-2); border:1px solid var(--line-soft); border-radius:999px; padding:4px 10px; cursor:pointer; }
 #genealogias .gen-leg i{ width:16px; height:6px; border-radius:3px; display:inline-block; flex:none; }
 #genealogias .gen-leg[aria-pressed="false"]{ opacity:.45; text-decoration:line-through; }
@@ -1170,25 +1173,25 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #genealogias .gen-leg-op svg{ width:28px; height:10px; }
 #genealogias .gen-leg-op path{ stroke:#E0453A; stroke-width:2.2; stroke-dasharray:5 3; fill:none; }
 #genealogias .gen-leg:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
-#genealogias .gen-hint{ color:var(--muted); font-size:12px; margin:0 0 6px; }
+#genealogias .gen-hint{ color:var(--muted); font-size:.75rem; margin:0 0 6px; }
 #genealogias .gen-scroll{ overflow-x:auto; border:1px solid var(--line); border-radius:14px; background:var(--surface);
   /* a todo el ancho de la pantalla (la columna de texto es estrecha para un plano tan largo) */
   width:calc(100vw - 32px); max-width:1800px; position:relative; left:50%; transform:translateX(-50%); }
 #genealogias .gen-svg{ display:block; }
 #genealogias .gen-era{ fill:var(--e); opacity:.85; }
-#genealogias .gen-era-lbl{ fill:#fff; font-family:var(--sans); font-size:11px; font-weight:700; letter-spacing:.04em; }
+#genealogias .gen-era-lbl{ fill:#fff; font-family:var(--sans); font-size:.6875rem; font-weight:700; letter-spacing:.04em; }
 #genealogias .gen-era-band{ fill:var(--e); opacity:.05; }
 #genealogias [data-b="ant"]{ --e:var(--e-ant) } #genealogias [data-b="med"]{ --e:var(--e-med) } #genealogias [data-b="ren"]{ --e:var(--e-ren) }
 #genealogias [data-b="mod"]{ --e:var(--e-mod) } #genealogias [data-b="ilu"]{ --e:var(--e-ilu) } #genealogias [data-b="con"]{ --e:var(--e-con) }
 #genealogias .gen-track{ stroke-width:7; stroke-linecap:round; fill:none; }
-#genealogias .gen-line-lbl{ font-family:var(--sans); font-size:12.5px; font-weight:700; }
+#genealogias .gen-line-lbl{ font-family:var(--sans); font-size:.7813rem; font-weight:700; }
 #genealogias .gen-xfer{ fill:var(--surface); stroke:var(--muted); stroke-width:1.5; opacity:.9; }
 #genealogias .gen-guide{ stroke-width:2; stroke-dasharray:2 5; opacity:.5; fill:none; }
 #genealogias .gen-st{ cursor:pointer; }
 #genealogias .gen-st circle{ fill:var(--surface); stroke-width:3.5; }
 #genealogias .gen-st:hover circle, #genealogias .gen-st:focus circle{ fill:var(--ink); }
 #genealogias .gen-st:focus{ outline:none; }
-#genealogias .gen-st-lbl{ fill:var(--ink); font-family:var(--sans); font-size:11.5px; }
+#genealogias .gen-st-lbl{ fill:var(--ink); font-family:var(--sans); font-size:.7188rem; }
 #genealogias .gen-st:hover .gen-st-lbl{ text-decoration:underline; }
 #genealogias .gen-op{ fill:none; stroke:#E0453A; stroke-width:2; stroke-dasharray:6 4; opacity:.75; }
 #genealogias .gen-svg.gen-focus [data-line]:not(.on){ opacity:.15; }
@@ -1204,7 +1207,7 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 
 /* ===== (09-10) Modos y «Red de tesis» / «¿Verde o roja?» (genealogias_tesisview.js) ===== */
 #genealogias .gen-modos{ margin:4px 0 10px; }
-#genealogias{ --gt-ok:#2f8a4f; --gt-no:#d23b30; }
+#genealogias{ --gt-ok:#2c814a; --gt-no:#d1392e; }
 @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) #genealogias{ --gt-ok:#6fcf8e; --gt-no:#f0796e; } }
 :root[data-theme="dark"] #genealogias{ --gt-ok:#6fcf8e; --gt-no:#f0796e; }
 #genealogias .gt-intro{ color:var(--muted); font-size:.92rem; max-width:62rem; margin:0 0 8px; }
@@ -1696,10 +1699,10 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #eudaimonia .fel-graf{ display:grid; gap:.15rem; direction:ltr; }
 #eudaimonia .fel-graf h3, #eudaimonia .fel-graf p{ direction:inherit; }
 #eudaimonia .fel-graf svg{ width:100%; height:auto; display:block; touch-action:pan-y; }
-#eudaimonia .fel-svg-t{ font-size:11.5px; font-weight:600; fill:var(--ink); font-family:var(--sans); }
-#eudaimonia .fel-svg-ax{ font-size:9.5px; fill:var(--muted); font-family:var(--sans); }
-#eudaimonia .fel-svg-val{ font-size:10.5px; font-weight:600; fill:var(--ink); font-family:var(--mono); }
-#eudaimonia .fel-svg-dead{ font-size:11px; fill:var(--bad); }
+#eudaimonia .fel-svg-t{ font-size:.7188rem; font-weight:600; fill:var(--ink); font-family:var(--sans); }
+#eudaimonia .fel-svg-ax{ font-size:.5938rem; fill:var(--muted); font-family:var(--sans); }
+#eudaimonia .fel-svg-val{ font-size:.6563rem; font-weight:600; fill:var(--ink); font-family:var(--mono); }
+#eudaimonia .fel-svg-dead{ font-size:.6875rem; fill:var(--bad); }
 #eudaimonia .fel-svg-grid{ stroke:var(--line-soft); }
 #eudaimonia .fel-svg-band{ fill:var(--surface-2); }
 #eudaimonia .fel-svg-line{ fill:none; stroke:var(--hf); stroke-width:2; stroke-linejoin:round; stroke-linecap:round; }
@@ -1941,12 +1944,12 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #rayuela .ray-e.now{ opacity:1; stroke-width:8; }
 #rayuela .ray-st circle{ stroke-width:4; }
 #rayuela .ray-st.contra circle{ stroke-dasharray:none; }
-#rayuela .ray-st .ray-num{ font:700 13px var(--sans, system-ui, sans-serif); fill:var(--ink); }
+#rayuela .ray-st .ray-num{ font:700 .8125rem var(--sans, system-ui, sans-serif); fill:var(--ink); }
 #rayuela .ray-st.vis .ray-num{ fill:#fff; }
 #rayuela .ray-halo{ fill:none; stroke-width:3; opacity:.6; animation:ray-pulse 1.6s ease-in-out infinite; transform-box:fill-box; transform-origin:center; }
-#rayuela .ray-lbl{ font:600 12px var(--sans, system-ui, sans-serif); fill:var(--ink); paint-order:stroke; stroke:var(--surface); stroke-width:4px; stroke-linejoin:round; }
+#rayuela .ray-lbl{ font:600 .75rem var(--sans, system-ui, sans-serif); fill:var(--ink); paint-order:stroke; stroke:var(--surface); stroke-width:4px; stroke-linejoin:round; }
 #rayuela .ray-term rect{ fill:var(--surface); stroke:var(--ink); stroke-width:2.5; }
-#rayuela .ray-term .ray-num{ font:700 15px var(--serif, Georgia, serif); fill:var(--ink); }
+#rayuela .ray-term .ray-num{ font:700 .9375rem var(--serif, Georgia, serif); fill:var(--ink); }
 #rayuela .ray-term.vis rect{ fill:var(--ink); }
 #rayuela .ray-term.vis .ray-num{ fill:var(--surface); }
 #rayuela .ray-term.cur rect{ stroke:var(--hf); stroke-width:4; }
@@ -2002,7 +2005,7 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #rayuela .ray-vbtn:hover{ border-color:var(--line); }
 #rayuela .ray-vbtn.sel{ border-color:var(--hf); background:var(--surface); }
 #rayuela .ray-map.ruta{ max-height:none; margin:0 auto; }
-#rayuela .ray-map.ruta .ray-lbl{ font-size:14px; }
+#rayuela .ray-map.ruta .ray-lbl{ font-size:.875rem; }
 #rayuela .ray-map.ruta .ray-lbl.fin{ font-weight:700; }
 @media (min-width:980px){ #rayuela .ray-side{ max-height:calc(100vh - 6rem); overflow:auto; } }
 
@@ -2084,6 +2087,7 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #pistas .pis-spoil-cta::before{ content:"👁 "; }
 #pistas .pis-hint.reveal{ animation:pisReveal .22s ease-out; }
 @keyframes pisReveal{ from{ opacity:0; transform:translateY(-3px); } to{ opacity:1; transform:none; } }
+@media (prefers-reduced-motion:reduce){ #pistas .pis-hint.reveal{ animation:none; } }
 /* (01-10) índice de preguntas: saltar de página a página dentro del itinerario */
 #pistas .pis-pager{ display:flex; align-items:center; flex-wrap:wrap; gap:.4rem; margin-top:.7rem; padding-top:.7rem; border-top:1px solid var(--line); }
 #pistas .pis-pager-lb{ font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700; margin-inline-end:.2rem; }
@@ -2158,8 +2162,8 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #logica .lg-venn{ width:100%; max-width:22rem; display:block }
 #logica .lg-circ{ fill:none; stroke:var(--ink); stroke-width:2 }
 #logica .lg-vacia{ fill:var(--muted); opacity:.45 }
-#logica .lg-vt{ font:600 13px var(--sans); fill:var(--ink) }
-#logica .lg-x{ font:700 20px var(--sans); fill:var(--r-log, var(--accent)) }
+#logica .lg-vt{ font:600 .8125rem var(--sans); fill:var(--ink) }
+#logica .lg-x{ font:700 1.25rem var(--sans); fill:var(--r-log, var(--accent)) }
 #logica .lg-puerta{ display:flex; flex-wrap:wrap; gap:1rem; align-items:center }
 #logica .lg-circ1{ width:100%; max-width:26rem }
 #logica .lg-scroll{ overflow-x:auto }
@@ -2170,7 +2174,7 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #logica .lg-wire.on{ stroke:var(--ok) }
 #logica .lg-sw{ fill:var(--surface-2); stroke:var(--ink); stroke-width:1.5; cursor:pointer }
 #logica .lg-sw.on{ fill:var(--ok-bg); stroke:var(--ok) }
-#logica .lg-swt{ font:600 13px var(--mono); fill:var(--ink); pointer-events:none }
+#logica .lg-swt{ font:600 .8125rem var(--mono); fill:var(--ink); pointer-events:none }
 #logica .lg-swt.on{ fill:var(--ok) }
 #logica .lg-pin{ cursor:pointer }
 #logica .lg-pin:focus{ outline:none }
@@ -2379,7 +2383,7 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #leibniz .lz-diente{ fill:var(--line) }
 #leibniz .lz-diente.lz-on{ fill:var(--accent) }
 #leibniz .lz-pinon{ fill:var(--hf); opacity:.85 }
-#leibniz .lz-num{ fill:var(--ink); font:600 15px var(--sans) }
+#leibniz .lz-num{ fill:var(--ink); font:600 .9375rem var(--sans) }
 
 /* máquina de multiplicar */
 #leibniz .lz-maquina{ background:var(--surface-2); border-radius:10px; padding:.6rem .8rem; display:inline-block; max-width:100% }
@@ -2429,7 +2433,7 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #leibniz .lz-dgpar figcaption{ font-size:.82rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-bottom:.3rem }
 #leibniz .lz-circ{ fill:none; stroke:var(--ink); stroke-width:2 }
 #leibniz .lz-zona{ fill:var(--accent); opacity:.35 }
-#leibniz .lz-lab{ fill:var(--ink); font:600 15px var(--sans) }
+#leibniz .lz-lab{ fill:var(--ink); font:600 .9375rem var(--sans) }
 #leibniz .lz-seg{ stroke:var(--accent); stroke-width:6; stroke-linecap:butt }
 #leibniz .lz-puntos{ stroke-dasharray:3 6; stroke-width:4; opacity:.8 }
 #leibniz .lz-tope{ stroke:var(--ink); stroke-width:1.5 }
@@ -2482,9 +2486,9 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #universo .ua-svg{ width:100%; max-width:26rem; height:auto; display:block; margin:.3rem 0 }
 #universo .ua-lado{ stroke:var(--ink); stroke-width:2 }
 #universo .ua-diag{ stroke:var(--line); stroke-width:1.5; stroke-dasharray:5 5 }
-#universo .ua-q{ fill:var(--muted); font:600 14px var(--sans) }
+#universo .ua-q{ fill:var(--muted); font:600 .875rem var(--sans) }
 #universo .ua-nodo circle{ stroke:var(--line); stroke-width:2; fill:var(--surface-2); transition:fill .2s }
-#universo .ua-nodo text{ fill:var(--ink); font:600 15px var(--sans) }
+#universo .ua-nodo text{ fill:var(--ink); font:600 .9375rem var(--sans) }
 #universo .ua-fuego.ua-on circle{ fill:#e8743b }
 #universo .ua-aire.ua-on circle{ fill:#9ecbe8 }
 #universo .ua-agua.ua-on circle{ fill:#3b7fc4 }
@@ -2588,9 +2592,9 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #palabra .pa-svg{ width:100%; max-width:26rem; height:auto; display:block; margin:.3rem 0 }
 #palabra .pa-lado{ stroke:var(--ink); stroke-width:2 }
 #palabra .pa-diag{ stroke:var(--line); stroke-width:1.5; stroke-dasharray:5 5 }
-#palabra .pa-q{ fill:var(--muted); font:600 14px var(--sans) }
+#palabra .pa-q{ fill:var(--muted); font:600 .875rem var(--sans) }
 #palabra .pa-nodo circle{ stroke:var(--line); stroke-width:2; fill:var(--surface-2); transition:fill .2s }
-#palabra .pa-nodo text{ fill:var(--ink); font:600 15px var(--sans) }
+#palabra .pa-nodo text{ fill:var(--ink); font:600 .9375rem var(--sans) }
 #palabra .pa-fuego.pa-on circle{ fill:#e8743b }
 #palabra .pa-aire.pa-on circle{ fill:#9ecbe8 }
 #palabra .pa-agua.pa-on circle{ fill:#3b7fc4 }
@@ -2833,8 +2837,8 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .lb-per.lb-sel circle{ fill:var(--lb-suave); stroke:var(--lb); stroke-width:3 }
 .lb-per:focus-visible{ outline:none }
 .lb-per:focus-visible circle{ stroke:var(--accent-2); stroke-width:3 }
-.lb-per-l{ font:600 18px var(--mono); fill:var(--ink) }
-.lb-per-n{ font:12px var(--sans); fill:var(--muted) }
+.lb-per-l{ font:600 1.125rem var(--mono); fill:var(--ink) }
+.lb-per-n{ font:.75rem var(--sans); fill:var(--muted) }
 .lb-props{ display:grid; gap:.4rem }
 .lb-prop{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:2px .6rem; align-items:start; padding:.45rem .6rem; border-radius:9px; background:var(--surface-2) }
 .lb-prop .lb-mono{ font-size:.82rem }
@@ -2884,21 +2888,21 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .lb-t-osc{ fill:color-mix(in srgb, var(--e-ant) 62%, var(--surface)) }
 .lb-t-quitada{ fill:var(--bg); stroke:var(--line); stroke-dasharray:3 3 }
 .lb-t-quitada.lb-t-marca{ fill:var(--bad-bg); stroke:var(--bad) }
-.lb-t-x{ fill:var(--bad); font:600 15px var(--sans) }
+.lb-t-x{ fill:var(--bad); font:600 .9375rem var(--sans) }
 .lb-t-ficha{ fill:none; stroke:var(--lb); stroke-width:3 }
 .lb-z-fondo{ fill:var(--surface-2); stroke:var(--line); stroke-width:1.5 }
 .lb-z-trozo{ fill:var(--lb); stroke:var(--lb); stroke-width:1.5 }
 .lb-z-t{ fill:var(--ink); font-family:var(--serif) }
 .lb-paralela{ stroke:var(--lb); stroke-width:2; stroke-dasharray:6 4 }
 .lb-tri{ fill:none; stroke:var(--ink); stroke-width:2 }
-.lb-tri-t{ fill:var(--ink); font:italic 16px var(--serif) }
+.lb-tri-t{ fill:var(--ink); font:italic 1rem var(--serif) }
 .lb-arco{ fill-opacity:.35; stroke-width:1.5 }
 .lb-arco.lb-fig-rj{ stroke:var(--r-pol) } .lb-arco.lb-fig-az{ stroke:var(--r-con) } .lb-arco.lb-fig-vd{ stroke:var(--r-eti) }
 .lb-esf{ fill:var(--surface-2); stroke:var(--ink); stroke-width:1.5 }
 .lb-esf-ec{ fill:none; stroke:var(--line); stroke-width:1.5 }
 .lb-esf-tri{ fill:var(--lb); fill-opacity:.25; stroke:var(--lb); stroke-width:2.5 }
 .lb-esf-rect{ fill:none; stroke:var(--bad); stroke-width:1.5 }
-.lb-esf-t{ fill:var(--muted); font:13px var(--sans) }
+.lb-esf-t{ fill:var(--muted); font:.8125rem var(--sans) }
 .lb-m-marco{ fill:var(--lb-suave); stroke:var(--lb); stroke-width:2 }
 .lb-m-rej{ stroke:var(--line); stroke-width:1 }
 .lb-m-ini{ fill:none; stroke:var(--ink); stroke-width:2 }
@@ -2906,7 +2910,7 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .lb-m-incl{ fill:none; stroke:var(--lb); stroke-width:2.5 }
 .lb-m-incl.lb-lleno{ fill:var(--lb-suave) }
 .lb-m-mitad{ fill:var(--lb); fill-opacity:.35 }
-.lb-m-t{ fill:var(--muted); font:13px var(--sans) }
+.lb-m-t{ fill:var(--muted); font:.8125rem var(--sans) }
 /* tablero interactivo */
 .lb-tabint{ display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); width:100%; max-width:21rem; border:2px solid var(--line); border-radius:6px; overflow:hidden }
 .lb-tc{ aspect-ratio:1; position:relative; border:0; padding:0; min-width:0 }
@@ -2945,7 +2949,7 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .af-cuerda{ stroke:var(--muted); stroke-width:1.2 }
 .af-plato-ok{ fill:var(--ok); fill-opacity:.25; stroke:var(--ok); stroke-width:1.5 }
 .af-plato-mal{ fill:var(--bad); fill-opacity:.25; stroke:var(--bad); stroke-width:1.5 }
-.af-t{ fill:var(--muted); font:12px var(--sans) }
+.af-t{ fill:var(--muted); font:.75rem var(--sans) }
 .af-eje{ fill:var(--lb) }
 .af-fluct{ animation:af-oscila 1.4s ease-in-out infinite; transform-origin:150px 50px }
 @keyframes af-oscila{ 0%,100%{ transform:rotate(-7deg) } 50%{ transform:rotate(7deg) } }
@@ -2995,8 +2999,8 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .af-circ.af-oculta{ stroke:var(--lb-warn); stroke-dasharray:4 3 }
 .af-vibra{ animation:af-vibra .5s ease-in-out infinite }
 @keyframes af-vibra{ 0%,100%{ transform:rotate(-4deg) } 50%{ transform:rotate(4deg) } }
-.af-mapa-v{ font:600 10.5px var(--mono); fill:var(--ink) }
-.af-mapa-n{ font:10px var(--sans); fill:var(--muted) }
+.af-mapa-v{ font:600 .6563rem var(--mono); fill:var(--ink) }
+.af-mapa-n{ font:.625rem var(--sans); fill:var(--muted) }
 .af-cards{ display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,15rem),1fr)); gap:.6rem }
 .af-card{ border:1.5px solid var(--line); border-radius:10px; padding:.6rem .75rem; display:grid; gap:.4rem; background:var(--surface); min-width:0; transition:box-shadow .3s }
 .af-card.af-pos{ border-color:var(--ok) } .af-card.af-neg{ border-color:var(--bad) }
@@ -3018,14 +3022,14 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .af-graf{ display:grid; gap:.3rem }
 .af-graf svg{ width:100%; height:auto; display:block; touch-action:pan-y }
 .af-rej{ stroke:var(--line-soft); stroke-width:1 }
-.af-eje-t{ fill:var(--muted); font:9.5px var(--sans) }
+.af-eje-t{ fill:var(--muted); font:.5938rem var(--sans) }
 .af-fantasma{ fill:none; stroke:var(--muted); stroke-width:1.6; opacity:.9 }
-.af-fant-t{ fill:var(--muted); font:600 10px var(--mono) }
+.af-fant-t{ fill:var(--muted); font:600 .625rem var(--mono) }
 .af-linea{ fill:none; stroke-width:2; stroke-linejoin:round; stroke-linecap:round }
 .af-linea.af-c-pot{ stroke:var(--lb) } .af-linea.af-c-lib{ stroke:var(--accent) }
 .af-punto.af-c-pot{ fill:var(--lb) } .af-punto.af-c-lib{ fill:var(--accent) }
 .af-punto{ stroke:var(--surface); stroke-width:2 }
-.af-ult-t{ fill:var(--ink); font:600 10.5px var(--mono) }
+.af-ult-t{ fill:var(--ink); font:600 .6563rem var(--mono) }
 .af-guia{ stroke:var(--muted); stroke-width:1; stroke-dasharray:3 3 }
 .af-pars{ display:grid; gap:.9rem }
 .af-pgrupo{ display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,14rem),1fr)); gap:.6rem 1rem }
@@ -3064,8 +3068,8 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .spz-usada{ font:500 .72rem var(--sans) }
 .spz-lienzo{ background:var(--surface-2); border-radius:10px; border:1px solid var(--line-soft) }
 .spz-svg{ width:100%; min-width:20rem; height:auto; display:block }
-.spz-nodo{ font:600 13px var(--sans); fill:var(--ink) }
-.spz-etq{ font:11px var(--sans); fill:var(--muted) }
+.spz-nodo{ font:600 .8125rem var(--sans); fill:var(--ink) }
+.spz-etq{ font:.6875rem var(--sans); fill:var(--muted) }
 .spz-leyenda{ display:flex; flex-wrap:wrap; gap:.3rem 1rem; font-size:.8rem; color:var(--muted) }
 .spz-leyenda span{ display:inline-flex; gap:.35rem; align-items:center }
 .spz-falla{ font-size:.85rem }
@@ -3384,7 +3388,7 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #adagios .adg-la{ margin:0 }
 #adagios .adg-la i{ font-family:var(--serif, Georgia, serif); font-size:1.08rem }
 #adagios .adg-lam{ display:inline-flex; align-items:center; justify-content:center; width:1.55em; height:1.55em; margin-inline-start:.45em; vertical-align:.1em; padding:0;
-  border:1px solid var(--line); border-radius:50%; background:var(--surface-2); color:var(--muted); font:600 13px var(--serif); font-style:normal; line-height:1; cursor:pointer }   /* como el λ del glosario */
+  border:1px solid var(--line); border-radius:50%; background:var(--surface-2); color:var(--muted); font:600 .8125rem var(--serif); font-style:normal; line-height:1; cursor:pointer }   /* como el λ del glosario */
 #adagios .adg-lam:hover, #adagios .adg-lam[aria-expanded="true"]{ background:var(--accent); border-color:var(--accent); color:var(--on-accent, #fff) }
 #adagios .adg-gr{ margin:0; font-size:.95rem }
 #adagios .adg-gr [lang="grc"]{ font-family:"Noto Serif", "Times New Roman", "Palatino Linotype", serif }   /* la serif de la web no trae griego politónico: separaba los acentos */
@@ -3405,7 +3409,7 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #adagios .adg-desc{ align-self:flex-start; font:inherit; font-weight:600; background:var(--accent); color:var(--on-accent, #fff); border:0; border-radius:999px; padding:.3rem .9rem; cursor:pointer }
 #adagios .adg-oculta .adg-cuerpo{ display:none }
 #adagios .adg-card:not(.adg-oculta) .adg-ayuda{ display:none }
-#adagios .adg-cuenta{ color:var(--muted); font-size:13px; margin:10px 0 18px }
+#adagios .adg-cuenta{ color:var(--muted); font-size:.8125rem; margin:10px 0 18px }
 #adagios .adg-guia{ max-width:62rem; margin:0 0 1rem; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); line-height:1.55 }
 #adagios .adg-guia > summary{ cursor:pointer; padding:.6rem .9rem; font-weight:600; color:var(--accent) }
 #adagios .adg-guia[open] > summary{ border-bottom:1px solid var(--line) }
@@ -3554,7 +3558,7 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 /* ==== css/duelo.css ==== */
 /* «Duelo de razones» (11-10: de juego aparte a sección; dueloview.js). Mismo diseño que el juego original, con los colores y
    el tema claro/oscuro de la web (--surface, --line, --ok, --bad…). «Modo proyector»: pantalla completa y letra grande. */
-#duelo{ --due-warn:#b5691a; --due-disp:var(--serif); }
+#duelo{ --due-warn:#a66018; --due-disp:var(--serif); }
 @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) #duelo{ --due-warn:#e2a15a; } }
 :root[data-theme="dark"] #duelo{ --due-warn:#e2a15a; }
 #duelo .due-top{ display:flex; justify-content:flex-end; margin:.2rem 0 .6rem }

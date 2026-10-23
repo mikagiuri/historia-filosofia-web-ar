@@ -62,7 +62,7 @@
     var s = e.target.closest("[data-gs]");
     if (s){ cur = s.getAttribute("data-gs"); render(); return; }
     var a = e.target.closest("[data-gi]");
-    if (a){ e.preventDefault(); var t = document.getElementById(a.getAttribute("data-gi")); if (t) t.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    if (a){ e.preventDefault(); var t = document.getElementById(a.getAttribute("data-gi")); if (t) t.scrollIntoView({ behavior: A11y.motion(), block: "start" }); }
   });
   render();
   if (btn) btn.addEventListener("click", function(){ (window.show || show)("guia"); });

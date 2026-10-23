@@ -370,8 +370,8 @@
     else if (e.key === "Escape"){ e.preventDefault(); close(); }
   }
 
-  function open(){ ensure(); ov.hidden = false; input.value = ""; render(null); input.focus(); }
-  function close(){ if (ov){ ov.hidden = true; } }
+  var prev = null;   /* (DUA D0.4, 23-10) al cerrar con el foco dentro, vuelve a donde estaba */ function open(){ ensure(); prev = document.activeElement; ov.hidden = false; input.value = ""; render(null); input.focus(); }
+  function close(){ if (!ov) return; var dentro = ov.contains(document.activeElement); ov.hidden = true; if (dentro && prev && prev.focus && document.contains(prev)){ try { prev.focus(); } catch (e){} } prev = null; }
 
   function mountBtn(){
     var bar = document.querySelector(".bar-in"); if (!bar) return;

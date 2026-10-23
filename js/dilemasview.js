@@ -173,7 +173,7 @@ function renderDil(){
   const ta = box.querySelector("#dilrazon");
   if (ta) ta.addEventListener("input", () => dilSave(d.id, { razon: ta.value.slice(0, 600) }));
   const th = box.querySelector("#dilthink");
-  if (th) th.addEventListener("click", () => { dil.step = 2; renderDil(); const t = document.querySelector(".dil-think"); if (t) t.scrollIntoView({ behavior: "smooth", block: "start" }); });
+  if (th) th.addEventListener("click", () => { dil.step = 2; renderDil(); const t = document.querySelector(".dil-think"); if (t) t.scrollIntoView({ behavior: A11y.motion(), block: "start" }); });
   box.querySelectorAll("[data-keep]").forEach(b => b.addEventListener("click", () => { dilSave(d.id, { cambio: b.dataset.keep === "1" }); renderDil(); }));
   const nx = box.querySelector("#dilnext");
   if (nx){ const list = dilList(d.grupo), i = list.findIndex(x => x.id === d.id); nx.addEventListener("click", () => openDil(list[(i + 1) % list.length].id)); }

@@ -355,7 +355,7 @@ function loadTheory(k){
   /* (09-10) estantería de libros (anexo de la biblioteca de Marx): el lomo abre su ficha y la muestra */
   body.querySelectorAll(".lomo[data-libro]").forEach(b => b.addEventListener("click", () => {
     const d = body.querySelector("#libro-" + b.dataset.libro); if (!d) return;
-    d.open = true; d.scrollIntoView({ block: "center", behavior: "smooth" });
+    d.open = true; d.scrollIntoView({ block: "center", behavior: A11y.motion() });
     d.classList.add("ficha-flash"); setTimeout(() => d.classList.remove("ficha-flash"), 1400);
   }));
   const toc = document.getElementById("toc");
@@ -377,6 +377,7 @@ function loadTheory(k){
     if (_sec){ const h = body.querySelector('h2[data-sec="' + _sec + '"]'); if (h) h.scrollIntoView({ block: "start" }); }
   }
   body.querySelectorAll("h2[data-sec]").forEach(h => h.insertAdjacentHTML("beforeend", ' <a class="th-sec" href="#teoria/' + k + '/' + h.dataset.sec + '" title="رابط إلى هذه الفقرة" aria-label="رابط إلى هذه الفقرة">§' + h.dataset.sec + '</a>'));   // tras el índice: el «§» no entra en sus títulos
+  if (window.langFragGrc) window.langFragGrc(body);   // DUA D0.6: el griego del tema se marca con lang="grc" para el lector de pantalla
 }
 
 renderTheoryFilter();

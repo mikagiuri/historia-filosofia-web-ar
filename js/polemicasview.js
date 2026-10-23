@@ -186,7 +186,7 @@ document.addEventListener("click", e => {
   const op = t.closest("[data-pol-op]"); if (op && !st.visto){ st.op = op.dataset.polOp; polRedibujar("pol-razon"); return; }
   if (t.closest("[data-pol-ver]")){ if (polPal(st.razon || "") >= POL_MIN){ st.visto = true; polRedibujar(); } return; }
   const ah = t.closest("[data-pol-ahora]"); if (ah){ st.ahora = ah.dataset.polAhora; polRedibujar("pol-porque"); return; }
-  if (t.closest("[data-pol-fin]")){ st.fin = true; polRedibujar(); const d = document.querySelector("#polemicas .pol-desen"); if (d) d.scrollIntoView({ block: "nearest", behavior: "smooth" }); }
+  if (t.closest("[data-pol-fin]")){ st.fin = true; polRedibujar(); const d = document.querySelector("#polemicas .pol-desen"); if (d) d.scrollIntoView({ block: "nearest", behavior: A11y.motion() }); }
 });
 document.addEventListener("input", e => {
   if (!polSel || !e.target.closest || !e.target.closest("#polemicas")) return;

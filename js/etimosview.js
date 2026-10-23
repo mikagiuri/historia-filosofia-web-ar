@@ -108,7 +108,7 @@ function loadEtimos(id){
   const el = document.querySelector('#etimosbox [data-eid="' + (id || "").replace(/"/g, "") + '"]');
   if (!el) return;
   el.classList.add("eti-hit");
-  setTimeout(() => el.scrollIntoView({ block: "center", behavior: "smooth" }), 60);
+  setTimeout(() => el.scrollIntoView({ block: "center", behavior: A11y.motion() }), 60);
 }
 window.loadEtimos = loadEtimos;
 

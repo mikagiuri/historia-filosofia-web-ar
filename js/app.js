@@ -325,10 +325,12 @@ function renderSubjects(){
     if (b.dataset.hub === "tarjetas" && typeof setDeckTipo === "function") setDeckTipo(b.dataset.tipo || "all");   // ficha de conceptos o de frases → Tarjetas filtrada
     show(b.dataset.hub);
   }));
-  document.querySelectorAll("[data-mat]").forEach(b => b.addEventListener("click", () => {
-    show("materiales");
-    loadMaterial(b.dataset.mat);
-  }));
+  document.querySelectorAll("[data-mat]").forEach(b => {
+    const go = () => { show("materiales"); loadMaterial(b.dataset.mat); };
+    b.addEventListener("click", go);
+    /* (DUA D0.4, 23-10) es role="button": también con Intro y Espacio */
+    b.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); go(); } });
+  });
 }
 renderSubjects();
 

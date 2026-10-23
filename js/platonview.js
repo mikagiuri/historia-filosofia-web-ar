@@ -349,7 +349,7 @@ function statPips(c){ return '<span class="rep-pips">🦉'+c.sj+' 🛡️'+c.v+'
 function drawRepRoster(){
   const sec=(title,list)=>'<div class="rep-rsec"><h3>'+title+'</h3>'+list.map(c=>{ const n=rep.cnt[c.id]||0;
     return '<div class="rep-rrow prod"><div class="rep-rname">'+c.name+' <span class="rep-note">'+c.note+'</span><br>'+statPips(c)+'</div>'+
-      '<div class="rep-step"><button data-esub="'+c.id+'">−</button><span class="n">'+n+'</span><button data-eadd="'+c.id+'">+</button></div></div>'; }).join("")+'</div>';
+      '<div class="rep-step"><button data-esub="'+c.id+'" aria-label="−1 '+c.name+'">−</button><span class="n">'+n+'</span><button data-eadd="'+c.id+'" aria-label="+1 '+c.name+'">+</button></div></div>'; }).join("")+'</div>';
   document.getElementById("repRoster").innerHTML =
     sec("🦉 الحراس <span class=\"rep-floor\">الفضائل الثلاث ≥4</span>",REP_ROSTER.Z)+
     sec("🛡️ المحاربون <span class=\"rep-floor\">الشجاعة والاعتدال ≥4</span>",REP_ROSTER.G)+

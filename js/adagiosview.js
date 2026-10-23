@@ -182,11 +182,13 @@ function adgRender(){
       .sort((x, y) => (y[0].dest ? 2 : 0) + (y[0].sen ? 1 : 0) - ((x[0].dest ? 2 : 0) + (x[0].sen ? 1 : 0)) || x[1] - y[1]);
     box.innerHTML = '<div class="adg-grid">' + lf.map(([q, i]) => adgFichaF(q, i)).join("") + '</div>' +
       '<p class="adg-cuenta">' + (lf.length === 1 ? adgT("cuentaF1") : adgT("cuentaF", { n: lf.length })) + '</p>';
+    if (window.langFragGrc) window.langFragGrc(box);   // DUA D0.6: griego suelto de las frases con lang="grc" (la cita griega ya lo lleva)
     return;
   }
   const l = ADAGIOS.filter(a => adgAmb === "all" || a.amb === adgAmb);
   box.innerHTML = '<div class="adg-grid">' + l.map(adgFicha).join("") + '</div>' +
     '<p class="adg-cuenta">' + (l.length === 1 ? adgT("cuenta1") : adgT("cuenta", { n: l.length })) + '</p>' + adgHistoria();
+  if (window.langFragGrc) window.langFragGrc(box);   // DUA D0.6: griego de sentido/uso/origen con lang="grc" (a.gr ya va marcado)
 }
 
 /* clics delegados (la caja se repinta con cada filtro) */

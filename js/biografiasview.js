@@ -72,9 +72,16 @@ function bioInitials(name){
   const w = String(name || "").replace(/\(.*?\)/g, "").split(/\s+/).filter(x => x && /^[A-ZÁÉÍÓÚÑÄÖÜ]/.test(x));
   return ((w[0] || "?")[0] + (w.length > 1 ? w[w.length - 1][0] : "")).toUpperCase();
 }
+/* (23-10, DUA D0.1) alt = «Retrato de X»; si la imagen no es un retrato (ruinas, una biblioteca…), lo que se ve:
+   se mira en el pie original (sin traducir) y se toma la primera parte del pie traducido de BIOGRAFIAS_PIES. */
+function bioAlt(p, r){
+  const pie = typeof BIOGRAFIAS_PIES !== "undefined" && BIOGRAFIAS_PIES[p.id] || "";
+  if (pie && /\(no (se conserva|hay) (ningún )?retrato/.test(r.pie || "")) return pie.split(" · ")[0];
+  return "صورة {n}".replace("{n}", p.name);
+}
 function bioAvatar(p, big){
   const r = bioRetrato(p);
-  if (r) return '<img class="bio-img' + (big ? " figimg" : "") + '" loading="lazy" src="' + bioEsc(r.f) + '" alt="' + bioEsc(p.name) + '">';
+  if (r) return '<img class="bio-img' + (big ? " figimg" : "") + '" loading="lazy" src="' + bioEsc(r.f) + '" alt="' + bioEsc(bioAlt(p, r)) + '">';
   return '<span class="bio-mono" aria-hidden="true">' + bioEsc(bioInitials(p.name)) + '</span>';
 }
 function bioHi(escaped, q){

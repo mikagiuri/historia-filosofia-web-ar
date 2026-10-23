@@ -18,7 +18,7 @@ const paBox = () => document.getElementById("palabrabox");
 const paPs = a => (Array.isArray(a) ? a : [a]).map(p => "<p>" + p + "</p>").join("");
 const paCita = (c, pie) => '<blockquote class="pa-cita"><p>' + c + "</p><footer>" + pie + "</footer></blockquote>";
 const paFig = k => { const I = PALABRA.img[k]; if (!I) return "";
-  return '<figure class="pa-fig-img"><a href="' + I.f + '" target="_blank" rel="noopener"><img src="' + I.f + '" alt="" loading="lazy" decoding="async"></a>' +
+  return '<figure class="pa-fig-img"><a href="' + I.f + '" target="_blank" rel="noopener"><img src="' + I.f + '" alt="' + String(I.pie).replace(/<[^>]+>/g, "").replace(/"/g, "&quot;") + '" loading="lazy" decoding="async"></a>' +
     "<figcaption>" + I.pie + ' <span class="pa-cred">' + I.cred + ' · <a href="' + I.url + '" target="_blank" rel="noopener">' + paT("fichaImg") + "</a></span></figcaption></figure>"; };
 const paFigs = ks => '<div class="pa-figs">' + ks.map(paFig).join("") + "</div>";
 const paSec = (id, S, cuerpo) => '<section class="pa-sec" id="pa-' + id + '"><p class="pa-eyebrow">' + S.materia + "</p><h2>" + S.titulo + "</h2>" + cuerpo + "</section>";

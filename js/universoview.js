@@ -31,7 +31,7 @@ const uaBox = () => document.getElementById("universobox");
 const uaPs = a => (Array.isArray(a) ? a : [a]).map(p => "<p>" + p + "</p>").join("");
 const uaCita = (c, pie) => '<blockquote class="ua-cita"><p>' + c + "</p><footer>" + pie + "</footer></blockquote>";
 const uaFig = (k, cls) => { const I = UNIVERSO.img[k]; if (!I) return "";
-  return '<figure class="ua-fig-img' + (cls ? " " + cls : "") + '"><a href="' + I.f + '" target="_blank" rel="noopener"><img src="' + I.f + '" alt="" loading="lazy" decoding="async"></a>' +
+  return '<figure class="ua-fig-img' + (cls ? " " + cls : "") + '"><a href="' + I.f + '" target="_blank" rel="noopener"><img src="' + I.f + '" alt="' + String(I.pie).replace(/<[^>]+>/g, "").replace(/"/g, "&quot;") + '" loading="lazy" decoding="async"></a>' +
     "<figcaption>" + I.pie + ' <span class="ua-cred">' + I.cred + ' · <a href="' + I.url + '" target="_blank" rel="noopener">' + uaT("البطاقة") + "</a></span></figcaption></figure>"; };
 const uaFigs = ks => '<div class="ua-figs">' + ks.map(k => uaFig(k)).join("") + "</div>";
 const uaSec = (id, S, cuerpo) => '<section class="ua-sec" id="ua-' + id + '"><p class="ua-eyebrow">' + S.materia + "</p><h2>" + S.titulo + "</h2>" + cuerpo + "</section>";

@@ -110,7 +110,7 @@ document.addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
   if (b.dataset.gtfil){ const k = b.dataset.gtfil; GT.ver.has(k) ? GT.ver.delete(k) : GT.ver.add(k); genTesisRender(gtModo()); return; }
   if (b.dataset.gtilu && typeof loadBiografia === "function"){ (window.show || show)("biografias"); loadBiografia(b.dataset.gtilu); return; }
-  if (b.dataset.gtgo){ GT.sel = b.dataset.gtgo; genTesisRender(gtModo()); const el = box.querySelector('.gt-tesis[data-gt="' + GT.sel + '"]'); if (el) el.scrollIntoView({ block: "center", behavior: "smooth" }); return; }
+  if (b.dataset.gtgo){ GT.sel = b.dataset.gtgo; genTesisRender(gtModo()); const el = box.querySelector('.gt-tesis[data-gt="' + GT.sel + '"]'); if (el) el.scrollIntoView({ block: "center", behavior: A11y.motion() }); return; }
   if (b.classList.contains("gt-t")){ const id = b.closest(".gt-tesis").dataset.gt; GT.sel = GT.sel === id ? null : id; genTesisRender(gtModo()); const el = box.querySelector('.gt-tesis[data-gt="' + id + '"] > .gt-t'); if (el) el.focus(); return; }
   const v = b.dataset.gtvr;
   if (v === "acuerdo" || v === "desacuerdo"){ GT.vr.elegido = v; GT.vr.razon = (document.getElementById("gt-razon") || {}).value || GT.vr.razon; genTesisRender("verde-roja"); }

@@ -161,7 +161,7 @@ function renderGloGrids(){
     (gloGrid ? '<div class="glogrid-stage"><div class="glogrid-head"><h3>' + gloEsc(GLOSARIO_GRIDS[gloGrid].tema) + '</h3><button type="button" class="fbtn" data-gg="">إغلاق</button></div><div id="glogridbox"></div></div>' : "");
   box.querySelectorAll("[data-gg]").forEach(b => b.addEventListener("click", () => {
     gloGrid = b.dataset.gg && b.dataset.gg !== gloGrid ? b.dataset.gg : null; renderGloGrids();
-    if (gloGrid) document.getElementById("glogrids").scrollIntoView({ block: "start", behavior: "smooth" });
+    if (gloGrid) document.getElementById("glogrids").scrollIntoView({ block: "start", behavior: A11y.motion() });
   }));
   if (gloGrid && typeof EsqGrid !== "undefined"){ const g = GLOSARIO_GRIDS[gloGrid]; EsqGrid.render({ subject: g.subject, v2: g.v2 }, document.getElementById("glogridbox")); }
 }
@@ -208,6 +208,7 @@ function renderGloList(){
     const ep = g.subject === "hf" && { A: "ant", B: "medmod", C: "con" }[g.bloque];   // (30-09) color del bloque de HF (styles.css)
     return '<article class="gloitem"' + (g.id ? ' data-gid="' + g.id + '"' : '') + (ep ? ' data-ep="' + ep + '"' : '') + '><div class="top"><h4>' + term + btn + (g.subject === "hf" && typeof impBadge === "function" && typeof IMPRESCINDIBLES !== "undefined" ? ' ' + impBadge("glo", g) : '') + '</h4><span class="tag">' + gloEsc(tag) + '</span></div><p>' + def + '</p>' + ety + src + ilu + '</article>';
   }).join("");
+  if (window.langFragGrc) window.langFragGrc(list);   // DUA D0.6: el griego de las etimologías y definiciones se marca con lang="grc"
 }
 
 /* el botón √ abre y cierra la raíz de su tarjeta (delegado: la lista se repinta en cada filtro) */
@@ -232,7 +233,7 @@ function loadGlosario(id){
   renderGloControls(); renderGloList();
   const el = document.querySelector('#glolist [data-gid="' + id + '"]'); if (!el) return;
   el.classList.add("glo-hit");
-  setTimeout(() => el.scrollIntoView({ block: "center", behavior: "smooth" }), 60);
+  setTimeout(() => el.scrollIntoView({ block: "center", behavior: A11y.motion() }), 60);
 }
 
 renderGloControls();
