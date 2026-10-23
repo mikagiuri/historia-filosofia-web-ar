@@ -42,7 +42,7 @@ const PILARES = {
      "limite": "نعرف ما معنى تقديم مبرّر، لكننا لا نعرف ما الذي يجعل مبرّرًا أقوى من غيره.",
      "enl": [
       {
-       "t": "مسرد المصطلحات: العقل",
+       "t": "القاموس: العقل",
        "h": "#glosario/g-fil-razon"
       },
       {
@@ -166,11 +166,11 @@ const PILARES = {
        "h": "#teoria/hf-verdad-no-contradice"
       },
       {
-       "t": "مسرد المصطلحات: التعاون بين الإيمان والعقل",
+       "t": "القاموس: التعاون بين الإيمان والعقل",
        "h": "#glosario/g-colaboracion-fe-razon"
       },
       {
-       "t": "مسرد المصطلحات: حدود العقل",
+       "t": "القاموس: حدود العقل",
        "h": "#glosario/g-los-limites-de-la-razon"
       }
      ]
@@ -200,11 +200,11 @@ const PILARES = {
        "h": "#teoria/hf-descartes-makro"
       },
       {
-       "t": "مسرد المصطلحات: استقلالية العقل",
+       "t": "القاموس: استقلالية العقل",
        "h": "#glosario/g-autonomia-de-la-razon"
       },
       {
-       "t": "مسرد المصطلحات: الأفكار الواضحة والمتميّزة",
+       "t": "القاموس: الأفكار الواضحة والمتميّزة",
        "h": "#glosario/g-ideas-claras-y-distintas"
       }
      ]
@@ -238,7 +238,7 @@ const PILARES = {
        "h": "#teoria/fil-t5"
       },
       {
-       "t": "مسرد المصطلحات: علاقات الأفكار وأمور الواقع",
+       "t": "القاموس: علاقات الأفكار وأمور الواقع",
        "h": "#glosario/g-relaciones-de-ideas"
       }
      ]
@@ -268,11 +268,11 @@ const PILARES = {
        "h": "#teoria/hf-kant"
       },
       {
-       "t": "مسرد المصطلحات: الاستعمال الخاص للعقل",
+       "t": "القاموس: الاستعمال الخاص للعقل",
        "h": "#glosario/g-uso-privado"
       },
       {
-       "t": "مسرد المصطلحات: الفكرة الناظمة",
+       "t": "القاموس: الفكرة الناظمة",
        "h": "#glosario/g-idea-regulativa"
       }
      ]
@@ -302,11 +302,11 @@ const PILARES = {
        "h": "#teoria/hf-posmodernidad"
       },
       {
-       "t": "مسرد المصطلحات: العقل الأداتي",
+       "t": "القاموس: العقل الأداتي",
        "h": "#glosario/g-razon-instrumental"
       },
       {
-       "t": "مسرد المصطلحات: الارتياب",
+       "t": "القاموس: الارتياب",
        "h": "#glosario/g-sospecha"
       }
      ]
@@ -328,11 +328,11 @@ const PILARES = {
        "h": "#teoria/hf-posmodernidad"
       },
       {
-       "t": "مسرد المصطلحات: العقل التواصلي",
+       "t": "القاموس: العقل التواصلي",
        "h": "#glosario/g-razon-comunicativa"
       },
       {
-       "t": "مسرد المصطلحات: وضعية الكلام المثالية",
+       "t": "القاموس: وضعية الكلام المثالية",
        "h": "#glosario/g-situacion-ideal-de-habla"
       },
       {
@@ -414,7 +414,7 @@ const PILARES = {
        "h": "#teoria/hf-platon-superficie"
       },
       {
-       "t": "مسرد المصطلحات: نظرية المُثُل",
+       "t": "القاموس: نظرية المُثُل",
        "h": "#glosario/g-teoria-de-las-ideas"
       },
       {
@@ -444,7 +444,7 @@ const PILARES = {
        "h": "#teoria/hf-aa"
       },
       {
-       "t": "مسرد المصطلحات: رفض المُثُل",
+       "t": "القاموس: رفض المُثُل",
        "h": "#glosario/g-el-rechazo-de-las-ideas"
       },
       {
@@ -478,7 +478,7 @@ const PILARES = {
        "h": "#teoria/hf-platon-agustin"
       },
       {
-       "t": "مسرد المصطلحات: الاسمية",
+       "t": "القاموس: الاسمية",
        "h": "#glosario/g-nominalismo"
       }
      ]
@@ -508,11 +508,11 @@ const PILARES = {
        "h": "#teoria/hf-descartes-simulacion"
       },
       {
-       "t": "مسرد المصطلحات: الفطرية",
+       "t": "القاموس: الفطرية",
        "h": "#glosario/g-innatismo"
       },
       {
-       "t": "مسرد المصطلحات: الأفكار الواضحة والمتميّزة",
+       "t": "القاموس: الأفكار الواضحة والمتميّزة",
        "h": "#glosario/g-ideas-claras-y-distintas-dm"
       }
      ]
@@ -538,11 +538,11 @@ const PILARES = {
        "h": "#teoria/hf-racionalismo"
       },
       {
-       "t": "مسرد المصطلحات: الانطباع",
+       "t": "القاموس: الانطباع",
        "h": "#glosario/g-impresion"
       },
       {
-       "t": "مسرد المصطلحات: علاقات الأفكار وأمور الواقع",
+       "t": "القاموس: علاقات الأفكار وأمور الواقع",
        "h": "#glosario/g-relaciones-de-ideas"
       }
      ]
@@ -572,11 +572,11 @@ const PILARES = {
        "h": "#teoria/hf-kant-juicios"
       },
       {
-       "t": "مسرد المصطلحات: الفكرة الناظمة",
+       "t": "القاموس: الفكرة الناظمة",
        "h": "#glosario/g-idea-regulativa"
       },
       {
-       "t": "مسرد المصطلحات: المقولة",
+       "t": "القاموس: المقولة",
        "h": "#glosario/g-categoria"
       }
      ]
@@ -606,15 +606,15 @@ const PILARES = {
        "h": "#teoria/hf-sospecha"
       },
       {
-       "t": "مسرد المصطلحات: الجدل",
+       "t": "القاموس: الجدل",
        "h": "#glosario/g-dialectica"
       },
       {
-       "t": "مسرد المصطلحات: الجدل المادي",
+       "t": "القاموس: الجدل المادي",
        "h": "#glosario/g-dialectica-materialista"
       },
       {
-       "t": "مسرد المصطلحات: المثالية",
+       "t": "القاموس: المثالية",
        "h": "#glosario/g-fil-idealismo"
       }
      ]
@@ -670,7 +670,7 @@ const PILARES = {
      "limite": "نعرف أن المجيء قبلُ لا يكفي ليكون الشيء سببًا. لكن ماذا لو كان شيئان يأتيان معًا دائمًا؟",
      "enl": [
       {
-       "t": "مسرد المصطلحات: السبب الزائف",
+       "t": "القاموس: السبب الزائف",
        "h": "#glosario/g-fil-causa-falsa"
       }
      ]
@@ -688,7 +688,7 @@ const PILARES = {
      "limite": "نعرف ما الذي لا يكفي ليكون الشيء سببًا، لكننا لا نعرف بعدُ ما هو السبب. وأول فيلسوف يطرح هذا السؤال بجدّية يطرحه من داخل سجن.",
      "enl": [
       {
-       "t": "مسرد المصطلحات: السبب الزائف",
+       "t": "القاموس: السبب الزائف",
        "h": "#glosario/g-fil-causa-falsa"
       },
       {
@@ -752,11 +752,11 @@ const PILARES = {
        "h": "#universo"
       },
       {
-       "t": "مسرد المصطلحات: الأسباب الأربعة",
+       "t": "القاموس: الأسباب الأربعة",
        "h": "#glosario/g-las-cuatro-causas"
       },
       {
-       "t": "مسرد المصطلحات: المحرّك الذي لا يتحرّك",
+       "t": "القاموس: المحرّك الذي لا يتحرّك",
        "h": "#glosario/g-motor-inmovil"
       },
       {
@@ -790,7 +790,7 @@ const PILARES = {
        "h": "#teoria/hf-fe-razon"
       },
       {
-       "t": "مسرد المصطلحات: الطرق الخمسة",
+       "t": "القاموس: الطرق الخمسة",
        "h": "#glosario/g-cinco-vias"
       }
      ]
@@ -842,11 +842,11 @@ const PILARES = {
        "h": "#teoria/hf-racionalismo"
       },
       {
-       "t": "مسرد المصطلحات: العادة",
+       "t": "القاموس: العادة",
        "h": "#glosario/g-habito"
       },
       {
-       "t": "مسرد المصطلحات: علاقات الأفكار وأمور الواقع",
+       "t": "القاموس: علاقات الأفكار وأمور الواقع",
        "h": "#glosario/g-relaciones-de-ideas"
       }
      ]
@@ -876,7 +876,7 @@ const PILARES = {
        "h": "#teoria/hf-kant-juicios"
       },
       {
-       "t": "مسرد المصطلحات: المقولة",
+       "t": "القاموس: المقولة",
        "h": "#glosario/g-categoria"
       }
      ]
@@ -932,7 +932,7 @@ const PILARES = {
        "h": "#teoria/hf-siglo21"
       },
       {
-       "t": "مسرد المصطلحات: السبب الزائف",
+       "t": "القاموس: السبب الزائف",
        "h": "#glosario/g-fil-causa-falsa"
       }
      ]

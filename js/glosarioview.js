@@ -107,7 +107,7 @@ function renderGloControls(){
     (typeof impBadge === "function" && typeof IMPRESCINDIBLES !== "undefined" && present.includes("hf") && gloSubject !== "fil" && gloSubject !== "ipc"
       ? '<div class="fgroup"><button class="fbtn" data-gimp aria-pressed="' + gloImp + '">' + impT("filtro") + '</button></div>' + impLeyenda() : '') +
     '<div class="glotools">' +
-      '<input class="glosearch" id="glosearch" type="search" placeholder="ابحثوا عن مصطلح أو تعريف…" autocomplete="off" aria-label="البحث في المسرد">' +
+      '<input class="glosearch" id="glosearch" type="search" placeholder="ابحثوا عن مصطلح أو تعريف…" autocomplete="off" aria-label="البحث في القاموس">' +
       '<select class="gloarea" id="gloarea" aria-label="تصفية حسب المجال">' + areaOpts + '</select>' +
     '</div>';
 

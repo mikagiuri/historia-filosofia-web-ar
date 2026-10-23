@@ -65,6 +65,7 @@ function parseHash(){
   let arg = i < 0 ? null : raw.slice(i + 1);
   if (go === "citas"){ go = "adagios"; arg = "frases"; }
   if (go === "ilustres"){ go = "biografias"; }   // (21-10) compat: #ilustres(/id) -> #biografias (redirect)   // (12-10) la antigua sección «Frases» vive ahora en Adagios (interruptor)
+  if (go === "diccionario"){ go = "glosario"; }   // (23-10) alias: la sección se llama «Diccionario»; su id sigue siendo «glosario»
   const el = go && document.getElementById(go);
   if (!(el && el.classList.contains("view"))) return null;   // p. ej. #th-3 (ancla interna del índice): se ignora
   if (arg){ try { arg = decodeURIComponent(arg); } catch (e){} }
@@ -138,6 +139,7 @@ function routeUnknown(){
 function routeFromHash(){
   const _rawIlu = (location.hash || "").replace(/^#/, "");
   if (/^ilustres(\/|$)/.test(_rawIlu)){ try { history.replaceState(null, "", "#biografias" + _rawIlu.slice(8)); } catch (e){} }   // (21-10) compat: reescribe #ilustres(/id) -> #biografias
+  if (/^diccionario(\/|$)/.test(_rawIlu)){ try { history.replaceState(null, "", "#glosario" + _rawIlu.slice(11)); } catch (e){} }   // (23-10) alias: #diccionario(/id) -> #glosario(/id)
   const r = parseHash(); if (!r){ routeUnknown(); return; }
   if (r.go !== activeViewId()) (window.show || show)(r.go);
   if (r.arg){

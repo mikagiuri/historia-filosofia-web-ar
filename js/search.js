@@ -49,7 +49,7 @@
     esquemas: "loadEsq", pau: "loadPau", mapas: "loadMap"
   };
   /* orden de los grupos en los resultados */
-  var ORDER = ["القسم", "الدروس", "الفقرة", "مسرد المصطلحات", "قراءة", "مقطع", "اقتباس", "سؤال", "بطاقة", "خطاطة", "المورد", "قصة", "إنفوغرافيك", "اختبار", "بطاقات", "PAU", "سِيرة", "Clase"];
+  var ORDER = ["القسم", "الدروس", "الفقرة", "القاموس", "قراءة", "مقطع", "اقتباس", "سؤال", "بطاقة", "خطاطة", "المورد", "قصة", "إنفوغرافيك", "اختبار", "بطاقات", "PAU", "سِيرة", "Clase"];
 
   var index = null;
   /* entrada: { type, label, meta, go, arg, text (fragmento original donde buscar), hay (fold de label+meta+clave),
@@ -125,7 +125,7 @@
     });
     /* glosario: término + definición (+ raíz) */
     if (typeof GLOSARIO !== "undefined" && GLOSARIO) GLOSARIO.forEach(function(g){
-      add(out, { type: "مسرد المصطلحات", label: g.t, meta: (g.area || "") + (g.tema ? " · " + g.tema : ""), go: "glosario", arg: null, glo: g, text: strip((g.def || "") + (g.et ? " · " + g.et : "")) });
+      add(out, { type: "القاموس", label: g.t, meta: (g.area || "") + (g.tema ? " · " + g.tema : ""), go: "glosario", arg: null, glo: g, text: strip((g.def || "") + (g.et ? " · " + g.et : "")) });
     });
     /* lecturas: por párrafo (o bloque), agrupando los muy cortos */
     if (LE) Object.keys(LE).forEach(function(k){
@@ -188,7 +188,7 @@
       else if (e.hay.indexOf(nq) >= 0) score -= 30;
       else if (e.body.indexOf(nq) >= 0) score -= 20;   /* la frase entera, en el texto */
       if (e.type === "القسم") score -= 5;
-      if (e.type === "مسرد المصطلحات") score -= 10;
+      if (e.type === "القاموس") score -= 10;
       score += Math.min(10, Math.floor((e.text || "").length / 400));   /* a igualdad, el fragmento corto */
       res.push({ e: e, score: score });
     });
@@ -264,7 +264,7 @@
     ov.innerHTML =
       '<div class="search-box">' +
         '<input id="searchinput" type="search" autocomplete="off" spellcheck="false" ' +
-          'placeholder="ابحثوا في كل الموقع: الدروس، المسرد، القراءات، الأسئلة، الاقتباسات…" aria-label="البحث في القسم">' +
+          'placeholder="ابحثوا في كل الموقع: الدروس، القاموس، القراءات، الأسئلة، الاقتباسات…" aria-label="البحث في القسم">' +
         '<div class="search-count" id="searchcount"></div>' +
         '<ul id="searchresults" class="search-res" role="listbox" aria-label="النتائج"></ul>' +
         '<div class="search-hint">↑↓ تنقّل · ↵ فتح · esc إغلاق</div>' +

@@ -20,7 +20,7 @@ const PIS_TXT = {
   comprobacion: "تحقق", pregunta: "سؤال", logrado: "تم بلوغ الفهم", completado: "اكتمل المسار",
   sinAyuda: "لقد حللتموه دون تلميحات.", usaste: "التلميحات المستعملة: {n}.", repetir: "أعيدوا المسار", siguiente: "السؤال التالي:",
   pisN: "تلميح {n}", revelar: "انقروا للكشف", preguntas: "أسئلة",
-  enGlosario: "في مسرد المصطلحات", abrirGlo: "افتح في مسرد المصطلحات ›",
+  enGlosario: "في القاموس", abrirGlo: "افتح في القاموس ›",
   seguir: "حاول مرة أخرى",
   intentoLb: "قبل أن ترى الشرح", intentoTxt: "اكتب إجابتك بكلماتك، حتى لو لم تكن متأكدًا. بعد ذلك ستقارنها بالشرح.",
   intentoGuarda: "ما تكتبه يُحفظ في هذا المتصفح فقط.", intentoPal: "{n} كلمة (الحد الأدنى {m})", intentoVer: "اعرض الشرح وقارن",

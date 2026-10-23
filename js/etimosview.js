@@ -12,7 +12,7 @@ const ETI_TXT = {
   cuenta: "{n} مفهومًا", cuenta1: "مفهوم واحد",
   ninguno: "لا توجد مفاهيم تطابق البحث.",
   griego: "اليونانية", latin: "اللاتينية", castellano: "الإسبانية", euskera: "الباسكية",
-  verTermino: "انظر «{t}» في المسرد",
+  verTermino: "انظر «{t}» في القاموس",
 };
 const etiT = (k, v) => String(ETI_TXT[k] == null ? k : ETI_TXT[k]).replace(/\{(\w+)\}/g, (_, x) => (v && v[x] != null ? v[x] : ""));
 

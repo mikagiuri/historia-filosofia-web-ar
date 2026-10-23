@@ -104,7 +104,7 @@ function renderParStart(){
   const box = parBox(); if (!box) return;
   if (par.tick){ clearInterval(par.tick); par.tick = null; }
   const present = parBlocksPresent();
-  if (!present.length){ box.innerHTML = '<p class="lead">No hay glosario para jugar en esta web.</p>'; return; }
+  if (!present.length){ box.innerHTML = '<p class="lead">لا يوجد قاموس للعب في هذا الموقع.</p>'; return; }
   if (!present.includes(par.block)) par.block = present[0];
   const picks = present.map(b => '<button class="pbtn" data-pblock="' + b + '" aria-pressed="' + (b === par.block) + '">' + escPar(parGroupName(b)) + '</button>').join("");
   const best = parBestLoad(); const anyBest = present.some(b => best[b]);
@@ -222,7 +222,7 @@ function parRank(errors){
   if (errors === 0) return ["🏆", "¡Perfecto, sin fallos!"];
   if (errors <= 2)  return ["🎓", "Muy bien"];
   if (errors <= 5)  return ["🌱", "Bien, a seguir"];
-  return ["📚", "لنراجع المسرد"];
+  return ["📚", "لنراجع القاموس"];
 }
 
 function renderParResult(){
