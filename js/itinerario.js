@@ -309,11 +309,33 @@
   function navLabel(v, k){ var b = document.querySelector('#tabs [data-view="' + v + '"]'); return b ? strip(b.textContent) : t(k || v); }
   /* (22-10, curar_webs lote 2) en HF el Rincón de lógica no está en el menú (opción A del profesor, docs/36): solo lo enlazan
      los temas que lo necesitan, y a la mesa o pestaña concreta (enlace profundo): los juicios de Kant (T19) y los silogismos (AA). */
-  var LOGICA_HF = { "hf-kant": ["kant", "أحكام كانط"], "hf-aa": ["silogismos", "القياسات"] };
+  /* (22-10, T9 de docs/nube/logica_huecos_traspaso; enlaces y niveles de la jefa de lógica) siete temas: cada enlace
+     [ruta, rótulo, niveles del itinerario (docs/39 §3)], y tras él «Itinerario: nivel N» (#logica/itinerario/N); sin nivel = rama lateral.
+     Rótulos ya traducidos: LOG_TXT (por ui), LAB.t, LABSPZ.t, PARADOJAS y PARADOJAS_TXT (por tm); no hay cadenas nuevas.
+     El nivel de cada paradoja es el de su ficha (paradojas.js). Pendiente en hf-kant: las antinomias (mesa Spinoza), cuando estén. */
+  var LOGICA_HF = {
+    "hf-metodos": [["inferencia", "tabInferencia", [4]], ["falacias", "tabFalacias", [7]], ["induccion", "mesaInduccion", []]],
+    "hf-aa": [["silogismos", "tabSilog", [1, 2]], ["cuadrado", "tabCuadrado", [6]]],
+    "hf-cinco-vias": [["spinoza", "spz:mundoVias", [11]], ["paradojas/primermotor", "par:primermotor", [11]], ["deduccion", "mesaDeduccion", [4]]],
+    "hf-descartes-makro": [["arbol", "mesaArbol", [7]], ["demos", "mesaDemos", [9]]],
+    "hf-kant": [["kant", "mesaKant", [9]]],
+    "hf-kant-juicios": [["kant", "mesaKant", [9]], ["cuantificadores", "tabCuantificadores", [6]]],
+    "hf-analitica": [["tablas", "tabTablas", [3]], ["cuantificadores", "tabCuantificadores", [6]], ["paradojas/barbero", "par:barbero", [5]]]
+  };
+  function logRot(k){
+    var m = /^(spz|par):(.+)$/.exec(k);
+    if (m && m[1] === "spz") return (typeof LABSPZ !== "undefined" && LABSPZ.t && LABSPZ.t[m[2]]) || m[2];
+    if (m) { var p = typeof PARADOJAS !== "undefined" ? PARADOJAS.filter(function(x){ return x.id === m[2]; })[0] : null; return p ? strip(p.titulo) : m[2]; }
+    return (typeof LOG_TXT !== "undefined" && LOG_TXT[k]) || (typeof LAB !== "undefined" && LAB.t && LAB.t[k]) || k;
+  }
   function logicaDe(subject, tema, key){
     if (!view("logica")) return [];
     if (subject === "fil") return tema === 4 ? [{ go: "logica", arg: "portada", label: navLabel("logica", "logica") }] : [];
-    var l = LOGICA_HF[key]; return l ? [{ href: "#logica/" + l[0], label: l[1] }] : [];
+    var c = LOGICA_HF[key]; if (!c) return [];
+    var fmt = typeof PARADOJAS_TXT !== "undefined" ? PARADOJAS_TXT.lineaNivel : typeof LOG_ITIN !== "undefined" ? LOG_ITIN.nivel : "{n}";
+    return c.reduce(function(a, p){
+      return a.concat([{ href: "#logica/" + p[0], label: logRot(p[1]) }], p[2].map(function(n){ return { href: "#logica/itinerario/" + n, label: fmt.replace("{n}", n), nivel: true }; }));
+    }, []);
   }
   /* polémicas, comunidades y perseguidos declaran sus temas (claves de THEORY) en «temas» */
   function porTemas(name, go_, teoriaKeys, label){
