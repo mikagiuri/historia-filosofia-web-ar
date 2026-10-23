@@ -3143,6 +3143,43 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 @media (max-width:520px){ .lb-dn-l{ grid-template-columns:auto minmax(0,1fr) } .lb-dn-j{ grid-column:2; white-space:normal } }
 .lb-in-caso{ margin:0; font-size:1.02rem; line-height:1.55; border-inline-start:3px solid var(--lb); padding-inline-start:.7rem }   /* (22-10, nube) mesa «Inducción y abducción» */
 
+/* (23-10) Mesa «Spinoza», modo guiado: un reto cada vez, en tres pasos. */
+.spz-modo{ margin-block-end:.8rem }
+.spz-como{ border:1px solid var(--line); border-radius:.8rem; padding:.8rem 1rem; margin-block-end:1rem; background:var(--surface) }
+.spz-como ol{ margin:.3rem 0 0; padding-inline-start:1.3rem; display:grid; gap:.25rem }
+.spz-mcards{ display:grid; grid-template-columns:repeat(auto-fill, minmax(13rem, 1fr)); gap:.6rem; margin-block:.4rem 1rem }
+.spz-mcard{ display:grid; gap:.25rem; text-align:start; padding:.7rem .8rem; border:1px solid var(--line); border-radius:.7rem; background:var(--surface); color:var(--ink); cursor:pointer; font:inherit }
+.spz-mcard[aria-pressed="true"]{ border-color:var(--lb); box-shadow:0 0 0 2px var(--lb) inset }
+.spz-mcard-t{ font-weight:700 }
+.spz-mcard-e{ justify-self:start; font-size:.72rem; font-weight:600; color:var(--lb); border:1px solid var(--lb); border-radius:999px; padding:0 .45rem }
+.spz-mcard-q{ font-size:.86rem; color:var(--muted) }
+.spz-mcard-n{ font-size:.76rem; color:var(--muted) }
+.spz-sobre{ margin-block-end:1rem }
+.spz-reto{ border:1px solid var(--line); border-radius:.9rem; padding:1rem; background:var(--surface); display:grid; gap:1rem }
+.spz-reto-cab{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem }
+.spz-reto-n{ font-weight:700 }
+.spz-reto-sel{ margin-inline-start:auto; min-width:0; max-width:100% }
+.spz-reto-sel select{ max-width:100%; background:var(--surface-2); color:var(--ink); border:1px solid var(--line); border-radius:.5rem; padding:.35rem .5rem; font:inherit; font-size:.9rem }
+.spz-reto .spz-lienzo svg{ max-height:17rem }
+#spz-sug:not(:empty){ border-inline-start:3px solid var(--lb); padding-inline-start:.8rem }
+.spz-reto-t{ margin:0; font-size:1.25rem }
+.spz-paso{ display:grid; grid-template-columns:2.2rem minmax(0,1fr); gap:.7rem; align-items:start }
+.spz-paso h4{ margin:.15rem 0 .4rem; display:flex; align-items:center; gap:.4rem }
+.spz-num{ display:grid; place-items:center; width:2rem; height:2rem; border-radius:50%; background:var(--lb); color:var(--surface); font-weight:700 }
+.spz-afirma{ font-size:1.15rem; margin:0 0 .3rem }
+.spz-pcards{ display:grid; gap:.5rem; margin-block:.4rem }
+.spz-pcard{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:.1rem .6rem; padding:.6rem .7rem; border:1px solid var(--line); border-radius:.6rem; cursor:pointer }
+.spz-pcard input{ grid-row:span 2; width:1.2rem; height:1.2rem; margin-top:.15rem; accent-color:var(--lb) }
+.spz-pcard.on{ border-color:var(--lb); background:var(--lb-suave) }
+.spz-pcard-id{ font-size:.72rem; color:var(--muted) }
+.spz-resto summary{ cursor:pointer; color:var(--muted); font-size:.9rem }
+.spz-grande{ font-size:1.05rem; padding:.6rem 1.4rem }
+.spz-expl{ font-size:1rem; margin:.2rem 0 .5rem }
+.spz-sug-lista{ display:flex; flex-wrap:wrap; gap:.4rem }
+.spz-glo{ position:relative; display:inline-grid; place-items:center; width:1.25em; height:1.25em; border-radius:50%; border:1px solid var(--muted); color:var(--muted); font-size:.78em; font-weight:700; cursor:help; vertical-align:middle }
+.spz-glo:hover::after, .spz-glo:focus::after{ content:attr(data-def); position:absolute; inset-block-start:140%; inset-inline-start:-.5rem; width:min(18rem, 75vw); background:var(--surface-2); color:var(--ink); border:1px solid var(--line); border-radius:.5rem; padding:.5rem .6rem; font-size:.85rem; font-weight:400; line-height:1.4; z-index:20; white-space:normal; box-shadow:0 4px 14px rgb(0 0 0 / .25) }
+@media (max-width:560px){ .spz-paso{ grid-template-columns:1.8rem minmax(0,1fr) } .spz-num{ width:1.7rem; height:1.7rem } }
+
 
 /* ==== css/hegel.css ==== */
 /* Taller de Hegel (22-10, solo HF): tres mesas en pestañas. Solo tokens de styles.css: el acento es el de la época

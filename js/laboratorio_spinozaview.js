@@ -639,7 +639,7 @@
     return [...(teo.FIJAS || []), ...premisas.map(p => premisa(teo, p))].every(f => evaluar(f(L), verdad));
   }
 
-  const API = { buscarContramodelo, hayMundo, evaluarPremisasEn, PREMISAS, OBJETIVOS, RELACIONES, TEORIAS,
+  const API = { buscarContramodelo, hayMundo, evaluarPremisasEn, no, PREMISAS, OBJETIVOS, RELACIONES, TEORIAS,
     // Para las pruebas (comprobar_formales.js): piezas internas del motor.
     _internos: { Mundo, lenguaje, aCNF, resolver, casos, y, o, no, si, sii, T, F } };
   if (typeof module !== 'undefined' && module.exports) module.exports = API;
@@ -1494,7 +1494,11 @@ const LB_SPZ = (() => {
       extraContramodelo: (m, marcadas) => (m.clase[0] !== "sustancia" && !marcadas.includes("D6") ? `<p class="lb-nota">${esc(spzT("diosNombre"))}</p>` : ""),
     },
   };
-  const st = { mundo: "tiempo", turno: 0, porMundo: {} };
+  /* (23-10) Modo guiado, por defecto: un reto cada vez, en tres pasos. La mesa de siempre queda como «Mesa libre».
+     El modo elegido se recuerda en este navegador (si se puede). */
+  const modoGuardado = () => { try { return localStorage.getItem("spz-modo"); } catch (e) { return null; } };
+  const guardarModo = (m) => { try { localStorage.setItem("spz-modo", m); } catch (e) { /* sin almacenamiento */ } };
+  const st = { mundo: "tiempo", turno: 0, porMundo: {}, modo: modoGuardado() === "libre" ? "libre" : "guiado", verTodas: false };
   for (const [id, M] of Object.entries(MUNDOS)) st.porMundo[id] = { prop: M.inicio.prop, marcadas: M.inicio.marcadas.slice(), html: "",
     propia: { texto: "", modo: "sigue" }, mias: [], nMias: 0 };
   const W = () => MUNDOS[st.mundo], S = () => st.porMundo[st.mundo];
@@ -1584,7 +1588,7 @@ const LB_SPZ = (() => {
     if (isa && contiene(el, isa)) return demostrado(teorema, p.prueba, isa, p.pasos, M.sobra && M.sobra[p.id]);
     if (alt && contiene(el, alt.premisas)) return demostrado(p.teoremaAlt || alt.teorema, p.pruebaAlt, alt.premisas, p.pasosAlt);
     const miTurno = ++st.turno;
-    pintarResultado(`<p class="lb-nota">${esc(spzT("buscando"))}</p>`);
+    pintarResultado(`<p class="lb-nota spz-buscando">${esc(spzT("buscando"))}</p>`);
     setTimeout(() => {
       if (miTurno !== st.turno || mundo !== st.mundo) return;
       const t0 = performance.now(), op = { teoria: mundo, maxCosas: 4, maxAtributos: M.maxA };
@@ -1609,7 +1613,7 @@ const LB_SPZ = (() => {
         <p>${esc(spzT("infinitoTxt", { t: P.teorema }))}</p>${p.nota ? `<p>${p.nota}</p>` : ""}</div>`);
     }
     const miTurno = ++st.turno;
-    pintarResultado(`<p class="lb-nota">${esc(spzT("buscando"))}</p>`);
+    pintarResultado(`<p class="lb-nota spz-buscando">${esc(spzT("buscando"))}</p>`);
     setTimeout(() => {
       if (miTurno !== st.turno || mundo !== st.mundo) return;
       const t0 = performance.now(), op = { teoria: mundo, maxCosas: 4, maxAtributos: M.maxA };
@@ -1637,7 +1641,36 @@ const LB_SPZ = (() => {
     pintarResultado(`<div class="lb-aviso lb-ok"><span class="spz-sello">${esc(spzT("selloOk"))}</span><h3 class="spz-h">${esc(spzT("seSigue"))}</h3>${cuerpo}
       <p class="lb-nota">${esc(spzT("teorema", { t: teorema, x: usadas.length ? usadas.join(", ") : spzT("ningunaAnadida") }))}${sobran.length ? " " + esc(spzT("sobran")) : ""}</p>
       ${sobra ? `<p class="spz-sub">${esc(spzT("sobraIsa"))}</p><ul class="spz-sobra">${Object.entries(sobra).map(([x, t]) => `<li>${esc(spzT("sobraItem", { x, t }))}</li>`).join("")}</ul>` : ""}
-      ${usadas.length > 1 ? botonSobra() : ""}</div>`);
+      ${usadas.length > 1 ? botonSobra() : ""}</div><div id="spz-ejemplo"></div>`);
+    ejemplo(usadas);
+  }
+  /* (23-10) Cuando se sigue, también un dibujo: un mundo de ejemplo que cumple las premisas (y por tanto la afirmación).
+     Se pide que en él haya al menos un caso de cada relación que nombran la afirmación y las premisas, para que no salga
+     un mundo vacío en que la afirmación se cumple sin decir nada; si eso no cabe, vale cualquier mundo de las premisas. */
+  function ejemplo(usadas) {
+    const mundo = st.mundo, turno = st.turno, M = W(), p = prop(), T = MotorMundos.TEORIAS[mundo];
+    setTimeout(() => {
+      if (turno !== st.turno || mundo !== st.mundo) return;
+      const el = S().marcadas.length ? S().marcadas : usadas, pf = M.premisaFormal || {};
+      const txt = [formalDe(p) || "", ...el.map((id) => pf[id] || "")].join(" "), todo = [txt, ...definicionesDe(txt)].join(" ");
+      const rels = Object.keys(T.RELACIONES).filter((r) => !(T.ocultas || []).includes(r) && new RegExp("(^|[^A-Za-z_])" + r + "\\(").test(todo));
+      const alguno = (r) => (L) => { const ex = (tipos, args) => (tipos.length ? (tipos[0] === "C" ? L.algunaCosa : L.algunAtr)((v) => ex(tipos.slice(1), [...args, v])) : L[r](...args)); return ex(T.RELACIONES[r], []); };
+      const op = { teoria: mundo, maxCosas: 4, maxAtributos: M.maxA }, prem = motorPrem(el);
+      /* Y, si cabe, sin cosas relacionadas consigo mismas (un «A hace A» enseña poco): se prueba de más a menos exigente. */
+      const binarias = rels.filter((r2) => { const tp = T.RELACIONES[r2]; return tp.length === 2 && tp[0] === "C" && tp[1] === "C"; });
+      const irrefl = binarias.map((r2) => (L) => L.todaCosa((x) => MotorMundos.no(L[r2](x, x))));
+      let r = { encontrado: false };
+      for (const extra of [[...rels.map(alguno), ...irrefl], rels.map(alguno), []]) {
+        r = MotorMundos.buscarContramodelo([...prem, ...extra], null, op);
+        if (r.encontrado) break;
+      }
+      const caja = box && box.querySelector("#spz-ejemplo");
+      if (!r.encontrado || !caja) return;
+      const m = ver(r.mundo);
+      caja.innerHTML = `<p class="spz-sub">${esc(spzT("tEjemplo"))}</p><p class="lb-nota">${esc(spzT("ejemploTxt"))}</p>
+        <div class="lb-scroll spz-lienzo">${dibujar(m)}</div><div class="spz-leyenda">${leyenda(m)}</div>${hechos(m)}`;
+      S().html = box.querySelector("#spz-resultado").innerHTML;
+    }, 20);
   }
   /* Capas (22-10): ¿sobra alguna premisa? Se quita cada una y se busca un contramodelo en mundos pequeños. No demuestra nada. */
   const botonSobra = () => `<div class="lb-fila"><button type="button" class="btn ghost" data-spz-sobra="1">${esc(spzT("bSobra"))}</button></div><div id="spz-sobra-res" aria-live="polite"></div>`;
@@ -1709,7 +1742,128 @@ const LB_SPZ = (() => {
       ${choqueIsa(el) ? `<p class="lb-nota">${esc(spzT("choqueIsa", { t: choqueIsa(el) }))}</p>` : W().notaSin ? `<p class="lb-nota">${esc(spzT(W().notaSin))}</p>` : ""}
       <p class="lb-nota">${esc(spzT("busqueda", { ms }))}</p></div>`);
   }
-  function pintarResultado(html) { S().html = html; const r = box && box.querySelector("#spz-resultado"); if (r) r.innerHTML = html; }
+  function pintarResultado(html) {
+    S().html = html; const r = box && box.querySelector("#spz-resultado"); if (r) r.innerHTML = html;
+    if (st.modo === "guiado") pintarSugerencias(html);
+  }
+  /* ---------- Modo guiado ---------- */
+  const ORDEN = [["tiempo", "mundoTiempo", "gQTiempo"], ["reloj", "mundoReloj", "gQReloj"], ["spinoza", "mundoSpinoza", "gQSpinoza"],
+    ["vias", "mundoVias", "gQVias"], ["antinomias", "mundoAnt", "gQAnt"], ["cosmos", "mundoCosmos", "gQCosmos"]];
+  /* Los retos, en el orden de los grupos del desplegable. */
+  const retos = () => { const X = W().textos(); return W().grupos().flatMap(([, parte]) => X.props.filter((x) => (x.parte || 1) === parte)); };
+  /* Un «?» que explica una palabra al pasar el ratón o al tocarlo; no desplaza nada. */
+  const glo = (k) => `<span class="spz-glo" tabindex="0" role="note" aria-label="${escA(spzT(k))}" data-def="${escA(spzT(k))}">?</span>`;
+  const corto = (txt) => { const s = String(txt).replace(/<[^>]+>/g, "").split(/[:(]|\. /)[0].trim(); return s.length > 70 ? s.slice(0, 68) + "…" : s; };
+  const quePrem = (id) => { const x = W().textos().premisas.find((y) => y.id === id); return x ? corto(x.que) : nombrePrem(id); };
+  /* Qué premisas enseñar en el paso 2: las del grupo del reto, las de la prueba y las marcadas; las demás, plegadas. */
+  function premisasDelReto(p) {
+    const X = W().textos(), g = X.grupos && X.grupos[(p.parte || 1) - 1];
+    const base = new Set([...(W().isabelle[p.id] || []), ...W().porDefecto(p.id), ...S().marcadas]);
+    if (g) X.premisas.filter((x) => x.grupo === g.id).forEach((x) => base.add(x.id));
+    let vis = X.premisas.filter((x) => base.has(x.id));
+    if (vis.length < 2) vis = X.premisas.slice();
+    return { vis, resto: X.premisas.filter((x) => !vis.includes(x)) };
+  }
+  function tipoResultado(html) {
+    const h = (k) => html.includes(esc(spzT(k)));
+    return h("incompatibles") ? "choque" : h("seSigue") && !h("noSeSigue") ? "ok" : h("noSeSigue") ? "mal" : h("puedeOcurrir") ? "pos" : h("noPuede") ? "nopuede" : "";
+  }
+  function pintarSugerencias(html) {
+    const c = box && box.querySelector("#spz-sug"); if (!c) return;
+    if (!html || html.includes("spz-buscando")) { c.innerHTML = ""; return; }
+    const p = prop(), tipo = tipoResultado(html), isa = W().isabelle[p.id] || [], el = S().marcadas, P = W().posibles[p.id];
+    const expl = { ok: "gExplOk", mal: "gExplMal", pos: "gExplPos", nopuede: "gExplNoPuede", choque: "gExplChoque" }[tipo];
+    const bot = (accion, id, k) => `<button type="button" class="btn ghost spz-sug-b" data-spz-${accion}="${escA(id)}">${esc(spzT(k, { x: quePrem(id) }))}</button>`;
+    let b = [];
+    if (tipo === "ok") b = el.filter((x) => isa.includes(x)).map((x) => bot("quita", x, "gQuita"));
+    if (tipo === "mal") b = isa.filter((x) => !el.includes(x)).map((x) => bot("pon", x, "gPon"));
+    if (tipo === "pos" && P && P.impide) b = P.impide.filter((x) => !el.includes(x)).map((x) => bot("pon", x, "gPonPos"));
+    if (tipo === "choque") b = el.map((x) => bot("quita", x, "gQuita"));
+    const lista = retos(), i = lista.findIndex((x) => x.id === p.id);
+    c.innerHTML = `${expl ? `<p class="spz-expl">${esc(spzT(expl))} ${tipo === "mal" ? glo("gloContramodelo") : tipo === "ok" ? glo("gloIsabelle") : ""}</p>` : ""}
+      ${b.length ? `<p class="spz-sub">${esc(spzT("gProbarAhora"))}</p><div class="spz-sug-lista">${b.join("")}</div>` : ""}
+      ${i >= 0 && i < lista.length - 1 ? `<div class="lb-fila"><button type="button" class="btn" data-spz-mover="1">${esc(spzT("gSiguiente"))}</button></div>` : ""}`;
+  }
+  const barraModo = () => `<div class="lb-fila spz-modo" role="group" aria-label="${escA(spzT("modoEt"))}">${[["guiado", "modoGuiado"], ["libre", "modoLibre"]]
+    .map(([m, k]) => `<button type="button" class="fbtn" data-spz-modo="${m}" aria-pressed="${st.modo === m}">${esc(spzT(k))}</button>`).join("")}</div>`;
+  function pintarGuiado() {
+    SPZ_MUNDO_LECTURA = st.mundo;
+    /* La primera vez que se entra en un mundo en modo guiado, se empieza por el reto 1. */
+    if (!S().guiado) { S().guiado = true; S().prop = retos()[0].id; S().marcadas = W().porDefecto(S().prop); S().html = ""; }
+    const M = W(), X = M.textos(), p = prop().propia ? retos()[0] : prop();
+    if (S().prop !== p.id) { S().prop = p.id; S().marcadas = M.porDefecto(p.id); }
+    const lista = retos(), i = lista.findIndex((x) => x.id === p.id), defs = definicionesDe(formalDe(p) || "");
+    const { vis, resto } = premisasDelReto(p), el = S().marcadas;
+    const tarjeta = (x) => `<label class="spz-pcard${el.includes(x.id) ? " on" : ""}" for="spz-pr-${x.id}"><input type="checkbox" id="spz-pr-${x.id}" value="${x.id}"${el.includes(x.id) ? " checked" : ""}>
+      <span class="spz-pcard-t">${esc(x.que)}</span><span class="lb-mono spz-pcard-id">${x.id}</span></label>`;
+    const mcard = ([id, k, q]) => `<button type="button" class="spz-mcard" data-spz-mundo="${id}" aria-pressed="${st.mundo === id}">
+      ${id === "tiempo" ? `<span class="spz-mcard-e">${esc(spzT("gEmpieza"))}</span>` : ""}<span class="spz-mcard-t">${esc(spzT(k))}</span>
+      <span class="spz-mcard-q">${esc(spzT(q))}</span><span class="spz-mcard-n">${esc(spzT("gNRetos", { n: MUNDOS[id].textos().props.length }))}</span></button>`;
+    box.innerHTML = `${barraModo()}
+      <div class="spz-como"><h3 class="spz-h">${esc(spzT("gComoT"))}</h3><ol><li>${esc(spzT("gComo1"))}</li><li>${esc(spzT("gComo2"))} ${glo("gloPremisa")}</li><li>${esc(spzT("gComo3"))} ${glo("gloMundo")}</li></ol><p class="lb-nota">${esc(spzT("gNombre"))}</p></div>
+      <p class="spz-sub">${esc(spzT("gElige"))}</p><div class="spz-mcards" role="group" aria-label="${escA(spzT("mundo"))}">${ORDEN.map(mcard).join("")}</div>
+      <details class="lb-saber spz-sobre"><summary>${esc(spzT("gSobre"))}</summary><p>${esc(spzT(M.lede))}</p>${M.cabecera ? M.cabecera() : ""}
+        <p class="lb-nota">${spzT(M.notaDefs)}</p>${M.secciones().map(([k, l]) => `<p class="spz-sub">${esc(spzT(k))}</p><ul class="spz-defs">${l.map(defFila).join("")}</ul>`).join("")}
+        <p class="lb-nota">${spzT("avisoDesarrollo")}</p></details>
+      <section class="spz-reto" aria-labelledby="spz-reto-t">
+        <div class="spz-reto-cab"><button type="button" class="btn ghost" data-spz-mover="-1" aria-label="${escA(spzT("gAnterior"))}"${i <= 0 ? " disabled" : ""}>←</button>
+          <span class="spz-reto-n">${esc(spzT("gReto", { k: i + 1, n: lista.length }))}</span>
+          <button type="button" class="btn ghost" data-spz-mover="1" aria-label="${escA(spzT("gSiguienteR"))}"${i >= lista.length - 1 ? " disabled" : ""}>→</button>
+          <label class="spz-reto-sel"><select id="spz-prop" aria-label="${escA(spzT("gSaltar"))}">${M.grupos().map(([k, parte]) => `<optgroup label="${esc(spzT(k))}">${X.props.filter((x) => (x.parte || 1) === parte).map((x) => `<option value="${x.id}"${x.id === p.id ? " selected" : ""}>${esc(x.nombre)}</option>`).join("")}</optgroup>`).join("")}</select></label></div>
+        <h3 class="spz-reto-t" id="spz-reto-t">${esc(p.nombre)}</h3>${p.cita ? `<blockquote class="spz-cita">«${esc(p.cita)}»</blockquote>` : ""}
+        <div class="spz-paso"><span class="spz-num" aria-hidden="true">1</span><div><h4>${esc(spzT("g1T"))}</h4><p class="spz-afirma">${p.pregunta}</p>
+          <p class="lb-nota">${esc(spzT(p.posible ? "g1Puede" : "g1Sigue"))}</p>
+          <details class="spz-verlog"><summary>${esc(spzT("gVerLogica"))}</summary><div class="spz-formal">${defs.length ? `<span class="spz-sub">${esc(spzT("defsUsa"))}</span><div class="spz-lista">${defs.map((d) => conLectura(d)).join("")}</div>` : ""}
+            <span class="spz-sub">${esc(spzT("enLogica"))}</span>${conLectura(formalDe(p))}</div></details></div></div>
+        <div class="spz-paso"><span class="spz-num" aria-hidden="true">2</span><div><h4>${esc(spzT("g2T"))} ${glo("gloPremisa")}</h4><p class="lb-nota">${esc(spzT("g2Nota"))}</p>
+          <div class="spz-pcards">${vis.map(tarjeta).join("")}</div>
+          ${resto.length ? `<details class="spz-resto"${st.verTodas ? " open" : ""}><summary>${esc(spzT("gVerTodas", { n: resto.length }))}</summary><div class="spz-pcards">${resto.map(tarjeta).join("")}</div></details>` : ""}
+          <div class="lb-fila">${(M.isabelle[p.id] || []).length ? `<button type="button" class="btn ghost" data-spz="isabelle">${esc(spzT("gMarcarPrueba"))}</button>` : ""}<button type="button" class="btn ghost" data-spz="ninguna">${esc(spzT("gNinguna"))}</button></div></div></div>
+        <div class="spz-paso"><span class="spz-num" aria-hidden="true">3</span><div><h4>${esc(spzT("g3T"))}</h4>
+          <button type="button" class="btn spz-grande" data-spz="probar">${esc(spzT(p.posible ? "bPuede" : "bProbar"))}</button></div></div>
+        <div id="spz-sug" aria-live="polite"></div>
+        <div id="spz-resultado" aria-live="polite">${S().html || `<p class="lb-nota spz-pista">${esc(spzT("gPista"))}</p>`}</div>
+      </section>
+      ${M.debate ? M.debate() : ""}
+      <p class="lb-nota">${esc(spzT(M.pie))}</p>`;
+    if (S().html) pintarSugerencias(S().html);
+    const irA = (id) => { S().prop = id; S().marcadas = W().porDefecto(id); S().html = ""; st.turno++; pintar(); box.querySelector(".spz-reto").scrollIntoView({ block: "start" }); };
+    box.querySelectorAll("[data-spz-modo]").forEach((b) => b.addEventListener("click", () => cambiarModo(b.dataset.spzModo)));
+    box.querySelectorAll("[data-spz-mundo]").forEach((b) => b.addEventListener("click", () => {
+      if (st.mundo === b.dataset.spzMundo) return;
+      st.mundo = b.dataset.spzMundo; st.turno++; S().html = ""; pintar();
+    }));
+    box.onclick = (e) => {
+      const mv = e.target.closest("[data-spz-mover]");
+      if (mv) { const j = i + Number(mv.dataset.spzMover); if (j >= 0 && j < lista.length) irA(lista[j].id); return; }
+      const q = e.target.closest("[data-spz-quita]"), pn = e.target.closest("[data-spz-pon]");
+      if (q || pn) {
+        const id = (q || pn).dataset[q ? "spzQuita" : "spzPon"];
+        S().marcadas = q ? S().marcadas.filter((x) => x !== id) : [...new Set([...S().marcadas, id])];
+        pintar(); veredicto(); return;
+      }
+      if (e.target.closest("[data-spz-sobra]")) return buscarSobrantes();
+    };
+    box.querySelector("#spz-prop").addEventListener("change", (e) => irA(e.target.value));
+    const resto2 = box.querySelector(".spz-resto"); if (resto2) resto2.addEventListener("toggle", () => { st.verTodas = resto2.open; });
+    box.querySelectorAll(".spz-pcard input").forEach((inp) => inp.addEventListener("change", () => {
+      inp.closest(".spz-pcard").classList.toggle("on", inp.checked);
+      S().marcadas = [...box.querySelectorAll(".spz-pcard input:checked")].map((x) => x.value);
+    }));
+    box.querySelectorAll("[data-spz]").forEach((b) => b.addEventListener("click", () => {
+      const a = b.dataset.spz;
+      if (a === "isabelle") S().marcadas = (W().isabelle[S().prop] || []).slice();
+      if (a === "ninguna") S().marcadas = [];
+      if (a !== "probar") { pintar(); return; }
+      veredicto();
+    }));
+  }
+  function cambiarModo(m) {
+    if (st.modo === m) return;
+    st.modo = m; guardarModo(m); st.turno++;
+    if (m === "guiado") S().html = "";
+    pintar(); if (m === "libre" && !S().html) veredicto();
+  }
 
   /* Guía plegada: qué es cada cosa y un recorrido para empezar (LABSPZ.guia). */
   function guia() {
@@ -1793,6 +1947,8 @@ const LB_SPZ = (() => {
   }
 
   function pintar() {
+    box.onclick = null;
+    if (st.modo === "guiado") return pintarGuiado();
     SPZ_MUNDO_LECTURA = st.mundo;
     const M = W(), X = M.textos(), p = prop(), isa = M.isabelle[p.id], defs = definicionesDe(formalDe(p) || ""), el = S().marcadas;
     const opciones = (parte) => X.props.filter((x) => (x.parte || 1) === parte).map((x) => `<option value="${x.id}"${x.id === p.id ? " selected" : ""}>${esc(x.nombre)}</option>`).join("");
@@ -1804,7 +1960,7 @@ const LB_SPZ = (() => {
     const abierta = box.querySelector(".spz-guia") && box.querySelector(".spz-guia").open;
     const repAbierto = box.querySelector(".spz-repaso") && box.querySelector(".spz-repaso").open;
     const isaAbierto = box.querySelector(".spz-isabelle") && box.querySelector(".spz-isabelle").open;
-    box.innerHTML = `<div class="lb-fila spz-mundos" role="group" aria-label="${esc(spzT("mundo"))}"><span class="lb-et">${esc(spzT("mundo"))}</span>${botonMundo("tiempo", "mundoTiempo")}${botonMundo("reloj", "mundoReloj")}${botonMundo("spinoza", "mundoSpinoza")}${botonMundo("vias", "mundoVias")}${botonMundo("antinomias", "mundoAnt")}${botonMundo("cosmos", "mundoCosmos")}</div>
+    box.innerHTML = `${barraModo()}<div class="lb-fila spz-mundos" role="group" aria-label="${esc(spzT("mundo"))}"><span class="lb-et">${esc(spzT("mundo"))}</span>${botonMundo("tiempo", "mundoTiempo")}${botonMundo("reloj", "mundoReloj")}${botonMundo("spinoza", "mundoSpinoza")}${botonMundo("vias", "mundoVias")}${botonMundo("antinomias", "mundoAnt")}${botonMundo("cosmos", "mundoCosmos")}</div>
       <p class="lg-intro">${esc(spzT(M.lede))}</p>${M.cabecera ? M.cabecera() : ""}
       <div class="lb-aviso lb-warn"><span class="spz-sello">${esc(spzT("enDesarrollo"))}</span> ${spzT("avisoDesarrollo")}</div>
       ${guia()}
@@ -1880,6 +2036,7 @@ const LB_SPZ = (() => {
       pintar();
     }));
     box.querySelectorAll("[data-spz-ir]").forEach((b) => b.addEventListener("click", () => { location.hash = "#logica/" + b.dataset.spzIr; }));
+    box.querySelectorAll("[data-spz-modo]").forEach((b) => b.addEventListener("click", () => cambiarModo(b.dataset.spzModo)));
     box.querySelectorAll("[data-spz-mundo]").forEach((b) => b.addEventListener("click", () => {
       if (st.mundo === b.dataset.spzMundo) return;
       st.mundo = b.dataset.spzMundo; st.turno++; pintar(); if (!S().html) veredicto();
@@ -1895,5 +2052,5 @@ const LB_SPZ = (() => {
       veredicto();
     }));
   }
-  return { montar(b) { box = b; pintar(); if (!S().html) veredicto(); } };
+  return { montar(b) { box = b; pintar(); if (!S().html && st.modo === "libre") veredicto(); } };
 })();
