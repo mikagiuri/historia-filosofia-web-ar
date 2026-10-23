@@ -12,6 +12,7 @@
      epocas         →  Fichas · Cronogramas · Genealogías   (epocas / cronogramas / genealogias)
      ilustres       →  Todos · Perseguidos · Comunidades   (ilustres / perseguidos / comunidades)
      talleres       →  Taller de Leibniz · El universo aristotélico · El arte de la palabra · Los afectos de Spinoza   (leibniz / universo / palabra / afectos; 19-10, 20-10)
+     mapas          →  Mapas conceptuales ⇄ Infografías   (mapas / infografias; 23-10: el botón «Mapas e infografías» ya no abre solo Mapas)
 
    Integración con el resto (sin tocar esos ficheros más que lo justo):
    - app.js (show) usa commuteEntry(id) para marcar en el menú la ENTRADA del grupo
@@ -27,7 +28,8 @@ const CONMUTADORES = [
   { entry: "dilemas",      modos: [["dilemas", "معضلات"], ["polemicas", "سجالات"], ["duelo", "مبارزة"], ["nudos", "عُقَد"]] },
   { entry: "epocas",       modos: [["epocas", "بطاقات"], ["cronogramas", "الجداول الزمنية"], ["genealogias", "الأنساب الفكرية"]] },
   { entry: "biografias",     modos: [["biografias", "الكل"], ["perseguidos", "المضطهَدون"], ["comunidades", "الجماعات"]] },
-  { entry: "leibniz",      modos: [["leibniz", "ورشة لايبنتز"], ["universo", "الكون الأرسطي"], ["palabra", "فنّ الكلام"], ["afectos", "الانفعالات عند اسبينوزا"], ["hegel", "ورشة هيغل"]] }   // (22-10) + hegel (solo HF); (20-10) + afectos; (19-10) «Talleres»: unidades transversales
+  { entry: "leibniz",      modos: [["leibniz", "ورشة لايبنتز"], ["universo", "الكون الأرسطي"], ["palabra", "فنّ الكلام"], ["afectos", "الانفعالات عند اسبينوزا"], ["hegel", "ورشة هيغل"]] },   // (22-10) + hegel (solo HF); (20-10) + afectos; (19-10) «Talleres»: unidades transversales
+  { entry: "mapas",        modos: [["mapas", "خرائط المفاهيم"], ["infografias", "إنفوغرافيك"]] }   // (23-10) el botón «Mapas e infografías» cumple su rótulo: Infografías no tenía puerta de menú; el conmutador la saca (ambas secciones ya están en el build de fil y hf)
 ];
 
 /* índices vista → { entrada, rótulo, grupo } */
