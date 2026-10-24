@@ -25,12 +25,14 @@
       try { var al = window.markmap && window.markmap.autoLoader;
         if (al && typeof al.renderAll === "function") al.renderAll(); } catch (e){}   // dispara la carga de dependencias (modo manual)
       if (typeof drawMap === "function") requestAnimationFrame(drawMap);
+      if (typeof window.drawMiMapa === "function") requestAnimationFrame(window.drawMiMapa);   // (24-10) «Mi mapa»
     };
     document.head.appendChild(s);
   }
   function needFor(id){
     if (id === "esquemas"){ injectMermaid(); if (typeof drawEsq === "function") drawEsq(); }
     else if (id === "mapas"){ injectMarkmap(); if (typeof drawMap === "function") requestAnimationFrame(drawMap); }
+    else if (id === "mimapa"){ injectMarkmap(); if (typeof window.drawMiMapa === "function") requestAnimationFrame(window.drawMiMapa); }   // (24-10) DUA D3.2
   }
 
   if (typeof window.show === "function"){

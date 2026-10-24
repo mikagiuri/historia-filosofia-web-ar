@@ -7,7 +7,7 @@
    Todo se guarda en localStorage con claves «aula-…»; se excluyen las preferencias
    («aula-theme» y «aula.ctxSubject»). */
 (function () {
-  var EXCLUDE = { "aula-theme": true };            // preferencias, no progreso
+  var EXCLUDE = { "aula-theme": true, "aula-a11y": true };   // preferencias (tema y panel «Aa»), no progreso
   function isProgressKey(k) { return /^aula-/.test(k) && !EXCLUDE[k]; }
 
   function collect() {
