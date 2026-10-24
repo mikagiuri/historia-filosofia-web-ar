@@ -59,7 +59,7 @@ function quizTipo(k){ return /-banco$/.test(k) ? 0 : /^ltfh-/.test(k) ? 2 : /^le
 function quizSerie(k){ return /^ltfh-/.test(k) || k === "hf25" || k === "plat-antro" || k === "makro-descartes" ? "autor" : /^lex-/.test(k) ? "lex" : /-banco$/.test(k) ? "banco" : "repaso"; }
 
 /* ===== Test de léxico (05-10) =====
-   Un cuestionario por tema generado del glosario (DICCIONARIO, diccionario.js; se carga después de este
+   Un cuestionario por tema generado del diccionario (DICCIONARIO, diccionario.js; se carga después de este
    archivo, por eso se monta en DOMContentLoaded). Cada partida saca preguntas nuevas, en las dos
    direcciones (definición → término y término → definición), con distractores del mismo tema y, si
    no llegan, de su bloque o materia. Se tapa el término en su definición y no se usan como distractor
@@ -68,9 +68,9 @@ const LEX_MIN = 5, LEX_N = 10;
 const LEX_NAME = "معجم · {tema}";
 const LEX_Q_TERM = "أي مصطلح يوافق هذا التعريف؟";
 const LEX_Q_DEF = "ماذا تعني «{t}»؟";
-/* unidades del glosario de HF sin cuestionario del libro (las demás: QUIZ_TEMA["ltfh-" + unidad]) */
+/* unidades del diccionario de HF sin cuestionario del libro (las demás: QUIZ_TEMA["ltfh-" + unidad]) */
 const LEX_UNIDAD = { "A1-A2": "T1", A3: "T3", A4: "T4", A5: "T5", DM: "T14" };
-/* temas de Pensamiento crítico por el nombre del glosario, en castellano y en euskera */
+/* temas de Pensamiento crítico por el nombre del diccionario, en castellano y en euskera */
 const LEX_IPC = [["pensar", /pensar|pentsatu/i], ["argumentar", /argument|argudi/i], ["falacias", /falac|faltsu/i], ["sesgos", /sesgo|alborap/i],
   ["dialogo", /di[aá]logo|elkarrizk/i], ["medios", /medios|hedabide/i], ["huella", /huella|aztarna/i], ["grupo", /grupo|taldea/i]];
 const LEX = {};   // clave → { terms: términos del tema, extra: resto del bloque o la materia }
@@ -303,5 +303,5 @@ function drawQuiz(){
 
 renderQuizFilter();
 loadQuiz(quizKey);
-/* los tests de léxico, cuando ya está el glosario (antes del enrutado de app.js, que también espera a DOMContentLoaded) */
+/* los tests de léxico, cuando ya está el diccionario (antes del enrutado de app.js, que también espera a DOMContentLoaded) */
 document.addEventListener("DOMContentLoaded", () => { lexMontar(); renderQuizFilter(); renderQuizChips(); });

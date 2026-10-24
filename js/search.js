@@ -3,9 +3,9 @@
    Paleta de comandos que indexa (1) las SECCIONES del menú (cualquier data-view), (2) los TÍTULOS del
    contenido con clave (teoría, lecturas, materiales, infografías, cuestionarios, tarjetas, esquemas, PAU,
    biografias, clases) y, desde el 08-10, (3) el TEXTO COMPLETO: cada apartado de la teoría, cada término
-   del glosario con su definición, cada pregunta de los cuestionarios, cada tarjeta, cada cita y cada
+   del diccionario con su definición, cada pregunta de los cuestionarios, cada tarjeta, cada cita y cada
    párrafo de las lecturas. Los resultados salen con el fragmento donde aparece lo buscado, agrupados
-   por tipo, y abren el apartado exacto (teoría «#teoria/clave/n», glosario filtrado por el término,
+   por tipo, y abren el apartado exacto (teoría «#teoria/clave/n», diccionario filtrado por el término,
    y en lecturas, citas y tarjetas se desplaza al fragmento). La coincidencia es por raíz: «epicúreo»
    encuentra «epicureísmo»; «ideak» encuentra «ideia» (reglas simples de castellano y euskera, sin
    diccionario). El índice se construye una vez, al abrir el buscador (unos 3 MB de texto: décimas de
@@ -123,7 +123,7 @@
       });
       flush();
     });
-    /* glosario: término + definición (+ raíz) */
+    /* diccionario: término + definición (+ raíz) */
     if (typeof DICCIONARIO !== "undefined" && DICCIONARIO) DICCIONARIO.forEach(function(g){
       add(out, { type: "القاموس", label: g.t, meta: (g.area || "") + (g.tema ? " · " + g.tema : ""), go: "diccionario", arg: null, glo: g, text: strip((g.def || "") + (g.et ? " · " + g.et : "")) });
     });
@@ -349,7 +349,7 @@
     close();
     if (typeof show === "function") show(e.go);
     if (e.go === "diccionario" && e.glo){
-      /* el glosario se filtra por el término: materia y bloque del término, área «todas», búsqueda = término */
+      /* el diccionario se filtra por el término: materia y bloque del término, área «todas», búsqueda = término */
       try {
         if (typeof gloSubject !== "undefined"){ gloSubject = e.glo.subject || gloSubject; gloBloque = "all"; gloArea = "all"; gloQuery = e.glo.t; }
         if (typeof renderGloControls === "function") renderGloControls();

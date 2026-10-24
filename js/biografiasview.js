@@ -239,11 +239,11 @@ function bioCitas(p){
     (c.o ? '<figcaption class="bio-cit-o">' + bioEsc(c.o) + '</figcaption>' : '') + '</figure>').join("") + '</div>';
 }
 
-/* (10-10) «Afines y opuestos» y «Conceptos del glosario», al final de la ficha (idea tomada de las fichas de
+/* (10-10) «Afines y opuestos» y «Conceptos del diccionario», al final de la ficha (idea tomada de las fichas de
    cerebrofilosofico.com, sin contenido nuevo: todo sale de datos ya revisados).
    · Afines y opuestos: sus líneas de Genealogías (GENEALOGIAS.lineas, con quién va antes y después), sus
      oposiciones (GENEALOGIAS.op) y los acuerdos y desacuerdos de sus tesis (GEN_TESIS.enlaces, con el porqué).
-   · Conceptos del glosario: los términos con su id en el campo «biografia» (tools/build_diccionario_biografias.js).
+   · Conceptos del diccionario: los términos con su id en el campo «biografia» (tools/build_diccionario_biografias.js).
    Solo se enlaza a pensadores que están en esta web (build_subject.js filtra BIOGRAFIAS por materia). */
 const ILU_REL = { tit: "الأقربون والخصوم", frente: "في مواجهة", tesis: "أطروحاته في النقاش", acuerdo: "يتفق مع", desacuerdo: "يختلف مع",
   conceptos: "مفاهيم من القاموس", mas: "و{n} أخرى" };
@@ -296,7 +296,7 @@ function bioConceptos(p){
   return '<div class="bio-sec bio-conc"><h3>' + ILU_REL.conceptos + '</h3><div class="bio-conc-txt">' + vis +
     (resto.length ? ' <details class="bio-conc-mas"><summary>' + ILU_REL.mas.replace("{n}", resto.length) + '</summary>' + resto.map(a).join(", ") + '</details>' : '') + '</div></div>';
 }
-/* abrir el glosario filtrado por un término (como el buscador general, search.js) */
+/* abrir el diccionario filtrado por un término (como el buscador general, search.js) */
 function bioAbrirDiccionario(t, sub){
   (window.show || show)("diccionario");
   try {

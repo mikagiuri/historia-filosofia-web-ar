@@ -1,6 +1,6 @@
 "use strict";
 /* ===== «Pilares» (22-10-2026, Bachillerato: Filosofía 1.º e Historia de la Filosofía 2.º) =====
-   Decisión del profesor (22-10): una sección propia, no una pestaña del Glosario. El glosario sirve para repasar;
+   Decisión del profesor (22-10): una sección propia, no una pestaña del Diccionario. El diccionario sirve para repasar;
    un pilar es un ejercicio duro: diez peldaños por la historia de un concepto (razón, idea, causa), y en cada uno
    comprender, aplicar, enlazar con lo ya subido y comprobar. Los mismos diez peldaños en las dos webs.
    Textos en pilares.js (PILARES). Sección #pilares; enlaces #pilares/<pilar> y #pilares/<pilar>-<n>.

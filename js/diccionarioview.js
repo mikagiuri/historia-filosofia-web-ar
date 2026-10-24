@@ -1,5 +1,5 @@
 "use strict";
-/* ===== Vista Glosario ===== depende de: diccionario.js =====
+/* ===== Vista Diccionario ===== depende de: diccionario.js =====
    Lista de referencia buscable y filtrable: Historia de la Filosofía (libro MDLTFH,
    bloque A/B/C) + Filosofía 1.º Bach (temas 1-3, 5, 7 y taller). Filtra por materia,
    bloque (solo HF) y área temática; busca en término + definición sin distinguir
@@ -17,7 +17,7 @@ function gloEpoca(g){
   return ({ A: "ant", B: "med", C: "con" }[g.bloque] || null);   /* respaldo si Itinerario aún no ha cargado */
 }
 const GLO_SUBJECTS = { hf: "تاريخ الفلسفة", fil: "الفلسفة 1", ipc: "التفكير النقدي" };
-/* materias con términos en ESTE glosario (cada web de alumnado trae solo la suya) */
+/* materias con términos en ESTE diccionario (cada web de alumnado trae solo la suya) */
 function gloPresent(){ return ["hf", "fil", "ipc"].filter(s => DICCIONARIO.some(g => g.subject === s)); }
 let gloSubject = "hf", gloBloque = "ant", gloArea = "all", gloQuery = "";  /* materia y época concretas por defecto, nunca «Todos» */
 

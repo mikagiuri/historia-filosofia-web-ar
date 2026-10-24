@@ -1,7 +1,7 @@
 "use strict";
 /* ===== Vista Étimos ===== depende de: etimos.js (ETIMOS) =====
    Transversalidad con Latín: cada concepto clave con su raíz griega (transliterada) y latina, y su
-   evolución al castellano y al euskera. Lista buscable; cada ficha enlaza con su término del glosario
+   evolución al castellano y al euskera. Lista buscable; cada ficha enlaza con su término del diccionario
    si existe. Textos de interfaz en ETI_TXT (en castellano; los traduce web_i18n/ui/<lang>.json); los
    datos (etimos.js) los traduce tm/<lang>.json. Estilos propios inyectados una vez, con las variables
    de tema de styles.css (respetan claro/oscuro y RTL). */
@@ -94,7 +94,7 @@ function etiRender(){
   }
 }
 
-/* clic en el enlace al glosario (delegado, acotado a la sección) */
+/* clic en el enlace al diccionario (delegado, acotado a la sección) */
 document.addEventListener("click", e => {
   if (!e.target.closest("#etimos")) return;
   const g = e.target.closest("[data-eti-glo]");

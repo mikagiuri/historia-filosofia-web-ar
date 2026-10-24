@@ -52,7 +52,7 @@ function pisSave(){ try { localStorage.setItem(pisKey(PIS.it.id), JSON.stringify
 
 function pisBarajar(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
-/* (20-10) Puente con el glosario: los paneles llevan «glosario: [ids]» (ids neutros de tools/diccionario_ids.js). El término y su
+/* (20-10) Puente con el diccionario: los paneles llevan «diccionario: [ids]» (ids neutros de tools/diccionario_ids.js). El término y su
    definición salen de DICCIONARIO, que cada web trae ya traducido, así que la tarjeta no repite definiciones. Plegados en
    <details> (no desplazan nada hasta que se abren) y con enlace profundo #diccionario/<id>. */
 function pisGloFmt(s){ return String(s || "").replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c])).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\*([^*]+)\*/g, "<i>$1</i>"); }
@@ -192,7 +192,7 @@ function pisCompara(){
     '</div>';
 }
 
-/* (20-10) una opción errónea puede llevar como 4.º elemento el id de un término del glosario: al fallarla se abre esa
+/* (20-10) una opción errónea puede llevar como 4.º elemento el id de un término del diccionario: al fallarla se abre esa
    píldora (término y definición) y el alumno sigue cuando la ha leído, en vez de volver solo a los 2 s */
 function pisTest(test, dentro, alAcertar, alFallar){
   pisMarco(dentro, '<div class="pis-label">' + (test.etiqueta || PIS_TXT.comprobacion) + '</div><h3>' + test.pregunta + '</h3>' +

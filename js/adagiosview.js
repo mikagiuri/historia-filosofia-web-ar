@@ -1,7 +1,7 @@
 "use strict";
 /* ===== «Adagios» (09-10, Bachillerato) — vista sobre adagios.js (ADAGIOS) =====
    Repertorio de lemas clásicos al modo de los cuadernos de lugares comunes del Renacimiento. Cada ficha: la versión
-   española y, solo al pulsar el botón λ de su línea (como en el glosario), el lema latino y, si lo hay, el original
+   española y, solo al pulsar el botón λ de su línea (como en el diccionario), el lema latino y, si lo hay, el original
    griego con su transliteración; luego qué quiere decir, cuándo usarlo, el caso trampa si lo hay, de dónde viene y los temas.
    Los nombres de pensadores con ficha en Biografías (en esta web) abren su biografía: el primero de cada ficha.
    Filtro por ámbito y modo «Ponte a prueba» (solo el lema en español; el resto se descubre al pulsar). Arriba solo las fichas:

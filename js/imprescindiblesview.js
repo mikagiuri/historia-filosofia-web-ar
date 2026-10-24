@@ -1,6 +1,6 @@
 "use strict";
 /* ===== Señalética de importancia para la Historia de la Filosofía (19-10) =====
-   Insignia de nivel 5-1 (puntos ●●●●○ + nombre) para Biografías, la lista de temas y el glosario de HF. Datos en imprescindibles.js
+   Insignia de nivel 5-1 (puntos ●●●●○ + nombre) para Biografías, la lista de temas y el diccionario de HF. Datos en imprescindibles.js
    (generado con tools/build_imprescindibles.js). Solo variables de styles.css; legible en modo noche; no desplaza nada:
    la insignia se pinta con la ficha o la tarjeta, nunca después. Textos de interfaz como cadenas enteras (ui/<lang>.json). */
 
@@ -23,7 +23,7 @@ const impEsc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "
 /* nivel de un autor (clave de Biografías) o de un tema de HF (número); null si no hay dato */
 function impNivel(tipo, k){
   if (typeof IMPRESCINDIBLES === "undefined") return null;
-  if (tipo === "glo"){ const g = k, gr = g && g.imp && (IMPRESCINDIBLES.diccionarioGrupos || {})[g.impg]; return gr ? { n: g.imp, motivo: gr[1] } : null; }   // k = entrada del glosario
+  if (tipo === "glo"){ const g = k, gr = g && g.imp && (IMPRESCINDIBLES.diccionarioGrupos || {})[g.impg]; return gr ? { n: g.imp, motivo: gr[1] } : null; }   // k = entrada del diccionario
   const d = tipo === "tema" ? IMPRESCINDIBLES.temasHf[k] : IMPRESCINDIBLES.autores[k];
   return d ? { n: d[0], motivo: d[1] } : null;
 }

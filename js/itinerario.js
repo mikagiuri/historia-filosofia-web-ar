@@ -8,7 +8,7 @@
       y en HF el itinerario PAU completo, tras «Explora la materia». Retira la fila de botones curados (tools) en las
       webs de una materia.
    2. Al final de cada tema de Teoría, «Para seguir con este tema»: TODAS las tarjetas, cuestionarios, infografías,
-      mapas, esquemas, lecturas, comentarios y dilemas del tema, los conceptos del glosario, y el paso al tema
+      mapas, esquemas, lecturas, comentarios y dilemas del tema, los conceptos del diccionario, y el paso al tema
       anterior/siguiente. En Tarjetas, Cuestionarios y Clases, la tira de una línea «De este tema».
    3. En cada sección de PAU, una línea con los pasos de la prueba y «estás aquí».
    4. Migas de contexto: «Inicio › Grupo › Sección» (Inicio = la ficha de la materia cuando no hay portada).
@@ -93,7 +93,7 @@
   /* unidades del curso de 2.º ESO («Clases») → tema */
   var CLASES_TEMA = { 1: "pensar", 2: "falacias", 3: "argumentar", 4: "falacias", 5: "falacias", 6: "medios", 7: "dialogo", 8: "sesgos", 9: "medios", 10: "pensar",
     11: "dialogo", 12: "grupo", 13: "huella", 14: "argumentar", 19: "huella", 20: "medios" };
-  /* glosario de HF: la unidad del libro (código) → tema, vía QUIZ_TEMA («ltfh-<código>»); los que no tienen test en el libro, a mano */
+  /* diccionario de HF: la unidad del libro (código) → tema, vía QUIZ_TEMA («ltfh-<código>»); los que no tienen test en el libro, a mano */
   var GLO_UNIDAD = { A5: 5, A4: 4, "A1-A2": 1, A3: 3, DM: 14 };
   var GLO_IPC = [["pensar", "pensar"], ["argument", "argumentar"], ["falacia", "falacias"], ["sesgo", "sesgos"], ["diálogo", "dialogo"], ["dialogo", "dialogo"], ["medio", "medios"], ["publicidad", "medios"], ["grupo", "grupo"], ["huella", "huella"]];
   function gloTema(g){
@@ -169,7 +169,7 @@
   }
   /* (11-10) fichas de época (epocas_fichas.js, vista Biografías): la de un tema de HF (con / con2 por temasHF) y, en
      Filosofía 1.º, las de las teorías con contenido histórico (EPOCA_FIL). Se enlazan al pie de la teoría, en la tira
-     «De este tema» de Tarjetas, Cuestionarios, Lecturas e Infografías, en el Glosario y en Cronogramas. */
+     «De este tema» de Tarjetas, Cuestionarios, Lecturas e Infografías, en el Diccionario y en Cronogramas. */
   var EPOCA_FIL = { "fil-presocraticos": ["ant"], "fil-spinoza-sistema": ["mod"], "fil-montaigne-ensayos": ["ren"], "fil-marxismos": ["con", "con2"], "fil-t6": ["con", "con2"], "fil-grandes-preguntas": "*" };
   function epocaFicha(subject, tema){
     var EF = G("EPOCAS_FICHAS"); if (!EF || subject !== "hf" || typeof tema !== "number") return null;
@@ -260,7 +260,7 @@
     if (!view(view_)) return;
     if (view_ === "dilemas" && fn("goRelated")) return goRelated("dilemas", arg);
     if (fn("show")) show(view_);
-    if (view_ === "diccionario"){   // concepto del final del tema → Glosario con el término buscado
+    if (view_ === "diccionario"){   // concepto del final del tema → Diccionario con el término buscado
       var inp = document.querySelector("#diccionario .dicsearch, #diccionario input[type=search], #diccionario input[type=text]");
       if (inp && arg){ inp.value = arg; try { inp.dispatchEvent(new Event("input", { bubbles: true })); } catch (e){} }
       return;

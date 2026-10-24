@@ -273,7 +273,7 @@ const LOGM_NOFORMAL = [
   ["الاحتكام إلى الشفقة أو إلى الخوف", "تبحث عن إثارة عاطفة بدل تقديم سبب.", "g-fil-apelacion-a-la-emocion"],
   ["رجل القشّ", "تفنّد صيغة مشوَّهة لما قاله الآخر.", "g-fil-hombre-de-paja"],
   ["السبب الزائف", "حدوث شيء بعد شيء آخر لا يثبت أنه سببه.", "g-fil-causa-falsa"]
-];   /* (22-10) tercer campo: entrada del glosario de 1.º; la lista completa es la nómina única (logmNomina, #lg-nomina), en esta misma pestaña */
+];   /* (22-10) tercer campo: entrada del diccionario de 1.º; la lista completa es la nómina única (logmNomina, #lg-nomina), en esta misma pestaña */
 function logmConversion(){
   return '<div class="lg-panel"><h2>' + logmT("convTit") + '</h2><p class="lg-nota">' + logmT("convIntro") + '</p><div class="tablewrap"><table class="lg-tabla"><thead><tr><th></th><th>' + logmT("convProp") + "</th><th>" + logmT("convConv") + "</th><th>" + logmT("convVale") + "</th><th>" + logmT("convEj") + "</th></tr></thead><tbody>" +
     LOGM_CONV.map(([t, p, c, v, e]) => "<tr><th>" + t + "</th><td>" + logEsc(p) + "</td><td>" + logEsc(c) + '</td><td class="lg-' + (v === "si" ? "v" : "f") + '">' + logmT(v === "si" ? "convSi" : "convNo") + (t === "A" ? "<br><small>" + logmT("convAcc") + "</small>" : "") + "</td><td>" + logEsc(e) + "</td></tr>").join("") + "</tbody></table></div></div>";
@@ -299,7 +299,7 @@ Object.assign(LOGM_TXT, {
   falR1: "الحد الأوسط غير المستغرق", falR2P: "استغراق كبير غير مشروع", falR2S: "استغراق صغير غير مشروع", falR3: "مقدمتان سالبتان", falR4a: "مقدمة سالبة ونتيجة موجبة", falR5: "مقدمتان جزئيتان",
   falProbar: "رؤيته في «القياسات» →",
   falVer: "كل المغالطات مجموعة في تبويب «المغالطات» →",
-  enLaDe1o: "في موقع السنة الأولى"   /* (22-10, docs/39) nota del enlace a la entrada del glosario en la web de 1.º */
+  enLaDe1o: "في موقع السنة الأولى"   /* (22-10, docs/39) nota del enlace a la entrada del diccionario en la web de 1.º */
 });
 const LOGM_FAL_SIL = [["r1", "AAA-2"], ["r2P", "AEE-1"], ["r2S", "AAA-3"], ["r3", "EEE-1"], ["r4a", "AEA-1"], ["r5", "III-1"]];
 function logmCqOrden(){
@@ -312,12 +312,12 @@ function logRenderFalacias(){
     LOGM_FAL_SIL.map(([r, m]) => '<div class="lg-regla lg-falaz"><h3>' + logmT("falR" + r.slice(1)) + "</h3><p>" + logT(r) + '</p><p class="lg-forma">' + m + '</p><p><button type="button" class="btn ghost" data-falsil="' + m + '">' + logmT("falProbar") + "</button></p></div>").join("") + "</div></div>" +
     logmConversion() + logmGeneralizacion() + logmCqOrden() + logmPuedeNoPuede() + logmNomina() + logmQueFalacia();
 }
-/* (22-10, nube) T5: falacias no formales. La definición vive en el glosario de 1.º (fuente única); aquí, la lista con sus
+/* (22-10, nube) T5: falacias no formales. La definición vive en el diccionario de 1.º (fuente única); aquí, la lista con sus
    otros nombres, un ejemplo y cómo pararla, y el ejercicio «¿Qué falacia es?». Datos y textos en logica_ejercicios.js (LOGX).
-   En la web de HF no están esas entradas del glosario: el nombre se queda sin enlace y sin definición. */
+   En la web de HF no están esas entradas del diccionario: el nombre se queda sin enlace y sin definición. */
 function logmGlos(id){ return typeof DICCIONARIO !== "undefined" ? DICCIONARIO.find(g => g.id === id) : null; }
-/* (22-10, docs/39) Cuando la entrada g-fil-… del glosario de 1.º no está en esta web (hf), en vez de dejar el nombre de
-   la falacia sin enlace se enlaza a su entrada en el glosario de la web de 1.º (misma lengua, pestaña nueva), con la nota
+/* (22-10, docs/39) Cuando la entrada g-fil-… del diccionario de 1.º no está en esta web (hf), en vez de dejar el nombre de
+   la falacia sin enlace se enlaza a su entrada en el diccionario de la web de 1.º (misma lengua, pestaña nueva), con la nota
    «(en la web de 1.º)». En la web de 1.º logmGlos ya la encuentra, así que esto solo actúa fuera de ella. */
 function logmFalFuera(id, txt){
   const e = logEsc, h = "#diccionario/" + id;

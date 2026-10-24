@@ -447,7 +447,7 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:24px 0 60px;colo
 #cronogramas .cbtn[data-ep][aria-pressed="true"]{background:var(--e);border-color:var(--e);color:var(--on-e)}
 .chip[data-ep="medmod"],.fbtn[data-ep="medmod"]{box-shadow:inset 4px 0 0 var(--e2)}
 .chip[data-ep="medmod"][aria-pressed="true"],.fbtn[data-ep="medmod"][aria-pressed="true"]{background:linear-gradient(90deg,var(--e),var(--e2));box-shadow:none}
-/* Frases y Glosario: la tarjeta lleva el color de su época */
+/* Frases y Diccionario: la tarjeta lleva el color de su época */
 #citas .citcard[data-ep]{border-inline-start-color:var(--e)}
 #citas .citcard[data-ep] .cit-q::before{color:var(--e)}
 #diccionario .dicitem[data-ep]{border-inline-start-color:var(--e)}
@@ -1266,7 +1266,7 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 
 
 /* ==== css/parejas.css ==== */
-/* ===== Parejas: juego de emparejar término ↔ definición (glosario) ===== usa tokens de styles.css ===== */
+/* ===== Parejas: juego de emparejar término ↔ definición (diccionario) ===== usa tokens de styles.css ===== */
 #parejas .par-wrap{ max-width:900px; }
 #parejas .par-pick{ display:flex; flex-wrap:wrap; gap:.5rem; margin:.4rem 0 1rem; align-items:center; }
 #parejas .par-pick .flabel{ width:100%; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
@@ -2097,7 +2097,7 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #pistas .pis-pg.cur{ background:var(--pc, var(--hf)); color:var(--on-hf); border-color:var(--pc, var(--hf)); }
 #pistas .pis-pg.done:not(.cur){ border-color:var(--ok); color:var(--ok); }
 #pistas .pis-pg.done::after{ content:"✓"; font-size:.7em; margin-inline-start:.15em; }
-/* (20-10) puente con el glosario: términos plegados (details), con su definición de DICCIONARIO y enlace #diccionario/<id> */
+/* (20-10) puente con el diccionario: términos plegados (details), con su definición de DICCIONARIO y enlace #diccionario/<id> */
 #pistas .pis-glo{ margin:1.1rem 0 .2rem; padding-top:.8rem; border-top:1px dashed var(--line); display:grid; gap:.45rem; }
 #pistas .pis-dic-lb{ font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700; }
 #pistas .pis-dic-it{ border:1px solid var(--line); border-radius:10px; background:var(--surface-2); }
@@ -3437,7 +3437,7 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #adagios .adg-la{ margin:0 }
 #adagios .adg-la i{ font-family:var(--serif, Georgia, serif); font-size:1.08rem }
 #adagios .adg-lam{ display:inline-flex; align-items:center; justify-content:center; width:1.55em; height:1.55em; margin-inline-start:.45em; vertical-align:.1em; padding:0;
-  border:1px solid var(--line); border-radius:50%; background:var(--surface-2); color:var(--muted); font:600 .8125rem var(--serif); font-style:normal; line-height:1; cursor:pointer }   /* como el λ del glosario */
+  border:1px solid var(--line); border-radius:50%; background:var(--surface-2); color:var(--muted); font:600 .8125rem var(--serif); font-style:normal; line-height:1; cursor:pointer }   /* como el λ del diccionario */
 #adagios .adg-lam:hover, #adagios .adg-lam[aria-expanded="true"]{ background:var(--accent); border-color:var(--accent); color:var(--on-accent, #fff) }
 #adagios .adg-gr{ margin:0; font-size:.95rem }
 #adagios .adg-gr [lang="grc"]{ font-family:"Noto Serif", "Times New Roman", "Palatino Linotype", serif }   /* la serif de la web no trae griego politónico: separaba los acentos */
@@ -3838,7 +3838,7 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #biografias .vida-a{font:600 .82rem var(--mono);color:var(--e);min-width:10.5em}
 #biografias .vida-t{font-family:var(--serif);font-size:1rem;color:var(--ink)}
 
-/* (10-10) «Afines y opuestos» y «Conceptos del glosario» al final de la ficha: texto con enlaces, sin chips */
+/* (10-10) «Afines y opuestos» y «Conceptos del diccionario» al final de la ficha: texto con enlaces, sin chips */
 #biografias .bio-rel-list, #biografias .bio-rel-tesis{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;line-height:1.5}
 #biografias .bio-rel h4{font-size:.9rem;margin:14px 0 6px;color:var(--muted)}
 #biografias .bio-rel-a, #biografias .bio-conc-a{background:none;border:0;padding:0;font:inherit;color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
