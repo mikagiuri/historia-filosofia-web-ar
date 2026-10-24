@@ -378,6 +378,7 @@ function loadTheory(k){
   }
   body.querySelectorAll("h2[data-sec]").forEach(h => h.insertAdjacentHTML("beforeend", ' <a class="th-sec" href="#teoria/' + k + '/' + h.dataset.sec + '" title="رابط إلى هذه الفقرة" aria-label="رابط إلى هذه الفقرة">§' + h.dataset.sec + '</a>'));   // tras el índice: el «§» no entra en sus títulos
   if (window.langFragGrc) window.langFragGrc(body);   // DUA D0.6: el griego del tema se marca con lang="grc" para el lector de pantalla
+  if (window.DiccEnLinea) window.DiccEnLinea.marcar(body, t.subject, () => window.Itinerario.temaOf("teoria", k, t));   // DUA D1.3 (P3): el Diccionario dentro del texto
 }
 
 renderTheoryFilter();

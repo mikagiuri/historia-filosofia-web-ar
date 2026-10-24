@@ -15,7 +15,7 @@
   "use strict";
 
   var KEY = "aula-a11y";
-  var DEF = { tam: "100", lh: "normal", esp: "normal", fuente: "web", izq: false, contraste: false, mov: false };
+  var DEF = { tam: "100", lh: "normal", esp: "normal", fuente: "web", izq: false, contraste: false, mov: false, dicc: true };
   var ATKINSON = "https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap";
   var html = document.documentElement;
 
@@ -51,6 +51,7 @@
     attr("data-a11y-izq", !!st.izq);
     attr("data-a11y-contraste", !!st.contraste);
     if (st.mov) html.dataset.motion = "reduce"; else delete html.dataset.motion;
+    attr("data-a11y-sindicc", !st.dicc);   // P3: el Diccionario dentro del texto va activado de serie
   }
   aplicar();
 
@@ -60,6 +61,7 @@
     store.set(KEY, cambiado ? st : {});
     aplicar();
     pintar();
+    document.dispatchEvent(new CustomEvent("a11y:cambio"));   // diccionario_enlinea.js pone o quita las marcas
   }
 
   var btn = document.getElementById("a11ybtn");

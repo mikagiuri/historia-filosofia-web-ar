@@ -97,6 +97,7 @@
   var GLO_UNIDAD = { A5: 5, A4: 4, "A1-A2": 1, A3: 3, DM: 14 };
   var GLO_IPC = [["pensar", "pensar"], ["argument", "argumentar"], ["falacia", "falacias"], ["sesgo", "sesgos"], ["diálogo", "dialogo"], ["dialogo", "dialogo"], ["medio", "medios"], ["publicidad", "medios"], ["grupo", "grupo"], ["huella", "huella"]];
   function gloTema(g){
+    if (g.subject === "ipc" && g.k) return g.k;   /* (24-10) clave de tema que no se traduce (tools/build_diccionario_ipc.js) */
     if (g.subject === "ipc"){ var tt = String(g.tema || "").toLowerCase(); for (var i = 0; i < GLO_IPC.length; i++) if (tt.indexOf(GLO_IPC[i][0]) >= 0) return GLO_IPC[i][1]; return null; }
     if (g.subject === "hf"){ var Q = coll("QUIZ_TEMA"), c = Q && Q["ltfh-" + g.unidad], m = c && String(c).match(/^T(\d+)$/); return m ? +m[1] : (GLO_UNIDAD[g.unidad] || null); }
     return temaNum(g);
@@ -739,5 +740,5 @@
     if (G("quizKey") != null) renderQuiz(G("quizKey"));
   } catch (e){}
 
-  window.Itinerario = { itinerario: itinerario, temaOf: temaOf, go: go, epocaFicha: epocaFicha, gloTema: gloTema, temasDe: temasDe, esAnexo: esAnexo, PUENTES: PUENTES };
+  window.Itinerario = { itinerario: itinerario, temaOf: temaOf, go: go, epocaFicha: epocaFicha, gloTema: gloTema, claseTema: function(u){ return CLASES_TEMA[u] || null; }, temasDe: temasDe, esAnexo: esAnexo, PUENTES: PUENTES };
 })();
