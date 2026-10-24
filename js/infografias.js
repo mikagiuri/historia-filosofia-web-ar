@@ -800,7 +800,7 @@ const INFOGRAFIAS = {
   "title": "THOMAS<br><em>HOBBES</em>",
   "kicker": "تاريخ الفلسفة · هوبز",
   "subtitle": "عقد الخوف",
-  "tagline": "Homo homini lupus",
+  "tagline": "Homo homini lupus (بلوتوس)",
   "author": "1588–1679",
   "ghost": "Leviathan",
   "portrait": "hobbes.jpg",
@@ -817,7 +817,7 @@ const INFOGRAFIAS = {
      },
      {
       "t": "حرب الجميع ضد الجميع",
-      "p": "«الإنسان ذئب لأخيه الإنسان»؛ والحياة وحيدة وفقيرة وقصيرة."
+      "p": "كما تقول عبارة بلوتوس، «الإنسان ذئب لأخيه الإنسان»؛ والحياة وحيدة وفقيرة وقصيرة."
      },
      {
       "t": "العقد",

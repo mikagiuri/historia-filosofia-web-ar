@@ -3550,7 +3550,7 @@ const ESQUEMAS = {
   "block": "B",
   "tema": "العقد الاجتماعي",
   "title": "العقد الاجتماعي",
-  "mermaid": "flowchart TD\n  center[\"العقد الاجتماعي\"]:::axis\n  idea[\"من حالة الطبيعة إلى المجتمع<br>بعقد\"]:::key\n  hob[\"هوبز\"]:::key\n  loc[\"لوك\"]:::key\n  rou[\"روسو\"]:::key\n  center -->|\"أطروحة مشتركة\"| idea\n  idea --> hob\n  idea --> loc\n  idea --> rou\n  hob --> h1[\"«homo homini lupus»\"]\n  hob -->|\"عقد يعطي\"| h2[\"اللفياثان:<br>ملكية مطلقة\"]\n  loc --> l1[\"حقوق طبيعية:<br>الحياة والحرية والملكية\"]\n  loc -->|\"عقد يعطي\"| l2[\"ملكية برلمانية<br>+ فصل السلطات\"]\n  rou --> r1[\"الإرادة العامة\"]\n  rou -->|\"عقد يعطي\"| r2[\"ديمقراطية الجمعيات الشعبية\"]\nclassDef axis fill:#1f5d5a,color:#fff,stroke:#1f5d5a;\nclassDef key fill:#9a6a22,color:#fff,stroke:#9a6a22;",
+  "mermaid": "flowchart TD\n  center[\"العقد الاجتماعي\"]:::axis\n  idea[\"من حالة الطبيعة إلى المجتمع<br>بعقد\"]:::key\n  hob[\"هوبز\"]:::key\n  loc[\"لوك\"]:::key\n  rou[\"روسو\"]:::key\n  center -->|\"أطروحة مشتركة\"| idea\n  idea --> hob\n  idea --> loc\n  idea --> rou\n  hob --> h1[\"«homo homini lupus»<br>(بلوتوس، أشاعها هوبز)\"]\n  hob -->|\"عقد يعطي\"| h2[\"اللفياثان:<br>ملكية مطلقة\"]\n  loc --> l1[\"حقوق طبيعية:<br>الحياة والحرية والملكية\"]\n  loc -->|\"عقد يعطي\"| l2[\"ملكية برلمانية<br>+ فصل السلطات\"]\n  rou --> r1[\"الإرادة العامة\"]\n  rou -->|\"عقد يعطي\"| r2[\"ديمقراطية الجمعيات الشعبية\"]\nclassDef axis fill:#1f5d5a,color:#fff,stroke:#1f5d5a;\nclassDef key fill:#9a6a22,color:#fff,stroke:#9a6a22;",
   "v2": {
    "pregunta": "إذا لم يكن المجتمع طبيعيًا، فلماذا نطيع السلطة وما حدودها؟",
    "raiz": "العقد الاجتماعي",
@@ -3576,7 +3576,7 @@ const ESQUEMAS = {
       {
        "rel": "حالة الطبيعة",
        "t": "حرب الجميع ضد الجميع",
-       "d": "«الإنسان ذئب للإنسان.»"
+       "d": "«الإنسان ذئب للإنسان»: عبارة لبلوتوس جعلها هوبز مشهورة."
       },
       {
        "rel": "العقد يخلق",
