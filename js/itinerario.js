@@ -311,20 +311,20 @@
      los temas que lo necesitan, y a la mesa o pestaña concreta (enlace profundo): los juicios de Kant (T19) y los silogismos (AA). */
   /* (22-10, T9 de docs/nube/logica_huecos_traspaso; enlaces y niveles de la jefa de lógica) siete temas: cada enlace
      [ruta, rótulo, niveles del itinerario (docs/39 §3)], y tras él «Itinerario: nivel N» (#logica/itinerario/N); sin nivel = rama lateral.
-     Rótulos ya traducidos: LOG_TXT (por ui), LAB.t, LABSPZ.t, PARADOJAS y PARADOJAS_TXT (por tm); no hay cadenas nuevas.
+     Rótulos ya traducidos: LOG_TXT (por ui), LAB.t, LABMP.t, PARADOJAS y PARADOJAS_TXT (por tm); no hay cadenas nuevas.
      El nivel de cada paradoja es el de su ficha (paradojas.js). En hf-kant, desde la v264, las antinomias (quinto mundo de la mesa Spinoza; no hay ruta a un mundo, se enlaza la mesa). */
   var LOGICA_HF = {
     "hf-metodos": [["inferencia", "tabInferencia", [4]], ["falacias", "tabFalacias", [7]], ["induccion", "mesaInduccion", []]],
     "hf-aa": [["silogismos", "tabSilog", [1, 2]], ["cuadrado", "tabCuadrado", [6]]],
-    "hf-cinco-vias": [["spinoza", "spz:mundoVias", [11]], ["paradojas/primermotor", "par:primermotor", [11]], ["deduccion", "mesaDeduccion", [4]]],
+    "hf-cinco-vias": [["mundos", "mp:mundoVias", [11]], ["paradojas/primermotor", "par:primermotor", [11]], ["deduccion", "mesaDeduccion", [4]]],
     "hf-descartes-makro": [["arbol", "mesaArbol", [7]], ["demos", "mesaDemos", [9]]],
-    "hf-kant": [["kant", "mesaKant", [9]], ["spinoza", "spz:mundoAnt", [11]]],
+    "hf-kant": [["kant", "mesaKant", [9]], ["mundos", "mp:mundoAnt", [11]]],
     "hf-kant-juicios": [["kant", "mesaKant", [9]], ["cuantificadores", "tabCuantificadores", [6]]],
     "hf-analitica": [["tablas", "tabTablas", [3]], ["cuantificadores", "tabCuantificadores", [6]], ["paradojas/barbero", "par:barbero", [5]]]
   };
   function logRot(k){
-    var m = /^(spz|par):(.+)$/.exec(k);
-    if (m && m[1] === "spz") return (typeof LABSPZ !== "undefined" && LABSPZ.t && LABSPZ.t[m[2]]) || m[2];
+    var m = /^(mp|par):(.+)$/.exec(k);
+    if (m && m[1] === "mp") return (typeof LABMP !== "undefined" && LABMP.t && LABMP.t[m[2]]) || m[2];
     if (m) { var p = typeof PARADOJAS !== "undefined" ? PARADOJAS.filter(function(x){ return x.id === m[2]; })[0] : null; return p ? strip(p.titulo) : m[2]; }
     return (typeof LOG_TXT !== "undefined" && LOG_TXT[k]) || (typeof LAB !== "undefined" && LAB.t && LAB.t[k]) || k;
   }

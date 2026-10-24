@@ -689,7 +689,7 @@ function logRenderPortada(){
   html += card("tabModerna", "pDescModerna", mod);
   if (hayFal) html += card("tabFalacias", "pDescFalacias", [["falacias", "pEntrar"]]);
   html += card("tabParad", "pDescParad", [["paradojas", "tabParad"], ["ejercicios", "tabEjerc"], ["clasicos", "tabClasicos"]]);
-  if (hayLab) html += card("tabLab", "pDescLab", [["hablamos", "mesaHablamos"], ["arbol", "mesaArbol"], ...(typeof LB_DNU !== "undefined" ? [["deduccion", "mesaDeduccion"]] : []), ...(typeof LB_INU !== "undefined" ? [["induccion", "mesaInduccion"]] : []), ["mundo", "mesaMundo"], ["relaciones", "mesaRelaciones"], ["demos", "mesaDemos"], ["kant", "mesaKant"], ["spinoza", "mesaSpinoza"]]);
+  if (hayLab) html += card("tabLab", "pDescLab", [["hablamos", "mesaHablamos"], ["arbol", "mesaArbol"], ...(typeof LB_DNU !== "undefined" ? [["deduccion", "mesaDeduccion"]] : []), ...(typeof LB_INU !== "undefined" ? [["induccion", "mesaInduccion"]] : []), ["mundo", "mesaMundo"], ["relaciones", "mesaRelaciones"], ["demos", "mesaDemos"], ["kant", "mesaKant"], ["mundos", "mesaMundos"]]);
   return html + "</div>";
 }
 /* (22-10) Itinerario «de cero a experto» (logica_itinerario.js, docs/39): ocho niveles en orden, con sus enlaces y su
@@ -811,7 +811,7 @@ function logRender(){
   const sub = LOG_SUB_SIL.includes(LOG.tab) ? [["silogismos", "tabSilog"], ["cuadrado", "tabCuadrado"], ["conjuntos", "tabConjuntos"]]
     : LOG_SUB_MOD.includes(LOG.tab) ? [["tablas", "tabTablas"], ["formalizar", "tabFormalizar"], ["inferencia", "tabInferencia"], ["leyes", "tabLeyes"], ["cuantificadores", "tabCuantificadores"], ["puertas", "tabPuertas"]].filter(([k]) => ["tablas", "puertas"].includes(k) || typeof logRenderFormalizar === "function")
     : LOG_PAR_VISTAS.includes(LOG.tab) ? [["paradojas", "tabParad"], ["ejercicios", "tabEjerc"], ["clasicos", "tabClasicos"]]
-    : esLab ? [["hablamos", "mesaHablamos"], ["arbol", "mesaArbol"], ...(typeof LB_DNU !== "undefined" ? [["deduccion", "mesaDeduccion"]] : []), ...(typeof LB_INU !== "undefined" ? [["induccion", "mesaInduccion"]] : []), ["mundo", "mesaMundo"], ["relaciones", "mesaRelaciones"], ["demos", "mesaDemos"], ["kant", "mesaKant"], ["spinoza", "mesaSpinoza"]] : null;
+    : esLab ? [["hablamos", "mesaHablamos"], ["arbol", "mesaArbol"], ...(typeof LB_DNU !== "undefined" ? [["deduccion", "mesaDeduccion"]] : []), ...(typeof LB_INU !== "undefined" ? [["induccion", "mesaInduccion"]] : []), ["mundo", "mesaMundo"], ["relaciones", "mesaRelaciones"], ["demos", "mesaDemos"], ["kant", "mesaKant"], ["mundos", "mesaMundos"]] : null;
   const rotulo = l => (hayLab && /^(tabLab|mesa)/.test(l) ? lbT(l) : logT(l));
   const cuerpo = esLab ? '<div id="lb-box" class="lb-box"></div>' : LOG.tab === "silogismos" ? logRenderSil() : LOG.tab === "cuadrado" ? logRenderCuadrado() + (typeof logmConversion === "function" ? logmConversion() : "") : LOG.tab === "conjuntos" ? logRenderConjuntos() : LOG.tab === "puertas" ? logRenderPuertas()
     : LOG.tab === "formalizar" && typeof logRenderFormalizar === "function" ? logRenderFormalizar() : LOG.tab === "inferencia" && typeof logRenderInferencia === "function" ? logRenderInferencia() : LOG.tab === "leyes" && typeof logRenderLeyes === "function" ? logRenderLeyes() : LOG.tab === "cuantificadores" && typeof logRenderCuantificadores === "function" ? logRenderCuantificadores() : LOG.tab === "falacias" && typeof logRenderFalacias === "function" ? logRenderFalacias()

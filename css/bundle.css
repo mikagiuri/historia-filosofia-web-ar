@@ -3044,89 +3044,89 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .af-ley-linea{ display:inline-block; width:28px; height:2px; background:var(--lb); flex:none; transform:translateY(-3px) }
 @media (prefers-reduced-motion:reduce){ .lb-box *, #afectosbox *{ animation:none !important; transition:none !important } }
 
-/* Mesa «Spinoza» (21-10, en desarrollo; laboratorio_spinozaview.js): Ética I con premisas de Isabelle/HOL y contramodelos */
-.spz-sello{ display:inline-block; font:600 .72rem var(--sans); letter-spacing:.08em; text-transform:uppercase; padding:.1rem .45rem; border-radius:6px; border:1px solid currentColor; margin-inline-end:.4rem }
-.lb-ok .spz-sello{ color:var(--ok) } .lb-mal .spz-sello{ color:var(--bad) } .lb-warn .spz-sello{ color:var(--lb-warn) }
-.spz-h{ font-family:var(--serif); font-size:1.1rem; margin:.4rem 0 0; font-weight:600 }
-.spz-sub{ display:block; font-size:.78rem; color:var(--muted); letter-spacing:.05em; text-transform:uppercase; margin:.2rem 0 .3rem }
-.spz-defs{ list-style:none; margin:0; padding:0; display:grid; gap:.6rem }
-.spz-defs li{ display:grid; gap:.2rem; padding-bottom:.55rem; border-bottom:1px solid var(--line-soft) }
-.spz-defs li:last-child{ border-bottom:0; padding-bottom:0 }
-.spz-origen{ font:600 .82rem var(--mono); color:var(--lb) }
-.spz-texto{ font-family:var(--serif); line-height:1.5 }
-.spz-cita{ font-family:var(--serif); font-style:italic; margin:0; padding-inline-start:.8rem; border-inline-start:2px solid var(--lb-suave); line-height:1.5 }
-.spz-formal{ background:var(--surface-2); border-radius:10px; padding:.6rem .8rem; display:grid; gap:.2rem }
-.spz-lista{ list-style:none; padding:0; display:grid; gap:.25rem; font-size:.85rem }
-.spz-premisas{ display:grid; gap:.6rem; max-height:26rem; overflow-y:auto; padding-inline-end:.3rem }
-.spz-grupo{ border:1px solid var(--line-soft); border-radius:10px; padding:.4rem .6rem .5rem; margin:0; display:grid; gap:.35rem; min-width:0 }
-.spz-grupo legend{ font-size:.78rem; color:var(--muted); padding:0 .3rem }
-.spz-premisa{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:0 .5rem; align-items:start; font-size:.88rem; cursor:pointer }
-.spz-premisa input{ grid-row:span 2; margin-top:.2rem; accent-color:var(--lb) }
-.spz-nom{ font-size:.8rem; overflow-wrap:anywhere }
-.spz-que{ color:var(--muted); line-height:1.4 }
-.spz-isa .spz-nom{ color:var(--lb); font-weight:600 }
-.spz-usada{ font:500 .72rem var(--sans) }
-.spz-lienzo{ background:var(--surface-2); border-radius:10px; border:1px solid var(--line-soft) }
-.spz-svg{ width:100%; min-width:20rem; height:auto; display:block }
-.spz-nodo{ font:600 .8125rem var(--sans); fill:var(--ink) }
-.spz-etq{ font:.6875rem var(--sans); fill:var(--muted) }
-.spz-leyenda{ display:flex; flex-wrap:wrap; gap:.3rem 1rem; font-size:.8rem; color:var(--muted) }
-.spz-leyenda span{ display:inline-flex; gap:.35rem; align-items:center }
-.spz-falla{ font-size:.85rem }
-.spz-hechos{ display:grid; grid-template-columns:repeat(auto-fit, minmax(12rem, 1fr)); gap:.6rem; font-size:.85rem }
-.spz-hechos h4{ font-size:.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin:0 0 .2rem }
-.spz-hechos ul{ margin:0; padding-inline-start:1rem; display:grid; gap:.1rem }
-.spz-formal .lb-res, .spz-defs .lb-res, .spz-lista, .spz-falla, .spz-nom, .spz-lienzo{ direction:ltr; unicode-bidi:isolate }   /* fórmulas e identificadores, de izquierda a derecha también en árabe */
+/* Mesa «Spinoza» (21-10, en desarrollo; laboratorio_mundosview.js): Ética I con premisas de Isabelle/HOL y contramodelos */
+.mp-sello{ display:inline-block; font:600 .72rem var(--sans); letter-spacing:.08em; text-transform:uppercase; padding:.1rem .45rem; border-radius:6px; border:1px solid currentColor; margin-inline-end:.4rem }
+.lb-ok .mp-sello{ color:var(--ok) } .lb-mal .mp-sello{ color:var(--bad) } .lb-warn .mp-sello{ color:var(--lb-warn) }
+.mp-h{ font-family:var(--serif); font-size:1.1rem; margin:.4rem 0 0; font-weight:600 }
+.mp-sub{ display:block; font-size:.78rem; color:var(--muted); letter-spacing:.05em; text-transform:uppercase; margin:.2rem 0 .3rem }
+.mp-defs{ list-style:none; margin:0; padding:0; display:grid; gap:.6rem }
+.mp-defs li{ display:grid; gap:.2rem; padding-bottom:.55rem; border-bottom:1px solid var(--line-soft) }
+.mp-defs li:last-child{ border-bottom:0; padding-bottom:0 }
+.mp-origen{ font:600 .82rem var(--mono); color:var(--lb) }
+.mp-texto{ font-family:var(--serif); line-height:1.5 }
+.mp-cita{ font-family:var(--serif); font-style:italic; margin:0; padding-inline-start:.8rem; border-inline-start:2px solid var(--lb-suave); line-height:1.5 }
+.mp-formal{ background:var(--surface-2); border-radius:10px; padding:.6rem .8rem; display:grid; gap:.2rem }
+.mp-lista{ list-style:none; padding:0; display:grid; gap:.25rem; font-size:.85rem }
+.mp-premisas{ display:grid; gap:.6rem; max-height:26rem; overflow-y:auto; padding-inline-end:.3rem }
+.mp-grupo{ border:1px solid var(--line-soft); border-radius:10px; padding:.4rem .6rem .5rem; margin:0; display:grid; gap:.35rem; min-width:0 }
+.mp-grupo legend{ font-size:.78rem; color:var(--muted); padding:0 .3rem }
+.mp-premisa{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:0 .5rem; align-items:start; font-size:.88rem; cursor:pointer }
+.mp-premisa input{ grid-row:span 2; margin-top:.2rem; accent-color:var(--lb) }
+.mp-nom{ font-size:.8rem; overflow-wrap:anywhere }
+.mp-que{ color:var(--muted); line-height:1.4 }
+.mp-isa .mp-nom{ color:var(--lb); font-weight:600 }
+.mp-usada{ font:500 .72rem var(--sans) }
+.mp-lienzo{ background:var(--surface-2); border-radius:10px; border:1px solid var(--line-soft) }
+.mp-svg{ width:100%; min-width:20rem; height:auto; display:block }
+.mp-nodo{ font:600 .8125rem var(--sans); fill:var(--ink) }
+.mp-etq{ font:.6875rem var(--sans); fill:var(--muted) }
+.mp-leyenda{ display:flex; flex-wrap:wrap; gap:.3rem 1rem; font-size:.8rem; color:var(--muted) }
+.mp-leyenda span{ display:inline-flex; gap:.35rem; align-items:center }
+.mp-falla{ font-size:.85rem }
+.mp-hechos{ display:grid; grid-template-columns:repeat(auto-fit, minmax(12rem, 1fr)); gap:.6rem; font-size:.85rem }
+.mp-hechos h4{ font-size:.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin:0 0 .2rem }
+.mp-hechos ul{ margin:0; padding-inline-start:1rem; display:grid; gap:.1rem }
+.mp-formal .lb-res, .mp-defs .lb-res, .mp-lista, .mp-falla, .mp-nom, .mp-lienzo{ direction:ltr; unicode-bidi:isolate }   /* fórmulas e identificadores, de izquierda a derecha también en árabe */
 #logica .lg-subfold > summary{ cursor:pointer; font-size:.9rem; color:var(--muted); padding:.2rem 0 .4rem; width:max-content; max-width:100% }   /* (21-10) subpestañas plegadas (más de seis) */
 #logica .lg-subfold[open] > summary{ color:var(--r-log, var(--accent)) }
 /* (21-10) Guía de la mesa «Spinoza» y su tabla de símbolos */
-.spz-guia h4{ font-family:var(--sans); font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:.9rem 0 .3rem }
-.spz-guia ol{ margin:.3rem 0; padding-inline-start:1.4rem; display:grid; gap:.35rem; font-size:.92rem; max-width:68ch }
-.spz-simbolos{ display:grid; grid-template-columns:repeat(auto-fill, minmax(12rem, 1fr)); gap:.3rem .9rem; margin:.2rem 0; font-size:.9rem }
-.spz-simbolos > div{ display:flex; gap:.6rem; align-items:baseline }
-.spz-simbolos dt{ min-width:2.2rem; direction:ltr; unicode-bidi:isolate }
-.spz-simbolos dd{ margin:0 }
+.mp-guia h4{ font-family:var(--sans); font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:.9rem 0 .3rem }
+.mp-guia ol{ margin:.3rem 0; padding-inline-start:1.4rem; display:grid; gap:.35rem; font-size:.92rem; max-width:68ch }
+.mp-simbolos{ display:grid; grid-template-columns:repeat(auto-fill, minmax(12rem, 1fr)); gap:.3rem .9rem; margin:.2rem 0; font-size:.9rem }
+.mp-simbolos > div{ display:flex; gap:.6rem; align-items:baseline }
+.mp-simbolos dt{ min-width:2.2rem; direction:ltr; unicode-bidi:isolate }
+.mp-simbolos dd{ margin:0 }
 /* (21-10) Mesa «Spinoza»: lectura de las fórmulas, repaso de cosas, propiedades y relaciones, y forma de cada premisa */
-.spz-lee{ display:block; font-family:var(--serif); font-size:.95rem; line-height:1.5; margin:.15rem 0 .35rem; color:var(--ink) }
-.spz-lee var{ font-style:italic; font-family:var(--serif); color:var(--lb) }
-.spz-lee-et{ font-family:var(--sans); font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-inline-end:.2rem }
-.spz-lista{ display:grid; gap:.2rem; font-size:.88rem }
-.spz-repaso h4{ font-family:var(--sans); font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:.2rem 0 .25rem }
-.spz-mapa{ list-style:none; padding:0; margin:.3rem 0 .6rem; display:grid; gap:.35rem }
-.spz-mapa li{ display:grid; grid-template-columns:auto 1fr; gap:.2rem .5rem; align-items:baseline }
-.spz-mapa .spz-sello{ justify-self:start; white-space:nowrap }
-.spz-lema{ display:block; font-size:.78rem; color:var(--muted) }
-@media (max-width: 560px){ .spz-mapa li{ grid-template-columns:1fr } }
-.spz-sobra{ margin:.2rem 0; padding-inline-start:1.1rem }
-.spz-reps{ display:grid; grid-template-columns:repeat(auto-fill, minmax(16rem, 1fr)); gap:.6rem }
-.spz-rep{ border:1px solid var(--line-soft); border-radius:10px; padding:.5rem .7rem; font-size:.9rem; line-height:1.5 }
-.spz-rep p{ margin:.2rem 0 }
-.spz-rep ul{ margin:.2rem 0; padding-inline-start:1.1rem; display:grid; gap:.2rem }
-.spz-rep-ej{ color:var(--muted); font-size:.86rem }
-.spz-rep-luz{ border-color:var(--lb); background:var(--lb-suave) }
-.spz-pf{ grid-column:2; display:flex; flex-wrap:wrap; gap:.2rem .5rem; align-items:baseline; font:.78rem var(--mono); color:var(--muted); direction:ltr; unicode-bidi:isolate }
-.spz-forma{ font:500 .72rem var(--sans); color:var(--lb); background:none; border:1px solid var(--lb); border-radius:999px; padding:.05rem .5rem; cursor:pointer }
-.spz-forma:hover, .spz-forma:focus-visible{ background:var(--lb-suave) }
-.spz-rep-suelta{ margin:.1rem 0 .4rem 1.6rem; background:var(--lb-suave); border-color:var(--lb) }
-.spz-pasos{ margin:.3rem 0 .4rem; padding-inline-start:1.4rem; display:grid; gap:.35rem; font-size:.92rem }
-.spz-pasos li > span:first-child{ margin-inline-end:.3rem }
-.spz-paso-et{ font:500 .72rem var(--sans); color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:.05rem .45rem }
-.spz-paso-pr{ font-size:.75rem; color:var(--ok) }
-.spz-pasos .spz-rep-suelta{ margin:.3rem 0 .1rem }
+.mp-lee{ display:block; font-family:var(--serif); font-size:.95rem; line-height:1.5; margin:.15rem 0 .35rem; color:var(--ink) }
+.mp-lee var{ font-style:italic; font-family:var(--serif); color:var(--lb) }
+.mp-lee-et{ font-family:var(--sans); font-size:.72rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-inline-end:.2rem }
+.mp-lista{ display:grid; gap:.2rem; font-size:.88rem }
+.mp-repaso h4{ font-family:var(--sans); font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:.2rem 0 .25rem }
+.mp-mapa{ list-style:none; padding:0; margin:.3rem 0 .6rem; display:grid; gap:.35rem }
+.mp-mapa li{ display:grid; grid-template-columns:auto 1fr; gap:.2rem .5rem; align-items:baseline }
+.mp-mapa .mp-sello{ justify-self:start; white-space:nowrap }
+.mp-lema{ display:block; font-size:.78rem; color:var(--muted) }
+@media (max-width: 560px){ .mp-mapa li{ grid-template-columns:1fr } }
+.mp-sobra{ margin:.2rem 0; padding-inline-start:1.1rem }
+.mp-reps{ display:grid; grid-template-columns:repeat(auto-fill, minmax(16rem, 1fr)); gap:.6rem }
+.mp-rep{ border:1px solid var(--line-soft); border-radius:10px; padding:.5rem .7rem; font-size:.9rem; line-height:1.5 }
+.mp-rep p{ margin:.2rem 0 }
+.mp-rep ul{ margin:.2rem 0; padding-inline-start:1.1rem; display:grid; gap:.2rem }
+.mp-rep-ej{ color:var(--muted); font-size:.86rem }
+.mp-rep-luz{ border-color:var(--lb); background:var(--lb-suave) }
+.mp-pf{ grid-column:2; display:flex; flex-wrap:wrap; gap:.2rem .5rem; align-items:baseline; font:.78rem var(--mono); color:var(--muted); direction:ltr; unicode-bidi:isolate }
+.mp-forma{ font:500 .72rem var(--sans); color:var(--lb); background:none; border:1px solid var(--lb); border-radius:999px; padding:.05rem .5rem; cursor:pointer }
+.mp-forma:hover, .mp-forma:focus-visible{ background:var(--lb-suave) }
+.mp-rep-suelta{ margin:.1rem 0 .4rem 1.6rem; background:var(--lb-suave); border-color:var(--lb) }
+.mp-pasos{ margin:.3rem 0 .4rem; padding-inline-start:1.4rem; display:grid; gap:.35rem; font-size:.92rem }
+.mp-pasos li > span:first-child{ margin-inline-end:.3rem }
+.mp-paso-et{ font:500 .72rem var(--sans); color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:.05rem .45rem }
+.mp-paso-pr{ font-size:.75rem; color:var(--ok) }
+.mp-pasos .mp-rep-suelta{ margin:.3rem 0 .1rem }
 /* (21-10) Mesa «Spinoza»: sobre Isabelle y agradecimientos */
-.spz-isabelle p, .spz-isabelle li{ max-width:68ch; line-height:1.55 }
-.spz-isabelle h4{ font-family:var(--sans); font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:.8rem 0 .3rem }
-.spz-isabelle ul{ margin:.2rem 0; padding-inline-start:1.2rem; display:grid; gap:.3rem; font-size:.92rem }
-.spz-gracias{ font-family:var(--serif); font-style:italic; border-inline-start:3px solid var(--lb); padding-inline-start:.7rem }
+.mp-isabelle p, .mp-isabelle li{ max-width:68ch; line-height:1.55 }
+.mp-isabelle h4{ font-family:var(--sans); font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:.8rem 0 .3rem }
+.mp-isabelle ul{ margin:.2rem 0; padding-inline-start:1.2rem; display:grid; gap:.3rem; font-size:.92rem }
+.mp-gracias{ font-family:var(--serif); font-style:italic; border-inline-start:3px solid var(--lb); padding-inline-start:.7rem }
 /* (21-10) Mesa «Spinoza»: escribir la proposición y las premisas propias */
-.spz-editor{ display:grid; gap:.5rem; background:var(--surface-2); border-radius:10px; padding:.7rem .8rem }
-.spz-escribe, #spz-nueva{ width:100%; font-size:1rem; padding:.45rem .6rem; border-radius:8px; border:1px solid var(--line); background:var(--surface); color:var(--ink); direction:ltr }
-.spz-escribe:focus, #spz-nueva:focus{ outline:2px solid var(--lb); outline-offset:1px }
-.spz-teclado{ gap:.3rem }
-.spz-tecla{ font-family:var(--mono); min-width:2.2rem; padding:.2rem .5rem }
-.spz-modo{ display:inline-flex; gap:.35rem; align-items:center; font-size:.9rem; cursor:pointer }
-.spz-mias .spz-premisa .spz-pf{ grid-column:2 }
-.spz-mias .lb-err:empty{ display:none }
+.mp-editor{ display:grid; gap:.5rem; background:var(--surface-2); border-radius:10px; padding:.7rem .8rem }
+.mp-escribe, #mp-nueva{ width:100%; font-size:1rem; padding:.45rem .6rem; border-radius:8px; border:1px solid var(--line); background:var(--surface); color:var(--ink); direction:ltr }
+.mp-escribe:focus, #mp-nueva:focus{ outline:2px solid var(--lb); outline-offset:1px }
+.mp-teclado{ gap:.3rem }
+.mp-tecla{ font-family:var(--mono); min-width:2.2rem; padding:.2rem .5rem }
+.mp-modo{ display:inline-flex; gap:.35rem; align-items:center; font-size:.9rem; cursor:pointer }
+.mp-mias .mp-premisa .mp-pf{ grid-column:2 }
+.mp-mias .lb-err:empty{ display:none }
 
 /* (22-10, nube) mesa «Deducción natural»: líneas numeradas; los supuestos, sangrados con una barra a la izquierda */
 .lb-dn-enun{ margin:0; font-size:1.02rem }
@@ -3144,44 +3144,49 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .lb-in-caso{ margin:0; font-size:1.02rem; line-height:1.55; border-inline-start:3px solid var(--lb); padding-inline-start:.7rem }   /* (22-10, nube) mesa «Inducción y abducción» */
 
 /* (23-10) Mesa «Spinoza», modo guiado: un reto cada vez, en tres pasos. */
-.spz-modo{ margin-block-end:.8rem }
-.spz-como{ border:1px solid var(--line); border-radius:.8rem; padding:.8rem 1rem; margin-block-end:1rem; background:var(--surface) }
-.spz-como ol{ margin:.3rem 0 0; padding-inline-start:1.3rem; display:grid; gap:.25rem }
-.spz-mcards{ display:grid; grid-template-columns:repeat(auto-fill, minmax(13rem, 1fr)); gap:.6rem; margin-block:.4rem 1rem }
-.spz-mcard{ display:grid; gap:.25rem; text-align:start; padding:.7rem .8rem; border:1px solid var(--line); border-radius:.7rem; background:var(--surface); color:var(--ink); cursor:pointer; font:inherit }
-.spz-mcard[aria-pressed="true"]{ border-color:var(--lb); box-shadow:0 0 0 2px var(--lb) inset }
-.spz-mcard-t{ font-weight:700 }
-.spz-mcard-e{ justify-self:start; font-size:.72rem; font-weight:600; color:var(--lb); border:1px solid var(--lb); border-radius:999px; padding:0 .45rem }
-.spz-mcard-q{ font-size:.86rem; color:var(--muted) }
-.spz-mcard-n{ font-size:.76rem; color:var(--muted) }
-.spz-sobre{ margin-block-end:1rem }
-.spz-reto{ border:1px solid var(--line); border-radius:.9rem; padding:1rem; background:var(--surface); display:grid; gap:1rem }
-.spz-reto-cab{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem }
-.spz-reto-n{ font-weight:700 }
-.spz-reto-sel{ margin-inline-start:auto; min-width:0; max-width:100% }
-.spz-reto-sel select{ max-width:100%; background:var(--surface-2); color:var(--ink); border:1px solid var(--line); border-radius:.5rem; padding:.35rem .5rem; font:inherit; font-size:.9rem }
-.spz-reto .spz-lienzo svg{ max-height:17rem }
-#spz-sug:not(:empty){ border-inline-start:3px solid var(--lb); padding-inline-start:.8rem }
-.spz-reto-t{ margin:0; font-size:1.25rem }
-.spz-paso{ display:grid; grid-template-columns:2.2rem minmax(0,1fr); gap:.7rem; align-items:start }
-.spz-paso h4{ margin:.15rem 0 .4rem; display:flex; align-items:center; gap:.4rem }
-.spz-num{ display:grid; place-items:center; width:2rem; height:2rem; border-radius:50%; background:var(--lb); color:var(--surface); font-weight:700 }
-.spz-afirma{ font-size:1.15rem; margin:0 0 .3rem }
-.spz-pcards{ display:grid; gap:.5rem; margin-block:.4rem }
-.spz-pcard{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:.1rem .6rem; padding:.6rem .7rem; border:1px solid var(--line); border-radius:.6rem; cursor:pointer }
-.spz-pcard input{ grid-row:span 2; width:1.2rem; height:1.2rem; margin-top:.15rem; accent-color:var(--lb) }
-.spz-pcard.on{ border-color:var(--lb); background:var(--lb-suave) }
-.spz-pcard-id{ font-size:.72rem; color:var(--muted) }
-.spz-resto summary{ cursor:pointer; color:var(--muted); font-size:.9rem }
-.spz-grande{ font-size:1.05rem; padding:.6rem 1.4rem }
-.spz-expl{ font-size:1rem; margin:.2rem 0 .5rem }
-.spz-sug-lista{ display:flex; flex-wrap:wrap; gap:.4rem }
-.spz-glo{ position:relative; display:inline-grid; place-items:center; width:1.25em; height:1.25em; border-radius:50%; border:1px solid var(--muted); color:var(--muted); font-size:.78em; font-weight:700; cursor:help; vertical-align:middle }
-.spz-glo:hover::after, .spz-glo:focus::after{ content:attr(data-def); position:absolute; inset-block-start:140%; inset-inline-start:-.5rem; width:min(18rem, 75vw); background:var(--surface-2); color:var(--ink); border:1px solid var(--line); border-radius:.5rem; padding:.5rem .6rem; font-size:.85rem; font-weight:400; line-height:1.4; z-index:20; white-space:normal; box-shadow:0 4px 14px rgb(0 0 0 / .25) }
-@media (max-width:560px){ .spz-paso{ grid-template-columns:1.8rem minmax(0,1fr) } .spz-num{ width:1.7rem; height:1.7rem } }
-.spz-isa-enl{ white-space:nowrap; font-weight:600 }
-.spz-isa-lista{ display:grid; gap:.3rem; padding-inline-start:1.1rem }
-.spz-isaweb{ margin-block-end:1rem }
+.mp-modo{ margin-block-end:.8rem }
+.mp-como{ border:1px solid var(--line); border-radius:.8rem; padding:.8rem 1rem; margin-block-end:1rem; background:var(--surface) }
+.mp-como ol{ margin:.3rem 0 0; padding-inline-start:1.3rem; display:grid; gap:.25rem }
+.mp-mcards{ display:grid; grid-template-columns:repeat(auto-fill, minmax(13rem, 1fr)); gap:.6rem; margin-block:.4rem 1rem }
+.mp-mcard{ display:grid; gap:.25rem; text-align:start; padding:.7rem .8rem; border:1px solid var(--line); border-radius:.7rem; background:var(--surface); color:var(--ink); cursor:pointer; font:inherit }
+.mp-mcard[aria-pressed="true"]{ border-color:var(--lb); box-shadow:0 0 0 2px var(--lb) inset }
+.mp-mcard-t{ font-weight:700 }
+.mp-mcard-e{ justify-self:start; font-size:.72rem; font-weight:600; color:var(--lb); border:1px solid var(--lb); border-radius:999px; padding:0 .45rem }
+.mp-mcard-q{ font-size:.86rem; color:var(--muted) }
+.mp-mcard-n{ font-size:.76rem; color:var(--muted) }
+.mp-sobre{ margin-block-end:1rem }
+.mp-reto{ border:1px solid var(--line); border-radius:.9rem; padding:1rem; background:var(--surface); display:grid; gap:1rem }
+.mp-reto-cab{ display:flex; flex-wrap:wrap; align-items:center; gap:.5rem }
+.mp-reto-n{ font-weight:700 }
+.mp-reto-sel{ margin-inline-start:auto; min-width:0; max-width:100% }
+.mp-reto-sel select{ max-width:100%; background:var(--surface-2); color:var(--ink); border:1px solid var(--line); border-radius:.5rem; padding:.35rem .5rem; font:inherit; font-size:.9rem }
+.mp-reto .mp-lienzo svg{ max-height:17rem }
+#mp-sug:not(:empty){ border-inline-start:3px solid var(--lb); padding-inline-start:.8rem }
+.mp-reto-t{ margin:0; font-size:1.25rem }
+.mp-paso{ display:grid; grid-template-columns:2.2rem minmax(0,1fr); gap:.7rem; align-items:start }
+.mp-paso h4{ margin:.15rem 0 .4rem; display:flex; align-items:center; gap:.4rem }
+.mp-num{ display:grid; place-items:center; width:2rem; height:2rem; border-radius:50%; background:var(--lb); color:var(--surface); font-weight:700 }
+.mp-afirma{ font-size:1.15rem; margin:0 0 .3rem }
+.mp-pcards{ display:grid; gap:.5rem; margin-block:.4rem }
+.mp-pcard{ display:grid; grid-template-columns:auto minmax(0,1fr); gap:.1rem .6rem; padding:.6rem .7rem; border:1px solid var(--line); border-radius:.6rem; cursor:pointer }
+.mp-pcard input{ grid-row:span 2; width:1.2rem; height:1.2rem; margin-top:.15rem; accent-color:var(--lb) }
+.mp-pcard.on{ border-color:var(--lb); background:var(--lb-suave) }
+.mp-pcard-id{ font-size:.72rem; color:var(--muted) }
+.mp-resto summary{ cursor:pointer; color:var(--muted); font-size:.9rem }
+.mp-grande{ font-size:1.05rem; padding:.6rem 1.4rem }
+.mp-expl{ font-size:1rem; margin:.2rem 0 .5rem }
+.mp-sug-lista{ display:flex; flex-wrap:wrap; gap:.4rem }
+.mp-glo{ position:relative; display:inline-grid; place-items:center; width:1.25em; height:1.25em; border-radius:50%; border:1px solid var(--muted); color:var(--muted); font-size:.78em; font-weight:700; cursor:help; vertical-align:middle }
+.mp-glo:hover::after, .mp-glo:focus::after{ content:attr(data-def); position:absolute; inset-block-start:140%; inset-inline-start:-.5rem; width:min(18rem, 75vw); background:var(--surface-2); color:var(--ink); border:1px solid var(--line); border-radius:.5rem; padding:.5rem .6rem; font-size:.85rem; font-weight:400; line-height:1.4; z-index:20; white-space:normal; box-shadow:0 4px 14px rgb(0 0 0 / .25) }
+@media (max-width:560px){ .mp-paso{ grid-template-columns:1.8rem minmax(0,1fr) } .mp-num{ width:1.7rem; height:1.7rem } }
+.mp-isa-enl{ white-space:nowrap; font-weight:600 }
+.mp-isa-lista{ display:grid; gap:.3rem; padding-inline-start:1.1rem }
+.mp-isaweb{ margin-block-end:1rem }
+/* (24-10) Capturas de Isabelle en «¿Qué es Isabelle?» */
+.mp-isa-capturas{ display:grid; gap:1.2rem; margin-block:.6rem 1rem }
+.mp-isa-capturas figure{ margin:0 }
+.mp-isa-capturas img{ display:block; width:100%; height:auto; border:1px solid var(--line, #ddd); border-radius:6px }
+.mp-isa-capturas figcaption{ margin-block-start:.4rem; font-size:.95em; line-height:1.45 }
 
 
 /* ==== css/hegel.css ==== */
