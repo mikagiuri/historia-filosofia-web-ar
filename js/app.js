@@ -41,10 +41,10 @@ tabs.addEventListener("click", e => { const b = e.target.closest("button"); if (
 window.VIEW_LOADERS = {
   teoria: "loadTheory", lecturas: "loadLectura", materiales: "loadMaterial", cuentos: "loadCuento",
   infografias: "loadInfografia", cuestionarios: "loadQuiz", tarjetas: "loadDeck",
-  esquemas: "loadEsq", pau: "loadPau", mapas: "loadMap", cronogramas: "loadCrono", genealogias: "loadGenea",
+  esquemas: "loadEsq", prepara_PAU: "loadPau", mapas: "loadMap", cronogramas: "loadCrono", genealogias: "loadGenea",
   biografias: "loadBiografia", epocas: "loadEpocas", clases: "loadClase",
-  pistas: "loadPista", glosario: "loadGlosario", etimos: "loadEtimos",   // (20-10) #glosario/<id> (g-imperativo-categorico)
-  logica: "loadLogica", juegosucio: "loadJuegoSucio",   // (08-10) #juegosucio/<estratagema>
+  pistas: "loadPista", diccionario: "loadDiccionario", etimos: "loadEtimos",   // (20-10) #diccionario/<id> (g-imperativo-categorico)
+  logica: "loadLogica", logica_pca: "loadJuegoSucio",   // (08-10) #logica_pca/<estratagema>
       // (01-10) #logica/tablas|silogismos|puertas   // (01-10) #pistas/kant-imperativo
   leibniz: "loadLeibniz", universo: "loadUniverso", palabra: "loadPalabra", afectos: "loadAfectos", hegel: "loadHegel", pilares: "loadPilares", rescritura: "loadRescritura", nudos: "loadNudos", adagios: "loadAdagios", polemicas: "loadPolemicas", perseguidos: "loadPerseguidos", comunidades: "loadComunidades", dilemas: "loadDilema", duelo: "loadDuelo", rayuela: "loadRayuela", // (11-10) #rayuela/<estación>   // (09-10) #adagios/<id>
     // (09-10) #nudos/mentir|creer
@@ -63,9 +63,7 @@ function parseHash(){
   const i = raw.indexOf("/");
   let go = i < 0 ? raw : raw.slice(0, i);
   let arg = i < 0 ? null : raw.slice(i + 1);
-  if (go === "citas"){ go = "adagios"; arg = "frases"; }
-  if (go === "ilustres"){ go = "biografias"; }   // (21-10) compat: #ilustres(/id) -> #biografias (redirect)   // (12-10) la antigua sección «Frases» vive ahora en Adagios (interruptor)
-  if (go === "diccionario"){ go = "glosario"; }   // (23-10) alias: la sección se llama «Diccionario»; su id sigue siendo «glosario»
+  if (go === "citas"){ go = "adagios"; arg = "frases"; }   // (12-10) la antigua sección «Frases» vive ahora en Adagios (interruptor)
   const el = go && document.getElementById(go);
   if (!(el && el.classList.contains("view"))) return null;   // p. ej. #th-3 (ancla interna del índice): se ignora
   if (arg){ try { arg = decodeURIComponent(arg); } catch (e){} }
@@ -88,9 +86,9 @@ const ROUTE_KEY_OK = {
   tarjetas: k => typeof DECKS === "undefined" || !!DECKS[k],
   materiales: k => typeof MATERIALS === "undefined" || !!MATERIALS[k],
   dilemas: k => typeof DILEMAS === "undefined" || DILEMAS.some(d => d.id === k),
-  glosario: k => typeof GLOSARIO === "undefined" || GLOSARIO.some(g => g.id === k),
-  etimos: k => typeof ETIMOS === "undefined" || ETIMOS.some(e => e.id === k),   // (20-10) #glosario/<id>   // (20-10) #dilemas/<id>
-  pilares: k => typeof PILARES === "undefined" || PILARES.pilares.some(p => k === p.id || k.indexOf(p.id + "-") === 0),   // (22-10) #pilares/causa, #pilares/causa-4   // (20-10) #glosario/<id>   // (20-10) #dilemas/<id>
+  diccionario: k => typeof DICCIONARIO === "undefined" || DICCIONARIO.some(g => g.id === k),
+  etimos: k => typeof ETIMOS === "undefined" || ETIMOS.some(e => e.id === k),   // (20-10) #diccionario/<id>   // (20-10) #dilemas/<id>
+  pilares: k => typeof PILARES === "undefined" || PILARES.pilares.some(p => k === p.id || k.indexOf(p.id + "-") === 0),   // (22-10) #pilares/causa, #pilares/causa-4   // (20-10) #diccionario/<id>   // (20-10) #dilemas/<id>
   biografias: k => typeof bioList !== "function" || bioList().some(x => x.id === k) || (/^epoca-/.test(k) && typeof EPOCAS_FICHAS !== "undefined" && !!EPOCAS_FICHAS[k.slice(6)])
 };
 function routeNote(msg){
@@ -137,9 +135,6 @@ function routeUnknown(){
   routeNote(ROUTE_NO_VIEW);
 }
 function routeFromHash(){
-  const _rawIlu = (location.hash || "").replace(/^#/, "");
-  if (/^ilustres(\/|$)/.test(_rawIlu)){ try { history.replaceState(null, "", "#biografias" + _rawIlu.slice(8)); } catch (e){} }   // (21-10) compat: reescribe #ilustres(/id) -> #biografias
-  if (/^diccionario(\/|$)/.test(_rawIlu)){ try { history.replaceState(null, "", "#glosario" + _rawIlu.slice(11)); } catch (e){} }   // (23-10) alias: #diccionario(/id) -> #glosario(/id)
   const r = parseHash(); if (!r){ routeUnknown(); return; }
   if (r.go !== activeViewId()) (window.show || show)(r.go);
   if (r.arg){

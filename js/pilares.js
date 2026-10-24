@@ -43,7 +43,7 @@ const PILARES = {
      "enl": [
       {
        "t": "القاموس: العقل",
-       "h": "#glosario/g-fil-razon"
+       "h": "#diccionario/g-fil-razon"
       },
       {
        "t": "المنطق والحِجاج (الفلسفة، السنة الأولى)",
@@ -167,11 +167,11 @@ const PILARES = {
       },
       {
        "t": "القاموس: التعاون بين الإيمان والعقل",
-       "h": "#glosario/g-colaboracion-fe-razon"
+       "h": "#diccionario/g-colaboracion-fe-razon"
       },
       {
        "t": "القاموس: حدود العقل",
-       "h": "#glosario/g-los-limites-de-la-razon"
+       "h": "#diccionario/g-los-limites-de-la-razon"
       }
      ]
     },
@@ -201,11 +201,11 @@ const PILARES = {
       },
       {
        "t": "القاموس: استقلالية العقل",
-       "h": "#glosario/g-autonomia-de-la-razon"
+       "h": "#diccionario/g-autonomia-de-la-razon"
       },
       {
        "t": "القاموس: الأفكار الواضحة والمتميّزة",
-       "h": "#glosario/g-ideas-claras-y-distintas"
+       "h": "#diccionario/g-ideas-claras-y-distintas"
       }
      ]
     },
@@ -239,7 +239,7 @@ const PILARES = {
       },
       {
        "t": "القاموس: علاقات الأفكار وأمور الواقع",
-       "h": "#glosario/g-relaciones-de-ideas"
+       "h": "#diccionario/g-relaciones-de-ideas"
       }
      ]
     },
@@ -269,11 +269,11 @@ const PILARES = {
       },
       {
        "t": "القاموس: الاستعمال الخاص للعقل",
-       "h": "#glosario/g-uso-privado"
+       "h": "#diccionario/g-uso-privado"
       },
       {
        "t": "القاموس: الفكرة الناظمة",
-       "h": "#glosario/g-idea-regulativa"
+       "h": "#diccionario/g-idea-regulativa"
       }
      ]
     },
@@ -303,11 +303,11 @@ const PILARES = {
       },
       {
        "t": "القاموس: العقل الأداتي",
-       "h": "#glosario/g-razon-instrumental"
+       "h": "#diccionario/g-razon-instrumental"
       },
       {
        "t": "القاموس: الارتياب",
-       "h": "#glosario/g-sospecha"
+       "h": "#diccionario/g-sospecha"
       }
      ]
     },
@@ -329,11 +329,11 @@ const PILARES = {
       },
       {
        "t": "القاموس: العقل التواصلي",
-       "h": "#glosario/g-razon-comunicativa"
+       "h": "#diccionario/g-razon-comunicativa"
       },
       {
        "t": "القاموس: وضعية الكلام المثالية",
-       "h": "#glosario/g-situacion-ideal-de-habla"
+       "h": "#diccionario/g-situacion-ideal-de-habla"
       },
       {
        "t": "المنطق والحِجاج (الفلسفة، السنة الأولى)",
@@ -415,7 +415,7 @@ const PILARES = {
       },
       {
        "t": "القاموس: نظرية المُثُل",
-       "h": "#glosario/g-teoria-de-las-ideas"
+       "h": "#diccionario/g-teoria-de-las-ideas"
       },
       {
        "t": "الواقع: ماذا يوجد وكيف هو؟ (الفلسفة، السنة الأولى)",
@@ -445,7 +445,7 @@ const PILARES = {
       },
       {
        "t": "القاموس: رفض المُثُل",
-       "h": "#glosario/g-el-rechazo-de-las-ideas"
+       "h": "#diccionario/g-el-rechazo-de-las-ideas"
       },
       {
        "t": "ورشة: الكون الأرسطي",
@@ -479,7 +479,7 @@ const PILARES = {
       },
       {
        "t": "القاموس: الاسمية",
-       "h": "#glosario/g-nominalismo"
+       "h": "#diccionario/g-nominalismo"
       }
      ]
     },
@@ -509,11 +509,11 @@ const PILARES = {
       },
       {
        "t": "القاموس: الفطرية",
-       "h": "#glosario/g-innatismo"
+       "h": "#diccionario/g-innatismo"
       },
       {
        "t": "القاموس: الأفكار الواضحة والمتميّزة",
-       "h": "#glosario/g-ideas-claras-y-distintas-dm"
+       "h": "#diccionario/g-ideas-claras-y-distintas-dm"
       }
      ]
     },
@@ -539,11 +539,11 @@ const PILARES = {
       },
       {
        "t": "القاموس: الانطباع",
-       "h": "#glosario/g-impresion"
+       "h": "#diccionario/g-impresion"
       },
       {
        "t": "القاموس: علاقات الأفكار وأمور الواقع",
-       "h": "#glosario/g-relaciones-de-ideas"
+       "h": "#diccionario/g-relaciones-de-ideas"
       }
      ]
     },
@@ -573,11 +573,11 @@ const PILARES = {
       },
       {
        "t": "القاموس: الفكرة الناظمة",
-       "h": "#glosario/g-idea-regulativa"
+       "h": "#diccionario/g-idea-regulativa"
       },
       {
        "t": "القاموس: المقولة",
-       "h": "#glosario/g-categoria"
+       "h": "#diccionario/g-categoria"
       }
      ]
     },
@@ -607,15 +607,15 @@ const PILARES = {
       },
       {
        "t": "القاموس: الجدل",
-       "h": "#glosario/g-dialectica"
+       "h": "#diccionario/g-dialectica"
       },
       {
        "t": "القاموس: الجدل المادي",
-       "h": "#glosario/g-dialectica-materialista"
+       "h": "#diccionario/g-dialectica-materialista"
       },
       {
        "t": "القاموس: المثالية",
-       "h": "#glosario/g-fil-idealismo"
+       "h": "#diccionario/g-fil-idealismo"
       }
      ]
     },
@@ -671,7 +671,7 @@ const PILARES = {
      "enl": [
       {
        "t": "القاموس: السبب الزائف",
-       "h": "#glosario/g-fil-causa-falsa"
+       "h": "#diccionario/g-fil-causa-falsa"
       }
      ]
     },
@@ -689,7 +689,7 @@ const PILARES = {
      "enl": [
       {
        "t": "القاموس: السبب الزائف",
-       "h": "#glosario/g-fil-causa-falsa"
+       "h": "#diccionario/g-fil-causa-falsa"
       },
       {
        "t": "المنهج الفرضي الاستنباطي: حالة سيملفايس (الفلسفة، السنة الأولى)",
@@ -753,11 +753,11 @@ const PILARES = {
       },
       {
        "t": "القاموس: الأسباب الأربعة",
-       "h": "#glosario/g-las-cuatro-causas"
+       "h": "#diccionario/g-las-cuatro-causas"
       },
       {
        "t": "القاموس: المحرّك الذي لا يتحرّك",
-       "h": "#glosario/g-motor-inmovil"
+       "h": "#diccionario/g-motor-inmovil"
       },
       {
        "t": "الواقع: ماذا يوجد وكيف هو؟ (الفلسفة، السنة الأولى)",
@@ -791,7 +791,7 @@ const PILARES = {
       },
       {
        "t": "القاموس: الطرق الخمسة",
-       "h": "#glosario/g-cinco-vias"
+       "h": "#diccionario/g-cinco-vias"
       }
      ]
     },
@@ -843,11 +843,11 @@ const PILARES = {
       },
       {
        "t": "القاموس: العادة",
-       "h": "#glosario/g-habito"
+       "h": "#diccionario/g-habito"
       },
       {
        "t": "القاموس: علاقات الأفكار وأمور الواقع",
-       "h": "#glosario/g-relaciones-de-ideas"
+       "h": "#diccionario/g-relaciones-de-ideas"
       }
      ]
     },
@@ -877,7 +877,7 @@ const PILARES = {
       },
       {
        "t": "القاموس: المقولة",
-       "h": "#glosario/g-categoria"
+       "h": "#diccionario/g-categoria"
       }
      ]
     },
@@ -933,7 +933,7 @@ const PILARES = {
       },
       {
        "t": "القاموس: السبب الزائف",
-       "h": "#glosario/g-fil-causa-falsa"
+       "h": "#diccionario/g-fil-causa-falsa"
       }
      ]
     }

@@ -1,6 +1,6 @@
 "use strict";
 /* ===== Colores de época y de rama en toda la web (30-09-2026) =====
-   Idea del profesor: la distinción por color que ya usa «Ilustres» (y el eje cronológico) vale para toda la web,
+   Idea del profesor: la distinción por color que ya usa «Biografías» (y el eje cronológico) vale para toda la web,
    y quita monotonía a la ficha de la materia. En Historia de la Filosofía cada tema tiene época:
    1-2 Introducción (gris) · 3-10 Antigua · 11-12 Medieval · 13 Renacimiento · 14-17 Moderna · 18-20 Ilustración ·
    21-27 Contemporánea. En Filosofía 1.º cada tema (salvo el 1, introductorio) tiene rama: 2 Antropología ·
@@ -11,7 +11,7 @@
      Mapas, Esquemas, Lecturas y Comentarios, y la cabecera del tema abierto en Teoría (los deduce con
      Itinerario.temaOf, itinerario.js); lo que no tiene tema pero sí bloque (p. ej. las barajas de Frases) toma el
      color de su bloque (A Antigua · B Medieval-Moderna, a dos tonos · C Contemporánea);
-   · (30-09) marca también las etiquetas de los filtros: bloques A/B/C de todas las vistas, épocas de Frases e Ilustres,
+   · (30-09) marca también las etiquetas de los filtros: bloques A/B/C de todas las vistas, épocas de Frases e Biografías,
      temas T1…T27 de Cuestionarios y bloques de Cronogramas;
    · (30-09) temas 1 y 2 de HF (Historicidad y universalidad, Los métodos de la filosofía): son introductorios, van en
      gris y solo salen con el filtro «Todos los bloques» (window.Epocas.soloTodos, lo usan las vistas y navctx.js);

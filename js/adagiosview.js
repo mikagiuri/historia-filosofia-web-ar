@@ -3,7 +3,7 @@
    Repertorio de lemas clásicos al modo de los cuadernos de lugares comunes del Renacimiento. Cada ficha: la versión
    española y, solo al pulsar el botón λ de su línea (como en el glosario), el lema latino y, si lo hay, el original
    griego con su transliteración; luego qué quiere decir, cuándo usarlo, el caso trampa si lo hay, de dónde viene y los temas.
-   Los nombres de pensadores con ficha en Ilustres (en esta web) abren su biografía: el primero de cada ficha.
+   Los nombres de pensadores con ficha en Biografías (en esta web) abren su biografía: el primero de cada ficha.
    Filtro por ámbito y modo «Ponte a prueba» (solo el lema en español; el resto se descubre al pulsar). Arriba solo las fichas:
    la historia (Erasmo, florilegios, Montaigne) y el cuaderno de lugares comunes van al final, plegados.
    Enlace profundo: #adagios/<id>. Los temas se enlazan solo si existen en la web (THEORY filtrado).
@@ -61,7 +61,7 @@ const ADG_TXT = {
 const adgT = (k, v) => String(ADG_TXT[k] || k).replace(/\{(\w+)\}/g, (_, x) => (v && v[x] != null ? v[x] : ""));
 
 const ADG_AMB = ["saber", "realidad", "etica", "politica", "إنسان"];
-/* pensadores con ficha en Ilustres: nombre tal como aparece en los textos → id (solo se enlaza si la ficha existe en esta web) */
+/* pensadores con ficha en Biografías: nombre tal como aparece en los textos → id (solo se enlaza si la ficha existe en esta web) */
 const ADG_ILU = [
   ["أوغسطين", "agustin"], ["أنسلم الكانتربري", "anselmo"], ["توما الأكويني", "tomas"], ["فرنسيس بيكون", "francis_bacon"],
   ["إيراسموس الروتردامي", "erasmo"], ["إيراسموس", "erasmo"], ["سقراط", "socrates"], ["أفلاطون", "platon"], ["أرسطو", "aristoteles"],
@@ -87,7 +87,7 @@ function adgNombres(txt, hechos){
     /* seguido de un número de pasaje es el título de una obra (Platón, «Protágoras 343b»), no la persona */
     const rx = new RegExp("(^|[^\\p{L}>])(" + n + ")(?![\\p{L}<])(?!\\s*\\d)", "u");
     if (!rx.test(s)) return;
-    s = s.replace(rx, (m, a, b) => a + '<button class="adg-ilu" data-ilu="' + id + '" title="' + adgEsc(adgT("verBio", { n: BIOGRAFIAS[id].name })) + '">' + b + '</button>');
+    s = s.replace(rx, (m, a, b) => a + '<button class="adg-bio" data-biografia="' + id + '" title="' + adgEsc(adgT("verBio", { n: BIOGRAFIAS[id].name })) + '">' + b + '</button>');
     hechos.add(id);
   });
   return s;
@@ -144,7 +144,7 @@ function adgFicha(a){
 /* (12-10) ficha de una frase célebre: mismo aspecto que un adagio (retrato del autor en lugar de la obra de arte) */
 function adgFichaF(q, i){
   const h = new Set(), N = t => adgNombres(t, h);
-  const autor = q.id && adgHayIlu(q.id) ? '<button class="adg-ilu" data-ilu="' + adgEsc(q.id) + '" title="' + adgEsc(adgT("verBio", { n: q.a })) + '">' + adgEsc(q.a) + '</button>' : adgEsc(q.a);
+  const autor = q.id && adgHayIlu(q.id) ? '<button class="adg-bio" data-biografia="' + adgEsc(q.id) + '" title="' + adgEsc(adgT("verBio", { n: q.a })) + '">' + adgEsc(q.a) + '</button>' : adgEsc(q.a);
   if (q.id) h.add(q.id);
   return '<article class="adg-card adg-frase' + (adgPrueba ? ' adg-oculta' : '') + '" id="adgf-' + i + '" data-ep="' + (ADG_EP_COLOR[q.e] || "") + '">' +
     (q.img ? '<figure class="adg-fig adg-fig-ret"><img src="' + adgEsc(q.img) + '" alt="' + adgEsc(q.a) + '" loading="lazy" decoding="async"><figcaption>' + autor + '</figcaption></figure>' : '') +
@@ -201,8 +201,8 @@ function adgRender(){
       d.textContent = adgT(oc ? "descubrir" : "ocultar"); d.setAttribute("aria-expanded", String(!oc)); return; }
     const l = e.target.closest(".adg-lam");
     if (l){ const g = l.closest(".adg-card").querySelector(".adg-orig"); g.hidden = !g.hidden; l.setAttribute("aria-expanded", String(!g.hidden)); return; }
-    const i = e.target.closest("[data-ilu]");
-    if (i){ (window.show || show)("biografias"); loadBiografia(i.dataset.ilu); return; }
+    const i = e.target.closest("[data-biografia]");
+    if (i){ (window.show || show)("biografias"); loadBiografia(i.dataset.biografia); return; }
     const t = e.target.closest("[data-th]");
     if (t){ (window.show || show)("teoria"); if (typeof window.loadTheory === "function") window.loadTheory(t.dataset.th); }
   });

@@ -164,10 +164,10 @@
     return out;
   }
   function conceptosDe(subject, tema){
-    var Gl = G("GLOSARIO"); if (!Array.isArray(Gl) || !view("glosario")) return [];
+    var Gl = G("DICCIONARIO"); if (!Array.isArray(Gl) || !view("diccionario")) return [];
     return Gl.filter(function(g){ return g && g.subject === subject && g.t && gloTema(g) === tema; }).map(function(g){ return { t: strip(g.t), def: strip(g.def) }; });
   }
-  /* (11-10) fichas de época (epocas_fichas.js, vista Ilustres): la de un tema de HF (con / con2 por temasHF) y, en
+  /* (11-10) fichas de época (epocas_fichas.js, vista Biografías): la de un tema de HF (con / con2 por temasHF) y, en
      Filosofía 1.º, las de las teorías con contenido histórico (EPOCA_FIL). Se enlazan al pie de la teoría, en la tira
      «De este tema» de Tarjetas, Cuestionarios, Lecturas e Infografías, en el Glosario y en Cronogramas. */
   var EPOCA_FIL = { "fil-presocraticos": ["ant"], "fil-spinoza-sistema": ["mod"], "fil-montaigne-ensayos": ["ren"], "fil-marxismos": ["con", "con2"], "fil-t6": ["con", "con2"], "fil-grandes-preguntas": "*" };
@@ -260,8 +260,8 @@
     if (!view(view_)) return;
     if (view_ === "dilemas" && fn("goRelated")) return goRelated("dilemas", arg);
     if (fn("show")) show(view_);
-    if (view_ === "glosario"){   // concepto del final del tema → Glosario con el término buscado
-      var inp = document.querySelector("#glosario .glosearch, #glosario input[type=search], #glosario input[type=text]");
+    if (view_ === "diccionario"){   // concepto del final del tema → Glosario con el término buscado
+      var inp = document.querySelector("#diccionario .dicsearch, #diccionario input[type=search], #diccionario input[type=text]");
       if (inp && arg){ inp.value = arg; try { inp.dispatchEvent(new Event("input", { bubbles: true })); } catch (e){} }
       return;
     }
@@ -495,7 +495,7 @@
     var row = function(label, arr){ return arr.length ? '<div class="fin-row"><span class="fin-l">' + esc(label) + '</span><div class="fin-links">' + arr.map(function(x){ return btn(x); }).join("") + '</div></div>' : ""; };
     var cs = conceptosDe(subject, tema);
     var conceptosHtml = cs.length ? '<div class="fin-row"><span class="fin-l">' + esc(t("conceptos")) + '</span><div class="fin-links">' +
-      cs.map(function(c){ return '<button class="itin-term" type="button" data-igo="glosario" data-iarg="' + esc(c.t) + '" title="' + esc(c.def) + '">' + esc(c.t) + '</button>'; }).join("") + '</div></div>' : "";
+      cs.map(function(c){ return '<button class="itin-term" type="button" data-igo="diccionario" data-iarg="' + esc(c.t) + '" title="' + esc(c.def) + '">' + esc(c.t) + '</button>'; }).join("") + '</div></div>' : "";
     /* (07-10) anexos de este tema: fuera de la secuencia, aquí y en el índice de temas */
     var anexosArr = !esAnexo(T[key]) ? Object.keys(T).filter(function(k){ return T[k].subject === subject && esAnexo(T[k]) && T[k].temaN === tema; })
       .map(function(k){ return { go: "teoria", arg: k, label: strip(T[k].title).replace(/^(Exploración|Esplorazioa|Exploration|Anexo|Eranskina|Annexe|Annex|Appendix)\s*-\s*/, "") }; }) : [];
@@ -584,17 +584,17 @@
 
   /* ---------- itinerario PAU (Historia de la Filosofía) ---------- */
   function pauPasos(){
-    /* (19-10) sin entrada en el menú (p. ej. «esqautor», Resúmenes), el título de la sección: nunca la clave cruda */
+    /* (19-10) sin entrada en el menú (p. ej. «resumenes», Resúmenes), el título de la sección: nunca la clave cruda */
     var navLabel = function(id){ var b = document.querySelector('#tabs button[data-view="' + id + '"]'), h = document.querySelector("#" + id + " h1"); return b ? strip(b.textContent) : h ? strip(h.textContent) : ""; };
     var item = function(go_, name, key){ var c = coll(name); if (!view(go_) || !c || !c[key]) return null; return { go: go_, arg: key, label: strip(c[key].title || c[key].name || key) }; };
     var sec = function(id){ return view(id) ? { go: id, arg: "", label: navLabel(id) || id } : null; };
     var steps = [
-      { id: "pau", label: t("pau1"), short: t("spau1"), items: [item("pau", "PAU", "estructura"), item("pau", "PAU", "modelos")] },
-      { id: "comentario", label: t("pau2"), short: t("spau2"), items: [item("comentario", "COMENTARIO", "metodo"), item("comentario", "COMENTARIO", "consejos"), item("pau", "PAU", "ejercicio1"), sec("lecturas")] },
+      { id: "pau", label: t("pau1"), short: t("spau1"), items: [item("prepara_PAU", "PAU", "estructura"), item("prepara_PAU", "PAU", "modelos")] },
+      { id: "comentario", label: t("pau2"), short: t("spau2"), items: [item("comentario", "COMENTARIO", "metodo"), item("comentario", "COMENTARIO", "consejos"), item("prepara_PAU", "PAU", "ejercicio1"), sec("lecturas")] },
       { id: "disertaciones", label: t("pau3"), short: t("spau3"), items: [item("disertaciones", "DISERTACIONES", "metodologia"), item("disertaciones", "DISERTACIONES", "temas"), item("disertaciones", "DISERTACIONES", "comparativas")] },
-      { id: "pau-ej3", label: t("pau4"), short: t("spau4"), items: [item("pau", "PAU", "ejercicio3"), item("pau", "PAU", "comparativas-temas")] },
+      { id: "pau-ej3", label: t("pau4"), short: t("spau4"), items: [item("prepara_PAU", "PAU", "ejercicio3"), item("prepara_PAU", "PAU", "comparativas-temas")] },
       { id: "rubricas", label: t("pau5"), short: t("spau5"), items: [sec("rubricas")] },
-      { id: "unidad", label: t("pau6"), short: t("spau6"), items: [sec("cuestionarios"), sec("unidad"), sec("esqautor"), sec("cronogramas")] }
+      { id: "unidad", label: t("pau6"), short: t("spau6"), items: [sec("cuestionarios"), sec("unidad"), sec("resumenes"), sec("cronogramas")] }
     ];
     return steps.map(function(s){ s.items = s.items.filter(Boolean); return s; }).filter(function(s){ return s.items.length; });
   }
@@ -632,7 +632,7 @@
       }).join("") + '</ol>';
     }
     if (!ks.length) return "";
-    /* HF: agrupada por época, con el color de Ilustres; Filosofía 1.º: por rama (js/epocas.js). Las demás, seguidas. */
+    /* HF: agrupada por época, con el color de Biografías; Filosofía 1.º: por rama (js/epocas.js). Las demás, seguidas. */
     var EP = { int: "مدخل", ant: "القديمة", med: "الوسيطة", ren: "عصر النهضة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
     var RM = { ant: "الأنثروبولوجيا", con: "المعرفة", log: "المنطق", eti: "الأخلاق", pol: "السياسة", est: "علم الجمال" };
     var grpNames = null, grpAttr = "", grpOf = null;
@@ -692,7 +692,7 @@
     var old = v.querySelector(":scope > .crumbs"); if (old) old.remove();
     if (LANDING[id]) return;
     // (13-10) conmutadores: si la vista es un modo de un grupo, la miga usa la ENTRADA del grupo
-    // como sección y añade el modo (p. ej. «Practicar › Cuestionarios › Contrarreloj»).
+    // como sección y añade el modo (p. ej. «Practicar › Cuestionarios › Retos»).
     var entry = (typeof commuteEntry === "function") ? commuteEntry(id) : id;
     var mode = (typeof commuteLabel === "function" && entry !== id) ? commuteLabel(id) : "";
     var tabId = entry;   /* la vista «teoria» se abre desde el botón «Teoría» de su materia (#hf o #fil) */

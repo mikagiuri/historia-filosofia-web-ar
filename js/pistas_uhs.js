@@ -2,7 +2,7 @@
 const PISTAS = [
  {
   "id": "socrates-sofistas",
-  "ilustre": "socrates",
+  "biografia": "socrates",
   "subject": "hf",
   "tema": "الموضوع 5 · سقراط والسفسطائيون",
   "unidad": "hf-sofistas",
@@ -62,7 +62,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "مقياس كل الأشياء",
-      "glosario": [
+      "diccionario": [
        "g-sofistas",
        "g-nomos"
       ],
@@ -102,7 +102,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "السخرية والتوليد",
-      "glosario": [
+      "diccionario": [
        "g-ironia-socratica",
        "g-mayeutica"
       ],
@@ -198,7 +198,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "الفضيلة والمعرفة",
       "titulo": "لا أحد يخطئ عن إرادة",
-      "glosario": [
+      "diccionario": [
        "g-intelectualismo-moral",
        "g-akrasia"
       ],
@@ -253,7 +253,7 @@ const PISTAS = [
  },
  {
   "id": "hf-caverna",
-  "ilustre": "platon",
+  "biografia": "platon",
   "subject": "hf",
   "tema": "الموضوع 6 · أفلاطون",
   "unidad": "hf-platon",
@@ -312,7 +312,7 @@ const PISTAS = [
       "boton": "أحتاج إلى رؤية الخطاطة",
       "etiqueta": "خطاطة الأمثولة",
       "titulo": "ما هو كل عنصر",
-      "glosario": [
+      "diccionario": [
        "g-el-mito-de-la-caverna",
        "g-doxa",
        "g-episteme"
@@ -355,7 +355,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "العالمان",
-      "glosario": [
+      "diccionario": [
        "g-mundo-sensible",
        "g-teoria-de-las-ideas",
        "g-dualismo-ontologico"
@@ -446,7 +446,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "المعرفة والسياسة",
       "titulo": "عودة الفيلسوف",
-      "glosario": [
+      "diccionario": [
        "g-el-bien",
        "g-dialectica-ap"
       ],
@@ -496,7 +496,7 @@ const PISTAS = [
  },
  {
   "id": "platon-alma",
-  "ilustre": "platon",
+  "biografia": "platon",
   "subject": "hf",
   "tema": "الموضوع 7 · أفلاطون: النفس",
   "unidad": "hf-antropologia",
@@ -556,7 +556,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "جزءان يتصادمان",
-      "glosario": [
+      "diccionario": [
        "g-alma-racional",
        "g-alma-concupiscible"
       ],
@@ -596,7 +596,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "ثلاثة أجزاء، ثلاث وظائف",
-      "glosario": [
+      "diccionario": [
        "g-las-tres-partes-del-alma",
        "g-alma-irascible"
       ],
@@ -689,7 +689,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "النفس والمدينة",
       "titulo": "أداء كل جزء عمله",
-      "glosario": [
+      "diccionario": [
        "g-justicia",
        "g-sabiduria",
        "g-valentia",
@@ -746,7 +746,7 @@ const PISTAS = [
  },
  {
   "id": "aristoteles-etica",
-  "ilustre": "aristoteles",
+  "biografia": "aristoteles",
   "subject": "hf",
   "tema": "الموضوع 8 · أرسطو: الأخلاق",
   "unidad": "hf-etica",
@@ -806,7 +806,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "التعريف",
-      "glosario": [
+      "diccionario": [
        "g-eudaimonia",
        "g-arete"
       ],
@@ -846,7 +846,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "الغاية القصوى والوظيفة الخاصة",
-      "glosario": [
+      "diccionario": [
        "g-eudaimonia",
        "g-teleologia"
       ],
@@ -939,7 +939,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "الوسط",
       "titulo": "لا جبان ولا متهوّر",
-      "glosario": [
+      "diccionario": [
        "g-termino-medio",
        "g-phronesis",
        "g-virtud"
@@ -995,7 +995,7 @@ const PISTAS = [
  },
  {
   "id": "agustin-mal",
-  "ilustre": "agustin",
+  "biografia": "agustin",
   "subject": "hf",
   "tema": "الموضوع 12 · أوغسطين",
   "unidad": "hf-fe-razon",
@@ -1055,7 +1055,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "كل ما هو موجود خيّر",
-      "glosario": [
+      "diccionario": [
        "g-mal-como-privacion",
        "g-neoplatonismo"
       ],
@@ -1095,7 +1095,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "من المانوية إلى الحرمان",
-      "glosario": [
+      "diccionario": [
        "g-mal-como-privacion",
        "g-conversion"
       ],
@@ -1187,7 +1187,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "الإرادة",
       "titulo": "إرادة معوجّة",
-      "glosario": [
+      "diccionario": [
        "g-libre-albedrio",
        "g-interioridad"
       ],
@@ -1243,7 +1243,7 @@ const PISTAS = [
  },
  {
   "id": "tomas-fe-razon",
-  "ilustre": "tomas",
+  "biografia": "tomas",
   "subject": "hf",
   "tema": "الموضوع 12 · توما الأكويني",
   "unidad": "hf-fe-razon",
@@ -1303,7 +1303,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "نمط مزدوج من الحقيقة",
-      "glosario": [
+      "diccionario": [
        "g-verdades-naturales-y-sobrenaturales",
        "g-escolastica"
       ],
@@ -1343,7 +1343,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "التمييز من دون فصل",
-      "glosario": [
+      "diccionario": [
        "g-verdades-naturales-y-sobrenaturales",
        "g-ley-natural"
       ],
@@ -1440,7 +1440,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "الطريق الأول",
       "titulo": "من الحركة إلى المحرّك الأول",
-      "glosario": [
+      "diccionario": [
        "g-cinco-vias",
        "g-el-ser-necesario",
        "g-argumento-ontologico"
@@ -1497,7 +1497,7 @@ const PISTAS = [
  },
  {
   "id": "descartes-metodo",
-  "ilustre": "descartes",
+  "biografia": "descartes",
   "subject": "hf",
   "tema": "الموضوع 14 · ديكارت",
   "unidad": "hf-racionalismo",
@@ -1557,7 +1557,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "القاعدة الأولى",
-      "glosario": [
+      "diccionario": [
        "g-reglas-del-metodo",
        "g-ideas-claras-y-distintas"
       ],
@@ -1597,7 +1597,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "أربع قواعد",
-      "glosario": [
+      "diccionario": [
        "g-reglas-del-metodo",
        "g-intuicion",
        "g-deduccion"
@@ -1691,7 +1691,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "العيش أثناء الشك",
       "titulo": "مسافرو الغابة",
-      "glosario": [
+      "diccionario": [
        "g-moral-provisional",
        "g-duda-metodica"
       ],
@@ -1747,7 +1747,7 @@ const PISTAS = [
  },
  {
   "id": "hf-duda",
-  "ilustre": "descartes",
+  "biografia": "descartes",
   "subject": "hf",
   "tema": "الموضوع 14 · ديكارت",
   "unidad": "hf-racionalismo",
@@ -1805,7 +1805,7 @@ const PISTAS = [
       "boton": "أحتاج أن أرى الخطوات",
       "etiqueta": "طريق الشك",
       "titulo": "ثلاثة أسباب للشك",
-      "glosario": [
+      "diccionario": [
        "g-el-genio-maligno"
       ],
       "definicion": [
@@ -1848,7 +1848,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "الشك المنهجي",
-      "glosario": [
+      "diccionario": [
        "g-duda-metodica",
        "g-ideas-claras-y-distintas"
       ],
@@ -1939,7 +1939,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "اليقين الأول",
       "titulo": "الكوجيتو",
-      "glosario": [
+      "diccionario": [
        "g-cogito",
        "g-res-cogitans",
        "g-la-garantia-de-dios"
@@ -1990,7 +1990,7 @@ const PISTAS = [
  },
  {
   "id": "hume-empirismo",
-  "ilustre": "hume",
+  "biografia": "hume",
   "subject": "hf",
   "tema": "الموضوع 14 · هيوم",
   "unidad": "hf-racionalismo",
@@ -2050,7 +2050,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "نسخ من الانطباعات",
-      "glosario": [
+      "diccionario": [
        "g-impresion",
        "g-empirismo"
       ],
@@ -2090,7 +2090,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "معيار التجريبية",
-      "glosario": [
+      "diccionario": [
        "g-impresion",
        "g-haz-de-percepciones"
       ],
@@ -2183,7 +2183,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "السببية والعادة",
       "titulo": "الدليل الأعظم في الحياة",
-      "glosario": [
+      "diccionario": [
        "g-relaciones-de-ideas",
        "g-habito",
        "g-el-problema-de-la-induccion"
@@ -2240,7 +2240,7 @@ const PISTAS = [
  },
  {
   "id": "descartes-sustancias",
-  "ilustre": "descartes",
+  "biografia": "descartes",
   "subject": "hf",
   "tema": "الموضوع 15 · ديكارت: الجواهر",
   "unidad": "hf-metafisica",
@@ -2300,7 +2300,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "جوهر لا يفعل إلا التفكير",
-      "glosario": [
+      "diccionario": [
        "g-res-cogitans-dm",
        "g-sustancia-dm"
       ],
@@ -2340,7 +2340,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "الجواهر الثلاثة",
-      "glosario": [
+      "diccionario": [
        "g-sustancia-dm",
        "g-res-extensa",
        "g-la-garantia-de-dios-dm"
@@ -2438,7 +2438,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "اعتراض إليزابيث",
       "titulo": "كيف تحرّك النفس الجسد؟",
-      "glosario": [
+      "diccionario": [
        "g-dualismo-dm",
        "g-glandula-pineal",
        "g-ocasionalismo-dm"
@@ -2495,7 +2495,7 @@ const PISTAS = [
  },
  {
   "id": "spinoza-naturaleza",
-  "ilustre": "spinoza",
+  "biografia": "spinoza",
   "subject": "hf",
   "tema": "الموضوع 15 — اسبينوزا",
   "unidad": "hf-metafisica",
@@ -2554,7 +2554,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "ما يقوله كتاب «الأخلاق»",
-      "glosario": [
+      "diccionario": [
        "g-deus-sive-natura",
        "g-modo"
       ],
@@ -2594,7 +2594,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "المنتِجة والمنتَجة",
-      "glosario": [
+      "diccionario": [
        "g-natura-naturans",
        "g-sustancia-b5"
       ],
@@ -2684,7 +2684,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "ضرورة بلا غايات",
       "titulo": "الحكم المسبق المتمثل في «من أجل ماذا»",
-      "glosario": [
+      "diccionario": [
        "g-deus-sive-natura",
        "g-panteismo"
       ],
@@ -2739,7 +2739,7 @@ const PISTAS = [
  },
  {
   "id": "spinoza-libertad",
-  "ilustre": "spinoza",
+  "biografia": "spinoza",
   "subject": "hf",
   "tema": "الموضوع 15 — اسبينوزا",
   "unidad": "hf-metafisica",
@@ -2799,7 +2799,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "الجهد والانفعالات",
-      "glosario": [
+      "diccionario": [
        "g-conatus",
        "g-alegria-y-tristeza"
       ],
@@ -2839,7 +2839,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "من الجهد للبقاء (conatus) إلى الحب والكراهية",
-      "glosario": [
+      "diccionario": [
        "g-conatus",
        "g-alegria-y-tristeza"
       ],
@@ -2932,7 +2932,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "حرية بلا حرية إرادة",
       "titulo": "الفهم هو الفعل",
-      "glosario": [
+      "diccionario": [
        "g-servidumbre",
        "g-idea-adecuada"
       ],
@@ -2987,7 +2987,7 @@ const PISTAS = [
  },
  {
   "id": "spinoza-alegria",
-  "ilustre": "spinoza",
+  "biografia": "spinoza",
   "subject": "hf",
   "tema": "الموضوع 15 — اسبينوزا",
   "unidad": "hf-metafisica",
@@ -3047,7 +3047,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "ثلاث جمل من «الأخلاق»",
-      "glosario": [
+      "diccionario": [
        "g-beatitud",
        "g-conatus"
       ],
@@ -3087,7 +3087,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "أخلاق القدرة",
-      "glosario": [
+      "diccionario": [
        "g-alegria-y-tristeza",
        "g-beatitud"
       ],
@@ -3178,7 +3178,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "المنفعة والجماعة",
       "titulo": "الإنسان إله للإنسان",
-      "glosario": [
+      "diccionario": [
        "g-conatus",
        "g-servidumbre"
       ],
@@ -3233,7 +3233,7 @@ const PISTAS = [
  },
  {
   "id": "contrato-social",
-  "ilustre": "rousseau",
+  "biografia": "rousseau",
   "subject": "hf",
   "tema": "الموضوع 16 · العقد الاجتماعي",
   "unidad": "hf-contrato",
@@ -3293,7 +3293,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "منعزلة، فقيرة، وحشية وقصيرة",
-      "glosario": [
+      "diccionario": [
        "g-estado-de-naturaleza",
        "g-contrato-social"
       ],
@@ -3333,7 +3333,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "هوبز ولوك",
-      "glosario": [
+      "diccionario": [
        "g-derechos-naturales",
        "g-poder-legitimo",
        "g-soberania"
@@ -3431,7 +3431,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "روسو",
       "titulo": "أن يطيع المرء نفسه",
-      "glosario": [
+      "diccionario": [
        "g-voluntad-general",
        "g-soberania",
        "g-contrato-social"
@@ -3488,7 +3488,7 @@ const PISTAS = [
  },
  {
   "id": "kant-ilustracion",
-  "ilustre": "kant",
+  "biografia": "kant",
   "subject": "hf",
   "tema": "الموضوع 18 · كانط: الأنوار",
   "unidad": "hf-ilustracion",
@@ -3548,7 +3548,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "التعريف",
-      "glosario": [
+      "diccionario": [
        "g-minoria-de-edad",
        "g-autonomia"
       ],
@@ -3588,7 +3588,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "الكسل والجبن والأوصياء",
-      "glosario": [
+      "diccionario": [
        "g-minoria-de-edad",
        "g-autonomia"
       ],
@@ -3680,7 +3680,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "استعمالان للعقل",
       "titulo": "التفكير علنًا والطاعة في الوظيفة",
-      "glosario": [
+      "diccionario": [
        "g-uso-publico",
        "g-uso-privado"
       ],
@@ -3735,7 +3735,7 @@ const PISTAS = [
  },
  {
   "id": "feminismo-ilustrado",
-  "ilustre": "wollstonecraft",
+  "biografia": "wollstonecraft",
   "subject": "hf",
   "tema": "الموضوع 18 · الموجة النسوية الأولى",
   "unidad": "hf-ilustracion",
@@ -3795,7 +3795,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "من المشنقة إلى المنبر",
-      "glosario": [
+      "diccionario": [
        "g-declaracion-de-los-derechos-de-la-mujer",
        "g-la-grieta-de-la-universalidad"
       ],
@@ -3835,7 +3835,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "كونية ناقصة",
-      "glosario": [
+      "diccionario": [
        "g-declaracion-de-los-derechos-de-la-mujer",
        "g-feminismo",
        "g-las-olas"
@@ -3933,7 +3933,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "روسو وولستونكرافت",
       "titulo": "سلطان على أنفسهنّ",
-      "glosario": [
+      "diccionario": [
        "g-educacion-igualitaria",
        "g-feminismo"
       ],
@@ -3989,7 +3989,7 @@ const PISTAS = [
  },
  {
   "id": "kant-conocimiento",
-  "ilustre": "kant",
+  "biografia": "kant",
   "subject": "hf",
   "tema": "الموضوع 19 · كانط: المعرفة",
   "unidad": "hf-kant",
@@ -4049,7 +4049,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "أن تنتظم الموضوعات وفق معرفتنا",
-      "glosario": [
+      "diccionario": [
        "g-revolucion-copernicana",
        "g-a-priori"
       ],
@@ -4089,7 +4089,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "الأحكام التركيبية القبلية",
-      "glosario": [
+      "diccionario": [
        "g-juicios-sinteticos-a-priori",
        "g-intuiciones-puras",
        "g-categoria"
@@ -4187,7 +4187,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "الظاهرة والنومين",
       "titulo": "فارغة وعمياء",
-      "glosario": [
+      "diccionario": [
        "g-fenomeno",
        "g-noumeno",
        "g-idea-regulativa"
@@ -4244,7 +4244,7 @@ const PISTAS = [
  },
  {
   "id": "kant-imperativo",
-  "ilustre": "kant",
+  "biografia": "kant",
   "subject": "hf",
   "tema": "الموضوع 20 · كانط: أخلاق الواجب",
   "unidad": "hf-etica-deber",
@@ -4302,7 +4302,7 @@ const PISTAS = [
       "boton": "أحتاج أن أقرأ نصًّا",
       "etiqueta": "نص للمساعدة",
       "titulo": "اقرؤوا وابحثوا عن التعارض الحاسم",
-      "glosario": [
+      "diccionario": [
        "g-deber"
       ],
       "cita": {
@@ -4344,7 +4344,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "الأمر القطعي",
-      "glosario": [
+      "diccionario": [
        "g-imperativo-categorico",
        "g-imperativo-hipotetico",
        "g-autonomia"
@@ -4435,7 +4435,7 @@ const PISTAS = [
       "boton": "أظهروا الصيغة",
       "etiqueta": "صيغة القانون الكوني",
       "titulo": "الصيغة",
-      "glosario": [
+      "diccionario": [
        "g-imperativo-categorico",
        "g-a-priori"
       ],
@@ -4490,7 +4490,7 @@ const PISTAS = [
  },
  {
   "id": "kant-humanidad",
-  "ilustre": "kant",
+  "biografia": "kant",
   "subject": "hf",
   "tema": "الموضوع 20 · كانط: أخلاق الواجب",
   "unidad": "hf-etica-deber",
@@ -4548,7 +4548,7 @@ const PISTAS = [
       "boton": "أحتاج أن أقرأ نصًّا",
       "etiqueta": "نص للمساعدة",
       "titulo": "اقرؤوا الصيغة وانتبهوا إلى عبارتين",
-      "glosario": [
+      "diccionario": [
        "g-imperativo-categorico"
       ],
       "cita": {
@@ -4590,7 +4590,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "الثمن والكرامة",
-      "glosario": [
+      "diccionario": [
        "g-dignidad",
        "g-autonomia"
       ],
@@ -4680,7 +4680,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "الاختباران في الحالة نفسها",
       "titulo": "الوعد الكاذب، يُرى مرّتين",
-      "glosario": [
+      "diccionario": [
        "g-deber",
        "g-imperativo-categorico"
       ],
@@ -4730,7 +4730,7 @@ const PISTAS = [
  },
  {
   "id": "marx-alienacion",
-  "ilustre": "marx",
+  "biografia": "marx",
   "subject": "hf",
   "tema": "الموضوع 21 · ماركس",
   "unidad": "hf-sospecha",
@@ -4789,7 +4789,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "كلما أنتج أكثر، ازداد فقرًا",
-      "glosario": [
+      "diccionario": [
        "g-alienacion",
        "g-plusvalia"
       ],
@@ -4829,7 +4829,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "أنواع الاستلاب الأربعة",
-      "glosario": [
+      "diccionario": [
        "g-alienacion",
        "g-praxis"
       ],
@@ -4922,7 +4922,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "القاعدة والبنية الفوقية",
       "titulo": "الوجود الاجتماعي والوعي",
-      "glosario": [
+      "diccionario": [
        "g-infraestructura",
        "g-ideologia"
       ],
@@ -4977,7 +4977,7 @@ const PISTAS = [
  },
  {
   "id": "nietzsche-destino",
-  "ilustre": "nietzsche",
+  "biografia": "nietzsche",
   "subject": "hf",
   "tema": "الموضوع 21 · نيتشه",
   "unidad": "hf-sospecha",
@@ -5035,7 +5035,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "ديناميت",
-      "glosario": [
+      "diccionario": [
        "g-transmutacion-de-los-valores",
        "g-nihilismo"
       ],
@@ -5079,7 +5079,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "النفيان عند اللاأخلاقي",
-      "glosario": [
+      "diccionario": [
        "g-ressentiment",
        "g-genealogia-de-la-moral"
       ],
@@ -5170,7 +5170,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "الأخلاق والحياة",
       "titulo": "ضد الحياة، ومع الحياة",
-      "glosario": [
+      "diccionario": [
        "g-la-muerte-de-dios",
        "g-superhombre"
       ],
@@ -5224,7 +5224,7 @@ const PISTAS = [
  },
  {
   "id": "arendt-mal-accion",
-  "ilustre": "arendt",
+  "biografia": "arendt",
   "subject": "hf",
   "tema": "الموضوع 22 · حنا أرندت",
   "unidad": "hf-capitalismo",
@@ -5284,7 +5284,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "انعدام التفكير المحض",
-      "glosario": [
+      "diccionario": [
        "g-banalidad-del-mal",
        "g-totalitarismo"
       ],
@@ -5324,7 +5324,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "شر بلا وحوش، ونقاشه",
-      "glosario": [
+      "diccionario": [
        "g-banalidad-del-mal",
        "g-soledad-politica"
       ],
@@ -5417,7 +5417,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "الحياة الفاعلة",
       "titulo": "الكدح والصنع والفعل",
-      "glosario": [
+      "diccionario": [
        "g-vita-activa",
        "g-natalidad",
        "g-espacio-publico"
@@ -5474,7 +5474,7 @@ const PISTAS = [
  },
  {
   "id": "sartre-existencia",
-  "ilustre": "sartre",
+  "biografia": "sartre",
   "subject": "hf",
   "tema": "الموضوع 25 · سارتر والوجودية",
   "unidad": "hf-existencialismo",
@@ -5534,7 +5534,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "الإنسان ليس سوى ما يصنعه بنفسه",
-      "glosario": [
+      "diccionario": [
        "g-la-existencia-primero",
        "g-ser-para-si"
       ],
@@ -5574,7 +5574,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "قاطعة الورق والإنسان",
-      "glosario": [
+      "diccionario": [
        "g-la-existencia-primero",
        "g-ser-para-si"
       ],
@@ -5667,7 +5667,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "الحرية والمسؤولية",
       "titulo": "محكوم علينا بأن نكون أحرارًا",
-      "glosario": [
+      "diccionario": [
        "g-angustia",
        "g-mala-fe",
        "g-circunstancia"
@@ -5724,7 +5724,7 @@ const PISTAS = [
  },
  {
   "id": "beauvoir-conclusion",
-  "ilustre": "beauvoir",
+  "biografia": "beauvoir",
   "subject": "hf",
   "tema": "الموضوع 26 · بوفوار",
   "unidad": "hf-beauvoir",
@@ -5784,7 +5784,7 @@ const PISTAS = [
       "boton": "أحتاج إلى قراءة النص",
       "etiqueta": "نص للمساعدة",
       "titulo": "لا قَدَر محتوم",
-      "glosario": [
+      "diccionario": [
        "g-el-destino",
        "g-la-situacion"
       ],
@@ -5828,7 +5828,7 @@ const PISTAS = [
      {
       "etiqueta": "التعريف والشرح",
       "titulo": "الطبيعة والتاريخ",
-      "glosario": [
+      "diccionario": [
        "g-la-construccion-del-genero",
        "g-la-ambiguedad"
       ],
@@ -5919,7 +5919,7 @@ const PISTAS = [
       "boton": "اعرضوا الشرح",
       "etiqueta": "من الحرب إلى الإخاء",
       "titulo": "حريتان تعترف إحداهما بالأخرى",
-      "glosario": [
+      "diccionario": [
        "g-alteridad",
        "g-la-ambiguedad"
       ],

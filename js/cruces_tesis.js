@@ -88,7 +88,7 @@ function cruTesisHtml(ids, titulo){
   if (!ts.length) return "";
   const enl = GEN_TESIS.enlaces.filter(e => { const [a, b] = e.k.split("|"); return ts.some(t => t.id === a) && ts.some(t => t.id === b); });
   return '<div class="cru-box"><b>' + cruT(titulo || "historia") + '</b><ul>' + ts.map(t =>
-    '<li><button type="button" class="cru-a" data-igo="genealogias" data-iarg="tesis/' + t.id + '"><strong>' + cruEsc(I[t.ilustre] ? I[t.ilustre].name : t.ilustre) + '</strong>: «' + cruEsc(t.t) + '»</button></li>').join("") + '</ul>' +
+    '<li><button type="button" class="cru-a" data-igo="genealogias" data-iarg="tesis/' + t.id + '"><strong>' + cruEsc(I[t.biografia] ? I[t.biografia].name : t.biografia) + '</strong>: «' + cruEsc(t.t) + '»</button></li>').join("") + '</ul>' +
     enl.map(e => '<p class="cru-enl cru-' + e.tipo + '"><b>' + cruT(e.tipo === "acuerdo" ? "concuerdan" : "seOponen") + '.</b> ' + cruEsc(e.por) + '</p>').join("") + '</div>';
 }
 /* tesis de un nudo de Nudos */
@@ -112,7 +112,7 @@ function cruRayuelaFinal(ruta, tens){
   /* (11-10) «Tu recorrido en el metro»: los pensadores de las estaciones del viaje que están en alguna línea de Genealogías */
   let metro = "";
   if (typeof GENEALOGIAS !== "undefined" && cruVista("genealogias")){
-    const R = cruRay(), enLinea = new Set(GENEALOGIAS.lineas.flatMap(l => l.ilustre)), ids = [];
+    const R = cruRay(), enLinea = new Set(GENEALOGIAS.lineas.flatMap(l => l.biografia)), ids = [];
     (ruta || []).forEach(n => ((R && R.estaciones[n] && R.estaciones[n].autores) || []).forEach(a => { if (enLinea.has(a.id) && !ids.includes(a.id)) ids.push(a.id); }));
     if (ids.length) metro = '<p class="cru-links"><button type="button" class="cru-a" data-igo="genealogias" data-iarg="ruta/' + ids.join(",") + '">🚇 ' + cruEsc(cruT("metro")) + '</button></p>';
   }

@@ -1192,7 +1192,7 @@ const IMPRESCINDIBLES = {
    "مراجعة الأستاذ (20-10-2026): قراءة امتحان PAU (مقالة الطريقة II-IV)"
   ]
  },
- "glosarioGrupos": {
+ "diccionarioGrupos": {
   "1": [
    5,
    "مصطلحات الجمهورية VII، قراءة PAU"

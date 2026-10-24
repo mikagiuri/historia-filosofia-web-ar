@@ -1,19 +1,19 @@
 "use strict";
-/* ===== Retratos de «Ilustres» (dominio público / CC; atribución en «pie» y «page») =====
-   Generado por tools/build_ilustres.js. No se traduce (no está en DATA_FILES). */
+/* ===== Retratos de «Biografías» (dominio público / CC; atribución en «pie» y «page») =====
+   Generado por tools/build_biografias.js. No se traduce (no está en DATA_FILES). */
 const BIOGRAFIAS_RETRATOS = {
  "homero": {
-  "f": "media/retratos/ilustres/homero.jpg",
+  "f": "media/retratos/biografias/homero.jpg",
   "pie": "Homer bust, Farnese collection (Naples) · NikonZ7II · CC BY-SA 4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Homer_bust,_Farnese_collection_(Naples).jpg"
  },
  "hesiodo": {
-  "f": "media/retratos/ilustres/hesiodo.jpg",
+  "f": "media/retratos/biografias/hesiodo.jpg",
   "pie": "Pseudo-Seneca BM GR1962.8-24.1 · Unknown artistUnknown artist · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Pseudo-Seneca_BM_GR1962.8-24.1.jpg"
  },
  "solon": {
-  "f": "media/retratos/ilustres/solon.jpg",
+  "f": "media/retratos/biografias/solon.jpg",
   "pie": "Ignoto, c.d. solone, replica del 90 dc ca da orig. greco del 110 ac. ca, 6143 · Sailko · CC BY-SA 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Ignoto,_c.d._solone,_replica_del_90_dc_ca_da_orig._greco_del_110_ac._ca,_6143.JPG"
  },
@@ -34,17 +34,17 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Bustes van Phokion, Diogenes en Pythagoras Phocion Diogene Pythagore (titel op object) Studies naar klassieke beelden (serietitel), RP-P-1905-3187 · Rijksmuseum · CC0"
  },
  "jenofanes": {
-  "f": "media/retratos/ilustres/jenofanes.jpg",
+  "f": "media/retratos/biografias/jenofanes.jpg",
   "pie": "Xenophanes in Thomas Stanley History of Philosophy · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Xenophanes_in_Thomas_Stanley_History_of_Philosophy.jpg"
  },
  "lao_zi": {
-  "f": "media/retratos/ilustres/lao_zi.jpg",
+  "f": "media/retratos/biografias/lao_zi.jpg",
   "pie": "Laozi 002 · Thanato (fotografía) · CC BY-SA 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Laozi_002.jpg"
  },
  "confucio": {
-  "f": "media/retratos/ilustres/confucio.jpg",
+  "f": "media/retratos/biografias/confucio.jpg",
   "pie": "Confucius Tang Dynasty · Wu Daozi (atribuido), 685-758 · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Confucius_Tang_Dynasty.jpg"
  },
@@ -77,27 +77,27 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Gorgia di Leontini · Giuseppe Emanuele Ortolani e C. Biondi · Public Domain"
  },
  "meliso": {
-  "f": "media/retratos/ilustres/meliso.jpg",
+  "f": "media/retratos/biografias/meliso.jpg",
   "pie": "Meliso de Samos (retrato imaginario, 1493) · Hartmann Schedel, Crónica de Núremberg · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Melissus_Nuremberg_Chronicle.jpg"
  },
  "leucipo": {
-  "f": "media/retratos/ilustres/leucipo.jpg",
+  "f": "media/retratos/biografias/leucipo.jpg",
   "pie": "Leucipo (retrato imaginario, 1652-1653) · Luca Giordano · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Pinacoteca_Querini_Stampalia_-_Leucippus_-_Luca_Giordano.jpg"
  },
  "policleto": {
-  "f": "media/retratos/ilustres/policleto.jpg",
+  "f": "media/retratos/biografias/policleto.jpg",
   "pie": "Estatua de Policleto (s. XIX, figura imaginada), Nuevo Hermitage, San Petersburgo · Александр Сигачёв · CC BY-SA 4.0",
   "page": "https://commons.wikimedia.org/wiki/File:N-Herm_-_POLIKLET.jpg"
  },
  "buda": {
-  "f": "media/retratos/ilustres/buda.jpg",
+  "f": "media/retratos/biografias/buda.jpg",
   "pie": "Gandhara Buddha (Museo Nacional de Tokio) · Escultura de Gandhara, s. I-II · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Gandhara_Buddha_(tnm).jpeg"
  },
  "filolao": {
-  "f": "media/retratos/ilustres/filolao.jpg",
+  "f": "media/retratos/biografias/filolao.jpg",
   "pie": "Filolao de Crotona (retrato imaginario, 1492) · Franchino Gaffurio, Theorica musicae · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Pythagoras_and_Philolaus.png"
  },
@@ -116,7 +116,7 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Bust of Democritus - Victoria and Albert Museum · Afshin Darian · CC BY 2.0"
  },
  "hipias": {
-  "f": "media/retratos/ilustres/hipias.jpg",
+  "f": "media/retratos/biografias/hipias.jpg",
   "pie": "Ruinas de la antigua Élide, su ciudad natal (no se conserva ningún retrato de Hipias) · Tkoletsis · CC BY-SA 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Elis_city.JPG"
  },
@@ -125,12 +125,12 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Antisthenes engraving · Wellcome Collection · Public Domain Mark"
  },
  "aristipo": {
-  "f": "media/retratos/ilustres/aristipo.jpg",
+  "f": "media/retratos/biografias/aristipo.jpg",
   "pie": "Aristippus · Gottlieb Friedrich Riegel (1724–1784) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Aristippus.jpg"
  },
  "arquitas": {
-  "f": "media/retratos/ilustres/arquitas.jpg",
+  "f": "media/retratos/biografias/arquitas.jpg",
   "pie": "Busto llamado «Arquitas» (Museo Arqueológico de Nápoles; identificación tradicional) · Copia romana (foto: Marie-Lan Nguyen) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Archytas_of_Tarentum_MAN_Napoli_Inv5607.jpg"
  },
@@ -145,7 +145,7 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:Diogenes-statue-Sinop-enhanced.jpg"
  },
  "espeusipo": {
-  "f": "media/retratos/ilustres/espeusipo.jpg",
+  "f": "media/retratos/biografias/espeusipo.jpg",
   "pie": "Espeusipo (retrato imaginario, hacia 1655) · Thomas Stanley, The History of Philosophy · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Speusippus_in_Thomas_Stanley_History_of_Philosophy.jpg"
  },
@@ -155,17 +155,17 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:Aristotle_Altemps_Inv8575.jpg"
  },
  "mencio": {
-  "f": "media/retratos/ilustres/mencio.jpg",
+  "f": "media/retratos/biografias/mencio.jpg",
   "pie": "Mencius · Pintor chino anónimo · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Mencius.jpg"
  },
  "teofrasto": {
-  "f": "media/retratos/ilustres/teofrasto.jpg",
+  "f": "media/retratos/biografias/teofrasto.jpg",
   "pie": "Busto de Teofrasto (Villa Albani, copia romana) · Autor desconocido · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Bust_of_Theophrastus_from_Villa_Albani.png"
  },
  "crates": {
-  "f": "media/retratos/ilustres/crates.jpg",
+  "f": "media/retratos/biografias/crates.jpg",
   "pie": "Crates de Tebas (retrato imaginario; fresco romano, s. I a. C.) · Villa della Farnesina (anónimo) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Crates_of_Thebes_Villa_Farnesina.jpg"
  },
@@ -183,7 +183,7 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:Epicurus_Massimo_Inv197306.jpg"
  },
  "straton": {
-  "f": "media/retratos/ilustres/straton.jpg",
+  "f": "media/retratos/biografias/straton.jpg",
   "pie": "Estratón de Lámpsaco (retrato imaginario, 1493) · Hartmann Schedel, Crónica de Núremberg · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Strato_Nuremberg_Chronicle.jpg"
  },
@@ -196,12 +196,12 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Cleanthes Assius - Illustrium philosophorum et sapientum effigies ab eorum numistatibus extractae · Girolamo Olgiati · Public Domain"
  },
  "timon": {
-  "f": "media/retratos/ilustres/timon.jpg",
+  "f": "media/retratos/biografias/timon.jpg",
   "pie": "Timón de Fliunte (retrato imaginario, hacia 1655) · Thomas Stanley, The History of Philosophy · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Timon_in_Thomas_Stanley_History_of_Philosophy.jpg"
  },
  "arcesilao": {
-  "f": "media/retratos/ilustres/arcesilao.jpg",
+  "f": "media/retratos/biografias/arcesilao.jpg",
   "pie": "Arcesilao de Pitane (retrato imaginario, 1810) · Grabado de la portada de los Academica de Cicerón · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Arcesilaus_and_Carneades.jpg"
  },
@@ -210,12 +210,12 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Academische studie naar sculptuur, buste van Chrysippos, 1826, Johannes du Burck, Musea Brugge, 0016.GRO0187.II · Johannes du Burck · CC0"
  },
  "carneades": {
-  "f": "media/retratos/ilustres/carneades.jpg",
+  "f": "media/retratos/biografias/carneades.jpg",
   "pie": "Cabeza de Carnéades (Gliptoteca de Múnich, copia romana) · Autor desconocido (foto: Bibi Saint-Pol) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Head_Karneades_Glyptothek_Munich.jpg"
  },
  "ciceron": {
-  "f": "media/retratos/ilustres/ciceron.jpg",
+  "f": "media/retratos/biografias/ciceron.jpg",
   "pie": "Marco Tulio Cicerón · Busto romano (mediados del siglo I d. C.), Museos Capitolinos; foto de Wilfredo Rodríguez · CC0 (Siglo I d. C.)",
   "page": "https://commons.wikimedia.org/wiki/File:M._Tullius_Cicero,_Capitoline_Museum,_Rome.jpg"
  },
@@ -225,7 +225,7 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:Bust_of_Pseudo-Seneca_MET_DP359039.jpg"
  },
  "quintiliano": {
-  "f": "media/retratos/ilustres/quintiliano.jpg",
+  "f": "media/retratos/biografias/quintiliano.jpg",
   "pie": "Quintiliano · Taller de Michel Wolgemut (xilografía del Liber Chronicarum, la Crónica de Núremberg) · CC0 / dominio público (obra de 1493)",
   "page": "https://commons.wikimedia.org/wiki/File:Marcus_Fabius_Quintilianus.jpg"
  },
@@ -240,7 +240,7 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:Head_Marcus_Aurelius_archmus_Heraklion.jpg"
  },
  "tertuliano": {
-  "f": "media/retratos/ilustres/tertuliano.jpg",
+  "f": "media/retratos/biografias/tertuliano.jpg",
   "pie": "Tertullian2 · André Thevet · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Tertullian2.png"
  },
@@ -263,17 +263,17 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Boethius, Consolatio philosophiae (French) · Boethius · Public Domain"
  },
  "isidoro": {
-  "f": "media/retratos/ilustres/isidoro.jpg",
+  "f": "media/retratos/biografias/isidoro.jpg",
   "pie": "Isidoro de Sevilla · Bartolomé Esteban Murillo · Dominio público (PD-Art; Murillo falleció en 1682)",
   "page": "https://commons.wikimedia.org/wiki/File:Isidor_von_Sevilla.jpeg"
  },
  "escoto_erigena": {
-  "f": "media/retratos/ilustres/escoto_erigena.jpg",
+  "f": "media/retratos/biografias/escoto_erigena.jpg",
   "pie": "Juan Escoto Erígena (retrato imaginario, s. XII) · Miniatura anónima (Clavis physicae, BnF, Lat. 6734) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Johannes_Scottus_Eriugena.jpg"
  },
  "avicena": {
-  "f": "media/retratos/ilustres/avicena.jpg",
+  "f": "media/retratos/biografias/avicena.jpg",
   "pie": "Avicena (retrato imaginario, miniatura persa sin fecha) · Anónimo · CC0",
   "page": "https://commons.wikimedia.org/wiki/File:Avicenna-miniatur.png"
  },
@@ -282,22 +282,22 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "AnselmCanterbury2 · Public Domain"
  },
  "abelardo": {
-  "f": "media/retratos/ilustres/abelardo.jpg",
+  "f": "media/retratos/biografias/abelardo.jpg",
   "pie": "Abelard · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Abelard.jpg"
  },
  "avempace": {
-  "f": "media/retratos/ilustres/avempace.jpg",
+  "f": "media/retratos/biografias/avempace.jpg",
   "pie": "Avempace (retrato imaginario, 1961) · Anónimo · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Ibn_B%C4%81jja,_Sayr_mulhimah_min_al-Sharq_wa-al-Gharb.png"
  },
  "hildegarda": {
-  "f": "media/retratos/ilustres/hildegarda.jpg",
+  "f": "media/retratos/biografias/hildegarda.jpg",
   "pie": "Hildegard von Bingen · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Hildegard_von_Bingen.jpg"
  },
  "eloisa": {
-  "f": "media/retratos/ilustres/eloisa.jpg",
+  "f": "media/retratos/biografias/eloisa.jpg",
   "pie": "Eloísa (retrato imaginario, 1883) · World's Noted Women · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Heloise_World_Noted_Women.jpg"
  },
@@ -311,12 +311,12 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Maimonides bas-relief in the U.S. House of Representatives chamber cropped · Sculpture by Brenda Putnam; photo by the Architect of the Capitol · Public Domain"
  },
  "buenaventura": {
-  "f": "media/retratos/ilustres/buenaventura.jpg",
+  "f": "media/retratos/biografias/buenaventura.jpg",
   "pie": "Buenaventura · Francisco de Zurbarán, Exposición del cuerpo de san Buenaventura (Museo del Louvre) · Dominio público (1629 (retrato imaginario))",
   "page": "https://commons.wikimedia.org/wiki/File:Francisco_de_Zurbar%C3%A1n_007.jpg"
  },
  "roger_bacon": {
-  "f": "media/retratos/ilustres/roger_bacon.jpg",
+  "f": "media/retratos/biografias/roger_bacon.jpg",
   "pie": "Roger Bacon (retrato imaginario, 1617) · Michael Maier, Symbola aureae mensae · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Roger_Bacon_by_Michael_Maier.jpg"
  },
@@ -326,12 +326,12 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:St-thomas-aquinas.jpg"
  },
  "llull": {
-  "f": "media/retratos/ilustres/llull.jpg",
+  "f": "media/retratos/biografias/llull.jpg",
   "pie": "Ramon Llull (h. 1620, retrato póstumo) · Francisco Ribalta · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Francisco_Ribalta_-_Ramon_Llull_-_Google_Art_Project.jpg"
  },
  "dante": {
-  "f": "media/retratos/ilustres/dante.jpg",
+  "f": "media/retratos/biografias/dante.jpg",
   "pie": "Retrato de Dante (1495, póstumo) · Sandro Botticelli · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Portrait_de_Dante.jpg"
  },
@@ -344,17 +344,17 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "William of Occam - Sketch - Frater Occham iste, 1341 · Public Domain"
  },
  "pizan": {
-  "f": "media/retratos/ilustres/pizan.jpg",
+  "f": "media/retratos/biografias/pizan.jpg",
   "pie": "Christine de Pisan - cathedra (Harley MS 4431) · Iluminador anónimo (British Library, Harley MS 4431, f. 259v), c. 1410-1414 · Dominio público (manuscrito del s. XV; confirmado con la API de Commons el 18-10-2026)",
   "page": "https://commons.wikimedia.org/wiki/File:Christine_de_Pisan_-_cathedra.jpg"
  },
  "nicolas_cusa": {
-  "f": "media/retratos/ilustres/nicolas_cusa.jpg",
+  "f": "media/retratos/biografias/nicolas_cusa.jpg",
   "pie": "Nicolás de Cusa (h. 1480, detalle) · Maestro de la Vida de la Virgen · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Nicholas_of_Cusa.jpg"
  },
  "leonardo": {
-  "f": "media/retratos/ilustres/leonardo.jpg",
+  "f": "media/retratos/biografias/leonardo.jpg",
   "pie": "Portrait of Leonardo · Atribuido a Francesco Melzi · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Francesco_Melzi_-_Portrait_of_Leonardo.png"
  },
@@ -381,32 +381,32 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Thomas More (after Holbein) · Wellcome Collection · Public Domain Mark"
  },
  "lutero": {
-  "f": "media/retratos/ilustres/lutero.jpg",
+  "f": "media/retratos/biografias/lutero.jpg",
   "pie": "Lucas Cranach d.Ä. - Martin Luther, 1528 (Veste Coburg) · Lucas Cranach the Elder · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Lucas_Cranach_d.%C3%84._-_Martin_Luther,_1528_(Veste_Coburg).jpg"
  },
  "las_casas": {
-  "f": "media/retratos/ilustres/las_casas.jpg",
+  "f": "media/retratos/biografias/las_casas.jpg",
   "pie": "Bartolomé de las Casas · Grabado anónimo (reproducido en una obra de 1791) · Dominio público",
   "page": "https://commons.wikimedia.org/wiki/File:Bartolom%C3%A9_de_las_Casas.jpg"
  },
  "sepulveda": {
-  "f": "media/retratos/ilustres/sepulveda.jpg",
+  "f": "media/retratos/biografias/sepulveda.jpg",
   "pie": "Juan Ginés de Sepúlveda · José Maea (1760–1826) · Dominio público",
   "page": "https://commons.wikimedia.org/wiki/File:Juan_Gin%C3%A9s_de_Sep%C3%BAlveda_(cropped).jpg"
  },
  "vives": {
-  "f": "media/retratos/ilustres/vives.jpg",
+  "f": "media/retratos/biografias/vives.jpg",
   "pie": "Juan Luis Vives · Johann Theodor de Bry (grabador nacido en Lieja, activo en Fráncfort) · Dominio público (CC0, dedicación al dominio público)",
   "page": "https://commons.wikimedia.org/wiki/File:Juan_Luis_Vives_philosophus.jpg"
  },
  "calvino": {
-  "f": "media/retratos/ilustres/calvino.jpg",
+  "f": "media/retratos/biografias/calvino.jpg",
   "pie": "Portrait john calvin reverse · Portrait_john_calvin.jpg: Anonymous · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Portrait_john_calvin_reverse.jpg"
  },
  "servet": {
-  "f": "media/retratos/ilustres/servet.jpg",
+  "f": "media/retratos/biografias/servet.jpg",
   "pie": "Miguel Servet · Christian Fritzsch (1695–1769), grabador · Dominio público",
   "page": "https://commons.wikimedia.org/wiki/File:Michael_Servetus.jpg"
  },
@@ -415,12 +415,12 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Michel de Montaigne, Portrait from Tietz edition (1753) · Engraving by J. C. G. Fritzsch · Public Domain"
  },
  "giordano_bruno": {
-  "f": "media/retratos/ilustres/giordano_bruno.jpg",
+  "f": "media/retratos/biografias/giordano_bruno.jpg",
   "pie": "Giordano Bruno (retrato imaginario, principios del s. XVIII) · Johann Georg Mentzel · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Giordano_Bruno_-_Mentzel.jpg"
  },
  "suarez": {
-  "f": "media/retratos/ilustres/suarez.jpg",
+  "f": "media/retratos/biografias/suarez.jpg",
   "pie": "Francisco Suárez · Anónimo (retrato conservado en Valladolid) · Dominio público",
   "page": "https://commons.wikimedia.org/wiki/File:Retrato-del-padre-francisco-suarez-valladolid-s.-xvii.png"
  },
@@ -434,7 +434,7 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File%3AJustus_Sustermans_-_Portrait_of_Galileo_Galilei%2C_1636.jpg"
  },
  "campanella": {
-  "f": "media/retratos/ilustres/campanella.jpg",
+  "f": "media/retratos/biografias/campanella.jpg",
   "pie": "Portrait of Tommaso Campanella (by Francesco Cozza) · Francesco Cozza · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Portrait_of_Tommaso_Campanella_(by_Francesco_Cozza).jpg"
  },
@@ -443,7 +443,7 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Kepler (Dietz) · Wellcome Collection · Public Domain Mark"
  },
  "harvey": {
-  "f": "media/retratos/ilustres/harvey.jpg",
+  "f": "media/retratos/biografias/harvey.jpg",
   "pie": "William Harvey 2 · After Daniël Mijtens · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:William_Harvey_2.jpg"
  },
@@ -457,7 +457,7 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:Frans_Hals_-_Portret_van_Ren%C3%A9_Descartes.jpg"
  },
  "gracian": {
-  "f": "media/retratos/ilustres/gracian.jpg",
+  "f": "media/retratos/biografias/gracian.jpg",
   "pie": "Baltasar Gracián · Anónimo · Dominio público",
   "page": "https://commons.wikimedia.org/wiki/File:Baltasar_Graci%C3%A1n_Graus.jpg"
  },
@@ -480,7 +480,7 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:John_Locke_by_John_Greenhill.jpg"
  },
  "malebranche": {
-  "f": "media/retratos/ilustres/malebranche.jpg",
+  "f": "media/retratos/biografias/malebranche.jpg",
   "pie": "Nicolas Malebranche - Versailles MV 2929 · Paul Jourdy / After Jean-Baptiste Santerre · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Nicolas_Malebranche_-_Versailles_MV_2929.jpg"
  },
@@ -499,7 +499,7 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:Pierre_Bayle_by_Louis_Ferdinand_Elle.jpg"
  },
  "feijoo": {
-  "f": "media/retratos/ilustres/feijoo.jpg",
+  "f": "media/retratos/biografias/feijoo.jpg",
   "pie": "Benito Jerónimo Feijoo · Juan Bernabé Palomino (1692-1777) · Dominio público (grabado del siglo XVIII; Palomino falleció en 1777)",
   "page": "https://commons.wikimedia.org/wiki/File:Benito_Jer%C3%B3nimo_Feijoo.jpg"
  },
@@ -520,17 +520,17 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Portrait of Émilie du Châtelet · Marianne Loir · Public Domain"
  },
  "euler": {
-  "f": "media/retratos/ilustres/euler.jpg",
+  "f": "media/retratos/biografias/euler.jpg",
   "pie": "Leonhard Euler (pastel, 1753) · Jakob Emanuel Handmann · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Leonhard_Euler.jpg"
  },
  "lamettrie": {
-  "f": "media/retratos/ilustres/lamettrie.jpg",
+  "f": "media/retratos/biografias/lamettrie.jpg",
   "pie": "Portrait de Julien Offray de La Mettrie · Georg Friedrich Schmidt · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Portrait_de_Julien_Offray_de_La_Mettrie.jpg"
  },
  "mably": {
-  "f": "media/retratos/ilustres/mably.jpg",
+  "f": "media/retratos/biografias/mably.jpg",
   "pie": "Gabriel Bonnot de Mably · After François Bonneville · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Gabriel_Bonnot_de_Mably.jpg"
  },
@@ -549,12 +549,12 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Denis Diderot by Louis Michel van Loo (drawing) · Louis-Michel van Loo · Public Domain"
  },
  "baumgarten": {
-  "f": "media/retratos/ilustres/baumgarten.jpg",
+  "f": "media/retratos/biografias/baumgarten.jpg",
   "pie": "Portada de su Aesthetica (1750), la obra que fundó la estética (no se conoce ningún retrato de Baumgarten) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Aesthetica.png"
  },
  "helvetius": {
-  "f": "media/retratos/ilustres/helvetius.jpg",
+  "f": "media/retratos/biografias/helvetius.jpg",
   "pie": "Claude-Adrien Helvétius (grabado, 1772) · Augustin de Saint-Aubin, según Louis-Michel van Loo · CC0",
   "page": "https://commons.wikimedia.org/wiki/File:Portrait_of_Claude_Adrien_Helv%C3%A9tius_(1715-1771)_MET_DP828958.jpg"
  },
@@ -563,12 +563,12 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Jean le Rond d'Alembert. Line engraving. Wellcome V0000121 · Wellcome Collection · CC BY 4.0"
  },
  "morelly": {
-  "f": "media/retratos/ilustres/morelly.jpg",
+  "f": "media/retratos/biografias/morelly.jpg",
   "pie": "Étienne-Gabriel Morelly (retrato imaginario, finales del s. XVIII) · Autor desconocido · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:%C3%89tienne-Gabriel_Morelly.png"
  },
  "holbach": {
-  "f": "media/retratos/ilustres/holbach.jpg",
+  "f": "media/retratos/biografias/holbach.jpg",
   "pie": "Paul Heinrich Dietrich, barón d'Holbach · Alexander Roslin (1785) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Paul_Heinrich_Dietrich_Baron_d'Holbach_Roslin.jpg"
  },
@@ -582,52 +582,52 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:Immanuel_Kant_-_Gemaelde_1.jpg"
  },
  "lessing": {
-  "f": "media/retratos/ilustres/lessing.jpg",
+  "f": "media/retratos/biografias/lessing.jpg",
   "pie": "Portret van Gotthold Ephraim Lessing, RP-P-OB-13.019 · Rijksmuseum · CC0",
   "page": "https://commons.wikimedia.org/wiki/File:Portret_van_Gotthold_Ephraim_Lessing,_RP-P-OB-13.019.jpg"
  },
  "mendelssohn": {
-  "f": "media/retratos/ilustres/mendelssohn.jpg",
+  "f": "media/retratos/biografias/mendelssohn.jpg",
   "pie": "Portret van Moses Mendelssohn, RP-P-1937-1200 · Rijksmuseum · CC0",
   "page": "https://commons.wikimedia.org/wiki/File:Portret_van_Moses_Mendelssohn,_RP-P-1937-1200.jpg"
  },
  "hamann": {
-  "f": "media/retratos/ilustres/hamann.jpg",
+  "f": "media/retratos/biografias/hamann.jpg",
   "pie": "Johann Georg Hamann Portrait · Paul Ortwin Rave, Das Geistige Deutschland im Bildnis: Das Jahrhundert Goethes, Berlin 1949 · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Johann_Georg_Hamann_Portrait.jpg"
  },
  "jefferson": {
-  "f": "media/retratos/ilustres/jefferson.jpg",
+  "f": "media/retratos/biografias/jefferson.jpg",
   "pie": "Official Presidential portrait of Thomas Jefferson (by Rembrandt Peale, 1800) · Rembrandt Peale · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Official_Presidential_portrait_of_Thomas_Jefferson_(by_Rembrandt_Peale,_1800).jpg"
  },
  "jacobi": {
-  "f": "media/retratos/ilustres/jacobi.jpg",
+  "f": "media/retratos/biografias/jacobi.jpg",
   "pie": "Friedrich Heinrich Jacobi portrait · Unidentified painter · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Friedrich_Heinrich_Jacobi_portrait.jpg"
  },
  "paley": {
-  "f": "media/retratos/ilustres/paley.jpg",
+  "f": "media/retratos/biografias/paley.jpg",
   "pie": "William Paley · George Romney · Dominio público (Antes de 1802)",
   "page": "https://commons.wikimedia.org/wiki/File:William_Paley_by_George_Romney.jpg"
  },
  "condorcet": {
-  "f": "media/retratos/ilustres/condorcet.jpg",
+  "f": "media/retratos/biografias/condorcet.jpg",
   "pie": "Nicolas de Condorcet · Anónimo (Museo Carnavalet, París, P1668) · Dominio público (entre 1743 y 1794)",
   "page": "https://commons.wikimedia.org/wiki/File:Anonymous_-_Portrait_de_Marie_Jean_Antoine_Nicolas_de_Caritat,_marquis_de_Condorcet_(1743-1794),_philosophe,_math%C3%A9maticien_et_homme_politique._-_P1668_-_Mus%C3%A9e_Carnavalet.jpg"
  },
  "lamarck": {
-  "f": "media/retratos/ilustres/lamarck.jpg",
+  "f": "media/retratos/biografias/lamarck.jpg",
   "pie": "Jean-Baptiste de Lamarck · Charles Thévenin · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Jean-Baptiste_de_Lamarck.jpg"
  },
  "herder": {
-  "f": "media/retratos/ilustres/herder.jpg",
+  "f": "media/retratos/biografias/herder.jpg",
   "pie": "Johann Gottfried Herder 2 · Anton Graff · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Johann_Gottfried_Herder_2.jpg"
  },
  "jovellanos": {
-  "f": "media/retratos/ilustres/jovellanos.jpg",
+  "f": "media/retratos/biografias/jovellanos.jpg",
   "pie": "Gaspar Melchor de Jovellanos · Francisco de Goya · Dominio público (Goya falleció en 1828)",
   "page": "https://commons.wikimedia.org/wiki/File:Gaspar_Melchor_de_Jovellanos.jpg"
  },
@@ -641,27 +641,27 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File%3AOlympe_de_Gouges.jpg"
  },
  "goethe": {
-  "f": "media/retratos/ilustres/goethe.jpg",
+  "f": "media/retratos/biografias/goethe.jpg",
   "pie": "Goethe (Stieler 1828) · Joseph Karl Stieler · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Goethe_(Stieler_1828).jpg"
  },
  "roux": {
-  "f": "media/retratos/ilustres/roux.jpg",
+  "f": "media/retratos/biografias/roux.jpg",
   "pie": "Jacques Roux (retrato imaginario, entre 1793 y 1801) · Autor desconocido (Museo Carnavalet) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Jacques_Roux_-_estampe_du_mus%C3%A9e_Carnavalet.jpg"
  },
  "hamilton": {
-  "f": "media/retratos/ilustres/hamilton.jpg",
+  "f": "media/retratos/biografias/hamilton.jpg",
   "pie": "Alexander Hamilton (1792) (recorte: busto) · John Trumbull · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Google_Arts_Project_-_Alexander_Hamilton_(1792_portrait)_by_John_Trumbull.jpg"
  },
  "godwin": {
-  "f": "media/retratos/ilustres/godwin.jpg",
+  "f": "media/retratos/biografias/godwin.jpg",
   "pie": "WilliamGodwin · James Northcote · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:WilliamGodwin.jpg"
  },
  "hebert": {
-  "f": "media/retratos/ilustres/hebert.jpg",
+  "f": "media/retratos/biografias/hebert.jpg",
   "pie": "Jacques-René Hébert (1757-1794) portrait · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Jacques-Ren%C3%A9_H%C3%A9bert_(1757-1794)_portrait.jpg"
  },
@@ -671,37 +671,37 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File%3AMary_Wollstonecraft_by_John_Opie_%28c._1797%29.jpg"
  },
  "schiller": {
-  "f": "media/retratos/ilustres/schiller.jpg",
+  "f": "media/retratos/biografias/schiller.jpg",
   "pie": "Anton Graff - Friedrich Schiller · Anton Graff · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Anton_Graff_-_Friedrich_Schiller.jpg"
  },
  "babeuf": {
-  "f": "media/retratos/ilustres/babeuf.jpg",
+  "f": "media/retratos/biografias/babeuf.jpg",
   "pie": "François-Noël Babeuf · François Bonneville · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Fran%C3%A7ois-No%C3%ABl_Babeuf.jpg"
  },
  "saint-simon": {
-  "f": "media/retratos/ilustres/saint-simon.jpg",
+  "f": "media/retratos/biografias/saint-simon.jpg",
   "pie": "Portrait de Claude-Henri de Rouvroy comte de Saint-Simon · After Adélaïde Labille-Guiard · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Portrait_de_Claude-Henri_de_Rouvroy_comte_de_Saint-Simon.jpg"
  },
  "buonarroti": {
-  "f": "media/retratos/ilustres/buonarroti.jpg",
+  "f": "media/retratos/biografias/buonarroti.jpg",
   "pie": "Portrait de Filippo-Michele Buonarroti (1761-1837), révolutionnaire italien, S255 · David d'Angers, Pierre-Jean (Angers, 12–03–1788 - Paris, 05–01–1856), sculpteur · CC0",
   "page": "https://commons.wikimedia.org/wiki/File:Portrait_de_Filippo-Michele_Buonarroti_(1761-1837),_r%C3%A9volutionnaire_italien,_S255.jpg"
  },
  "fichte": {
-  "f": "media/retratos/ilustres/fichte.jpg",
+  "f": "media/retratos/biografias/fichte.jpg",
   "pie": "Johann Gottlieb Fichte by Friedrich Bury · Albrecht Fürchtegott Schultheiß · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Johann_Gottlieb_Fichte_by_Friedrich_Bury.jpg"
  },
  "malthus": {
-  "f": "media/retratos/ilustres/malthus.jpg",
+  "f": "media/retratos/biografias/malthus.jpg",
   "pie": "Thomas Robert Malthus · John Linnell · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Thomas_Robert_Malthus.jpg"
  },
  "schleiermacher": {
-  "f": "media/retratos/ilustres/schleiermacher.jpg",
+  "f": "media/retratos/biografias/schleiermacher.jpg",
   "pie": "Portret van Friedrich Ernst Daniel Schleiermacher (cropped) · Rijksmuseum · CC0",
   "page": "https://commons.wikimedia.org/wiki/File:Portret_van_Friedrich_Ernst_Daniel_Schleiermacher_(cropped).jpg"
  },
@@ -711,47 +711,47 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:Hegel_portrait_by_Schlesinger_1831.jpg"
  },
  "holderlin": {
-  "f": "media/retratos/ilustres/holderlin.jpg",
+  "f": "media/retratos/biografias/holderlin.jpg",
   "pie": "FK Hiemer - Friedrich Hölderlin (Pastell 1792) · Franz Carl Hiemer · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:FK_Hiemer_-_Friedrich_H%C3%B6lderlin_(Pastell_1792).jpg"
  },
  "owen": {
-  "f": "media/retratos/ilustres/owen.jpg",
+  "f": "media/retratos/biografias/owen.jpg",
   "pie": "Portrait of Robert Owen (4674544) · Henry Thomas Ryall · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Portrait_of_Robert_Owen_(4674544).jpg"
  },
  "fourier": {
-  "f": "media/retratos/ilustres/fourier.jpg",
+  "f": "media/retratos/biografias/fourier.jpg",
   "pie": "Portrait de Charles Fourier (1772–1837), par Jean Gigoux · Jean Gigoux · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Portrait_de_Charles_Fourier_(1772%E2%80%931837),_par_Jean_Gigoux.jpg"
  },
  "novalis": {
-  "f": "media/retratos/ilustres/novalis.jpg",
+  "f": "media/retratos/biografias/novalis.jpg",
   "pie": "Novalis-1 · Franz Gareis · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Novalis-1.jpg"
  },
  "schlegel": {
-  "f": "media/retratos/ilustres/schlegel.jpg",
+  "f": "media/retratos/biografias/schlegel.jpg",
   "pie": "Franz Gareis Portrait Friedrich Schlegel · Franz Gareis · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Franz_Gareis_Portrait_Friedrich_Schlegel.jpg"
  },
  "laborde": {
-  "f": "media/retratos/ilustres/laborde.jpg",
+  "f": "media/retratos/biografias/laborde.jpg",
   "pie": "Portret van Alexandre de Laborde, RP-P-1911-1941 · Rijksmuseum · CC0",
   "page": "https://commons.wikimedia.org/wiki/File:Portret_van_Alexandre_de_Laborde,_RP-P-1911-1941.jpg"
  },
  "schelling": {
-  "f": "media/retratos/ilustres/schelling.jpg",
+  "f": "media/retratos/biografias/schelling.jpg",
   "pie": "Nb pinacoteca stieler friedrich wilhelm joseph von schelling · Joseph Karl Stieler · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Nb_pinacoteca_stieler_friedrich_wilhelm_joseph_von_schelling.jpg"
  },
  "lamennais": {
-  "f": "media/retratos/ilustres/lamennais.jpg",
+  "f": "media/retratos/biografias/lamennais.jpg",
   "pie": "Lamennais · Jean-Baptiste Paulin Guérin · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Lamennais.jpg"
  },
  "cabet": {
-  "f": "media/retratos/ilustres/cabet.jpg",
+  "f": "media/retratos/biografias/cabet.jpg",
   "pie": "Etienne Cabet (1849) · Charles Marville · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Etienne_Cabet_(1849).jpg"
  },
@@ -761,7 +761,7 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:Arthur_Schopenhauer_by_J_Sch%C3%A4fer,_1859b.jpg"
  },
  "heine": {
-  "f": "media/retratos/ilustres/heine.jpg",
+  "f": "media/retratos/biografias/heine.jpg",
   "pie": "Heinrich Heine-Oppenheim · Moritz Daniel Oppenheim · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Heinrich_Heine-Oppenheim.jpg"
  },
@@ -770,7 +770,7 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Portrait dAuguste Comte (maison dA. Comte, Paris) (2424895050) · Jean-Pierre Dalbéra from Paris, France · CC BY 2.0"
  },
  "balzac": {
-  "f": "media/retratos/ilustres/balzac.jpg",
+  "f": "media/retratos/biografias/balzac.jpg",
   "pie": "Balzac by Bisson daguerrotype original · Louis-Auguste Bisson · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Balzac_by_Bisson_daguerrotype_original.jpg"
  },
@@ -784,12 +784,12 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:John_Stuart_Mill_by_John_Watkins,_1865.jpg"
  },
  "de_morgan": {
-  "f": "media/retratos/ilustres/de_morgan.jpg",
+  "f": "media/retratos/biografias/de_morgan.jpg",
   "pie": "De Morgan Augustus (Memoir of Augustus De Morgan, 1882) · Sophia Elizabeth De Morgan (ed.) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:De_Morgan_Augustus.jpg"
  },
  "considerant": {
-  "f": "media/retratos/ilustres/considerant.jpg",
+  "f": "media/retratos/biografias/considerant.jpg",
   "pie": "Considerant, Victor · Charles Philippe Auguste Carey · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Considerant,_Victor.jpg"
  },
@@ -799,22 +799,22 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File%3ACharles_Darwin_seated_crop.jpg"
  },
  "proudhon": {
-  "f": "media/retratos/ilustres/proudhon.jpg",
+  "f": "media/retratos/biografias/proudhon.jpg",
   "pie": "Pierre Joseph Proudhon · Gustave Courbet · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Pierre_Joseph_Proudhon.jpg"
  },
  "balmes": {
-  "f": "media/retratos/ilustres/balmes.jpg",
+  "f": "media/retratos/biografias/balmes.jpg",
   "pie": "Jaime Balmes · Nicolás González (Madrid); retrato de época · Dominio público",
   "page": "https://commons.wikimedia.org/wiki/File:Jaime_Balmes.jpg"
  },
  "dickens": {
-  "f": "media/retratos/ilustres/dickens.jpg",
+  "f": "media/retratos/biografias/dickens.jpg",
   "pie": "Charles Dickens by Herbert Watkins 29 April 1858 (alternate) · Herbert Watkins (1828–1916) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Charles_Dickens_by_Herbert_Watkins_29_April_1858_(alternate).jpg"
  },
  "buchner": {
-  "f": "media/retratos/ilustres/buchner.jpg",
+  "f": "media/retratos/biografias/buchner.jpg",
   "pie": "Georg Büchner · Philipp August Joseph Hoffmann (1807 bis 1883) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Georg_B%C3%BCchner.png"
  },
@@ -823,7 +823,7 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Kierkegaard portrait · Luplau Janssen · Public Domain"
  },
  "boole": {
-  "f": "media/retratos/ilustres/boole.jpg",
+  "f": "media/retratos/biografias/boole.jpg",
   "pie": "George Boole color · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:George_Boole_color.jpg"
  },
@@ -833,27 +833,27 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:Karl_Marx_by_John_Jabez_Edwin_Mayall_1875_-_Restored.png"
  },
  "mendel": {
-  "f": "media/retratos/ilustres/mendel.jpg",
+  "f": "media/retratos/biografias/mendel.jpg",
   "pie": "Gregor Mendel with cross · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Gregor_Mendel_with_cross.jpg"
  },
  "wallace": {
-  "f": "media/retratos/ilustres/wallace.jpg",
+  "f": "media/retratos/biografias/wallace.jpg",
   "pie": "Alfred-Russel-Wallace-c1895 · London Stereoscopic and Photographic Company (active 1855-1922) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Alfred-Russel-Wallace-c1895.jpg"
  },
  "tylor": {
-  "f": "media/retratos/ilustres/tylor.jpg",
+  "f": "media/retratos/biografias/tylor.jpg",
   "pie": "Edward Burnett Tylor (Popular Science Monthly, vol. 26, 1884-1885) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:PSM_V26_D156_Edward_Burnett_Tylor.jpg"
  },
  "venn": {
-  "f": "media/retratos/ilustres/venn.jpg",
+  "f": "media/retratos/biografias/venn.jpg",
   "pie": "John Venn (hacia 1870) · Maull & Fox · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:John_Venn_2.jpg"
  },
  "kropotkin": {
-  "f": "media/retratos/ilustres/kropotkin.jpg",
+  "f": "media/retratos/biografias/kropotkin.jpg",
   "pie": "Kropotkin1 · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Kropotkin1.jpg"
  },
@@ -868,7 +868,7 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:Nietzsche1882.jpg"
  },
  "frege": {
-  "f": "media/retratos/ilustres/frege.jpg",
+  "f": "media/retratos/biografias/frege.jpg",
   "pie": "Young frege · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Young_frege.jpg"
  },
@@ -877,7 +877,7 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Sigmund Freud, bust portrait, facing front LCCN2010651703 · Miscellaneous Items in High Demand, PPOC, Library of Congress · Public Domain"
  },
  "zetkin": {
-  "f": "media/retratos/ilustres/zetkin.jpg",
+  "f": "media/retratos/biografias/zetkin.jpg",
   "pie": "Clara Zetkin · Autor desconocido (Congreso Internacional de Protección Obrera, Zúrich) · Dominio público (1897)",
   "page": "https://commons.wikimedia.org/wiki/File:Clara_Zetkin_(cropped).jpg"
  },
@@ -896,12 +896,12 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File%3AJohn_Dewey_cph.3a51565.jpg"
  },
  "whitehead": {
-  "f": "media/retratos/ilustres/whitehead.jpg",
+  "f": "media/retratos/biografias/whitehead.jpg",
   "pie": "ANWhitehead · unknown · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:ANWhitehead.jpg"
  },
  "salome": {
-  "f": "media/retratos/ilustres/salome.jpg",
+  "f": "media/retratos/biografias/salome.jpg",
   "pie": "Lou Andreas-Salomé · Hofatelier Elvira (Múnich), c. 1897 · Dominio público (PD-old-70; publicada antes de 1931; confirmado con la API de Commons el 18-10-2026)",
   "page": "https://commons.wikimedia.org/wiki/File:Lou_Andreas-Salom%C3%A9_-_Foto_Atelier_Elvira.jpg"
  },
@@ -910,7 +910,7 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Auto-retrato de Unamuno, Revista Ibérica, 30-09-1902 · Miguel de Unamuno · Public Domain"
  },
  "weber": {
-  "f": "media/retratos/ilustres/weber.jpg",
+  "f": "media/retratos/biografias/weber.jpg",
   "pie": "Max Weber in 1918 · Ernst Gottmann · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Max_Weber_in_1918.png"
  },
@@ -920,7 +920,7 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File%3AMarie_Curie_c1920.jpg"
  },
  "luxemburgo": {
-  "f": "media/retratos/ilustres/luxemburgo.jpg",
+  "f": "media/retratos/biografias/luxemburgo.jpg",
   "pie": "Rosa Luxemburgo (h. 1910) · Autor desconocido · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Rosa_Luxemburg.jpg"
  },
@@ -929,17 +929,17 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "William Timym-Bertrand Russell-bronze bust-1970 · Alexanderb1970 · CC0"
  },
  "kollontai": {
-  "f": "media/retratos/ilustres/kollontai.jpg",
+  "f": "media/retratos/biografias/kollontai.jpg",
   "pie": "Aleksandra Kollontái · George Grantham Bain Collection · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Alexandra_Kollontai.jpg"
  },
  "moore": {
-  "f": "media/retratos/ilustres/moore.jpg",
+  "f": "media/retratos/biografias/moore.jpg",
   "pie": "1914 George Edward Moore (cropped) · Ray Strachey, born Rachel Pearsall Conn Costelloe (4 June 1887 London – 16 July 1940) · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:1914_George_Edward_Moore_(cropped).jpg"
  },
  "scheler": {
-  "f": "media/retratos/ilustres/scheler.jpg",
+  "f": "media/retratos/biografias/scheler.jpg",
   "pie": "Max Scheler · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Max_Scheler.jpg"
  },
@@ -949,7 +949,7 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File%3AEinstein_1921_by_F_Schmutzer_-_restoration.jpg"
  },
  "schlick": {
-  "f": "media/retratos/ilustres/schlick.jpg",
+  "f": "media/retratos/biografias/schlick.jpg",
   "pie": "Schlick sitting · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Schlick_sitting.jpg"
  },
@@ -964,12 +964,12 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File:Karl_Jaspers_1946.jpg"
  },
  "sapir": {
-  "f": "media/retratos/ilustres/sapir.jpg",
+  "f": "media/retratos/biografias/sapir.jpg",
   "pie": "Edward Sapir · unnkown · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Edward_Sapir.jpg"
  },
  "duchamp": {
-  "f": "media/retratos/ilustres/duchamp.jpg",
+  "f": "media/retratos/biografias/duchamp.jpg",
   "pie": "Marcel Duchamp 01 · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Marcel_Duchamp_01.jpg"
  },
@@ -983,42 +983,42 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Freiburg, Zähringen- Jahnhalle, Prof. Martin Heidegger während eines Vortrags - LABW - Staatsarchiv Freiburg W 134 Nr. 023740f · Willy Pragher · CC BY 4.0"
  },
  "carnap": {
-  "f": "media/retratos/ilustres/carnap.jpg",
+  "f": "media/retratos/biografias/carnap.jpg",
   "pie": "Rudolf Carnap en 1907 · PD-US",
   "page": "https://en.wikipedia.org/wiki/File:Rudolf_Carnap_in_1907.jpeg"
  },
  "gramsci": {
-  "f": "media/retratos/ilustres/gramsci.jpg",
+  "f": "media/retratos/biografias/gramsci.jpg",
   "pie": "Antonio Gramsci (hacia 1920) · Autor desconocido · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Gramsci.png"
  },
  "benjamin": {
-  "f": "media/retratos/ilustres/benjamin.jpg",
+  "f": "media/retratos/biografias/benjamin.jpg",
   "pie": "Walter Benjamin vers 1928 · Photo d'identité sans auteur, 1928 · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Walter_Benjamin_vers_1928.jpg"
  },
  "horkheimer": {
-  "f": "media/retratos/ilustres/horkheimer.jpg",
+  "f": "media/retratos/biografias/horkheimer.jpg",
   "pie": "Max Horkheimer, Múnich 1958 (recorte: Horkheimer) · Barbara Niggl Radloff · CC BY-SA 4.0",
   "page": "https://commons.wikimedia.org/wiki/File:FM-2019-1-6-4-30--Niggl-Radloff-B-Max-Horkheimer-ONLINE.jpg"
  },
  "whorf": {
-  "f": "media/retratos/ilustres/whorf.jpg",
+  "f": "media/retratos/biografias/whorf.jpg",
   "pie": "Benjamin Lee Whorf by Bachrach (cropped) · Bachrach Studios · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Benjamin_Lee_Whorf_by_Bachrach_(cropped).jpg"
  },
  "marcuse": {
-  "f": "media/retratos/ilustres/marcuse.jpg",
+  "f": "media/retratos/biografias/marcuse.jpg",
   "pie": "Herbert Marcuse in Newton, Massachusetts 1955 · Familia Marcuse (Harold Marcuse) · CC BY-SA 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Herbert_Marcuse_in_Newton,_Massachusetts_1955.jpeg"
  },
  "gadamer": {
-  "f": "media/retratos/ilustres/gadamer.jpg",
+  "f": "media/retratos/biografias/gadamer.jpg",
   "pie": "Hans-Georg Gadamer · Leena Ruuskanen · CC BY 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Hans-Georg_Gadamer.jpg"
  },
  "ryle": {
-  "f": "media/retratos/ilustres/ryle.jpg",
+  "f": "media/retratos/biografias/ryle.jpg",
   "pie": "La biblioteca de Gilbert Ryle en el Linacre College de Oxford (no hay retrato suyo de uso libre) · D Wells · CC BY-SA 4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Gilbert_Ryle_Library.jpg"
  },
@@ -1028,7 +1028,7 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File%3AKarl_Popper.jpg"
  },
  "adorno": {
-  "f": "media/retratos/ilustres/adorno.jpg",
+  "f": "media/retratos/biografias/adorno.jpg",
   "pie": "Theodor W. Adorno · Jeremy J. Shapiro · CC BY-SA 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Theodor_W._Adorno.jpg"
  },
@@ -1056,7 +1056,7 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Simone Weil (1909-1943) portrait · Public Domain"
  },
  "turing": {
-  "f": "media/retratos/ilustres/turing.jpg",
+  "f": "media/retratos/biografias/turing.jpg",
   "pie": "Alan Turing (1951) (crop) · Elliott &amp; Fry · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Alan_Turing_(1951)_(crop).jpg"
  },
@@ -1065,12 +1065,12 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Albert Camus, gagnant de prix Nobel, portrait en buste, posé au bureau, faisant face à gauche, cigarette de tabagisme · Photograph by United Press International · Public Domain"
  },
  "ricoeur": {
-  "f": "media/retratos/ilustres/ricoeur.jpg",
+  "f": "media/retratos/biografias/ricoeur.jpg",
   "pie": "Paul Ricoeur Balzan · Juerg Mueller / Scanpix. · CC0",
   "page": "https://commons.wikimedia.org/wiki/File:Paul_Ricoeur_Balzan.png"
  },
  "shannon": {
-  "f": "media/retratos/ilustres/shannon.jpg",
+  "f": "media/retratos/biografias/shannon.jpg",
   "pie": "ClaudeShannon MFO3807 · Jacobs, Konrad · CC BY-SA 2.0 de",
   "page": "https://commons.wikimedia.org/wiki/File:ClaudeShannon_MFO3807.jpg"
  },
@@ -1089,22 +1089,22 @@ const BIOGRAFIAS_RETRATOS = {
   "page": "https://commons.wikimedia.org/wiki/File%3AThomas-kuhn-portrait.png"
  },
  "lyotard": {
-  "f": "media/retratos/ilustres/lyotard.jpg",
+  "f": "media/retratos/biografias/lyotard.jpg",
   "pie": "Jean-Francois Lyotard cropped · Bracha L. Ettinger, retouched by AM (talk) · CC BY-SA 2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Jean-Francois_Lyotard_cropped.jpg"
  },
  "danto": {
-  "f": "media/retratos/ilustres/danto.jpg",
+  "f": "media/retratos/biografias/danto.jpg",
   "pie": "Arthur Danto, 2012 · AmeOnTheLoose at Italian Wikipedia · CC BY-SA 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Arthur_Danto,_2012.jpg"
  },
  "feyerabend": {
-  "f": "media/retratos/ilustres/feyerabend.jpg",
+  "f": "media/retratos/biografias/feyerabend.jpg",
   "pie": "Paul Feyerabend · Grazia Borrini-Feyerabend · Attribution",
   "page": "https://commons.wikimedia.org/wiki/File:Paul_Feyerabend_1.jpg"
  },
  "bauman": {
-  "f": "media/retratos/ilustres/bauman.jpg",
+  "f": "media/retratos/biografias/bauman.jpg",
   "pie": "Zigmunt Bauman na 20 Forumi vydavciv(Cropped) · Forumlitfest · CC BY 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Zigmunt_Bauman_na_20_Forumi_vydavciv(Cropped).jpg"
  },
@@ -1113,7 +1113,7 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Michel Foucault MET 153881 · Giovanni Battista Nini · CC0"
  },
  "dickie": {
-  "f": "media/retratos/ilustres/dickie.jpg",
+  "f": "media/retratos/biografias/dickie.jpg",
   "pie": "La Fuente de Duchamp fotografiada por Alfred Stieglitz (1917), el ejemplo clásico de la teoría institucional del arte (no hay retrato de Dickie de uso libre) · Marcel Duchamp / Alfred Stieglitz · Public domain",
   "page": "https://commons.wikimedia.org/wiki/File:Marcel_Duchamp,_1917,_Fountain,_photograph_by_Alfred_Stieglitz.jpg"
  },
@@ -1122,87 +1122,87 @@ const BIOGRAFIAS_RETRATOS = {
   "pie": "Jürgen Habermas, Protestbewegung und Hochschulreform 1969 · 1969 · Public domain"
  },
  "wilson": {
-  "f": "media/retratos/ilustres/wilson.jpg",
+  "f": "media/retratos/biografias/wilson.jpg",
   "pie": "Edward O. Wilson, 2003 (cropped) · Jim Harrison · CC BY 2.5",
   "page": "https://commons.wikimedia.org/wiki/File:Edward_O._Wilson,_2003_(cropped).jpg"
  },
  "txillardegi": {
-  "f": "media/retratos/ilustres/txillardegi.jpg",
+  "f": "media/retratos/biografias/txillardegi.jpg",
   "pie": "Txillardegi DaniBlanco Argia · Dani Blanco, Argia · CC BY-SA 4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Txillardegi_DaniBlanco_Argia.jpg"
  },
  "baudrillard": {
-  "f": "media/retratos/ilustres/baudrillard.jpg",
+  "f": "media/retratos/biografias/baudrillard.jpg",
   "pie": "WikipediaBaudrillard20040612-cropped · Ayaleila (Wikipedia) · CC BY-SA 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:WikipediaBaudrillard20040612-cropped.png"
  },
  "derrida": {
-  "f": "media/retratos/ilustres/derrida.jpg",
+  "f": "media/retratos/biografias/derrida.jpg",
   "pie": "Derrida-by-Pablo-Secca · Pablosecca · CC BY 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Derrida-by-Pablo-Secca.jpg"
  },
  "debord": {
-  "f": "media/retratos/ilustres/debord.jpg",
+  "f": "media/retratos/biografias/debord.jpg",
   "pie": "Guy Debord, painted portrait · thierry ehrmann · CC BY 2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Guy_Debord,_painted_portrait.jpg"
  },
  "rorty": {
-  "f": "media/retratos/ilustres/rorty.jpg",
+  "f": "media/retratos/biografias/rorty.jpg",
   "pie": "Richard Rorty (dibujo a lápiz, 2013) · Manuel Redondo Dueñas · CC BY-SA 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Richard_McKay_Rorty.png"
  },
  "vattimo": {
-  "f": "media/retratos/ilustres/vattimo.jpg",
+  "f": "media/retratos/biografias/vattimo.jpg",
   "pie": "Gianni Vattimo - Participante del Foro Internacional por la Emancipación y la Igualdad (16106465993) · Ministerio de Cultura de la Nación Argentina · CC BY-SA 2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Gianni_Vattimo_-_Participante_del_Foro_Internacional_por_la_Emancipaci%C3%B3n_y_la_Igualdad_(16106465993).jpg"
  },
  "azurmendi": {
-  "f": "media/retratos/ilustres/azurmendi.jpg",
+  "f": "media/retratos/biografias/azurmendi.jpg",
   "pie": "Joxe Azurmendi · Luistxo from Donostia, Basque Country · CC BY-SA 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Joxe_Azurmendi.jpg"
  },
  "ingham": {
-  "f": "media/retratos/ilustres/ingham.jpg",
+  "f": "media/retratos/biografias/ingham.jpg",
   "pie": "Tarjas medievales de deuda, imagen clásica del dinero como crédito, la tesis de Ingham (no hay retrato suyo de uso libre) · Winchester City Council Museums · CC BY-SA 2.0",
   "page": "https://commons.wikimedia.org/wiki/File:Medieval_tally_sticks.jpg"
  },
  "nussbaum": {
-  "f": "media/retratos/ilustres/nussbaum.jpg",
+  "f": "media/retratos/biografias/nussbaum.jpg",
   "pie": "Martha Nussbaum wikipedia 10-10 · Robin Holland (website) · CC BY-SA 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Martha_Nussbaum_wikipedia_10-10.jpg"
  },
  "butler": {
-  "f": "media/retratos/ilustres/butler.jpg",
+  "f": "media/retratos/biografias/butler.jpg",
   "pie": "JudithButler2013 · University of California, Berkeley · CC0",
   "page": "https://commons.wikimedia.org/wiki/File:JudithButler2013.jpg"
  },
  "han": {
-  "f": "media/retratos/ilustres/han.jpg",
+  "f": "media/retratos/biografias/han.jpg",
   "pie": "2015 Byung-Chul Han (cropped)2 · ActuaLitté · CC BY-SA 2.0",
   "page": "https://commons.wikimedia.org/wiki/File:2015_Byung-Chul_Han_(cropped)2.jpg"
  },
  "herrero": {
-  "f": "media/retratos/ilustres/herrero.jpg",
+  "f": "media/retratos/biografias/herrero.jpg",
   "pie": "Yayo Herrero 2022 (facecrop) · Dani Blanco - Argia.eus (See CC-BY below) · CC BY-SA 4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Yayo_Herrero_2022_(facecrop).jpg"
  },
  "chalmers": {
-  "f": "media/retratos/ilustres/chalmers.jpg",
+  "f": "media/retratos/biografias/chalmers.jpg",
   "pie": "David Chalmers 2011 (cropped) · HerbertErwin · CC BY-SA 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:David_Chalmers_2011_(cropped).jpg"
  },
  "klein": {
-  "f": "media/retratos/ilustres/klein.jpg",
+  "f": "media/retratos/biografias/klein.jpg",
   "pie": "Naomi Klein - Brainwash Festival 2017 · Vera de Kok · CC BY-SA 4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Naomi_Klein_-_Brainwash_Festival_2017.jpg"
  },
  "preciado": {
-  "f": "media/retratos/ilustres/preciado.jpg",
+  "f": "media/retratos/biografias/preciado.jpg",
   "pie": "Paul B. Preciado, with Special Jury Award, Berlinale 2023 · Elena Ternovaja · CC BY-SA 3.0",
   "page": "https://commons.wikimedia.org/wiki/File:Paul_B._Preciado,_with_Special_Jury_Award,_Berlinale_2023.jpg"
  },
  "bostrom": {
-  "f": "media/retratos/ilustres/bostrom.jpg",
+  "f": "media/retratos/biografias/bostrom.jpg",
   "pie": "Prof Nick Bostrom 324-1 · Future of Humanity Institute · CC BY 4.0",
   "page": "https://commons.wikimedia.org/wiki/File:Prof_Nick_Bostrom_324-1.jpg"
  }

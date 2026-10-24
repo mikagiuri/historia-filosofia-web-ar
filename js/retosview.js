@@ -16,7 +16,7 @@ const reto = { subject: null, pool: [], title: "", idx: 0, score: 0, streak: 0, 
 
 /* (10-10) rótulos como cadenas exactas, para que los traduzca ui/<lang>.json */
 const RETO_TXT = { repasar: "راجِع الأسئلة التي أخطأت فيها", correctaEs: "الجواب الصحيح هو" };
-function retoBox(){ return document.getElementById("retobox"); }
+function retoBox(){ return document.getElementById("retosbox"); }
 function retoShuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function retoSubjectsPresent(){ return [...new Set(Object.values(QUIZZES).map(q => q.subject))].filter(s => RETO_SUBJ[s]); }
 function retoQuizzesOf(s){ return Object.entries(QUIZZES).filter(([, q]) => q.subject === s); }
@@ -26,10 +26,10 @@ function renderRetoStart(){
   const box = retoBox(); if (!box) return;
   if (reto.t){ clearInterval(reto.t); reto.t = null; }
   const present = retoSubjectsPresent();
-  if (!present.length){ box.innerHTML = '<p class="reto-lead">Todavía no hay cuestionarios para jugar.</p>'; return; }
+  if (!present.length){ box.innerHTML = '<p class="retos-lead">Todavía no hay cuestionarios para jugar.</p>'; return; }
   if (!present.includes(reto.subject)) reto.subject = present[0];
   // tiempo por pregunta: opcional, recordado entre partidas; si el guardado no es válido, el por defecto
-  const savedTime = store.get("aula-reto-time", RETO_TIME);
+  const savedTime = store.get("aula-retos-time", RETO_TIME);
   reto.time = RETO_TIMES.includes(savedTime) ? savedTime : RETO_TIME;
 
   const picks = present.map(s =>
@@ -42,21 +42,21 @@ function renderRetoStart(){
     '<button class="chip" data-rquiz="' + k + '">' + q.name + ' · ' + q.items.length + '</button>').join("");
 
   box.innerHTML =
-    '<div class="reto-wrap reto-start">' +
+    '<div class="retos-wrap retos-start">' +
       '<p class="howto"><span><b>' + RETO_HOWTO.como + '</b> ' + RETO_HOWTO.txt + '</span></p>' +
-      '<div class="reto-pick"><span class="flabel">المادة</span>' + picks + '</div>' +
-      '<div class="reto-pick"><span class="flabel">' + RETO_TLABEL + '</span>' + timePicks + '</div>' +
-      '<div class="reto-modes">' +
-        '<button class="reto-quick" id="retoQuick"><span><b>تحدٍّ سريع</b>' +
+      '<div class="retos-pick"><span class="flabel">المادة</span>' + picks + '</div>' +
+      '<div class="retos-pick"><span class="flabel">' + RETO_TLABEL + '</span>' + timePicks + '</div>' +
+      '<div class="retos-modes">' +
+        '<button class="retos-quick" id="retoQuick"><span><b>تحدٍّ سريع</b>' +
           '<span>' + Math.min(RETO_QUICK, nQ) + ' أسئلة عشوائية · ' + reto.time + ' ث لكل سؤال</span></span>' +
           '<span class="go">▶</span></button>' +
         (list ? '<div><span class="flabel" style="font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">O elige un cuestionario</span>' +
-          '<div class="reto-list">' + list + '</div></div>' : '') +
+          '<div class="retos-list">' + list + '</div></div>' : '') +
       '</div>' +
     '</div>';
 
   box.querySelectorAll("[data-rsub]").forEach(b => b.addEventListener("click", () => { reto.subject = b.dataset.rsub; renderRetoStart(); }));
-  box.querySelectorAll("[data-rtime]").forEach(b => b.addEventListener("click", () => { reto.time = +b.dataset.rtime; store.set("aula-reto-time", reto.time); renderRetoStart(); }));
+  box.querySelectorAll("[data-rtime]").forEach(b => b.addEventListener("click", () => { reto.time = +b.dataset.rtime; store.set("aula-retos-time", reto.time); renderRetoStart(); }));
   const quick = document.getElementById("retoQuick");
   if (quick) quick.addEventListener("click", () => {
     const all = retoQuizzesOf(reto.subject).flatMap(([, q]) => q.items.map(it => ({ it, from: q.name })));
@@ -72,7 +72,7 @@ function renderRetoStart(){
 function retoStart(pool, title){
   reto.pool = pool; reto.title = title; reto.idx = 0; reto.score = 0; reto.streak = 0; reto.correct = 0; reto.answered = false;
   reto.wrong = [];
-  reto.best = (store.get("aula-reto-best", {}))[title] || 0;
+  reto.best = (store.get("aula-retos-best", {}))[title] || 0;
   renderRetoQuestion();
 }
 
@@ -84,27 +84,27 @@ function renderRetoQuestion(){
   reto.optOrder = retoShuffle(it.o.map((_, i) => i));
   const mult = retoStreakMult();
   box.innerHTML =
-    '<div class="reto-wrap">' +
-      '<div class="reto-hud">' +
-        '<span class="reto-count">Pregunta ' + (reto.idx + 1) + ' / ' + n + '</span>' +
-        '<span class="reto-streak">' + (reto.streak > 0 ? '🔥 ×' + mult.toFixed(2).replace(/\.00$/, "") : '') + '</span>' +
-        '<span class="reto-score">' + reto.score + ' pts</span>' +
+    '<div class="retos-wrap">' +
+      '<div class="retos-hud">' +
+        '<span class="retos-count">Pregunta ' + (reto.idx + 1) + ' / ' + n + '</span>' +
+        '<span class="retos-streak">' + (reto.streak > 0 ? '🔥 ×' + mult.toFixed(2).replace(/\.00$/, "") : '') + '</span>' +
+        '<span class="retos-score">' + reto.score + ' pts</span>' +
       '</div>' +
-      '<div class="reto-timer" id="retoTimer"><i style="width:100%"></i></div>' +
-      '<div class="reto-progress"><i style="width:' + Math.round(reto.idx / n * 100) + '%"></i></div>' +
-      '<div class="reto-card" id="retoCard">' +
-        '<div class="reto-tag">' + cur.from + '</div>' +
-        '<p class="reto-q">' + it.q + '</p>' +
-        '<div class="reto-opts" id="retoOpts">' +
-          reto.optOrder.map((orig, disp) => '<button class="reto-opt" data-i="' + orig + '"><span class="k">' + "ABCD"[disp] + '</span><span>' + it.o[orig] + '</span></button>').join("") +
+      '<div class="retos-timer" id="retoTimer"><i style="width:100%"></i></div>' +
+      '<div class="retos-progress"><i style="width:' + Math.round(reto.idx / n * 100) + '%"></i></div>' +
+      '<div class="retos-card" id="retoCard">' +
+        '<div class="retos-tag">' + cur.from + '</div>' +
+        '<p class="retos-q">' + it.q + '</p>' +
+        '<div class="retos-opts" id="retoOpts">' +
+          reto.optOrder.map((orig, disp) => '<button class="retos-opt" data-i="' + orig + '"><span class="k">' + "ABCD"[disp] + '</span><span>' + it.o[orig] + '</span></button>').join("") +
         '</div>' +
-        '<div class="reto-fb" id="retoFb" role="status" aria-live="polite"></div>' +
-        '<div class="reto-foot"><button class="reto-next" id="retoNext" hidden>' +
+        '<div class="retos-fb" id="retoFb" role="status" aria-live="polite"></div>' +
+        '<div class="retos-foot"><button class="retos-next" id="retoNext" hidden>' +
           (reto.idx === n - 1 ? "عرض النتيجة" : "التالي ←") + '</button></div>' +
       '</div>' +
     '</div>';
 
-  box.querySelectorAll(".reto-opt").forEach(op => op.addEventListener("click", () => retoAnswer(+op.dataset.i)));
+  box.querySelectorAll(".retos-opt").forEach(op => op.addEventListener("click", () => retoAnswer(+op.dataset.i)));
   document.getElementById("retoNext").addEventListener("click", retoNext);
   retoStartTimer();
 }
@@ -127,7 +127,7 @@ function retoAnswer(i){
   reto.answered = true;
   if (reto.t){ clearInterval(reto.t); reto.t = null; }
   const it = reto.pool[reto.idx].it;
-  const opts = [...document.querySelectorAll(".reto-opt")];
+  const opts = [...document.querySelectorAll(".retos-opt")];
   const byOrig = k => opts.find(o => +o.dataset.i === k);
   opts.forEach(o => { o.disabled = true; o.classList.add("dim"); });
   const card = document.getElementById("retoCard");
@@ -139,7 +139,7 @@ function retoAnswer(i){
     reto.score += gain; reto.correct++; reto.streak++;
     const b = byOrig(i); if (b){ b.classList.remove("dim"); b.classList.add("correct"); }
     if (card) card.classList.add("pop");
-    const st = document.querySelector(".reto-streak"); if (st){ st.classList.add("bump"); setTimeout(() => st.classList.remove("bump"), 200); }
+    const st = document.querySelector(".retos-streak"); if (st){ st.classList.add("bump"); setTimeout(() => st.classList.remove("bump"), 200); }
   } else {
     reto.streak = 0;
     reto.wrong.push(reto.pool[reto.idx]);
@@ -147,9 +147,9 @@ function retoAnswer(i){
     const bc = byOrig(it.a); if (bc){ bc.classList.remove("dim"); bc.classList.add("correct"); }
     if (card) card.classList.add("shake");
   }
-  const sc = document.querySelector(".reto-score"); if (sc) sc.textContent = reto.score + " pts";
+  const sc = document.querySelector(".retos-score"); if (sc) sc.textContent = reto.score + " pts";
   const fb = document.getElementById("retoFb");
-  const head = ok ? '<b class="reto-gain">+' + gain + ' pts.</b> ' : (i < 0 ? '<b>انتهى الوقت!</b> ' : '<b>' + RETO_TXT.correctaEs + ' ' + "ABCD"[reto.optOrder.indexOf(it.a)] + '.</b> ');
+  const head = ok ? '<b class="retos-gain">+' + gain + ' pts.</b> ' : (i < 0 ? '<b>انتهى الوقت!</b> ' : '<b>' + RETO_TXT.correctaEs + ' ' + "ABCD"[reto.optOrder.indexOf(it.a)] + '.</b> ');
   fb.innerHTML = head + it.fb;
   fb.classList.add("show");
   document.getElementById("retoNext").hidden = false;
@@ -173,20 +173,20 @@ function retoRank(pct){
 function renderRetoResult(){
   const n = reto.pool.length; const pct = Math.round(reto.correct / n * 100);
   const [emoji, rank] = retoRank(pct);
-  const bestMap = store.get("aula-reto-best", {});
+  const bestMap = store.get("aula-retos-best", {});
   const prev = bestMap[reto.title] || 0;
   const record = reto.score > prev;
-  if (record){ bestMap[reto.title] = reto.score; store.set("aula-reto-best", bestMap); }
+  if (record){ bestMap[reto.title] = reto.score; store.set("aula-retos-best", bestMap); }
   /* (18-10, P-062) registro de uso por grupo: solo números (el título del reto es texto y no se envía) */
   if (window.Uso) Uso.ev("reto", { aciertos: reto.correct, total: n, puntos: reto.score });
   retoBox().innerHTML =
-    '<div class="reto-wrap"><div class="reto-result">' +
-      '<div class="reto-badge">' + emoji + '</div>' +
-      '<div class="reto-rank">' + rank + '</div>' +
-      '<div class="reto-final">' + reto.score + '</div>' +
-      '<p class="reto-stats">' + reto.correct + ' / ' + n + ' aciertos (' + pct + '%) · ' +
+    '<div class="retos-wrap"><div class="retos-result">' +
+      '<div class="retos-badge">' + emoji + '</div>' +
+      '<div class="retos-rank">' + rank + '</div>' +
+      '<div class="retos-final">' + reto.score + '</div>' +
+      '<p class="retos-stats">' + reto.correct + ' / ' + n + ' aciertos (' + pct + '%) · ' +
         (record ? '¡nueva mejor marca! 🎉' : 'mejor marca: ' + Math.max(prev, reto.score) + ' pts') + '</p>' +
-      '<div class="reto-actions">' +
+      '<div class="retos-actions">' +
         '<button class="btn2 primary" id="retoAgain">إعادة</button>' +
         (reto.wrong && reto.wrong.length ? '<button class="btn2" id="retoReview">' + RETO_TXT.repasar + ' (' + reto.wrong.length + ')</button>' : '') +
         '<button class="btn2" id="retoHome">Otro reto</button>' +
@@ -201,5 +201,5 @@ function renderRetoResult(){
 /* ---------- init: dibuja la pantalla de inicio al cargar y al entrar en la vista ---------- */
 document.addEventListener("DOMContentLoaded", renderRetoStart);
 (function(){ const nav = document.getElementById("tabs"); if (nav) nav.addEventListener("click", e => {
-  const b = e.target.closest("button"); if (b && b.dataset.view === "reto") renderRetoStart();
+  const b = e.target.closest("button"); if (b && b.dataset.view === "retos") renderRetoStart();
 }); })();

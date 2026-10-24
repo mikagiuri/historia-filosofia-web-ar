@@ -23,7 +23,7 @@ const impEsc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "
 /* nivel de un autor (clave de Biografías) o de un tema de HF (número); null si no hay dato */
 function impNivel(tipo, k){
   if (typeof IMPRESCINDIBLES === "undefined") return null;
-  if (tipo === "glo"){ const g = k, gr = g && g.imp && (IMPRESCINDIBLES.glosarioGrupos || {})[g.impg]; return gr ? { n: g.imp, motivo: gr[1] } : null; }   // k = entrada del glosario
+  if (tipo === "glo"){ const g = k, gr = g && g.imp && (IMPRESCINDIBLES.diccionarioGrupos || {})[g.impg]; return gr ? { n: g.imp, motivo: gr[1] } : null; }   // k = entrada del glosario
   const d = tipo === "tema" ? IMPRESCINDIBLES.temasHf[k] : IMPRESCINDIBLES.autores[k];
   return d ? { n: d[0], motivo: d[1] } : null;
 }

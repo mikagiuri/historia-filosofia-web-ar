@@ -1,10 +1,10 @@
 "use strict";
 /* ===== (11-10, Bachillerato) Dos secciones de fichas con el mismo visor =====
    «Perseguidos por sus ideas» (perseguidos.js, PERSEGUIDOS) y «Comunidades de filósofos» (comunidades.js, COMUNIDADES).
-   Lista filtrable por época (y, en Perseguidos, por lo que les pasó); cada ficha: retrato(s) de Ilustres, el relato,
+   Lista filtrable por época (y, en Perseguidos, por lo que les pasó); cada ficha: retrato(s) de Biografías, el relato,
    una cita con su referencia, el «caso trampa», una pregunta para pensar, los temas y las fuentes. Sin nota y sin guardar nada.
    Enlace profundo: #perseguidos/<id> y #comunidades/<id>. Los temas y los pensadores se enlazan solo si existen en esta web.
-   Ilustres: casosDe(id) añade a la ficha de cada pensador los casos en que aparece (lo pinta biografiasview.js si existe). */
+   Biografías: casosDe(id) añade a la ficha de cada pensador los casos en que aparece (lo pinta biografiasview.js si existe). */
 const CAS_TXT = {
   epoca: "العصر", todas: "الكل", todos: "الكل", castigo: "ماذا حدث لهم",
   ant: "القديمة", med: "الوسيطة", ren: "عصر النهضة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة",
@@ -67,8 +67,8 @@ function casSec(k, txt){ return txt ? '<div class="cas-sec"><p class="cas-k">' +
 function casGente(x){
   const ids = (x.cas_ilu || []).filter(casHayBio); if (!ids.length) return "";
   const con = ids.filter(casRetrato), sin = ids.filter(id => !casRetrato(id));
-  const boton = id => '<button type="button" class="cas-per" data-ilu="' + id + '" title="' + casEsc(casT("verBio", { n: BIOGRAFIAS[id].name })) + '"><img src="' + casEsc(casRetrato(id).f) + '" alt="" loading="lazy"><span>' + casEsc(BIOGRAFIAS[id].name) + '</span></button>';
-  const enlace = id => '<button type="button" class="cas-per-txt" data-ilu="' + id + '">' + casEsc(BIOGRAFIAS[id].name) + '</button>';
+  const boton = id => '<button type="button" class="cas-per" data-biografia="' + id + '" title="' + casEsc(casT("verBio", { n: BIOGRAFIAS[id].name })) + '"><img src="' + casEsc(casRetrato(id).f) + '" alt="" loading="lazy"><span>' + casEsc(BIOGRAFIAS[id].name) + '</span></button>';
+  const enlace = id => '<button type="button" class="cas-per-txt" data-biografia="' + id + '">' + casEsc(BIOGRAFIAS[id].name) + '</button>';
   return (con.length ? '<div class="cas-gente">' + con.map(boton).join("") + '</div>' : "") +
     (sin.length ? '<p class="cas-gente-txt">' + casT("biografias") + ' ' + sin.map(enlace).join(" · ") + '</p>' : "");
 }
@@ -124,7 +124,7 @@ window.loadPerseguidos = loadPerseguidos; window.loadComunidades = loadComunidad
 
 document.addEventListener("click", e => {
   const t = e.target; if (!t.closest) return;
-  const enIlu = t.closest("#ilubox [data-cas-v]");
+  const enIlu = t.closest("#biobox [data-cas-v]");
   if (enIlu){ (window.show || show)(enIlu.dataset.casV); casAbrir(enIlu.dataset.casV, enIlu.dataset.cas); return; }
   const sec = t.closest("#perseguidos, #comunidades"); if (!sec) return;
   const v = sec.id, C = CAS[v];
@@ -132,15 +132,15 @@ document.addEventListener("click", e => {
   const ca = t.closest("[data-cas-ca]"); if (ca){ C.ca = ca.dataset.casCa; casFiltro(v); casRenderLista(v); return; }
   if (t.closest("[data-cas-back]")){ casVolver(v); return; }
   const c = t.closest("[data-cas]"); if (c){ casAbrir(v, c.dataset.cas); return; }
-  const il = t.closest("[data-ilu]"); if (il){ (window.show || show)("biografias"); loadBiografia(il.dataset.ilu); return; }
+  const il = t.closest("[data-biografia]"); if (il){ (window.show || show)("biografias"); loadBiografia(il.dataset.biografia); return; }
   const th = t.closest("[data-th]"); if (th){ (window.show || show)("teoria"); if (typeof window.loadTheory === "function") window.loadTheory(th.dataset.th); }
 });
 
-/* ---- Ilustres: perseguidos y comunidades de un pensador (las pinta biografiasview.js si existe casosDe) ---- */
+/* ---- Biografías: perseguidos y comunidades de un pensador (las pinta biografiasview.js si existe casosDe) ---- */
 function casosDe(id){
   return [["perseguidos", "enPer"], ["comunidades", "enCom"]].map(([v, k]) => {
     const ls = CAS[v].datos().filter(x => (x.cas_ilu || []).includes(id)); if (!ls.length) return "";
-    return '<li><span class="ilu-rel-op">' + casT(k) + '</span> ' + ls.map(x => '<button type="button" class="ilu-rel-a" data-cas-v="' + v + '" data-cas="' + x.id + '" title="' + casEsc(x.pregunta) + '">' + casEsc(x.nombre) + ' (' + casEsc(x.fechas) + ')</button>').join(" · ") + '</li>';
+    return '<li><span class="bio-rel-op">' + casT(k) + '</span> ' + ls.map(x => '<button type="button" class="bio-rel-a" data-cas-v="' + v + '" data-cas="' + x.id + '" title="' + casEsc(x.pregunta) + '">' + casEsc(x.nombre) + ' (' + casEsc(x.fechas) + ')</button>').join(" · ") + '</li>';
   }).join("");
 }
 window.casosDe = casosDe;

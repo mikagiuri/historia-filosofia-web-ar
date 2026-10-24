@@ -12,7 +12,7 @@
    opcional. Cada lote lleva los campos comunes una vez y una lista de eventos con claves de la web y números.
    Eventos: vista (sección y pieza, del hash), caja_tema (bloque y destino del enlace pulsado), ampliar,
    pestana (del menú), conmutador, cuestionario (aciertos, total, números de las preguntas falladas), tarjetas
-   (marcadas como sabidas en la baraja) y reto (puntos). Lo llaman quiz.js, flashcards.js y retoview.js con
+   (marcadas como sabidas en la baraja) y reto (puntos). Lo llaman quiz.js, flashcards.js y retosview.js con
    window.Uso && Uso.ev(...); lo demás se escucha aquí. */
 (function(){
   var CFG = window.USO_CONFIG;

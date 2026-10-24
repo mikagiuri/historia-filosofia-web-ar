@@ -135,12 +135,12 @@ function renderDil(){
       (d.otra ? '<p class="dil-otra"><b>' + DIL_TXT.otraSalida + '</b> ' + dilEsc(d.otra) + '</p>' : '') +
       '<ol>' + (d.preguntas || []).map(q => '<li>' + dilEsc(q) + '</li>').join("") + '</ol>' +
       (d.dato ? '<p class="dil-dato"><b>' + DIL_TXT.unDato + '</b> ' + dilEsc(d.dato) + '</p>' : '') + dilEnlaces(d) + '</div>';
-    /* Bachillerato: las escuelas responden (con ficha de Ilustres) y el debate de su época (texto + unidad de teoría) */
+    /* Bachillerato: las escuelas responden (con ficha de Biografías) y el debate de su época (texto + unidad de teoría) */
     if (Array.isArray(d.escuelas) && d.escuelas.length){
       const I = typeof BIOGRAFIAS !== "undefined" ? BIOGRAFIAS : {};
       html += '<div class="dil-esc"><h3>' + DIL_TXT.escuelas + '</h3><ul>' + d.escuelas.map(e =>
         '<li class="dil-' + String(e.elige || '').toLowerCase() + '"><span class="dil-letter" title="' + DIL_TXT.elige + ' ' + dilEsc(e.elige) + '">' + dilEsc(e.elige) + '</span><div><b>' +
-        (e.ilustre && I[e.ilustre] ? '<a href="#biografias/' + e.ilustre + '">' + dilEsc(e.quien) + '</a>' : dilEsc(e.quien)) + '</b> ' + dilEsc(e.porque) + '</div></li>').join('') + '</ul></div>';
+        (e.biografia && I[e.biografia] ? '<a href="#biografias/' + e.biografia + '">' + dilEsc(e.quien) + '</a>' : dilEsc(e.quien)) + '</b> ' + dilEsc(e.porque) + '</div></li>').join('') + '</ul></div>';
     }
     if (d.debate && d.debate.texto){
       const TH = typeof THEORY !== "undefined" ? THEORY : {}, u = d.debate.unidad;

@@ -127,7 +127,7 @@ function relatedFor(key, self){
   if (typeof DILEMAS !== "undefined" && Array.isArray(DILEMAS) && self !== "dilemas"){
     for (const d of DILEMAS) if (d && d.debate && d.debate.unidad === key) out.push({ go: "dilemas", arg: d.id, label: "المعضلة: " + d.titulo });
   }
-  /* (11-10) ficha de la época del tema (HF), en Ilustres */
+  /* (11-10) ficha de la época del tema (HF), en Biografías */
   if (src && window.Itinerario && window.Itinerario.epocaFicha && document.getElementById("biografias") && typeof bioNombreFicha === "function"){
     const tn = (TEMA_ALIAS[key] != null ? TEMA_ALIAS[key] : (typeof src.temaN === "number" ? src.temaN : (String(src.tema || "").match(/(?:Tema|Thème|Topic|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/) || []).slice(1).find(Boolean)));
     const ep = tn != null ? window.Itinerario.epocaFicha(src.subject, +tn) : null;

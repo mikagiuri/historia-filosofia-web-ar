@@ -12,7 +12,7 @@
   --serif:"Spectral",Georgia,"Times New Roman",serif;
   --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  /* épocas (30-09): los colores de Ilustres y del eje cronológico, para toda la web (js/epocas.js) */
+  /* épocas (30-09): los colores de Biografías y del eje cronológico, para toda la web (js/epocas.js) */
   --e-int:#696973; --on-e:#fff;   /* int = temas introductorios de HF (1-2), en gris; --on-e = texto sobre el color */
   --e-ant:#8B6300; --e-med:#8A4B84; --e-ren:#B83220; --e-mod:#0A729B; --e-ilu:#5B4FC4; --e-con:#257859;
   /* ramas (30-09): un color por rama en Filosofía 1.º (js/epocas.js), igual que las épocas en HF */
@@ -88,7 +88,7 @@ main{padding:clamp(28px,5vw,52px) 0 80px}
 @media (prefers-reduced-motion:reduce){.view{animation:none}}
 @media print{
   header.bar,.skiplink{display:none !important}
-  .filterbar,.chips,.glotools,.fc-ctrl,.ea-actions,.glocount,.subnav{display:none !important}
+  .filterbar,.chips,.dictools,.fc-ctrl,.ea-actions,.diccount,.subnav{display:none !important}
   body{background:#fff}
   .view{display:none !important}
   .view.active{display:block !important;animation:none}
@@ -450,8 +450,8 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:24px 0 60px;colo
 /* Frases y Glosario: la tarjeta lleva el color de su época */
 #citas .citcard[data-ep]{border-inline-start-color:var(--e)}
 #citas .citcard[data-ep] .cit-q::before{color:var(--e)}
-#glosario .gloitem[data-ep]{border-inline-start-color:var(--e)}
-#glosario .gloitem[data-ep] .tag{color:var(--e)}
+#diccionario .dicitem[data-ep]{border-inline-start-color:var(--e)}
+#diccionario .dicitem[data-ep] .tag{color:var(--e)}
 .theory-head[data-ep] .kick{color:var(--e) !important}   /* la vista pone color:var(--hf) en línea */
 .theory-head[data-ep] h1{border-inline-start:4px solid var(--e);padding-inline-start:12px}
 .fin-pn-card[data-ep]{border-top:3px solid var(--e)}
@@ -583,7 +583,7 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 .ficha-cuerpo{padding:0 12px 10px;overflow:hidden}
 .ficha-img{float:inline-end;width:110px;max-height:150px;object-fit:cover;margin:0 0 8px 12px;border-radius:6px;border:1px solid var(--line)}
 .ficha-libro-tit{font-family:var(--sans);font-size:.9rem;margin:0 0 6px}
-.ficha-ilu{font-family:var(--sans);font-size:.85rem;white-space:nowrap}
+.ficha-bio{font-family:var(--sans);font-size:.85rem;white-space:nowrap}
 .ficha-libro.ficha-flash{box-shadow:0 0 0 3px var(--accent)}
 @media (max-width:560px){.lomo{width:34px;font-size:.72rem}.lomo:nth-child(3n+2){width:32px}.lomo:nth-child(4n){width:38px}.ficha-img{width:84px}}
 @media print{.estanteria{display:none}.ficha-libro{break-inside:avoid}}
@@ -735,7 +735,7 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
   .filterbar, .chips { gap: 8px; }
 
   /* ---- Rejillas a una columna ---- */
-  .courses, .sestemas, .glolist { grid-template-columns: 1fr; }
+  .courses, .sestemas, .diclist { grid-template-columns: 1fr; }
   .theory-layout { grid-template-columns: 1fr; }
   .toc { position: static; max-height: none; margin-bottom: 12px; }
 
@@ -946,87 +946,87 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #tabs .navmenu a.gamelink:hover { background:rgba(127,127,127,.14); }
 
 
-/* ==== css/reto.css ==== */
+/* ==== css/retos.css ==== */
 /* ===== Reto: modo juego de los cuestionarios ===== usa los tokens de styles.css ===== */
-#reto .reto-wrap{ max-width:720px; margin:0 auto; }
-#reto .reto-lead{ color:var(--muted); margin:.2rem 0 1.4rem; }
+#retos .retos-wrap{ max-width:720px; margin:0 auto; }
+#retos .retos-lead{ color:var(--muted); margin:.2rem 0 1.4rem; }
 
 /* --- pantalla de inicio --- */
-#reto .reto-start h1{ font-family:var(--serif); font-weight:700; font-size:clamp(1.7rem,4vw,2.4rem); margin:.2rem 0; }
-#reto .reto-pick{ display:flex; flex-wrap:wrap; gap:.5rem; margin:.6rem 0 1rem; }
-#reto .reto-pick .flabel{ width:100%; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
-#reto .rbtn{ font:inherit; cursor:pointer; border:1px solid var(--line); background:var(--surface); color:var(--ink);
+#retos .retos-start h1{ font-family:var(--serif); font-weight:700; font-size:clamp(1.7rem,4vw,2.4rem); margin:.2rem 0; }
+#retos .retos-pick{ display:flex; flex-wrap:wrap; gap:.5rem; margin:.6rem 0 1rem; }
+#retos .retos-pick .flabel{ width:100%; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+#retos .rbtn{ font:inherit; cursor:pointer; border:1px solid var(--line); background:var(--surface); color:var(--ink);
   padding:.5rem .85rem; border-radius:999px; transition:transform .12s, border-color .15s, background .15s; }
-#reto .rbtn:hover{ transform:translateY(-1px); border-color:var(--accent); }
-#reto .rbtn[aria-pressed="true"]{ background:var(--accent); color:var(--on-accent); border-color:var(--accent); }
-#reto .reto-modes{ display:grid; gap:.7rem; margin-top:.4rem; }
-#reto .reto-quick{ display:flex; align-items:center; justify-content:space-between; gap:1rem;
+#retos .rbtn:hover{ transform:translateY(-1px); border-color:var(--accent); }
+#retos .rbtn[aria-pressed="true"]{ background:var(--accent); color:var(--on-accent); border-color:var(--accent); }
+#retos .retos-modes{ display:grid; gap:.7rem; margin-top:.4rem; }
+#retos .retos-quick{ display:flex; align-items:center; justify-content:space-between; gap:1rem;
   padding:1.1rem 1.3rem; border-radius:var(--radius); color:var(--on-accent);
   background:linear-gradient(120deg, var(--accent), var(--accent-2)); box-shadow:var(--shadow); border:0; cursor:pointer; font:inherit; text-align:start; }
-#reto .reto-quick b{ font-family:var(--serif); font-size:1.25rem; display:block; }
-#reto .reto-quick span{ opacity:.9; font-size:.9rem; }
-#reto .reto-quick .go{ font-size:1.7rem; }
-#reto .reto-quick:hover{ filter:brightness(1.05); }
-#reto .reto-list{ display:flex; flex-wrap:wrap; gap:.45rem; margin-top:.3rem; }
-#reto .reto-list .chip{ font:inherit; cursor:pointer; border:1px solid var(--line); background:var(--surface-2);
+#retos .retos-quick b{ font-family:var(--serif); font-size:1.25rem; display:block; }
+#retos .retos-quick span{ opacity:.9; font-size:.9rem; }
+#retos .retos-quick .go{ font-size:1.7rem; }
+#retos .retos-quick:hover{ filter:brightness(1.05); }
+#retos .retos-list{ display:flex; flex-wrap:wrap; gap:.45rem; margin-top:.3rem; }
+#retos .retos-list .chip{ font:inherit; cursor:pointer; border:1px solid var(--line); background:var(--surface-2);
   color:var(--ink); padding:.4rem .7rem; border-radius:10px; font-size:.86rem; transition:border-color .15s, transform .12s; }
-#reto .reto-list .chip:hover{ border-color:var(--accent); transform:translateY(-1px); }
+#retos .retos-list .chip:hover{ border-color:var(--accent); transform:translateY(-1px); }
 
 /* --- HUD durante el juego --- */
-#reto .reto-hud{ display:flex; align-items:center; justify-content:space-between; gap:.8rem; margin-bottom:.5rem; }
-#reto .reto-count{ font-size:.85rem; color:var(--muted); font-variant-numeric:tabular-nums; }
-#reto .reto-streak{ font-size:.95rem; font-weight:600; transition:transform .18s; }
-#reto .reto-streak.bump{ transform:scale(1.35); }
-#reto .reto-score{ font-family:var(--mono); font-weight:600; font-variant-numeric:tabular-nums; font-size:1.05rem; }
-#reto .reto-timer{ height:8px; border-radius:999px; background:var(--surface-2); overflow:hidden; margin-bottom:.4rem; }
-#reto .reto-timer > i{ display:block; height:100%; width:100%; border-radius:999px;
+#retos .retos-hud{ display:flex; align-items:center; justify-content:space-between; gap:.8rem; margin-bottom:.5rem; }
+#retos .retos-count{ font-size:.85rem; color:var(--muted); font-variant-numeric:tabular-nums; }
+#retos .retos-streak{ font-size:.95rem; font-weight:600; transition:transform .18s; }
+#retos .retos-streak.bump{ transform:scale(1.35); }
+#retos .retos-score{ font-family:var(--mono); font-weight:600; font-variant-numeric:tabular-nums; font-size:1.05rem; }
+#retos .retos-timer{ height:8px; border-radius:999px; background:var(--surface-2); overflow:hidden; margin-bottom:.4rem; }
+#retos .retos-timer > i{ display:block; height:100%; width:100%; border-radius:999px;
   background:linear-gradient(90deg, var(--ok), var(--accent-2)); transition:width .1s linear; }
-#reto .reto-timer.low > i{ background:linear-gradient(90deg, var(--bad), #d98a4a); }
-#reto .reto-progress{ height:4px; border-radius:999px; background:var(--surface-2); overflow:hidden; margin-bottom:1rem; }
-#reto .reto-progress > i{ display:block; height:100%; background:var(--accent); transition:width .3s ease; }
+#retos .retos-timer.low > i{ background:linear-gradient(90deg, var(--bad), #d98a4a); }
+#retos .retos-progress{ height:4px; border-radius:999px; background:var(--surface-2); overflow:hidden; margin-bottom:1rem; }
+#retos .retos-progress > i{ display:block; height:100%; background:var(--accent); transition:width .3s ease; }
 
 /* --- tarjeta de pregunta --- */
-#reto .reto-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem 1.3rem; box-shadow:var(--shadow); }
-#reto .reto-tag{ font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
-#reto .reto-q{ font-family:var(--serif); font-size:1.25rem; line-height:1.35; margin:.35rem 0 1rem; text-wrap:balance; }
-#reto .reto-opts{ display:grid; gap:.55rem; }
-#reto .reto-opt{ display:flex; gap:.7rem; align-items:flex-start; text-align:start; font:inherit; cursor:pointer;
+#retos .retos-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem 1.3rem; box-shadow:var(--shadow); }
+#retos .retos-tag{ font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+#retos .retos-q{ font-family:var(--serif); font-size:1.25rem; line-height:1.35; margin:.35rem 0 1rem; text-wrap:balance; }
+#retos .retos-opts{ display:grid; gap:.55rem; }
+#retos .retos-opt{ display:flex; gap:.7rem; align-items:flex-start; text-align:start; font:inherit; cursor:pointer;
   border:1px solid var(--line); background:var(--surface-2); color:var(--ink); padding:.7rem .85rem; border-radius:12px;
   transition:border-color .15s, background .15s, transform .1s; }
-#reto .reto-opt .k{ font-family:var(--mono); font-weight:600; color:var(--accent); flex:0 0 auto; }
-#reto .reto-opt:not(:disabled):hover{ border-color:var(--accent); transform:translateY(-1px); }
-#reto .reto-opt.dim{ opacity:.5; }
-#reto .reto-opt.correct{ border-color:var(--ok); background:var(--ok-bg); }
-#reto .reto-opt.correct .k{ color:var(--ok); }
-#reto .reto-opt.wrong{ border-color:var(--bad); background:var(--bad-bg); }
-#reto .reto-opt.wrong .k{ color:var(--bad); }
-#reto .reto-fb{ margin-top:.9rem; padding:.75rem .85rem; border-inline-start:3px solid var(--accent); background:var(--surface-2);
+#retos .retos-opt .k{ font-family:var(--mono); font-weight:600; color:var(--accent); flex:0 0 auto; }
+#retos .retos-opt:not(:disabled):hover{ border-color:var(--accent); transform:translateY(-1px); }
+#retos .retos-opt.dim{ opacity:.5; }
+#retos .retos-opt.correct{ border-color:var(--ok); background:var(--ok-bg); }
+#retos .retos-opt.correct .k{ color:var(--ok); }
+#retos .retos-opt.wrong{ border-color:var(--bad); background:var(--bad-bg); }
+#retos .retos-opt.wrong .k{ color:var(--bad); }
+#retos .retos-fb{ margin-top:.9rem; padding:.75rem .85rem; border-inline-start:3px solid var(--accent); background:var(--surface-2);
   border-radius:8px; font-size:.92rem; line-height:1.45; opacity:0; max-height:0; overflow:hidden; transition:opacity .25s; }
-#reto .reto-fb.show{ opacity:1; max-height:none; }
-#reto .reto-foot{ margin-top:1rem; display:flex; justify-content:flex-end; }
-#reto .reto-next{ font:inherit; cursor:pointer; border:0; border-radius:10px; padding:.6rem 1.1rem;
+#retos .retos-fb.show{ opacity:1; max-height:none; }
+#retos .retos-foot{ margin-top:1rem; display:flex; justify-content:flex-end; }
+#retos .retos-next{ font:inherit; cursor:pointer; border:0; border-radius:10px; padding:.6rem 1.1rem;
   background:var(--accent); color:var(--on-accent); font-weight:600; }
-#reto .reto-gain{ font-family:var(--mono); font-weight:600; color:var(--ok); }
+#retos .retos-gain{ font-family:var(--mono); font-weight:600; color:var(--ok); }
 
 /* --- pantalla de resultado --- */
-#reto .reto-result{ text-align:center; background:var(--surface); border:1px solid var(--line);
+#retos .retos-result{ text-align:center; background:var(--surface); border:1px solid var(--line);
   border-radius:var(--radius); padding:2rem 1.3rem; box-shadow:var(--shadow); }
-#reto .reto-badge{ font-size:3.2rem; line-height:1; }
-#reto .reto-rank{ font-family:var(--serif); font-weight:700; font-size:1.5rem; margin:.3rem 0; }
-#reto .reto-final{ font-family:var(--mono); font-size:2.6rem; font-weight:600; color:var(--accent); font-variant-numeric:tabular-nums; }
-#reto .reto-stats{ color:var(--muted); margin:.4rem 0 1.2rem; }
-#reto .reto-actions{ display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; }
-#reto .reto-actions .btn2{ font:inherit; cursor:pointer; border:1px solid var(--line); background:var(--surface-2);
+#retos .retos-badge{ font-size:3.2rem; line-height:1; }
+#retos .retos-rank{ font-family:var(--serif); font-weight:700; font-size:1.5rem; margin:.3rem 0; }
+#retos .retos-final{ font-family:var(--mono); font-size:2.6rem; font-weight:600; color:var(--accent); font-variant-numeric:tabular-nums; }
+#retos .retos-stats{ color:var(--muted); margin:.4rem 0 1.2rem; }
+#retos .retos-actions{ display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; }
+#retos .retos-actions .btn2{ font:inherit; cursor:pointer; border:1px solid var(--line); background:var(--surface-2);
   color:var(--ink); padding:.6rem 1.1rem; border-radius:10px; font-weight:500; }
-#reto .reto-actions .btn2.primary{ background:var(--accent); color:var(--on-accent); border-color:var(--accent); }
+#retos .retos-actions .btn2.primary{ background:var(--accent); color:var(--on-accent); border-color:var(--accent); }
 
 /* animaciones */
-@keyframes reto-pop{ 0%{transform:scale(.96)} 60%{transform:scale(1.02)} 100%{transform:scale(1)} }
-@keyframes reto-shake{ 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
-#reto .reto-card.pop{ animation:reto-pop .3s ease; }
-#reto .reto-card.shake{ animation:reto-shake .3s ease; }
+@keyframes retos-pop{ 0%{transform:scale(.96)} 60%{transform:scale(1.02)} 100%{transform:scale(1)} }
+@keyframes retos-shake{ 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+#retos .retos-card.pop{ animation:retos-pop .3s ease; }
+#retos .retos-card.shake{ animation:retos-shake .3s ease; }
 @media (prefers-reduced-motion: reduce){
-  #reto .reto-card.pop, #reto .reto-card.shake, #reto .reto-streak.bump{ animation:none; transition:none; }
+  #retos .retos-card.pop, #retos .retos-card.shake, #retos .retos-streak.bump{ animation:none; transition:none; }
 }
 
 
@@ -1151,7 +1151,7 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #cronogramas .crono-leg-note{ color:var(--muted); font-size:.75rem; margin:8px 0 0; }
 #cronogramas .crono-none{ margin:16px 0; }
 
-/* (10-10) título de periodo del eje: abre la ficha de época en Ilustres; mismo aspecto que el título, con «›» */
+/* (10-10) título de periodo del eje: abre la ficha de época en Biografías; mismo aspecto que el título, con «›» */
 #cronogramas .eje-per-btn{ background:none; border:0; padding:0; font:inherit; color:inherit; cursor:pointer; text-align:start; }
 #cronogramas .eje-per-btn span{ font-weight:400; }
 #cronogramas .eje-per-btn:hover{ text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; }
@@ -2097,15 +2097,15 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #pistas .pis-pg.cur{ background:var(--pc, var(--hf)); color:var(--on-hf); border-color:var(--pc, var(--hf)); }
 #pistas .pis-pg.done:not(.cur){ border-color:var(--ok); color:var(--ok); }
 #pistas .pis-pg.done::after{ content:"✓"; font-size:.7em; margin-inline-start:.15em; }
-/* (20-10) puente con el glosario: términos plegados (details), con su definición de GLOSARIO y enlace #glosario/<id> */
+/* (20-10) puente con el glosario: términos plegados (details), con su definición de DICCIONARIO y enlace #diccionario/<id> */
 #pistas .pis-glo{ margin:1.1rem 0 .2rem; padding-top:.8rem; border-top:1px dashed var(--line); display:grid; gap:.45rem; }
-#pistas .pis-glo-lb{ font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700; }
-#pistas .pis-glo-it{ border:1px solid var(--line); border-radius:10px; background:var(--surface-2); }
-#pistas .pis-glo-it summary{ cursor:pointer; padding:.5rem .8rem; font-family:var(--serif); font-weight:600; color:var(--ink); }
-#pistas .pis-glo-it summary:hover, #pistas .pis-glo-it summary:focus-visible{ color:var(--pc, var(--hf)); }
-#pistas .pis-glo-it[open] summary{ border-bottom:1px solid var(--line); }
-#pistas .pis-glo-it p{ margin:0; padding:.6rem .8rem .2rem; font-size:.95rem; line-height:1.55; }
-#pistas .pis-glo-a{ display:inline-block; margin:.1rem .8rem .6rem; font-size:.88rem; color:var(--accent); }
+#pistas .pis-dic-lb{ font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700; }
+#pistas .pis-dic-it{ border:1px solid var(--line); border-radius:10px; background:var(--surface-2); }
+#pistas .pis-dic-it summary{ cursor:pointer; padding:.5rem .8rem; font-family:var(--serif); font-weight:600; color:var(--ink); }
+#pistas .pis-dic-it summary:hover, #pistas .pis-dic-it summary:focus-visible{ color:var(--pc, var(--hf)); }
+#pistas .pis-dic-it[open] summary{ border-bottom:1px solid var(--line); }
+#pistas .pis-dic-it p{ margin:0; padding:.6rem .8rem .2rem; font-size:.95rem; line-height:1.55; }
+#pistas .pis-dic-a{ display:inline-block; margin:.1rem .8rem .6rem; font-size:.88rem; color:var(--accent); }
 /* (20-10) «escribe antes de ver»: cuadro del intento, recuento y, en el rescate, el intento y la lista «Compara» */
 #pistas .pis-ta{ width:100%; box-sizing:border-box; min-height:7rem; padding:.75rem 1rem; border:1px solid var(--line); border-radius:12px; background:var(--surface-2); color:var(--ink); font:inherit; line-height:1.55; resize:vertical; }
 #pistas .pis-ta:focus{ outline:2px solid var(--pc, var(--hf)); outline-offset:0; }
@@ -3437,8 +3437,8 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #adagios .adg-lam:hover, #adagios .adg-lam[aria-expanded="true"]{ background:var(--accent); border-color:var(--accent); color:var(--on-accent, #fff) }
 #adagios .adg-gr{ margin:0; font-size:.95rem }
 #adagios .adg-gr [lang="grc"]{ font-family:"Noto Serif", "Times New Roman", "Palatino Linotype", serif }   /* la serif de la web no trae griego politónico: separaba los acentos */
-#adagios .adg-ilu{ font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:3px }
-#adagios .adg-ilu:hover{ color:var(--accent); text-decoration-style:solid }
+#adagios .adg-bio{ font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:3px }
+#adagios .adg-bio:hover{ color:var(--accent); text-decoration-style:solid }
 #adagios .adg-cuerpo{ display:flex; flex-direction:column; gap:.45rem }
 #adagios .adg-cuerpo p{ margin:0 }
 #adagios .adg-k{ font-weight:600; color:var(--e, var(--accent)) }
@@ -3506,9 +3506,9 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #polemicas .pol-lado p{ margin:.2rem 0 }
 #polemicas .pol-cita{ margin:.5rem 0 0; padding:0 0 0 .7rem; border-inline-start:3px solid var(--e, var(--accent)); font-family:var(--serif, Georgia, serif) }
 #polemicas .pol-cita cite{ display:block; font:normal .82rem var(--sans, inherit); color:var(--muted) }
-#polemicas .pol-ilu{ font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:3px }
-#polemicas .pol-ilu:hover{ color:var(--accent); text-decoration-style:solid }
-#polemicas .pol-ilus{ font-size:.85rem; font-weight:400 }
+#polemicas .pol-bio{ font:inherit; color:inherit; background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:3px }
+#polemicas .pol-bio:hover{ color:var(--accent); text-decoration-style:solid }
+#polemicas .pol-bios{ font-size:.85rem; font-weight:400 }
 #polemicas .pol-act{ border:1px dashed var(--e, var(--accent)); border-radius:10px; padding:12px 14px; margin:1rem 0 }
 #polemicas .pol-act h3{ margin:0 0 .3rem }
 #polemicas .pol-ayuda{ color:var(--muted); font-size:.9rem; margin:0 0 .5rem }
@@ -3721,7 +3721,7 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 
 
 /* ==== css/biografias.css ==== */
-/* ===== Ilustres: biografías de los pensadores de la teoría (biografiasview.js) =====
+/* ===== Biografías: biografías de los pensadores de la teoría (biografiasview.js) =====
    Colores de época = los del eje cronológico del curso (eje_cronologico.js); en oscuro, tonos claros. */
 #biografias, .bio-strip{
   --e-ant:#8F6600; --e-med:#8A4B84; --e-ren:#B83220; --e-mod:#0A76A0; --e-ilu:#5B4FC4; --e-con:#267A5B;
@@ -3783,7 +3783,7 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #biografias .bio-tema span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 #biografias .bio-tema:hover{border-color:var(--accent)}
 
-/* tira «Ilustres de este tema» al final de cada unidad de la teoría */
+/* tira «Biografías de este tema» al final de cada unidad de la teoría */
 .bio-strip{margin:28px 0 8px;padding-top:14px;border-top:1px solid var(--line)}
 .bio-strip h3{font-size:1rem;margin-bottom:10px}
 .bio-strip-list{display:flex;flex-wrap:wrap;gap:8px}

@@ -1,6 +1,6 @@
 "use strict";
 /* ===== Vista de comentario de texto guiado ===== depende de: comentario.js
-   Sigue el patrón de pauview.js: chips + teoría-layout con TOC. */
+   Sigue el patrón de prepara_PAUview.js: chips + teoría-layout con TOC. */
 
 let comentarioKey = Object.keys(COMENTARIO)[0];
 

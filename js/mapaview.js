@@ -4,7 +4,7 @@
    Se construye al cargar a partir del menú (#tabs) tal como lo deja cada build, así que cada web publicada
    (Filosofía 1.º, HF, ESO, y sus traducciones) muestra solo sus secciones, en el orden del menú, con una línea
    de qué hay en cada una y, cuando se puede contar, cuántos elementos tiene. Debajo, los temas de cada materia
-   con sus exploraciones (de Itinerario.temasDe) y, dentro de Ilustres, las fichas de época.
+   con sus exploraciones (de Itinerario.temasDe) y, dentro de Biografías, las fichas de época.
    Los textos van en MAPA_TXT y MAPA_DESC (se traducen con el diccionario de interfaz ui/<lang>.json). */
 const MAPA_TXT = {
   secciones: "الأقسام", temas: "مواضيع كل مادة", tema: "الموضوع {n}", exploraciones: "استكشافات",
@@ -24,9 +24,9 @@ const MAPA_DESC = {
   materiales: "أوراق عمل وأنشطة ووثائق للتحميل.",
   cuentos: "قصص للتفكير، مع أسئلتها.",
   tarjetas: "بطاقات للمراجعة: السؤال في الوجه، والجواب في الظهر.",
-  reto: "أسئلة ضد الساعة للمراجعة باللعب.",
+  retos: "أسئلة ضد الساعة للمراجعة باللعب.",
   parejas: "لعبة ذاكرة: صِلوا كل مفهوم بزوجه.",
-  glosario: "مفاهيم كل موضوع، مع تعريفها وأصلها.",
+  diccionario: "مفاهيم كل موضوع، مع تعريفها وأصلها.",
   biografias: "سِيَر المفكرين وبطاقات كل حقبة.",
   citas: "أقوال مشهورة للفلاسفة، مع شرحها.",
   adagios: "أقوال مأثورة كلاسيكية باللاتينية واليونانية، وأقوال مشهورة للفلاسفة: ماذا تعني ومتى تُستعمل.",
@@ -53,17 +53,17 @@ const MAPA_DESC = {
   cronogramas: "خطوط زمنية للمؤلفين والعصور.",
   genealogias: "من أثّر في من: أساتذة وتلاميذ وخصوم.",
   esquemas: "خطاطات للأفكار الرئيسية في كل موضوع.",
-  esqautor: "ملخص لكل مؤلف، استعدادًا لـ PAU.",
+  resumenes: "ملخص لكل مؤلف، استعدادًا لـ PAU.",
   diapositivas: "عروض تقديمية للمواضيع.",
   rescritura: "تعلّموا إعادة كتابة نص بكلماتكم.",
   pistas: "مسائل مع تلميحات تظهر شيئًا فشيئًا.",
   cuestionarios: "أسئلة اختيار من متعدد لكل موضوع، مع التصحيح.",
-  juegosucio: "فخاخ النقاش، لتتعرّفوا عليها.",
+  logica_pca: "فخاخ النقاش، لتتعرّفوا عليها.",
   unidad: "كل أسئلة الوحدة، مجتمعة.",
   rubricas: "كيف تُصحَّح الأعمال والامتحانات.",
   evidencias: "شواهد على التعلّم من السنة الماضية.",
   recursos: "روابط وأدوات خارجية.",
-  pau: "كيف يجري امتحان الولوج إلى الجامعة.",
+  prepara_PAU: "كيف يجري امتحان الولوج إلى الجامعة.",
   comentario: "كيف يُنجَز تحليل النص، مع أمثلة محلولة.",
   disertaciones: "كيف يُكتب الإنشاء الفلسفي، مع نماذج.",
   lecturas: "نصوص المؤلفين للقراءة والتحليل.",
@@ -71,7 +71,7 @@ const MAPA_DESC = {
   signos: "دورة في لغة الإشارة."
 };
 /* cuántos elementos tiene cada sección (si su colección está cargada en esta web) */
-const MAPA_CUENTA = { tarjetas: "DECKS", cuestionarios: "QUIZZES", glosario: "GLOSARIO", biografias: "BIOGRAFIAS", citas: "CITAS", adagios: "ADAGIOS", polemicas: "POLEMICAS", perseguidos: "PERSEGUIDOS", comunidades: "COMUNIDADES",
+const MAPA_CUENTA = { tarjetas: "DECKS", cuestionarios: "QUIZZES", diccionario: "DICCIONARIO", biografias: "BIOGRAFIAS", citas: "CITAS", adagios: "ADAGIOS", polemicas: "POLEMICAS", perseguidos: "PERSEGUIDOS", comunidades: "COMUNIDADES",
   infografias: "INFOGRAFIAS", mapas: "MAPS", esquemas: "ESQUEMAS", cronogramas: "CRONOGRAMAS", genealogias: "GENEALOGIAS", lecturas: "LECTURAS",
   galeria: "GALERIA", dilemas: "DILEMAS", disertaciones: "DISERTACIONES", nudos: "NUDOS", pistas: "PISTAS", materiales: "MATERIALS" };
 function mapaG(name){ try { return (0, eval)("typeof " + name + " !== 'undefined' ? " + name + " : undefined"); } catch (e){ return undefined; } }

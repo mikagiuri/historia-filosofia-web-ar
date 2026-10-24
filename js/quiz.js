@@ -59,7 +59,7 @@ function quizTipo(k){ return /-banco$/.test(k) ? 0 : /^ltfh-/.test(k) ? 2 : /^le
 function quizSerie(k){ return /^ltfh-/.test(k) || k === "hf25" || k === "plat-antro" || k === "makro-descartes" ? "autor" : /^lex-/.test(k) ? "lex" : /-banco$/.test(k) ? "banco" : "repaso"; }
 
 /* ===== Test de léxico (05-10) =====
-   Un cuestionario por tema generado del glosario (GLOSARIO, glosario.js; se carga después de este
+   Un cuestionario por tema generado del glosario (DICCIONARIO, diccionario.js; se carga después de este
    archivo, por eso se monta en DOMContentLoaded). Cada partida saca preguntas nuevas, en las dos
    direcciones (definición → término y término → definición), con distractores del mismo tema y, si
    no llegan, de su bloque o materia. Se tapa el término en su definición y no se usan como distractor
@@ -93,7 +93,7 @@ function lexTemaDe(g){
   return { id: hit ? hit[0] : "otros", etq: String(g.tema || "").split(" · ").pop() };
 }
 function lexUnicos(list){ const seen = new Set(); return list.filter(g => { const s = lexSkel(g.t); if (seen.has(s)) return false; seen.add(s); return true; }); }
-/* Casos trampa (GLOSARIO_TRAMPAS, glosario.js): si el término preguntado tiene pareja en su tema, la pareja
+/* Casos trampa (DICCIONARIO_TRAMPAS, diccionario.js): si el término preguntado tiene pareja en su tema, la pareja
    va siempre entre las opciones y la explicación da las dos definiciones. Cada partida incluye hasta
    LEX_TRAMPAS_N de ellas (en orden barajado); el resto, al azar. */
 const LEX_TRAMPA = "حالة فخ:", LEX_TRAMPAS_N = 2;
@@ -115,9 +115,9 @@ function lexItems(k){
   return items;
 }
 function lexMontar(){
-  if (typeof GLOSARIO === "undefined" || !Array.isArray(GLOSARIO)) return;
+  if (typeof DICCIONARIO === "undefined" || !Array.isArray(DICCIONARIO)) return;
   const grupos = {};
-  GLOSARIO.forEach(g => {
+  DICCIONARIO.forEach(g => {
     if (!g.t || !g.def || !QUIZ_TEMAS[g.subject]) return;
     const tema = lexTemaDe(g); if (!tema) return;
     const k = "lex-" + g.subject + "-" + (tema.id === "otros" ? lexFold(tema.etq).replace(/ /g, "-") : tema.id);
@@ -126,9 +126,9 @@ function lexMontar(){
   Object.entries(grupos).forEach(([k, gr]) => {
     const terms = lexUnicos(gr.terms);
     if (terms.length < LEX_MIN) return;
-    const extra = lexUnicos(GLOSARIO.filter(g => g.subject === gr.subject && g.t && g.def && (gr.subject !== "hf" || g.bloque === gr.block) && !gr.terms.includes(g)));
+    const extra = lexUnicos(DICCIONARIO.filter(g => g.subject === gr.subject && g.t && g.def && (gr.subject !== "hf" || g.bloque === gr.block) && !gr.terms.includes(g)));
     const pairs = new Map(), skels = new Set(terms.map(g => lexSkel(g.t)));
-    const tr = typeof GLOSARIO_TRAMPAS !== "undefined" ? GLOSARIO_TRAMPAS[gr.subject] || [] : [];
+    const tr = typeof DICCIONARIO_TRAMPAS !== "undefined" ? DICCIONARIO_TRAMPAS[gr.subject] || [] : [];
     tr.forEach(([a, b]) => { const sa = lexSkel(a), sb = lexSkel(b); if (skels.has(sa) && skels.has(sb)){ if (!pairs.has(sa)) pairs.set(sa, sb); if (!pairs.has(sb)) pairs.set(sb, sa); } });
     LEX[k] = { terms, extra, pairs };
     const etq = gr.tema === "otros" ? gr.etq : QUIZ_TEMAS[gr.subject][gr.tema];

@@ -2,7 +2,7 @@
 /* ===== Buscador global «Buscar en el aula» =====
    Paleta de comandos que indexa (1) las SECCIONES del menú (cualquier data-view), (2) los TÍTULOS del
    contenido con clave (teoría, lecturas, materiales, infografías, cuestionarios, tarjetas, esquemas, PAU,
-   ilustres, clases) y, desde el 08-10, (3) el TEXTO COMPLETO: cada apartado de la teoría, cada término
+   biografias, clases) y, desde el 08-10, (3) el TEXTO COMPLETO: cada apartado de la teoría, cada término
    del glosario con su definición, cada pregunta de los cuestionarios, cada tarjeta, cada cita y cada
    párrafo de las lecturas. Los resultados salen con el fragmento donde aparece lo buscado, agrupados
    por tipo, y abren el apartado exacto (teoría «#teoria/clave/n», glosario filtrado por el término,
@@ -46,7 +46,7 @@
   var LOADER = window.VIEW_LOADERS || {
     teoria: "loadTheory", lecturas: "loadLectura", materiales: "loadMaterial",
     infografias: "loadInfografia", cuestionarios: "loadQuiz", tarjetas: "loadDeck",
-    esquemas: "loadEsq", pau: "loadPau", mapas: "loadMap"
+    esquemas: "loadEsq", prepara_PAU: "loadPau", mapas: "loadMap"
   };
   /* orden de los grupos en los resultados */
   var ORDER = ["القسم", "الدروس", "الفقرة", "القاموس", "قراءة", "مقطع", "اقتباس", "سؤال", "بطاقة", "خطاطة", "المورد", "قصة", "إنفوغرافيك", "اختبار", "بطاقات", "PAU", "سِيرة", "Clase"];
@@ -96,9 +96,9 @@
       if (!i.v2) return ""; var parts = [i.v2.pregunta || "", i.v2.raiz || "", i.v2.idea || ""];
       (function walk(n){ parts.push((n.rel || "") + " " + (n.t || "") + " " + (n.d || "") + " " + (n.a || "")); (n.c || []).forEach(walk); })({ c: i.v2.ramas || [] });
       return parts.join(" · "); });
-    addAll(typeof PAU !== "undefined" ? PAU : null, "pau", function(i){ return i.title; }, function(i){ return i.kick || "PAU"; }, "PAU");
+    addAll(typeof PAU !== "undefined" ? PAU : null, "prepara_PAU", function(i){ return i.title; }, function(i){ return i.kick || "PAU"; }, "PAU");
     addAll(typeof BIOGRAFIAS !== "undefined" ? BIOGRAFIAS : null, "biografias", function(i){ return i.name; }, function(i){ return i.dates + (i.role ? " · " + i.role : ""); }, "سِيرة", function(i){ return [i.idea, i.bio, i.anecdota].filter(Boolean).join(" · "); });
-    /* (11-10) fichas de época (epocas_fichas.js): se abren en Ilustres («epoca-<clave>») */
+    /* (11-10) fichas de época (epocas_fichas.js): se abren en Biografías («epoca-<clave>») */
     if (typeof EPOCAS_FICHAS !== "undefined" && EPOCAS_FICHAS && typeof bioNombreFicha === "function" && document.getElementById("biografias")){
       var EFI = {}; Object.keys(EPOCAS_FICHAS).forEach(function(k){ EFI["epoca-" + k] = EPOCAS_FICHAS[k]; });
       addAll(EFI, "biografias", function(i){ var k = Object.keys(EPOCAS_FICHAS).find(function(x){ return EPOCAS_FICHAS[x] === i; }); return bioNombreFicha(k); }, function(i){ return i.anos || ""; }, "العصر",
@@ -124,8 +124,8 @@
       flush();
     });
     /* glosario: término + definición (+ raíz) */
-    if (typeof GLOSARIO !== "undefined" && GLOSARIO) GLOSARIO.forEach(function(g){
-      add(out, { type: "القاموس", label: g.t, meta: (g.area || "") + (g.tema ? " · " + g.tema : ""), go: "glosario", arg: null, glo: g, text: strip((g.def || "") + (g.et ? " · " + g.et : "")) });
+    if (typeof DICCIONARIO !== "undefined" && DICCIONARIO) DICCIONARIO.forEach(function(g){
+      add(out, { type: "القاموس", label: g.t, meta: (g.area || "") + (g.tema ? " · " + g.tema : ""), go: "diccionario", arg: null, glo: g, text: strip((g.def || "") + (g.et ? " · " + g.et : "")) });
     });
     /* lecturas: por párrafo (o bloque), agrupando los muy cortos */
     if (LE) Object.keys(LE).forEach(function(k){
@@ -348,14 +348,14 @@
     var e = current[i]; if (!e) return;
     close();
     if (typeof show === "function") show(e.go);
-    if (e.go === "glosario" && e.glo){
+    if (e.go === "diccionario" && e.glo){
       /* el glosario se filtra por el término: materia y bloque del término, área «todas», búsqueda = término */
       try {
         if (typeof gloSubject !== "undefined"){ gloSubject = e.glo.subject || gloSubject; gloBloque = "all"; gloArea = "all"; gloQuery = e.glo.t; }
         if (typeof renderGloControls === "function") renderGloControls();
         if (typeof renderGloList === "function") renderGloList();
       } catch (err) {}
-      setTimeout(function(){ scrollToText("glosario", e.glo.t); }, 60);
+      setTimeout(function(){ scrollToText("diccionario", e.glo.t); }, 60);
       return;
     }
     var fn = LOADER[e.go];

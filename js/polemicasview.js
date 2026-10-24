@@ -5,7 +5,7 @@
    Lista filtrable por época y por vía; cada caso: la pregunta, el contexto, la tesis de cada bando (con cita si la hay),
    «¿Con quién vas?» (eliges, escribes tu razón y solo entonces ves el argumento más fuerte del otro lado; puedes cambiar),
    cómo acabó, los trucos retóricos (con enlace al Duelo de razones), los temas y las fuentes. Sin nota y sin guardar nada.
-   También: modo «Cara a cara» en Genealogías (polGenea) y enlaces desde la ficha de cada pensador en Ilustres (polDe).
+   También: modo «Cara a cara» en Genealogías (polGenea) y enlaces desde la ficha de cada pensador en Biografías (polDe).
    Duelo de razones: si la ficha tiene «duelo» (id del tema, p. ej. pol-erasmo-lutero, lo añade la sesión 40), abre la sección #duelo/<hf|fil>/<duelo>.
    Enlace profundo: #polemicas/<id>. Los temas y los pensadores se enlazan solo si existen en esta web. */
 const POL_TXT = {
@@ -24,7 +24,7 @@ const POL_TXT = {
   desenlace: "كيف انتهى", trucos: "حِيَل وضربات تحت الحزام", duelo: "تدرّبوا على كشفها في «مبارزة الحجج»",
   temas: "في المواضيع:", fuentes: "لمعرفة المزيد:", verBio: "عرض سيرة {n}",
   generaTit: "وجهًا لوجه", generaLead: "السجالات بين مفكرين عاشوا في الزمن نفسه، من أثينا سقراط إلى فلسفة القرن العشرين. اضغطوا على واحد منها لفتحه في «سجالات».",
-  enIlustres: "سجالات", contra: "في مواجهة {n}"
+  enBiografias: "سجالات", contra: "في مواجهة {n}"
 };
 const polT = (k, v) => String(POL_TXT[k] || k).replace(/\{(\w+)\}/g, (_, x) => (v && v[x] != null ? v[x] : ""));
 const POL_EPOCAS = ["ant", "med", "ren", "mod", "ilu", "con"];
@@ -63,11 +63,11 @@ function polLista(){
   if (polEsFil() && polAmb !== "all") ls = ls.filter(p => polRamas(p).includes(polAmb));   // (12-10) 1.º: por ámbito
   return ls;
 }
-/* nombre de un bando con enlace a Ilustres si hay ficha (y solo uno: si el bando son varios, se enlaza cada nombre aparte en la línea de debajo) */
+/* nombre de un bando con enlace a Biografías si hay ficha (y solo uno: si el bando son varios, se enlaza cada nombre aparte en la línea de debajo) */
 function polBando(p, lado){
   const ids = (p["ilu_" + lado] || []).filter(polHayIlu), nom = p[lado];
-  if (ids.length === 1) return '<button type="button" class="pol-ilu" data-ilu="' + ids[0] + '" title="' + polEsc(polT("verBio", { n: BIOGRAFIAS[ids[0]].name })) + '">' + polEsc(nom) + '</button>';
-  return polEsc(nom) + (ids.length > 1 ? ' <span class="pol-ilus">(' + ids.map(id => '<button type="button" class="pol-ilu" data-ilu="' + id + '">' + polEsc(BIOGRAFIAS[id].name) + '</button>').join(", ") + ')</span>' : "");
+  if (ids.length === 1) return '<button type="button" class="pol-bio" data-biografia="' + ids[0] + '" title="' + polEsc(polT("verBio", { n: BIOGRAFIAS[ids[0]].name })) + '">' + polEsc(nom) + '</button>';
+  return polEsc(nom) + (ids.length > 1 ? ' <span class="pol-bios">(' + ids.map(id => '<button type="button" class="pol-bio" data-biografia="' + id + '">' + polEsc(BIOGRAFIAS[id].name) + '</button>').join(", ") + ')</span>' : "");
 }
 function polFiltro(){
   const f = document.getElementById("polemicasfilter"); if (!f) return;
@@ -171,7 +171,7 @@ document.addEventListener("click", e => {
   const t = e.target; if (!t.closest) return;
   const enGen = t.closest("#geneabox [data-pol]");
   if (enGen){ (window.show || show)("polemicas"); polAbrir(enGen.dataset.pol); return; }
-  const enIlu = t.closest("#ilubox [data-pol]");
+  const enIlu = t.closest("#biobox [data-pol]");
   if (enIlu){ (window.show || show)("polemicas"); polAbrir(enIlu.dataset.pol); return; }
   if (!t.closest("#polemicas")) return;
   const ep = t.closest("[data-pol-ep]"); if (ep){ polEp = ep.dataset.polEp; polFiltro(); polRenderLista(); return; }
@@ -179,7 +179,7 @@ document.addEventListener("click", e => {
   const vi = t.closest("[data-pol-via]"); if (vi){ polVia = vi.dataset.polVia; polFiltro(); polRenderLista(); return; }
   if (t.closest("[data-pol-back]")){ polVolver(); return; }
   const c = t.closest("[data-pol]"); if (c){ polAbrir(c.dataset.pol); return; }
-  const il = t.closest("[data-ilu]"); if (il){ (window.show || show)("biografias"); loadBiografia(il.dataset.ilu); return; }
+  const il = t.closest("[data-biografia]"); if (il){ (window.show || show)("biografias"); loadBiografia(il.dataset.biografia); return; }
   const th = t.closest("[data-th]"); if (th){ (window.show || show)("teoria"); if (typeof window.loadTheory === "function") window.loadTheory(th.dataset.th); return; }
   if (!polSel) return;
   const st = POL_ESTADO[polSel] = POL_ESTADO[polSel] || {};
@@ -214,14 +214,14 @@ function polGenea(){
   }).join("") + '</div>';
 }
 window.polGenea = polGenea;
-/* ---- Ilustres: las polémicas de un pensador (las pinta biografiasview.js si existe polDe) ---- */
+/* ---- Biografías: las polémicas de un pensador (las pinta biografiasview.js si existe polDe) ---- */
 function polDe(id){
   if (typeof POLEMICAS === "undefined") return "";
-  const ls = POLEMICAS.filter(polVisible).filter(p => (p.ilu_a || []).includes(id) || (p.ilu_b || []).includes(id));   // (12-10, F2) Ilustres no enlaza polémicas ocultas
+  const ls = POLEMICAS.filter(polVisible).filter(p => (p.ilu_a || []).includes(id) || (p.ilu_b || []).includes(id));   // (12-10, F2) Biografías no enlaza polémicas ocultas
   if (!ls.length) return "";
-  return '<li><span class="ilu-rel-op">' + polT("enIlustres") + '</span> ' + ls.map(p => {
+  return '<li><span class="bio-rel-op">' + polT("enBiografias") + '</span> ' + ls.map(p => {
     const otro = (p.ilu_a || []).includes(id) ? p.b : p.a;
-    return '<button type="button" class="ilu-rel-a" data-pol="' + p.id + '" title="' + polEsc(p.pregunta) + '">' + polEsc(polT("contra", { n: otro })) + ' (' + polEsc(p.fechas) + ')</button>';
+    return '<button type="button" class="bio-rel-a" data-pol="' + p.id + '" title="' + polEsc(p.pregunta) + '">' + polEsc(polT("contra", { n: otro })) + ' (' + polEsc(p.fechas) + ')</button>';
   }).join(" · ") + '</li>';
 }
 window.polDe = polDe;

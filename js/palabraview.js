@@ -92,7 +92,7 @@ function paRender(){
   const K = P.tekhne, R = P.retorica, D = P.discurso, O = P.poetica, T = P.topicos, TR = P.tradicion, Q = P.preguntas;
   const crono = xs => '<ol class="pa-crono">' + xs.map(x => '<li><span class="pa-y">' + x.y + "</span><span><strong>" + x.t + "</strong><br>" + x.d + "</span></li>").join("") + "</ol>";
   box.innerHTML =
-    '<div class="pa-cabecera"><figure class="pa-retrato"><img src="media/retratos/ilustres/ciceron.jpg" alt="" decoding="async"><figcaption>' + P.retrato + "</figcaption></figure>" +
+    '<div class="pa-cabecera"><figure class="pa-retrato"><img src="media/retratos/biografias/ciceron.jpg" alt="" decoding="async"><figcaption>' + P.retrato + "</figcaption></figure>" +
     '<div><p class="pa-intro">' + P.intro + '</p><p class="pa-pista">' + P.pista + "</p></div></div>" +
     '<nav class="pa-indice" aria-label="' + paT("indiceTit") + '"><ol>' +
     P.indice.map(x => '<li><a href="#palabra/' + x.id + '"><span class="pa-mat">' + x.m + "</span>" + x.t + "</a></li>").join("") + "</ol></nav>" +
@@ -107,7 +107,7 @@ function paRender(){
       "<h3>" + R.generosTit + "</h3>" + paPs(R.generos) + paCita(R.cita3, R.cita3Pie) +
       '<div class="pa-pieza" id="pa-generos"><h3>' + R.pieza2Tit + "</h3><p>" + R.pieza2Txt + "</p>" + paClasif(R.situaciones, R.generosNom) + "</div>" +
       paCuidado(R.cuidado) +
-      "<h3>" + R.tradicionTit + '</h3><div class="pa-con-fig"><figure class="pa-fig"><img src="media/retratos/ilustres/quintiliano.jpg" alt="" loading="lazy" decoding="async"><figcaption>' + R.quintiliano + "</figcaption></figure>" +
+      "<h3>" + R.tradicionTit + '</h3><div class="pa-con-fig"><figure class="pa-fig"><img src="media/retratos/biografias/quintiliano.jpg" alt="" loading="lazy" decoding="async"><figcaption>' + R.quintiliano + "</figcaption></figure>" +
       paPs(R.tradicion) + "</div>" + paCita(R.cita4, R.cita4Pie) + paLista(R.otrasTit, R.otras) + '<p class="pa-enlaces">' + R.enlaces + "</p>") +
 
     /* 3 · discurso */

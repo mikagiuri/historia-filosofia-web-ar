@@ -6,7 +6,7 @@ const GENEALOGIAS = {
    "name": "العقل والمُثُل",
    "color": "#2f6fd6",
    "desc": "المعرفة الحقيقية تأتي من العقل، لا من الحواس.",
-   "ilustre": [
+   "biografia": [
     "parmenides",
     "platon",
     "plotino",
@@ -24,7 +24,7 @@ const GENEALOGIAS = {
    "name": "ثنائية النفس والجسد",
    "color": "#1b9e9e",
    "desc": "الإنسان شيئان مختلفان: نفس أو عقل غير مادي، وجسد مادي.",
-   "ilustre": [
+   "biografia": [
     "pitagoras",
     "platon",
     "plotino",
@@ -41,7 +41,7 @@ const GENEALOGIAS = {
    "name": "التجربة والعلم",
    "color": "#d95f02",
    "desc": "كل معرفة تبدأ بالتجربة، ويُتحقق منها بها.",
-   "ilustre": [
+   "biografia": [
     "aristoteles",
     "roger_bacon",
     "ockham",
@@ -60,7 +60,7 @@ const GENEALOGIAS = {
    "name": "المادة والطبيعة",
    "color": "#7a5230",
    "desc": "لا وجود إلا للمادة، والإنسان أيضًا يُفسَّر بالطبيعة.",
-   "ilustre": [
+   "biografia": [
     "leucipo",
     "democrito",
     "epicuro",
@@ -77,7 +77,7 @@ const GENEALOGIAS = {
    "name": "الإيمان والعقل",
    "color": "#8a4b84",
    "desc": "كيف نوفّق بين ما نؤمن به وما يمكن إثباته.",
-   "ilustre": [
+   "biografia": [
     "plotino",
     "agustin",
     "escoto_erigena",
@@ -96,7 +96,7 @@ const GENEALOGIAS = {
    "name": "الريبية",
    "color": "#6b7a8f",
    "desc": "لا نستطيع بلوغ اليقين: الحكمة أن نعلّق الحكم أو نكتفي بما هو محتمل.",
-   "ilustre": [
+   "biografia": [
     "gorgias",
     "pirron",
     "timon",
@@ -111,7 +111,7 @@ const GENEALOGIAS = {
    "name": "الشك المنهجي والنقد",
    "color": "#8f6600",
    "desc": "نشك لكي نعرف: الشك منهجًا، ونقد حدود المعرفة.",
-   "ilustre": [
+   "biografia": [
     "socrates",
     "descartes",
     "hume",
@@ -124,7 +124,7 @@ const GENEALOGIAS = {
    "name": "السعادة والحياة الطيبة",
    "color": "#2e9e6b",
    "desc": "الأخلاق فنًّا للعيش الجيد: الفضيلة، واللذة، والمنفعة.",
-   "ilustre": [
+   "biografia": [
     "socrates",
     "aristipo",
     "aristoteles",
@@ -143,7 +143,7 @@ const GENEALOGIAS = {
    "name": "السلطة والدولة",
    "color": "#c0392b",
    "desc": "من يجب أن يحكم ولماذا نطيع: من المدينة اليونانية (polis) إلى العقد والديمقراطية.",
-   "ilustre": [
+   "biografia": [
     "platon",
     "aristoteles",
     "maquiavelo",
@@ -163,7 +163,7 @@ const GENEALOGIAS = {
    "name": "الصيرورة والجدل والنقد الاجتماعي",
    "color": "#b44fc4",
    "desc": "الواقع يتغير بتصادم الأضداد، والفلسفة نقدٌ للمجتمع.",
-   "ilustre": [
+   "biografia": [
     "heraclito",
     "hegel",
     "feuerbach",
@@ -178,7 +178,7 @@ const GENEALOGIAS = {
    "name": "الريبة وما بعد الحداثة",
    "color": "#e377c2",
    "desc": "وراء الحقيقة والوعي توجد مصالح ودوافع وسلطة.",
-   "ilustre": [
+   "biografia": [
     "nietzsche",
     "freud",
     "heidegger",
@@ -194,7 +194,7 @@ const GENEALOGIAS = {
    "name": "الوجود والحرية",
    "color": "#3fa7c9",
    "desc": "الإنسان الملموس، وحريته وقلقه.",
-   "ilustre": [
+   "biografia": [
     "agustin",
     "nietzsche",
     "unamuno",
@@ -210,7 +210,7 @@ const GENEALOGIAS = {
    "name": "النساء والنسوية",
    "color": "#a8b82e",
    "desc": "من الفيلسوفات المنسيات إلى نقد النظام الأبوي والنوع الاجتماعي.",
-   "ilustre": [
+   "biografia": [
     "aspasia",
     "hipatia",
     "hildegarda",
@@ -230,7 +230,7 @@ const GENEALOGIAS = {
    "name": "المنطق واللغة",
    "color": "#5b4fc4",
    "desc": "التفكير الجيد هو الكلام بدقة: من المنطق إلى المنعطف اللغوي.",
-   "ilustre": [
+   "biografia": [
     "aristoteles",
     "ockham",
     "llull",
@@ -245,121 +245,121 @@ const GENEALOGIAS = {
  ],
  "op": [
   {
-   "ilustre": [
+   "biografia": [
     "heraclito",
     "parmenides"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "protagoras",
     "socrates"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "platon",
     "aristoteles"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "epicuro",
     "zenon"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "tomas",
     "averroes"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "tomas",
     "ockham"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "descartes",
     "hume"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "hobbes",
     "rousseau"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "rousseau",
     "wollstonecraft"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "kant",
     "bentham"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "hegel",
     "marx"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "hegel",
     "nietzsche"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "marx",
     "popper"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "habermas",
     "foucault"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "sartre",
     "foucault"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "descartes",
     "isabel"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "descartes",
     "spinoza"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "descartes",
     "ryle"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "descartes",
     "pirron"
    ]
   },
   {
-   "ilustre": [
+   "biografia": [
     "arcesilao",
     "zenon"
    ]
@@ -377,7 +377,7 @@ const GENEALOGIAS_PLANOS = [
     "name": "الطريق الأول: الحركة",
     "color": "#e0a526",
     "desc": "كل ما يتحرك يحرّكه غيره، والسلسلة لا يمكن أن تكون لا متناهية: هناك محرّك أول.",
-    "ilustre": [
+    "biografia": [
      "platon",
      "aristoteles",
      "averroes",
@@ -390,7 +390,7 @@ const GENEALOGIAS_PLANOS = [
     "name": "الطريق الثاني: السبب",
     "color": "#3fa7c9",
     "desc": "لا شيء سببٌ لنفسه، ومن دون سبب أول لما وُجد أي سبب: هناك سبب أول.",
-    "ilustre": [
+    "biografia": [
      "aristoteles",
      "avicena",
      "tomas",
@@ -403,7 +403,7 @@ const GENEALOGIAS_PLANOS = [
     "name": "الطريق الثالث: الإمكان",
     "color": "#7b61d9",
     "desc": "ما يمكن ألا يوجد يحتاج إلى شيء آخر ليوجد: هناك موجود واجب بذاته.",
-    "ilustre": [
+    "biografia": [
      "avicena",
      "maimonides",
      "tomas",
@@ -416,7 +416,7 @@ const GENEALOGIAS_PLANOS = [
     "name": "الطريق الرابع: الدرجات",
     "color": "#b44fc4",
     "desc": "إذا كانت هناك أشياء أكثر أو أقل خيرًا وحقيقةً، فهناك حد أقصى هو مقياسها وسببها.",
-    "ilustre": [
+    "biografia": [
      "platon",
      "agustin",
      "boecio",
@@ -429,7 +429,7 @@ const GENEALOGIAS_PLANOS = [
     "name": "الطريق الخامس: النظام",
     "color": "#2e9e6b",
     "desc": "الأشياء التي لا معرفة لها تعمل من أجل غاية، كالسهم الذي يوجّهه الرامي: هناك عقلٌ ينظّم الطبيعة.",
-    "ilustre": [
+    "biografia": [
      "ciceron",
      "tomas",
      "paley"
@@ -440,7 +440,7 @@ const GENEALOGIAS_PLANOS = [
     "name": "الحجة الأنطولوجية",
     "color": "#d95f02",
     "desc": "من مفهوم الله وحده، «ما لا يمكن التفكير في شيء أعظم منه»، يُفترض أن يلزم أنه موجود.",
-    "ilustre": [
+    "biografia": [
      "anselmo",
      "descartes",
      "leibniz"
@@ -451,7 +451,7 @@ const GENEALOGIAS_PLANOS = [
     "name": "علم الكلام: للعالم بداية",
     "color": "#9a7b5f",
     "desc": "للعالم بداية، وكل ما يبدأ في الوجود له سبب.",
-    "ilustre": [
+    "biografia": [
      "al_kindi",
      "al_ghazali",
      "buenaventura"
@@ -462,7 +462,7 @@ const GENEALOGIAS_PLANOS = [
     "name": "النقّاد",
     "color": "#6e6e78",
     "desc": "الذين شكّكوا في قدرة العقل على البرهنة على وجود الله.",
-    "ilustre": [
+    "biografia": [
      "hume",
      "kant",
      "darwin",
@@ -472,49 +472,49 @@ const GENEALOGIAS_PLANOS = [
   ],
   "op": [
    {
-    "ilustre": [
+    "biografia": [
      "anselmo",
      "tomas"
     ]
    },
    {
-    "ilustre": [
+    "biografia": [
      "tomas",
      "buenaventura"
     ]
    },
    {
-    "ilustre": [
+    "biografia": [
      "avicena",
      "averroes"
     ]
    },
    {
-    "ilustre": [
+    "biografia": [
      "al_ghazali",
      "averroes"
     ]
    },
    {
-    "ilustre": [
+    "biografia": [
      "descartes",
      "kant"
     ]
    },
    {
-    "ilustre": [
+    "biografia": [
      "hume",
      "paley"
     ]
    },
    {
-    "ilustre": [
+    "biografia": [
      "paley",
      "darwin"
     ]
    },
    {
-    "ilustre": [
+    "biografia": [
      "russell",
      "copleston"
     ]

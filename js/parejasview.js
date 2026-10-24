@@ -1,5 +1,5 @@
 "use strict";
-/* ===== Parejas ===== depende de: data glosario.js (GLOSARIO) =====
+/* ===== Parejas ===== depende de: data diccionario.js (DICCIONARIO) =====
    Juego de emparejar término ↔ definición: rondas de 6 parejas del glosario,
    por bloque, con puntos, racha, errores, tiempo y mejor marca (localStorage). */
 
@@ -24,8 +24,8 @@ const par = { block: null, pairs: [], sel: null, matched: null, errors: 0, score
 
 function parBox(){ return document.getElementById("parbox"); }
 function parShuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-function parBlocksPresent(){ return [...new Set(GLOSARIO.map(parGroupOf))].filter(b => b && parPoolOf(b).length >= PAR_N).sort(); }
-function parPoolOf(b){ return GLOSARIO.filter(g => parGroupOf(g) === b && g.t && g.def); }
+function parBlocksPresent(){ return [...new Set(DICCIONARIO.map(parGroupOf))].filter(b => b && parPoolOf(b).length >= PAR_N).sort(); }
+function parPoolOf(b){ return DICCIONARIO.filter(g => parGroupOf(g) === b && g.t && g.def); }
 function escPar(s){ return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
 /* ---------- historial de rondas (localStorage) ---------- */
@@ -249,7 +249,7 @@ function renderParResult(){
 }
 
 /* ---------- init ---------- */
-function initPar(){ if (typeof GLOSARIO === "undefined") return; renderParStart(); }
+function initPar(){ if (typeof DICCIONARIO === "undefined") return; renderParStart(); }
 document.addEventListener("DOMContentLoaded", initPar);
 (function(){ const nav = document.getElementById("tabs"); if (nav) nav.addEventListener("click", e => {
   const b = e.target.closest("button"); if (b && b.dataset.view === "parejas") renderParStart();

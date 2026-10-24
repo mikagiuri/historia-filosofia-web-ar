@@ -4,19 +4,19 @@
    El menú (tools/build_subject.js) deja una sola entrada por grupo (la vista «entrada»);
    aquí se inyecta, en cada vista del grupo, una fila de botones (.fgroup .comm) que
    cambia de vista con show() y marca el modo activo (aria-pressed), sin fusionar las
-   secciones: cada una conserva su <section>, su cargador y su hash (#reto, #cronogramas…).
+   secciones: cada una conserva su <section>, su cargador y su hash (#retos, #cronogramas…).
 
    Grupos F1:
-     cuestionarios  →  Cuestionarios ⇄ Contrarreloj   (cuestionarios / reto)
+     cuestionarios  →  Cuestionarios ⇄ Retos   (cuestionarios / retos)
      debatir        →  Dilemas · Polémicas · Duelo · Nudos   (dilemas / polemicas / duelo / nudos)
      epocas         →  Fichas · Cronogramas · Genealogías   (epocas / cronogramas / genealogias)
-     ilustres       →  Todos · Perseguidos · Comunidades   (ilustres / perseguidos / comunidades)
+     biografias     →  Todos · Perseguidos · Comunidades   (biografias / perseguidos / comunidades)
      talleres       →  Taller de Leibniz · El universo aristotélico · El arte de la palabra · Los afectos de Spinoza   (leibniz / universo / palabra / afectos; 19-10, 20-10)
      mapas          →  Mapas conceptuales ⇄ Infografías   (mapas / infografias; 23-10: el botón «Mapas e infografías» ya no abre solo Mapas)
 
    Integración con el resto (sin tocar esos ficheros más que lo justo):
    - app.js (show) usa commuteEntry(id) para marcar en el menú la ENTRADA del grupo
-     cuando se está en cualquiera de sus vistas (p. ej. #reto marca «Cuestionarios»).
+     cuando se está en cualquiera de sus vistas (p. ej. #retos marca «Cuestionarios»).
    - itinerario.js (crumbs) usa commuteLabel(id) para añadir el modo a la miga de pan.
    - §0.6: si en este build solo queda UNA vista del grupo (p. ej. «Épocas» en 1.º, sin
      cronogramas ni genealogías), el conmutador NO se inyecta.
@@ -24,7 +24,7 @@
 
 /* tabla de grupos: { entry: vista que abre el menú, modos: [[vista, rótulo], …] } */
 const CONMUTADORES = [
-  { entry: "cuestionarios", modos: [["cuestionarios", "اختبارات"], ["reto", "ضد الساعة"]] },
+  { entry: "cuestionarios", modos: [["cuestionarios", "اختبارات"], ["retos", "تحديات"]] },
   { entry: "dilemas",      modos: [["dilemas", "معضلات"], ["polemicas", "سجالات"], ["duelo", "مبارزة"], ["nudos", "عُقَد"]] },
   { entry: "epocas",       modos: [["epocas", "بطاقات"], ["cronogramas", "الجداول الزمنية"], ["genealogias", "الأنساب الفكرية"]] },
   { entry: "biografias",     modos: [["biografias", "الكل"], ["perseguidos", "المضطهَدون"], ["comunidades", "الجماعات"]] },

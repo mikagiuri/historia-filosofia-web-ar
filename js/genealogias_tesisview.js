@@ -23,17 +23,17 @@ function gtP(id){ return typeof BIOGRAFIAS !== "undefined" && BIOGRAFIAS[id] ? B
 function gtTesis(id){ return GEN_TESIS.tesis.find(t => t.id === id); }
 function gtPar(e){ return e.k.split("|"); }
 function gtEsc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
-function gtOrden(){ return GEN_TESIS.tesis.filter(t => gtP(t.ilustre)).slice().sort((a, b) => gtP(a.ilustre).born - gtP(b.ilustre).born); }
+function gtOrden(){ return GEN_TESIS.tesis.filter(t => gtP(t.biografia)).slice().sort((a, b) => gtP(a.biografia).born - gtP(b.biografia).born); }
 
 /* ---------- Red de tesis ---------- */
 function gtRed(){
   const lista = gtOrden(); let html = "", prev = null;
   lista.forEach(t => {
-    if (t.ilustre !== prev){
+    if (t.biografia !== prev){
       if (prev) html += "</div>";
-      const p = gtP(t.ilustre);
-      html += '<div class="gt-autor" data-b="' + p.block + '"><button type="button" class="gt-nombre" data-gtilu="' + t.ilustre + '">' + gtEsc(p.name) + "</button>";
-      prev = t.ilustre;
+      const p = gtP(t.biografia);
+      html += '<div class="gt-autor" data-b="' + p.block + '"><button type="button" class="gt-nombre" data-gtbiografia="' + t.biografia + '">' + gtEsc(p.name) + "</button>";
+      prev = t.biografia;
     }
     html += '<div class="gt-tesis' + (GT.sel === t.id ? " sel" : "") + '" data-gt="' + t.id + '"><button type="button" class="gt-t" aria-expanded="' + (GT.sel === t.id) + '">' + gtEsc(t.t) + "</button>" +
       '<span class="gt-ref">' + gtEsc(t.forma) + " · " + gtEsc(t.ref) + "</span>" + (GT.sel === t.id ? gtEnlaces(t.id) : "") + "</div>";
@@ -50,7 +50,7 @@ function gtEnlaces(id){
   return '<div class="gt-enl">' + ["acuerdo", "desacuerdo"].map(tipo => {
     const xs = es.filter(e => e.tipo === tipo); if (!xs.length) return "";
     return '<p class="gt-enl-tit gt-' + tipo + '">' + gtT(tipo === "acuerdo" ? "concuerda" : "seOpone") + "</p><ul>" + xs.map(e => {
-      const otro = gtTesis(gtPar(e).find(x => x !== id)), p = gtP(otro.ilustre);
+      const otro = gtTesis(gtPar(e).find(x => x !== id)), p = gtP(otro.biografia);
       return '<li><button type="button" class="gt-salto" data-gtgo="' + otro.id + '"><strong>' + gtEsc(p.name) + "</strong>: «" + gtEsc(otro.t) + '»</button><span class="gt-por">' + gtEsc(e.por) + "</span></li>";
     }).join("") + "</ul>";
   }).join("") + jg + "</div>";
@@ -83,7 +83,7 @@ function gtNuevaPareja(){
 function gtVR(){
   if (!GT.vr) gtNuevaPareja();
   const { e, hecho, razon, elegido } = GT.vr, [a, b] = gtPar(e).map(gtTesis);
-  const tarj = t => '<div class="gt-vr-t"><strong>' + gtEsc(gtP(t.ilustre).name) + "</strong><p>«" + gtEsc(t.t) + '»</p><span class="gt-ref">' + gtEsc(t.ref) + "</span></div>";
+  const tarj = t => '<div class="gt-vr-t"><strong>' + gtEsc(gtP(t.biografia).name) + "</strong><p>«" + gtEsc(t.t) + '»</p><span class="gt-ref">' + gtEsc(t.ref) + "</span></div>";
   const min = 10, n = (razon.trim().match(/\S+/g) || []).length;
   return '<p class="gt-intro">' + gtT("vrIntro") + '</p><div class="gt-vr">' + tarj(a) + tarj(b) + "</div>" +
     '<div class="gt-vr-elige" role="group">' + ["acuerdo", "desacuerdo"].map(k => '<button type="button" class="gen-leg gt-fil gt-' + k + '" data-gtvr="' + k + '" aria-pressed="' + (elegido === k) + '"' + (hecho ? " disabled" : "") + "><i></i><span>" + gtT(k) + "</span></button>").join("") + "</div>" +
@@ -109,7 +109,7 @@ document.addEventListener("click", e => {
   const box = document.getElementById("gentesisbox"); if (!box || !box.contains(e.target)) return;
   const b = e.target.closest("button"); if (!b) return;
   if (b.dataset.gtfil){ const k = b.dataset.gtfil; GT.ver.has(k) ? GT.ver.delete(k) : GT.ver.add(k); genTesisRender(gtModo()); return; }
-  if (b.dataset.gtilu && typeof loadBiografia === "function"){ (window.show || show)("biografias"); loadBiografia(b.dataset.gtilu); return; }
+  if (b.dataset.gtbiografia && typeof loadBiografia === "function"){ (window.show || show)("biografias"); loadBiografia(b.dataset.gtbiografia); return; }
   if (b.dataset.gtgo){ GT.sel = b.dataset.gtgo; genTesisRender(gtModo()); const el = box.querySelector('.gt-tesis[data-gt="' + GT.sel + '"]'); if (el) el.scrollIntoView({ block: "center", behavior: A11y.motion() }); return; }
   if (b.classList.contains("gt-t")){ const id = b.closest(".gt-tesis").dataset.gt; GT.sel = GT.sel === id ? null : id; genTesisRender(gtModo()); const el = box.querySelector('.gt-tesis[data-gt="' + id + '"] > .gt-t'); if (el) el.focus(); return; }
   const v = b.dataset.gtvr;

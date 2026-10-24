@@ -91,9 +91,9 @@ function repUpdReg(){   // la ciudad solo baja de régimen, nunca sube (546a: «
   if(!repD() || rep.juego==="clases") return false;   // (20-10) la degeneración es solo de la Versión A
   const n=Math.max(rep.reg, (rep.armonia<=0||repPop()<3) ? repD().regimenes.length-1 : repRegFor(rep.armonia));
   if(n>rep.reg){ rep.regLog.push({ n:rep.turn+1, from:rep.reg, to:n }); rep.reg=n; return true; } return false; }
-function repGloName(id){ try{ const g=(typeof GLOSARIO!=="undefined") && GLOSARIO.find(x=>x.id===id); return g ? g.t : null; }catch(e){ return null; } }
+function repGloName(id){ try{ const g=(typeof DICCIONARIO!=="undefined") && DICCIONARIO.find(x=>x.id===id); return g ? g.t : null; }catch(e){ return null; } }
 function repGloLinks(ids, temas){ const L=(ids||[]).map(id=>({ id, t:repGloName(id) })).filter(x=>x.t);
-  return repTemaLinks(temas) + (L.length ? '<p class="rep-glo">📖 '+L.map(x=>'<a href="#glosario/'+x.id+'">'+x.t+'</a>').join(" · ")+'</p>' : ""); }
+  return repTemaLinks(temas) + (L.length ? '<p class="rep-glo">📖 '+L.map(x=>'<a href="#diccionario/'+x.id+'">'+x.t+'</a>').join(" · ")+'</p>' : ""); }
 /* (21-10) enlaces a la teoría: el tema de Platón (hf-platon) y el de política clásica (hf-politica); el título sale de THEORY, ya traducido */
 const REP_TEMA_PLATON = "hf-platon", REP_TEMA_POLITICA = "hf-politica";
 function repTemaLinks(keys){ let TH=null; try{ TH=(typeof THEORY!=="undefined")?THEORY:null; }catch(e){} if(!TH) return "";
@@ -523,7 +523,7 @@ function repChronicleText(){
       "   "+U.responde+": "+p.platon.txt.replace(/\*/g,"")+" ("+p.platon.loc+")", "   "+U.objeta+" ("+p.critica.autor+"): "+p.critica.txt.replace(/\*/g,"")+" ("+p.critica.loc+")"); });
     L.push("", "== "+U.disertacion.toUpperCase()+" ==", "1. "+U.dTesis, "2. "+U.dPlaton, "3. "+U.dObjecion, "4. "+U.dTuya);
     const glo=[...new Set([].concat(...rep.posturas.map(p=>p.glo), ...R.slice(0,rep.reg+1).map(r=>r.glo)))].map(id=>repGloName(id)).filter(Boolean);
-    if(glo.length) L.push("", U.glosario+": "+glo.join(", ")); }
+    if(glo.length) L.push("", U.diccionario+": "+glo.join(", ")); }
   return L.join("\n");
 }
 function repDownloadText(txt,name){

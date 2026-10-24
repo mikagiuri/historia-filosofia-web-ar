@@ -1,5 +1,5 @@
 "use strict";
-/* ===== Vista de Preparación PAU ===== depende de: pau.js ===== */
+/* ===== Vista de Prepara PAU ===== depende de: prepara_PAU.js ===== */
 
 let pauKey = Object.keys(PAU)[0];
 

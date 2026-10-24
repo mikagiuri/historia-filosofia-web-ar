@@ -1,5 +1,5 @@
 "use strict";
-/* ===== Vista Ilustres ===== depende de: biografias.js (BIOGRAFIAS), biografias_retratos.js (BIOGRAFIAS_RETRATOS, opcional),
+/* ===== Vista Biografías ===== depende de: biografias.js (BIOGRAFIAS), biografias_retratos.js (BIOGRAFIAS_RETRATOS, opcional),
    theory.js (THEORY, para los enlaces a los temas) =====
    Biografías de los pensadores que aparecen en la teoría de Filosofía 1.º y de Historia de la
    Filosofía 2.º. Listado en orden cronológico, filtrable por materia (si la web trae las dos),
@@ -34,7 +34,7 @@ function bioClave(p){
   return w[k].replace(/^(d['’]|l['’])/i, "");
 }
 function bioLetra(p){ return bioFold(bioClave(p)).charAt(0).toUpperCase() || "#"; }
-/* (12-10) criterio del profesor: en la web de 1.º Ilustres criba por ÁMBITO filosófico (los años y la época
+/* (12-10) criterio del profesor: en la web de 1.º Biografías criba por ÁMBITO filosófico (los años y la época
    siguen en cada ficha —«aunque incluyamos la información temporal»—). En HF y en la web local sigue por época.
    Ámbito = el de los temas de teoría que cita la ficha (temaN o el rótulo, ya traducido en las webs). */
 const ILU_AMBS = { int: "مدخل", ant: "الأنثروبولوجيا", con: "المعرفة", met: "ميتافيزيقا", log: "المنطق", eti: "الأخلاق", pol: "السياسة", est: "علم الجمال" };
@@ -64,7 +64,7 @@ function bioList(){
 }
 function bioPresent(){ const all = bioList(); return ["fil", "hf"].filter(s => all.some(p => (p.subjects || []).includes(s))); }
 function bioEpocaName(b){ const e = ILU_EPOCAS.find(x => x[0] === b); return e ? e[1] : ""; }
-/* retrato: {f, pie, page?} de biografias_retratos.js (generado por tools/build_ilustres.js) */
+/* retrato: {f, pie, page?} de biografias_retratos.js (generado por tools/build_biografias.js) */
 function bioRetrato(p){
   return typeof BIOGRAFIAS_RETRATOS !== "undefined" && BIOGRAFIAS_RETRATOS[p.id] || null;
 }
@@ -243,24 +243,24 @@ function bioCitas(p){
    cerebrofilosofico.com, sin contenido nuevo: todo sale de datos ya revisados).
    · Afines y opuestos: sus líneas de Genealogías (GENEALOGIAS.lineas, con quién va antes y después), sus
      oposiciones (GENEALOGIAS.op) y los acuerdos y desacuerdos de sus tesis (GEN_TESIS.enlaces, con el porqué).
-   · Conceptos del glosario: los términos con su id en el campo «ilustre» (tools/build_glosario_ilustres.js).
+   · Conceptos del glosario: los términos con su id en el campo «biografia» (tools/build_diccionario_biografias.js).
    Solo se enlaza a pensadores que están en esta web (build_subject.js filtra BIOGRAFIAS por materia). */
 const ILU_REL = { tit: "الأقربون والخصوم", frente: "في مواجهة", tesis: "أطروحاته في النقاش", acuerdo: "يتفق مع", desacuerdo: "يختلف مع",
   conceptos: "مفاهيم من القاموس", mas: "و{n} أخرى" };
 function bioLink(id, cl){
   const q = BIOGRAFIAS[id]; if (!q) return "";
-  return '<button type="button" class="bio-rel-a' + (cl ? " " + cl : "") + '" data-go-ilu="' + bioEsc(id) + '">' + bioEsc(q.name) + '</button>';
+  return '<button type="button" class="bio-rel-a' + (cl ? " " + cl : "") + '" data-go-biografia="' + bioEsc(id) + '">' + bioEsc(q.name) + '</button>';
 }
 function bioRelaciones(p){
   const out = [];
   if (typeof GENEALOGIAS !== "undefined" && GENEALOGIAS){
     (GENEALOGIAS.lineas || []).forEach(l => {
-      const ids = (l.ilustre || []).filter(id => id === p.id || BIOGRAFIAS[id]), i = ids.indexOf(p.id);
+      const ids = (l.biografia || []).filter(id => id === p.id || BIOGRAFIAS[id]), i = ids.indexOf(p.id);
       if (i < 0) return;
       const tramo = ids.slice(Math.max(0, i - 1), i + 2).map(id => id === p.id ? '<b>' + bioEsc(p.name) + '</b>' : bioLink(id));
       out.push('<li><span class="bio-rel-linea" style="--l:' + bioEsc(l.color) + '">' + bioEsc(l.name) + '</span> ' + tramo.join(' <span aria-hidden="true">→</span> ') + '</li>');
     });
-    const op = (GENEALOGIAS.op || []).map(o => o.ilustre || []).filter(o => o.includes(p.id))
+    const op = (GENEALOGIAS.op || []).map(o => o.biografia || []).filter(o => o.includes(p.id))
       .map(o => o.find(id => id !== p.id)).filter(id => BIOGRAFIAS[id]);
     if (op.length) out.push('<li><span class="bio-rel-op">' + ILU_REL.frente + '</span> ' + op.map(id => bioLink(id)).join(" · ") + '</li>');
   }
@@ -273,7 +273,7 @@ function bioRelaciones(p){
   }
   let deb = "";
   if (typeof GEN_TESIS !== "undefined" && GEN_TESIS){
-    const de = {}; (GEN_TESIS.tesis || []).forEach(t => { de[t.id] = t.ilustre; });
+    const de = {}; (GEN_TESIS.tesis || []).forEach(t => { de[t.id] = t.biografia; });
     const rows = (GEN_TESIS.enlaces || []).map(e => {
       const [a, b] = String(e.k).split("|"), otro = de[a] === p.id ? de[b] : de[b] === p.id ? de[a] : null;
       if (!otro || otro === p.id || !BIOGRAFIAS[otro]) return "";
@@ -288,17 +288,17 @@ function bioRelaciones(p){
 }
 const ILU_CONC_VISIBLES = 12;
 function bioConceptos(p){
-  if (typeof GLOSARIO === "undefined" || !Array.isArray(GLOSARIO)) return "";
-  const ts = GLOSARIO.filter(g => (g.ilustre || []).includes(p.id) && (!p.subjects || p.subjects.includes(g.subject)));
+  if (typeof DICCIONARIO === "undefined" || !Array.isArray(DICCIONARIO)) return "";
+  const ts = DICCIONARIO.filter(g => (g.biografia || []).includes(p.id) && (!p.subjects || p.subjects.includes(g.subject)));
   if (!ts.length) return "";
-  const a = g => '<button type="button" class="bio-conc-a" data-glo="' + bioEsc(g.t) + '" data-glo-sub="' + bioEsc(g.subject) + '">' + bioEsc(g.t) + '</button>';
+  const a = g => '<button type="button" class="bio-conc-a" data-glo="' + bioEsc(g.t) + '" data-dic-sub="' + bioEsc(g.subject) + '">' + bioEsc(g.t) + '</button>';
   const vis = ts.slice(0, ILU_CONC_VISIBLES).map(a).join(", "), resto = ts.slice(ILU_CONC_VISIBLES);
   return '<div class="bio-sec bio-conc"><h3>' + ILU_REL.conceptos + '</h3><div class="bio-conc-txt">' + vis +
     (resto.length ? ' <details class="bio-conc-mas"><summary>' + ILU_REL.mas.replace("{n}", resto.length) + '</summary>' + resto.map(a).join(", ") + '</details>' : '') + '</div></div>';
 }
 /* abrir el glosario filtrado por un término (como el buscador general, search.js) */
-function bioAbrirGlosario(t, sub){
-  (window.show || show)("glosario");
+function bioAbrirDiccionario(t, sub){
+  (window.show || show)("diccionario");
   try {
     if (typeof gloSubject !== "undefined"){ gloSubject = sub || gloSubject; gloBloque = "all"; gloArea = "all"; gloQuery = t; }
     if (typeof renderGloControls === "function") renderGloControls();
@@ -308,7 +308,7 @@ function bioAbrirGlosario(t, sub){
 }
 
 /* (10-10) Fichas de época (epocas_fichas.js): mismo marco que la ficha de un pensador. Apartados fijos y, al final,
-   los pensadores de esa época en Ilustres (calculado) y el paso a la época siguiente. */
+   los pensadores de esa época en Biografías (calculado) y el paso a la época siguiente. */
 const ILU_EPO = { ver: "عرض بطاقة الحقبة", abre: "ما الذي يفتتحها", social: "المجتمع", politico: "السياسة",
   ciencia: "العلم والتقنية", arte: "الفن", pensamiento: "الفكر", pensadores: "مفكرو هذه الحقبة", rupturas: "القطائع والتحولات",
   trampa: "فخّ", epoca: "العصر", volver: "→ كل السِّيَر" };
@@ -340,7 +340,7 @@ function loadEpoca(b){
         '<h2>' + bioEsc(bioNombreFicha(b)) + '</h2>' + (f.anos ? '<p class="bio-life">' + bioEsc(f.anos) + '</p>' : '') + '</header>' +
       sec("abre") + sec("social") + sec("politico") + sec("ciencia") + sec("arte") + sec("pensamiento") +
       (ps.length ? '<div class="bio-sec bio-conc"><h3>' + ILU_EPO.pensadores + '</h3><div class="bio-conc-txt">' +
-        bioListaPlegada(ps.map(p => '<button type="button" class="bio-rel-a" data-go-ilu="' + bioEsc(p.id) + '" title="' + bioEsc(p.dates) + '">' + bioEsc(p.name) + '</button>'), 20) + '</div></div>' : '') +
+        bioListaPlegada(ps.map(p => '<button type="button" class="bio-rel-a" data-go-biografia="' + bioEsc(p.id) + '" title="' + bioEsc(p.dates) + '">' + bioEsc(p.name) + '</button>'), 20) + '</div></div>' : '') +
       sec("rupturas") + sec("trampa", "bio-anec") +
     '</article>';
   box.querySelector("[data-back]").addEventListener("click", () => {
@@ -348,7 +348,7 @@ function loadEpoca(b){
     try { history.replaceState(null, "", "#biografias"); } catch (e){}
     window.scrollTo(0, 0);
   });
-  box.querySelectorAll("[data-go-ilu]").forEach(x => x.addEventListener("click", () => loadBiografia(x.dataset.goIlu)));
+  box.querySelectorAll("[data-go-biografia]").forEach(x => x.addEventListener("click", () => loadBiografia(x.dataset.goBiografia)));
   box.querySelectorAll("[data-epoca]").forEach(x => x.addEventListener("click", () => loadEpoca(x.dataset.epoca)));
   try { history.replaceState(null, "", "#biografias/epoca-" + b); } catch (e){}
   window.scrollTo(0, 0);
@@ -386,8 +386,8 @@ function loadBiografia(id){
   box.innerHTML =
     '<div class="bio-nav"><button class="btn ghost" data-back>→ كل السِّيَر</button>' +
     '<span class="bio-pn">' +
-      (prev ? '<button class="btn ghost" data-go-ilu="' + bioEsc(prev.id) + '" title="' + bioEsc(prev.name) + '">‹ السابق</button>' : '') +
-      (next ? '<button class="btn ghost" data-go-ilu="' + bioEsc(next.id) + '" title="' + bioEsc(next.name) + '">التالي ›</button>' : '') +
+      (prev ? '<button class="btn ghost" data-go-biografia="' + bioEsc(prev.id) + '" title="' + bioEsc(prev.name) + '">‹ السابق</button>' : '') +
+      (next ? '<button class="btn ghost" data-go-biografia="' + bioEsc(next.id) + '" title="' + bioEsc(next.name) + '">التالي ›</button>' : '') +
     '</span></div>' +
     '<article class="bio-ficha" data-b="' + p.block + '">' +
       '<header class="bio-head">' +
@@ -421,8 +421,8 @@ function loadBiografia(id){
     try { history.replaceState(null, "", "#biografias"); } catch (e){}
     window.scrollTo(0, 0);
   });
-  box.querySelectorAll("[data-go-ilu]").forEach(b => b.addEventListener("click", () => loadBiografia(b.dataset.goIlu)));
-  box.querySelectorAll("[data-glo]").forEach(b => b.addEventListener("click", () => bioAbrirGlosario(b.dataset.glo, b.dataset.gloSub)));
+  box.querySelectorAll("[data-go-biografia]").forEach(b => b.addEventListener("click", () => loadBiografia(b.dataset.goBiografia)));
+  box.querySelectorAll("[data-glo]").forEach(b => b.addEventListener("click", () => bioAbrirDiccionario(b.dataset.glo, b.dataset.gloSub)));
   box.querySelectorAll("[data-epoca]").forEach(b => b.addEventListener("click", () => loadBiografia("epoca-" + b.dataset.epoca)));
   box.querySelectorAll("[data-th]").forEach(b => b.addEventListener("click", () => {
     (window.show || show)("teoria");
@@ -433,10 +433,10 @@ function loadBiografia(id){
   window.scrollTo(0, 0);
 }
 
-/* (18-10) Vídeos en euskera de Ikusgela sobre la persona (videos_eu.js, «ilustre»): enlaces externos, como «Obras principales»;
+/* (18-10) Vídeos en euskera de Ikusgela sobre la persona (videos_eu.js, «biografia»): enlaces externos, como «Obras principales»;
    en la web en euskera, con el título original del vídeo. */
 function bioVideosEu(p){
-  const V = typeof VIDEOS_EU !== "undefined" && Array.isArray(VIDEOS_EU) ? VIDEOS_EU.filter(v => (v.ilustre || []).includes(p.id)) : [];
+  const V = typeof VIDEOS_EU !== "undefined" && Array.isArray(VIDEOS_EU) ? VIDEOS_EU.filter(v => (v.biografia || []).includes(p.id)) : [];
   if (!V.length) return "";
   const eu = (document.documentElement.lang || "").slice(0, 2) === "eu";
   return '<div class="bio-sec"><h3>فيديو بالباسكية</h3><ul class="bio-obras">' + V.map(v => '<li><a href="https://www.youtube.com/watch?v=' + bioEsc(v.id) +

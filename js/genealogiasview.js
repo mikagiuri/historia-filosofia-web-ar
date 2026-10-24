@@ -53,21 +53,21 @@ function genLegend(){
 function genSvg(){
   const G = genG();
   const lines = G.lineas.filter(l => !genHidden.has("l:" + l.id))
-    .map(l => Object.assign({}, l, { ilustre: l.ilustre.filter(genPerson).sort((a, b) => genPerson(a).born - genPerson(b).born) }))
-    .filter(l => l.ilustre.length);
+    .map(l => Object.assign({}, l, { biografia: l.biografia.filter(genPerson).sort((a, b) => genPerson(a).born - genPerson(b).born) }))
+    .filter(l => l.biografia.length);
   if (!lines.length) return '<p class="lead gen-none">' + GEN_T.none + '</p>';
   // estaciones: todos los pensadores visibles, en orden de nacimiento
-  const ids = [...new Set(lines.flatMap(l => l.ilustre))].sort((a, b) => genPerson(a).born - genPerson(b).born);
+  const ids = [...new Set(lines.flatMap(l => l.biografia))].sort((a, b) => genPerson(a).born - genPerson(b).born);
   const rank = new Map(ids.map((id, i) => [id, i]));
   const DX = 60, DY = 76, X0 = 300, Y0 = 118, padR = 120, LBL = 14;
   const W = X0 + (ids.length - 1) * DX + padR, H = Y0 + (lines.length - 1) * DY + 40;
   const xOf = id => X0 + rank.get(id) * DX;
   const laneOf = new Map();                       // id → carriles en los que aparece
-  lines.forEach((l, li) => l.ilustre.forEach(id => { if (!laneOf.has(id)) laneOf.set(id, []); laneOf.get(id).push(li); }));
+  lines.forEach((l, li) => l.biografia.forEach(id => { if (!laneOf.has(id)) laneOf.set(id, []); laneOf.get(id).push(li); }));
   const yOf = li => Y0 + li * DY;
 
   let s = '<svg class="gen-svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="الأنساب الفكرية">';
-  // franja de épocas (según la época de cada pensador en Ilustres)
+  // franja de épocas (según la época de cada pensador en Biografías)
   let i0 = 0;
   while (i0 < ids.length){
     const b = genPerson(ids[i0]).block; let i1 = i0;
@@ -80,7 +80,7 @@ function genSvg(){
   }
   // líneas (tramo horizontal de la primera a la última estación) y su nombre al principio
   lines.forEach((l, li) => {
-    const y = yOf(li), xa = xOf(l.ilustre[0]), xb = xOf(l.ilustre[l.ilustre.length - 1]);
+    const y = yOf(li), xa = xOf(l.biografia[0]), xb = xOf(l.biografia[l.biografia.length - 1]);
     // nombre en la columna fija de la izquierda y guía punteada hasta la primera estación
     s += '<g class="gen-line" data-line="' + l.id + '">' +
       '<path class="gen-guide" d="M' + (X0 - 40) + ',' + y + ' L' + (xa - 14) + ',' + y + '" stroke="' + l.color + '"/>' +
@@ -94,7 +94,7 @@ function genSvg(){
     s += '<rect class="gen-xfer" x="' + (x - 5) + '" y="' + (ya - 5) + '" width="10" height="' + (yb - ya + 10) + '" rx="5"/>';
   });
   // oposiciones: arco rojo discontinuo entre la primera aparición de cada uno
-  if (!genHidden.has("op")) (G.op || []).forEach(({ ilustre: [a, b] }) => {
+  if (!genHidden.has("op")) (G.op || []).forEach(({ biografia: [a, b] }) => {
     if (!laneOf.has(a) || !laneOf.has(b)) return;
     const xa = xOf(a), ya = yOf(laneOf.get(a)[0]), xb = xOf(b), yb = yOf(laneOf.get(b)[0]);
     const lift = 34 + Math.min(60, Math.abs(xb - xa) / 6), top = Math.min(ya, yb) - lift;
@@ -107,9 +107,9 @@ function genSvg(){
     if (pts.length > 1) s += '<path class="gen-rutapath" d="M' + pts.join(" L") + '"/>';
   }
   // estaciones y nombres (el nombre, una sola vez, en el carril más alto)
-  lines.forEach((l, li) => l.ilustre.forEach(id => {
+  lines.forEach((l, li) => l.biografia.forEach(id => {
     const x = xOf(id), y = yOf(li), first = laneOf.get(id)[0] === li;
-    s += '<g class="gen-st' + (genRuta ? (enRuta(id) ? " gen-ruta" : " gen-noruta") : "") + '" data-ilu="' + id + '" data-line="' + l.id + '" tabindex="0" role="link" aria-label="' + genEsc(genPerson(id).name) + '">' +
+    s += '<g class="gen-st' + (genRuta ? (enRuta(id) ? " gen-ruta" : " gen-noruta") : "") + '" data-biografia="' + id + '" data-line="' + l.id + '" tabindex="0" role="link" aria-label="' + genEsc(genPerson(id).name) + '">' +
       '<circle cx="' + x + '" cy="' + y + '" r="6" stroke="' + l.color + '"/>' +
       (first ? '<text class="gen-st-lbl" transform="translate(' + (x + 4) + ',' + (y - 11) + ') rotate(-38)">' + genEsc(genShort(genPerson(id).name, id)) + '</text>' : '') + '</g>';
   }));
@@ -134,8 +134,8 @@ function drawGenea(){
   }
   const keep = box.querySelector(".gen-scroll"), sl = keep ? keep.scrollLeft : 0;
   const rutaInfo = genRuta ? (function(){
-    const ls = genG().lineas.filter(l => !genHidden.has("l:" + l.id) && l.ilustre.some(id => genRuta.includes(id)));
-    return '<p class="gen-rutainfo">' + GEN_T.ruta.replace("{n}", genRuta.filter(id => ls.some(l => l.ilustre.includes(id))).length).replace("{m}", ls.length) +
+    const ls = genG().lineas.filter(l => !genHidden.has("l:" + l.id) && l.biografia.some(id => genRuta.includes(id)));
+    return '<p class="gen-rutainfo">' + GEN_T.ruta.replace("{n}", genRuta.filter(id => ls.some(l => l.biografia.includes(id))).length).replace("{m}", ls.length) +
       ' <button type="button" class="btn ghost" data-gruta="off">' + GEN_T.quitarRuta + '</button></p>';
   })() : "";
   box.innerHTML = genModos() + genPlanos() + rutaInfo + genLegend() + '<p class="gen-hint">' + GEN_T.hint + '</p><div class="gen-scroll">' + genSvg() + '</div>';
@@ -161,7 +161,7 @@ function loadGenea(k){
     genRuta = mr[1].split(",").filter(genPerson); genPlano = "";
     genModo = "lineas"; genHidden = new Set();
     /* las líneas con al menos dos pensadores del viaje (las que de verdad has recorrido); si no hay ninguna, las que toquen uno */
-    const n = l => l.ilustre.filter(id => genRuta.includes(id)).length, min = GENEALOGIAS.lineas.some(l => n(l) >= 2) ? 2 : 1;
+    const n = l => l.biografia.filter(id => genRuta.includes(id)).length, min = GENEALOGIAS.lineas.some(l => n(l) >= 2) ? 2 : 1;
     GENEALOGIAS.lineas.forEach(l => { if (n(l) < min) genHidden.add("l:" + l.id); });
     drawGenea(); return;
   }
@@ -190,11 +190,11 @@ document.addEventListener("click", e => {
     const again = document.querySelector('#geneabox [data-gfil="' + k + '"]'); if (again) again.focus();
     return;
   }
-  const st = e.target.closest && e.target.closest("#geneabox .gen-st[data-ilu]");
-  if (st && typeof loadBiografia === "function"){ (window.show || show)("biografias"); loadBiografia(st.dataset.ilu); }
+  const st = e.target.closest && e.target.closest("#geneabox .gen-st[data-biografia]");
+  if (st && typeof loadBiografia === "function"){ (window.show || show)("biografias"); loadBiografia(st.dataset.biografia); }
 });
 document.addEventListener("keydown", e => {
-  const st = e.target.closest && e.target.closest("#geneabox .gen-st[data-ilu]");
+  const st = e.target.closest && e.target.closest("#geneabox .gen-st[data-biografia]");
   if (st && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); st.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
 });
 /* resaltar una línea (y sus oposiciones) al pasar por ella; el resto se apaga */
@@ -203,7 +203,7 @@ document.addEventListener("mouseover", e => {
   const g = e.target.closest("[data-line]"), id = g ? g.dataset.line : null;
   svg.classList.toggle("gen-focus", !!id);
   svg.querySelectorAll("[data-line]").forEach(x => x.classList.toggle("on", x.dataset.line === id));
-  const on = new Set([...svg.querySelectorAll('.gen-st.on')].map(x => x.dataset.ilu));
+  const on = new Set([...svg.querySelectorAll('.gen-st.on')].map(x => x.dataset.biografia));
   svg.querySelectorAll(".gen-op").forEach(p => p.classList.toggle("on", on.has(p.dataset.a) || on.has(p.dataset.b)));
 });
 document.addEventListener("mouseout", e => {

@@ -285,7 +285,7 @@ function logmPuedeNoPuede(){
   const duelo = document.getElementById("duelo") ? '<p><button type="button" class="btn ghost" data-igo="duelo" data-iarg="">' + logmT("lpDuelo") + "</button></p>" : "";
   return '<div class="lg-panel"><h2>' + logmT("lpTit") + '</h2><p class="lg-nota">' + logmT("lpIntro") + "</p><h3>" + logmT("lpAyuda") + '</h3><div class="lg-reglas">' +
     LOGM_AYUDA.map(x => '<div class="lg-regla lg-medio"><h3>' + logEsc(x.n) + '</h3><p><b>' + logmT("ejemplo") + ":</b> " + logEsc(x.ej) + "</p><p><b>" + logmT("lpQueVe") + ":</b> " + logEsc(x.ve) + "</p></div>").join("") + "</div>" +
-    "<h3>" + logmT("lpNo") + '</h3><p class="lg-nota">' + logmT("lpNoIntro") + '</p><ul class="lg-nof">' + LOGM_NOFORMAL.map(([n, d, g]) => "<li><b>" + (logmGlos(g) ? '<a href="#glosario/' + g + '">' + logEsc(n) + "</a>" : logmFalFuera(g, n)) + ":</b> " + logEsc(d) + "</li>").join("") + "</ul>" +
+    "<h3>" + logmT("lpNo") + '</h3><p class="lg-nota">' + logmT("lpNoIntro") + '</p><ul class="lg-nof">' + LOGM_NOFORMAL.map(([n, d, g]) => "<li><b>" + (logmGlos(g) ? '<a href="#diccionario/' + g + '">' + logEsc(n) + "</a>" : logmFalFuera(g, n)) + ":</b> " + logEsc(d) + "</li>").join("") + "</ul>" +
     (typeof LOGX !== "undefined" && LOGX.falacias ? '<p class="lg-nota">' + logmT("lpNoNomina") + ' <button type="button" class="btn ghost" data-lgnomina="1">' + logmT("lpNoNominaIr") + "</button></p>" : "") + duelo + "</div>";
 }
 Object.assign(LOGM_TXT, LOGM_EXTRA_TXT);
@@ -315,12 +315,12 @@ function logRenderFalacias(){
 /* (22-10, nube) T5: falacias no formales. La definición vive en el glosario de 1.º (fuente única); aquí, la lista con sus
    otros nombres, un ejemplo y cómo pararla, y el ejercicio «¿Qué falacia es?». Datos y textos en logica_ejercicios.js (LOGX).
    En la web de HF no están esas entradas del glosario: el nombre se queda sin enlace y sin definición. */
-function logmGlos(id){ return typeof GLOSARIO !== "undefined" ? GLOSARIO.find(g => g.id === id) : null; }
+function logmGlos(id){ return typeof DICCIONARIO !== "undefined" ? DICCIONARIO.find(g => g.id === id) : null; }
 /* (22-10, docs/39) Cuando la entrada g-fil-… del glosario de 1.º no está en esta web (hf), en vez de dejar el nombre de
    la falacia sin enlace se enlaza a su entrada en el glosario de la web de 1.º (misma lengua, pestaña nueva), con la nota
    «(en la web de 1.º)». En la web de 1.º logmGlos ya la encuentra, así que esto solo actúa fuera de ella. */
 function logmFalFuera(id, txt){
-  const e = logEsc, h = "#glosario/" + id;
+  const e = logEsc, h = "#diccionario/" + id;
   return (typeof logItinEs1o === "function" && logItinEs1o(h))
     ? '<a href="' + logItin1oUrl(h) + '" target="_blank" rel="noopener">' + e(txt) + ' <span class="lg-nota">(' + e(logmT("enLaDe1o")) + ")</span></a>"
     : e(txt);
@@ -330,7 +330,7 @@ function logmNomina(){
   const e = logEsc, T = LOGX.t;
   return '<div class="lg-panel" id="lg-nomina"><h2>' + e(T.nomTit) + '</h2><p class="lg-nota">' + e(T.nomIntro) + '</p><div class="lg-reglas">' +
     LOGX.falacias.map(f => { const g = logmGlos(f.g);
-      return '<div class="lg-regla lg-falaz"><h3>' + (g ? '<a href="#glosario/' + f.g + '">' + e(g.t) + "</a>" : logmFalFuera(f.g, f.nom)) + "</h3>" + (g ? "<p>" + e(g.def) + "</p>" : "") +
+      return '<div class="lg-regla lg-falaz"><h3>' + (g ? '<a href="#diccionario/' + f.g + '">' + e(g.t) + "</a>" : logmFalFuera(f.g, f.nom)) + "</h3>" + (g ? "<p>" + e(g.def) + "</p>" : "") +
         '<p class="lg-nota"><b>' + e(T.nomOtros) + "</b> " + e(f.otros) + "</p><p><b>" + e(T.nomEj) + "</b> " + e(f.ej) + "</p><p><b>" + e(T.nomParar) + "</b> " + e(f.parar) + "</p></div>"; }).join("") + "</div></div>";
 }
 function logmQueFalacia(){

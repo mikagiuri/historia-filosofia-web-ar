@@ -62,7 +62,7 @@ let etiQuery = "";
 function etiRow(k, v){ return v ? '<div class="r"><span class="rk">' + etiT(k) + '</span><span class="rv">' + v + '</span></div>' : ""; }
 
 function etiGlo(e){
-  if (!e.g || typeof GLOSARIO === "undefined" || !GLOSARIO.some(g => g.id === e.g)) return "";
+  if (!e.g || typeof DICCIONARIO === "undefined" || !DICCIONARIO.some(g => g.id === e.g)) return "";
   return '<div class="eti-glo"><button type="button" data-eti-glo="' + etiEsc(e.g) + '">' + etiEsc(etiT("verTermino", { t: e.t })) + '</button></div>';
 }
 
@@ -98,7 +98,7 @@ function etiRender(){
 document.addEventListener("click", e => {
   if (!e.target.closest("#etimos")) return;
   const g = e.target.closest("[data-eti-glo]");
-  if (g){ (window.show || show)("glosario"); if (typeof loadGlosario === "function") loadGlosario(g.dataset.etiGlo); }
+  if (g){ (window.show || show)("diccionario"); if (typeof loadDiccionario === "function") loadDiccionario(g.dataset.etiGlo); }
 });
 
 /* enlace profundo #etimos/<id>: enmarca y trae a la vista el concepto */

@@ -5,7 +5,7 @@
  * de la página. Esta función recorre los nodos de texto ya pintados y envuelve
  * cada tramo en alfabeto griego en <span lang="grc">.
  *
- * Qué NO hace. No toca los datos (theory.js, glosario.js, adagios.js): trabaja
+ * Qué NO hace. No toca los datos (theory.js, diccionario.js, adagios.js): trabaja
  * sobre el DOM ya pintado, en tiempo de carga. No cambia el aspecto ni el texto;
  * el atributo lang no pinta nada. El griego es LTR por el algoritmo bidi de
  * Unicode, así que dentro del árabe (dir="rtl") sigue saliendo de izquierda a

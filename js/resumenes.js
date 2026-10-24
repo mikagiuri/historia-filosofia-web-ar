@@ -1,5 +1,5 @@
-// Generado por web_i18n/i18n_rebuild.js (ar) a partir de web/js/esquemas_autor.js. No editar a mano: editar la memoria tm/ar.json y regenerar.
-const ESQUEMAS_AUTOR = [
+// Generado por web_i18n/i18n_rebuild.js (ar) a partir de web/js/resumenes.js. No editar a mano: editar la memoria tm/ar.json y regenerar.
+const RESUMENES = [
  {
   "title": "مناهج الفيلسوف وأدواته",
   "subject": "hf",

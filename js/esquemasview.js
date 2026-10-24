@@ -107,7 +107,7 @@ function renderEsqFilter(){
   box.querySelectorAll("[data-era]").forEach(function (b){ b.addEventListener("click", function (){
     esqBlock = b.dataset.era; renderEsqFilter(); renderEsqChips(); }); });
   const tog = box.querySelector(".esq-toggle");
-  if (tog) tog.addEventListener("click", function (){ if (typeof window.show === "function") window.show("esqautor"); });
+  if (tog) tog.addEventListener("click", function (){ if (typeof window.show === "function") window.show("resumenes"); });
 }
 
 function renderEsqChips(){
