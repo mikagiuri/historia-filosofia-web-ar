@@ -3187,6 +3187,10 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 .mp-isa-capturas figure{ margin:0 }
 .mp-isa-capturas img{ display:block; width:100%; height:auto; border:1px solid var(--line, #ddd); border-radius:6px }
 .mp-isa-capturas figcaption{ margin-block-start:.4rem; font-size:.95em; line-height:1.45 }
+/* (24-10) Captura recortada del teorema junto a «Ver la prueba en Isabelle» */
+.mp-isa-cap{ display:block; margin-block:.5rem .2rem }
+.mp-isa-cap-t{ display:block; font-size:.9em; color:var(--muted); margin-block-end:.25rem }
+.mp-isa-cap img{ display:block; max-width:100%; height:auto; border:1px solid var(--line, #ddd); border-radius:6px; background:#fff }
 
 
 /* ==== css/hegel.css ==== */
