@@ -12,7 +12,7 @@ function galAddIlus(list, bloque, nombre){
   GAL_BLOCKS[bloque] = nombre;
   list.forEach(function (x){
     GALERIA.push({ f: x.f, t: x.t, pie: x.pie, bloque: bloque,
-      unidad: nombre + " · " + (x.license || "Dominio público") + " · Wikimedia Commons" });
+      unidad: nombre + " · " + (x.license || "ملك عام") + " · Wikimedia Commons" });
   });
 }
 /* (08-10) Filosofía 1.º: un grupo por tema, en el orden del curso (antes, las ilustraciones iban todas juntas en «F1»).

@@ -444,7 +444,7 @@ function bioVideosEu(p){
     ' · <a href="media/ikusgela/' + bioEsc(v.id) + '.html" target="_blank" rel="noopener" hreflang="eu" title="نص الفيديو: الترجمة المكتوبة من Ikusgela">النص المكتوب</a></li>').join("") + '</ul></div>';
 }
 
-/* En la teoría: al final de cada unidad, una tira con los ilustres que aparecen en ella (enlaza a su
+/* En la teoría: al final de cada unidad, una tira con las biografías de los pensadores que aparecen en ella (enlaza a su
    ficha). Envuelve loadTheory() igual que retratosview.js, sin tocar theory.js ni theoryview.js. */
 function bioInjectTheory(){
   const body = document.getElementById("theorybody");

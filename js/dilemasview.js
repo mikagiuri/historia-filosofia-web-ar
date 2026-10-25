@@ -39,7 +39,7 @@ function dilById(id){ return DILEMAS.find(d => d.id === id); }
 /* (20-10) enlace profundo #dilemas/<id> y enlaces «Para seguir» (solo los que existen en esta web) */
 function loadDilema(id){ const d = dilById(id); if (!d) return; dil.group = d.grupo; openDil(id); }
 function dilEnlaces(d){
-  const ok = h => { const m = /^#(teoria|perseguidos|ilustres)\/(.+)$/.exec(h || ""); if (!m) return false;
+  const ok = h => { const m = /^#(teoria|perseguidos|biografias)\/(.+)$/.exec(h || ""); if (!m) return false;
     if (m[1] === "teoria") return typeof THEORY !== "undefined" && !!THEORY[m[2]];
     if (m[1] === "perseguidos") return typeof PERSEGUIDOS !== "undefined" && PERSEGUIDOS.some(c => c.id === m[2]);
     return typeof BIOGRAFIAS !== "undefined" && !!BIOGRAFIAS[m[2]]; };

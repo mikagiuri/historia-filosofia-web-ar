@@ -13,6 +13,11 @@
 (function(){
   function strip(s){ return String(s == null ? "" : s).replace(/\s+/g, " ").trim(); }
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  /* (25-10) solo se reescribe un botón si su contenido cambia: antes cada refresh() reescribía el innerHTML, eso volvía a
+     disparar el MutationObserver (bucle de ~40 repintados por segundo) y el texto pulsado se cambiaba entre mousedown y mouseup:
+     el navegador no daba el clic (el selector de tema «no respondía» en escritorio) */
+  function setHtml(el, html){ if (el._html !== html){ el._html = html; el.innerHTML = html; } }
+  function setHidden(el, h){ if (el.hidden !== h) el.hidden = h; }
   var CTL = ":scope > .filterbar, :scope > .chips, :scope > .crono-filter, :scope > .crono-chips";
 
   function label(sec){
@@ -36,8 +41,8 @@
        lista queda plegada y sin forma de abrirla. Se rotula con el nombre del grupo («Elegir esquema») y el total. */
     var g = !l && sec.querySelector(":scope > .chips, :scope > .crono-chips"), n = g ? g.querySelectorAll("button").length : 0;
     if (n) l = g.getAttribute("aria-label") || "";
-    btn.innerHTML = '<span class="ctl-l">' + esc(l) + (n ? ' <i>' + n + '</i>' : '') + '</span><span class="ctl-caret" aria-hidden="true">▾</span>';
-    btn.hidden = !l;
+    setHtml(btn, '<span class="ctl-l">' + esc(l) + (n ? ' <i>' + n + '</i>' : '') + '</span><span class="ctl-caret" aria-hidden="true">▾</span>');
+    setHidden(btn, !l);
   }
   function ensureToc(toc){
     var lay = toc.parentNode; if (!lay || !lay.classList.contains("theory-layout")) return;
@@ -48,8 +53,8 @@
       lay.insertBefore(btn, toc);
     }
     var t = toc.querySelector(".toc-title"), n = toc.querySelectorAll("a").length;
-    btn.innerHTML = '<span class="ctl-l">' + esc(t ? strip(t.textContent) : "") + (n ? ' <i>' + n + '</i>' : '') + '</span><span class="ctl-caret" aria-hidden="true">▾</span>';
-    btn.hidden = !n;
+    setHtml(btn, '<span class="ctl-l">' + esc(t ? strip(t.textContent) : "") + (n ? ' <i>' + n + '</i>' : '') + '</span><span class="ctl-caret" aria-hidden="true">▾</span>');
+    setHidden(btn, !n);
   }
   /* (05-10) Escritorio: la lista de temas/materiales también se pliega cuando es larga. Con 11-27 chips en varias
      filas, el profesor lo considera ruido que empuja el contenido (lo pidió varias veces). Regla: más de MANY
@@ -69,8 +74,8 @@
     if (btn.nextElementSibling !== chips) sec.insertBefore(btn, chips);
     var act = chips.querySelector("[aria-pressed='true']");
     var l = act ? strip(act.textContent) : strip(chips.getAttribute("aria-label"));
-    btn.innerHTML = '<span class="ctl-l">' + esc(l) + ' <i>' + n + '</i></span><span class="ctl-caret" aria-hidden="true">▾</span>';
-    btn.hidden = n <= MANY;
+    setHtml(btn, '<span class="ctl-l">' + esc(l) + ' <i>' + n + '</i></span><span class="ctl-caret" aria-hidden="true">▾</span>');
+    setHidden(btn, n <= MANY);
   }
   function closeDesk(){
     document.querySelectorAll(".view.chips-open").forEach(function(v){

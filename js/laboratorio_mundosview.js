@@ -1481,7 +1481,7 @@ const LB_MP = (() => {
       hechos(H, n) {
         const r2 = (rel, si, no) => (H[rel] || []).map(([a, b]) => (a === b && si ? mpT(si, { a: n(a) }) : mpT(no, { a: n(a), b: n(b) })));
         return [
-          ["hSerEn", r2("En", "fEnSi", "fEn")], ["hConcebirse", r2("SeConcibePor", "fConcibeSi", "fConcibe")], ["hCausas", r2("Causa", "fCausaSi", "fCausa")],
+          ["hSerEn", r2("في", "fEnSi", "fEn")], ["hConcebirse", r2("SeConcibePor", "fConcibeSi", "fConcibe")], ["hCausas", r2("Causa", "fCausaSi", "fCausa")],
           ["hComun", (H.AlgoEnComun || []).filter(([a, b]) => a < b).map(([a, b]) => mpT("fComun", { a: n(a), b: n(b) }))],
           ["hOtras", [...r2("EsParteDe", null, "fParte"), ...r2("Limita", null, "fLimita"), ...r2("MasRealidad", null, "fRealidad"),
             ...(H.AtributoSeConcibePor || []).map(([a, b]) => mpT("fAtrConcibe", { a: nombreAtr(a), b: nombreAtr(b) })),
