@@ -348,6 +348,7 @@ function loadTheory(k){
   if (porApartados){ body.innerHTML = head; theorySplitParts(body, htmlSecs, trocear); }
   else body.innerHTML = head + htmlSecs;
   if (typeof wireRelated === "function") wireRelated(body);
+  if (window.Maqueta) window.Maqueta.aplicar(body);   // (25-10) maquetación: el material de cada párrafo (js/maqueta.js)
   const hs = [...body.querySelectorAll("h2")];
   hs.forEach((h, i) => { h.id = "th-" + i; });
   body.querySelectorAll(".figimg").forEach(img => img.addEventListener("click", () => openLightbox(img.src, img.alt)));

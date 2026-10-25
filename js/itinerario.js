@@ -575,10 +575,13 @@
     k = String(k || "").replace(/(?:\/|§)\d+$/, "");   /* (07-10) «clave/n»: enlace a un apartado */
     var body = document.getElementById("theorybody"), tm = itemTema("teoria", k); if (!body || !tm) return;
     var rel = body.querySelector(".related-row"); if (rel) rel.remove();   // la tira antigua de la cabecera: todo va al final
-    body.querySelectorAll(":scope > .itin-fin").forEach(function(o){ o.remove(); });
+    body.querySelectorAll(":scope > .itin-fin, :scope > .th-part > .itin-fin").forEach(function(o){ o.remove(); });
     if (tm.tema == null) return;
     var tmp = document.createElement("div"); tmp.innerHTML = finHtml(tm.subject, tm.tema, k);
-    if (tmp.firstElementChild) body.appendChild(tmp.firstElementChild);
+    /* (25-10, el profesor: «solo enlaces relacionados con el apartado, no con el tema completo») en la vista por
+       apartados la caja va dentro del ÚLTIMO apartado: sale una sola vez, al final del tema, y no debajo de cada uno */
+    var partes = body.querySelectorAll(":scope > .th-part"), host = partes.length ? partes[partes.length - 1] : body;
+    if (tmp.firstElementChild) host.appendChild(tmp.firstElementChild);
   }
   function renderDeck(k){
     var host = document.getElementById("itin-tarjetas"), tm = itemTema("tarjetas", k); if (!host) return;
@@ -646,6 +649,47 @@
   }
   wrap("loadPau", function(){ renderPau("pau"); }); wrap("loadDisert", function(){ renderPau("disertaciones"); }); wrap("loadComentario", function(){ renderPau("comentario"); });
 
+  /* (25-10, orden del profesor; tabla de bloques hecha con Nous) Filosofía 1.º por bloques, como HF: cada bloque con
+     el color de su rama y sus subtemas numerados (1.1, 1.2…) = los apartados <h2> de su teoría (ya traducidos en cada
+     lengua) y, detrás, las entradas que son parte del bloque. Lo que no es tema (actividades, ampliaciones, lecturas
+     largas) va plegado en «Exploraciones (n)» de su bloque. Una clave nueva que no esté aquí sale al final, sin bloque. */
+  var FIL_BLOQUES = [
+    /* (25-10, profesor) el apartado 10 de fil-t1 (modelo de examen) y los presocráticos, como exploraciones; «clave/n» = un apartado */
+    ["fil-t1", "int", [], ["fil-t1/10", "fil-presocraticos", "fil-utilidad", "fil-t1-lipman", "fil-grandes-preguntas", "fil-montaigne-ensayos", "fil-spinoza-sistema", "fil-comunidades-perseguidos"]],
+    ["fil-t2", "ant", [], []],
+    ["fil-t3", "con", ["fil-t3-semmelweis"], []],
+    ["fil-metafisica", "con", [], []],
+    ["fil-t4", "log", [], []],
+    ["fil-t5", "eti", ["fil-helenismo"], ["fil-t5-minimos-maximos"]],
+    ["fil-t6", "pol", [], ["fil-t1-filosofia-mujer", "fil-marxismos", "fil-discriminacion"]],
+    ["fil-t7", "est", [], []]
+  ];
+  function filBloquesHtml(T, ks){
+    var usadas = {};
+    function boton(k, sec, num, label, ga){
+      return '<li' + (ga || "") + '><button type="button" data-igo="teoria" data-iarg="' + esc(sec ? k + "/" + sec : k) + '"><span class="temas-n">' + esc(num) + '</span><span class="temas-t">' + esc(label) + '</span></button></li>';
+    }
+    var html = FIL_BLOQUES.filter(function(b){ return T[b[0]]; }).map(function(b, i){
+      var n = i + 1, ga = ' data-rama="' + b[1] + '"', out = "", j = 0, a = 0, aps = {}, re = /<h2\b[^>]*>([\s\S]*?)<\/h2>/g, m;
+      usadas[b[0]] = 1;
+      while ((m = re.exec(T[b[0]].html || ""))) {
+        var tit = strip(m[1]).replace(/^\s*\d+\.\s*/, ""); a++;
+        if (b[3].indexOf(b[0] + "/" + a) >= 0) { aps[b[0] + "/" + a] = tit; continue; }   // apartado que va a «Exploraciones»
+        j++; out += boton(b[0], a, n + "." + j, tit, ga);
+      }
+      b[2].forEach(function(k){ if (!T[k]) return; usadas[k] = 1; j++; out += boton(k, 0, n + "." + j, strip(T[k].title), ga); });
+      var exp = b[3].filter(function(k){ if (aps[k]) return true; if (T[k]) { usadas[k] = 1; return true; } return false; }).map(function(k){
+        return '<li class="temas-extra"' + ga + '><button type="button" data-igo="teoria" data-iarg="' + esc(k) + '"><span class="temas-t">' + esc(aps[k] || strip(T[k].title)) + '</span></button></li>';
+      });
+      if (exp.length) out += '<li class="temas-exp"' + ga + '><details><summary>' + esc(t("exploraciones")) + ' (' + exp.length + ')</summary><ol class="itin-temas">' + exp.join("") + '</ol></details></li>';
+      /* (25-10, petición del profesor) cada bloque se pliega y despliega con su cabecera; al entrar, todos plegados */
+      return '<details class="filb"' + ga + '><summary><h3 class="temas-b"' + ga + '>' + esc("المحور") + ' ' + n + ' · ' + esc(strip(T[b[0]].title)) + ' <span class="filb-n">(' + j + ')</span></h3></summary><ol class="itin-temas"' + ga + '>' + out + '</ol></details>';
+    }).join("");
+    var resto = ks.filter(function(k){ return !usadas[k]; });
+    if (resto.length) html += '<ol class="itin-temas">' + resto.map(function(k){ return boton(k, 0, "·", strip(T[k].title)); }).join("") + '</ol>';
+    return '<div class="sec-head"><h2 class="sec">' + esc(t("temas")) + '</h2></div>' + html;
+  }
+
   /* ---------- ficha de la materia: temas → la web en números → itinerario PAU ---------- */
   function temasHtml(subject){
     var T = coll("THEORY"), ks = temasDe(subject, true), C = G("CURSO");
@@ -657,10 +701,12 @@
     if (!ks.length) return "";
     /* HF: agrupada por época, con el color de Biografías; Filosofía 1.º: por rama (js/epocas.js). Las demás, seguidas. */
     var EP = { int: "مدخل", ant: "القديمة", med: "الوسيطة", ren: "عصر النهضة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
-    var RM = { ant: "الأنثروبولوجيا", con: "المعرفة", log: "المنطق", eti: "الأخلاق", pol: "السياسة", est: "علم الجمال" };
+    var RM = { int: "مدخل", ant: "الأنثروبولوجيا", con: "المعرفة", log: "المنطق", eti: "الأخلاق", pol: "السياسة", est: "علم الجمال" };
     var grpNames = null, grpAttr = "", grpOf = null;
     if (subject === "hf"){ grpNames = EP; grpAttr = "ep"; grpOf = window.Epocas ? function(n){ return window.Epocas.epocaDeTema(n); } : function(n){ return n <= 2 ? "int" : n <= 10 ? "ant" : n <= 12 ? "med" : n === 13 ? "ren" : n <= 17 ? "mod" : n <= 20 ? "ilu" : "con"; }; }
-    else if (subject === "fil"){ grpNames = RM; grpAttr = "rama"; grpOf = window.Ramas ? function(n){ return window.Ramas.ramaDeTema(n); } : function(n){ return ({ 2: "ant", 3: "con", 4: "log", 5: "eti", 6: "pol", 7: "est" })[n] || null; }; }
+    /* (25-10, petición del profesor) en 1.º el Tema 1 también lleva grupo, «Introducción», en gris como la de HF */
+    else if (subject === "fil"){ grpNames = RM; grpAttr = "rama"; grpOf = function(n){ return n === 1 ? "int" : window.Ramas ? window.Ramas.ramaDeTema(n) : ({ 2: "ant", 3: "con", 4: "log", 5: "eti", 6: "pol", 7: "est" })[n] || null; }; }
+    if (subject === "fil" && T["fil-t1"]) return filBloquesHtml(T, ks);
     var groups = [], last = null;
     ks.forEach(function(k){
       var n = temaOf("teoria", k, T[k]), g = grpOf && typeof n === "number" ? grpOf(n) : "";

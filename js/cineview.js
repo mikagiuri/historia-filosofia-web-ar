@@ -62,7 +62,10 @@
     strip.innerHTML = '<h3>الفلسفة والسينما/الفن · لهذا الموضوع</h3>'
       + '<div class="cine-grid">' + list.map(cardHTML).join("") + '</div>'
       + '<p class="cine-note">أفلام وأعمال فنية تطرح أسئلة هذا الموضوع. طريقة لتأمل الفلسفة من خلال السينما والفن.</p>';
-    body.appendChild(strip);
+    /* (25-10) es de todo el tema: en la vista por apartados va dentro del ÚLTIMO, una sola vez al final (el profesor:
+       «solo enlaces relacionados con el apartado, no con el tema completo») */
+    const partes = body.querySelectorAll(":scope > .th-part");
+    (partes.length ? partes[partes.length - 1] : body).appendChild(strip);
   }
 
   if (typeof loadTheory === "function"){
