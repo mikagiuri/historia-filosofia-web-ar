@@ -50,6 +50,7 @@ const QUIZ_TEMA = {
   "ipc-pensar-banco": "pensar", "ipc-hecho-q": "pensar", "ipc-argumentar-banco": "argumentar", "falacias": "falacias", "ipc-falacias-banco": "falacias", "ipc-bulos-q": "falacias",
   "ipc-sesgos-q": "sesgos", "ipc-sesgos-banco": "sesgos", "ipc-dialogo-banco": "dialogo", "ipc-medios-q": "medios", "ipc-medios-banco": "medios",
   "ipc-grupo-banco": "grupo", "ipc-huella-q": "huella", "ipc-huella-banco": "huella", "ipc-moda-q": "huella",
+  /* AMPLIACIÓN (24-10) */ "fil-t2-ampliacion": "T2", "fil-t3-ampliacion": "T3", "fil-metafisica-ampliacion": "M", "fil-t4-ampliacion": "T4", "fil-t5-ampliacion": "T5", "fil-t6-ampliacion": "T6",
   /* REPASO */ "fil-t1-repaso": "T1", "fil-t2-repaso": "T2", "fil-t3-repaso": "T3", "fil-t4-repaso": "T4", "fil-t5-repaso": "T5", "fil-t6-repaso": "T6", "fil-t7-repaso": "T7", "hf-t1-repaso": "T1", "hf-t3-repaso": "T3", "hf-t4-repaso": "T4", "hf-t5-repaso": "T5", "hf-t6-repaso": "T6", "hf-t7-repaso": "T7", "hf-t8-repaso": "T8", "hf-t9-repaso": "T9", "hf-t10-repaso": "T10", "hf-t11-repaso": "T11", "hf-t12-repaso": "T12", "hf-t13-repaso": "T13", "hf-t14-repaso": "T14", "hf-t15-repaso": "T15", "hf-t16-repaso": "T16", "hf-t17-repaso": "T17", "hf-t18-repaso": "T18", "hf-t19-repaso": "T19", "hf-t20-repaso": "T20", "hf-t21-repaso": "T21", "hf-t22-repaso": "T22", "hf-t23-repaso": "T23", "hf-t24-repaso": "T24", "hf-t25-repaso": "T25", "hf-t26-repaso": "T26", "hf-t27-repaso": "T27"
 };
 /* Orden dentro de un tema: banco ampliado, cuestionario breve, libro, léxico. */

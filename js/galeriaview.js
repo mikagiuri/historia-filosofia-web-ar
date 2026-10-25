@@ -47,7 +47,8 @@ if (typeof MATERIALS !== "undefined" && Array.isArray(GALERIA)){
 }
 /* (12-10) época de una ilustración de HF por su contenido (unidad = autor/tema); las no-HF (F1/PC/CU/temas)
    no tienen época. Los grupos de museo/contexto genéricos (sin autor) caen por bloque: A→Antigua, B→«medmod»
-   (abarca Medieval y Moderna, solo con «Todos»), C→Contemporánea. EDITABLE: una unidad nueva se apunta aquí. */
+   (abarca Medieval y Moderna, solo con «Todos»), C→Contemporánea. EDITABLE: una unidad nueva se apunta aquí.
+   (25-10) Desde GAL_FOTO_EP ninguna imagen de HF cae ya en «medmod»: una imagen nueva de museo se apunta allí por su ruta. */
 const GAL_UNIDAD_EP = {
   "أوغسطين": "med", "ابن سينا": "med", "أوكام": "med", "توما الأكويني": "med",
   "من العصور الوسطى إلى الحداثة": "mod", "النهضة والعلم": "mod", "ديكارت": "mod", "العقلانية والتجريبية": "mod",
@@ -56,7 +57,36 @@ const GAL_UNIDAD_EP = {
   "أزمة الحداثة": "con", "الوجودية": "con", "النسوية": "con", "حنا أرندت": "con",
   "النضالات بعد الماركسية": "con", "أساتذة الارتياب": "con", "ماركس": "con"
 };
+/* (25-10, orden del profesor) cada imagen de museo en UNA sola época, por su contenido (autor u obra y fecha),
+   y la Ilustración aparte de la Moderna y de la Contemporánea. Se busca el fragmento en la ruta de la imagen (g.f); manda sobre lo demás. */
+const GAL_FOTO_EP = [
+  /* retratos de galeria_retratos_museo.js: su bloque sale del nombre, que en fr y ar llega traducido; por la ruta no falla */
+  ...["alcibiades","alejandro","aristoteles","aspasia","diogenes","delfos","epicuro","hipatia","academia","caverna","escuela-atenas",
+      "muerte-socrates","marco-aurelio","platon","seneca","socrates"].map(function (s){ return ["retratos/museo/" + s + ".", "ant"]; }),
+  ...["agustin","averroes","aquino"].map(function (s){ return ["retratos/museo/" + s + ".", "med"]; }),
+  ...["hume","descartes","galileo","newton","locke","copernico","spinoza"].map(function (s){ return ["retratos/museo/" + s + ".", "mod"]; }),
+  ...["kant","wollstonecraft","gouges","rousseau"].map(function (s){ return ["retratos/museo/" + s + ".", "ilu"]; }),
+  ...["einstein","darwin","cassirer","arendt","hegel","dewey","mill","marx","popper","zambrano","curie","nietzsche","ortega","franklin",
+      "schopenhauer","beauvoir","kuhn","james","wittgenstein"].map(function (s){ return ["retratos/museo/" + s + ".", "con"]; }),
+  ["museo/agustin","med"],["averroes","med"],["museo/aquino","med"],["al_andalus","med"],["edad_media","med"],["anselmo","med"],["boecio","med"],
+  ["duns-escoto","med"],["museo2/ockham","med"],["maimonides","med"],["cristina-pizan","med"],["europa-hacia-el-ano-1000","med"],["mapa-europa-medieval","med"],
+  ["t-o-map","med"],["psalter-world-map","med"],["hereford","med"],["ebstorfer","med"],["tabula-rogeriana","med"],["atlas-catalan","med"],["fra-mauro","med"],
+  ["kopistak","med"],["erdi_aroko_unibertsitatea","med"],["ibn_rushd_aristotelesen_transmisioa","med"],
+  ["renacimiento_","mod"],["reforma_","mod"],["revolucion_cientifica","mod"],["poder_moderno","mod"],["Drawing_of_frontispiece_of_Leviathan","mod"],
+  ["Two_Treatises_of_Government","mod"],["museo/descartes","mod"],["museo/locke","mod"],["museo/spinoza","mod"],["museo/hume","mod"],["berkeley","mod"],
+  ["museo2/bacon","mod"],["museo2/hobbes","mod"],["leibniz","mod"],["maquiavelo","mod"],["montaigne","mod"],["pascal","mod"],["erasmo","mod"],["gassendi","mod"],
+  ["kepler","mod"],["tomas-moro","mod"],["isabel-bohemia","mod"],["botticelli","mod"],["durero","mod"],["rafael-la-disputa","mod"],["vermeer","mod"],
+  ["mapa-1507","mod"],["juan-de-la-cosa","mod"],["ortelius","mod"],["nova-et-aucta","mod"],["mapa-celeste","mod"],["map-of-london","mod"],
+  ["copernico","mod"],["galileo","mod"],["newton","mod"],
+  ["museo/rousseau","ilu"],["Contrat_Social","ilu"],["montesquieu","ilu"],["emilie-chatelet","ilu"],["adam-smith","ilu"],["voltaire","ilu"],["diderot","ilu"],
+  ["dalembert","ilu"],["museo/kant","ilu"],["ilustracion_","ilu"],["revolucion_francesa","ilu"],["wollstonecraft","ilu"],["museo/gouges","ilu"],
+  ["Olympe_de_Gouges","ilu"],["wright-of-derby","ilu"],["europa-de-la-ilustracion","ilu"],["juramento-de-los-horacios","ilu"],["goya-el-sueno","ilu"],
+  ["revolucion_industrial","ilu"],["industrializacion_Philipp_Jakob_Loutherbourg","ilu"],["Panopticon","ilu"],["museo2/bentham","ilu"],
+  ["b6_kontratu_soziala","ilu"],["b7_ongizate_komuna","ilu"],
+  ["museo/darwin","con"],["museo/curie","con"],["museo/franklin","con"],["utilitarismo_Bpt6k","con"],["b7_justizia","con"],["b7_askatasuna","con"]
+];
 function galEpoca(g){
+  for (const [k, e] of GAL_FOTO_EP){ if (String(g.f || "").indexOf(k) >= 0) return e; }
   if (GAL_UNIDAD_EP[g.unidad]) return GAL_UNIDAD_EP[g.unidad];
   /* (20-10) en las webs traducidas, la clave (ui) y el nombre del grupo (tm) pueden diferir en el apóstrofo o en una palabra */
   const u = String(g.unidad || "").replace(/[’‘]/g, "'");

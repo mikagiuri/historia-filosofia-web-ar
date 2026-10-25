@@ -17,9 +17,11 @@ const RETRATOS_BLOQUE = {
 try {
   if (typeof RETRATOS !== "undefined" && Array.isArray(RETRATOS) && typeof GALERIA !== "undefined" && Array.isArray(GALERIA)) {
     const ya = new Set(GALERIA.map(function (g) { return String(g.t || "").toLowerCase().trim(); }));
+    const yaF = new Set(GALERIA.map(function (g) { return g.f; }));
     RETRATOS.forEach(function (r) {
       const nom = r.name;
       if (!nom || ya.has(nom.toLowerCase().trim())) return;   // duplicado: ya está en la Galería
+      if (yaF.has(r.file)) return;   // (25-10) y por la ruta: en fr y ar el título traducido no coincide y el retrato salía dos veces
       GALERIA.push({
         f: r.file,
         t: nom,
