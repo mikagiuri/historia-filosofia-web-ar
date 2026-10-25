@@ -3293,7 +3293,7 @@ const TARJETAS_IMG = {
  "citasA|‘To think and to be are the same.’": "cita_pensar_ser",
  "citasA|«Gauza bera dira pentsatzea eta izatea.»": "cita_pensar_ser",
  "citasA|« Penser et être, c'est la même chose. »": "cita_pensar_ser",
- "citasA|«El hombre es la medida de todas las cosas: de las que son, que son; de las que no son, que no son.»": "cita_hombre_medida",
+ "citasA|«El ser humano es la medida de todas las cosas: de las que son, que son; de las que no son, que no son.»": "cita_hombre_medida",
  "citasA|«الإنسان مقياس كل شيء: مقياس الأشياء الموجودة في أنها موجودة، والأشياء غير الموجودة في أنها غير موجودة.»": "cita_hombre_medida",
  "citasA|‘Man is the measure of all things: of those that are, that they are; of those that are not, that they are not.’": "cita_hombre_medida",
  "citasA|«Gizakia da gauza guztien neurria: direnena, badirela; ez direnena, ez direla.»": "cita_hombre_medida",
