@@ -829,7 +829,7 @@
     var EP = { int: "مدخل", ant: "القديمة", med: "الوسيطة", ren: "عصر النهضة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
     var RM = { int: "مدخل", ant: "الأنثروبولوجيا", con: "المعرفة", log: "المنطق", eti: "الأخلاق", pol: "السياسة", est: "علم الجمال" };
     var grpNames = null, grpAttr = "", grpOf = null;
-    if (subject === "hf"){ grpNames = EP; grpAttr = "ep"; grpOf = window.Epocas ? function(n){ return window.Epocas.epocaDeTema(n); } : function(n){ return n <= 2 ? "int" : n <= 10 ? "ant" : n <= 12 ? "med" : n === 13 ? "ren" : n <= 17 ? "mod" : n <= 20 ? "ilu" : "con"; }; }
+    if (subject === "hf"){ grpNames = EP; grpAttr = "ep"; grpOf = window.Epocas ? function(n){ return window.Epocas.epocaDeTema(n); } : function(n){ return n <= 2 ? "int" : n <= 10 ? "ant" : n <= 12 ? "med" : n <= 17 ? "mod" : n <= 20 ? "ilu" : "con"; }; }
     /* (25-10, petición del profesor) en 1.º el Tema 1 también lleva grupo, «Introducción», en gris como la de HF */
     else if (subject === "fil"){ grpNames = RM; grpAttr = "rama"; grpOf = function(n){ return n === 1 ? "int" : window.Ramas ? window.Ramas.ramaDeTema(n) : ({ 2: "ant", 3: "con", 4: "log", 5: "eti", 6: "pol", 7: "est" })[n] || null; }; }
     if (subject === "fil" && T["fil-t1"]) return filBloquesHtml(T, ks);
@@ -841,8 +841,12 @@
     });
     /* (18-10, orden del profesor) HF empieza por el Tema 3: la Introducción (temas 1-2) y lo que no tenga época, al final */
     if (subject === "hf") groups = groups.filter(function(gr){ return gr.g && gr.g !== "int"; }).concat(groups.filter(function(gr){ return gr.g === "int"; }), groups.filter(function(gr){ return !gr.g; }));
+    /* (30-10, petición del profesor) HF con la misma portada que Filosofía 1.º: cada época es un bloque plegable
+       «Bloque N · Época (n)», con su color; la Introducción, al final y sin número. n = temas del bloque (sin exploraciones). */
+    var bloqueN = 0;
     return '<div class="sec-head"><h2 class="sec">' + esc(t("temas")) + '</h2></div>' + groups.map(function(gr){
-      return (gr.g ? '<h3 class="temas-b" data-' + grpAttr + '="' + esc(gr.g) + '">' + esc((grpNames && grpNames[gr.g]) || gr.g) + '</h3>' : '') + '<ol class="itin-temas" style="--c:' + (SUBJ_COLOR[subject] || "var(--accent)") + '">' + (function(){
+      var plegable = subject === "hf" && !!gr.g, nTemas = 0, numB = (plegable && gr.g !== "int") ? ++bloqueN : 0;
+      var cuerpo = '<ol class="itin-temas" style="--c:' + (SUBJ_COLOR[subject] || "var(--accent)") + '">' + (function(){
         /* (11-10) las exploraciones de cada tema van plegadas en «Exploraciones (n)», al final de lo de ese tema */
         var out = "", exp = [], ga = gr.g ? ' data-' + grpAttr + '="' + esc(gr.g) + '"' : '';
         function flush(){
@@ -858,11 +862,16 @@
           var li = '<li' + (extra ? ' class="temas-extra"' : '') + ga + '><button type="button" data-igo="teoria" data-iarg="' + esc(k) + '">' +
             (T[k].sigla ? '<span class="temas-n">' + esc(T[k].sigla) + '</span>' : typeof n === "number" && !anexo && !declaraN ? '<span class="temas-n">' + esc(t("tema", { n: n })) + '</span>' : '') + '<span class="temas-t">' + esc(anexo ? strip(T[k].title).replace(/^[^\s-]+ - /, "") : strip(T[k].title)) + (subject === "hf" && !anexo && typeof impBadge === "function" ? ' ' + impBadge("tema", typeof n === "number" && !T[k].sigla ? n : k) : '') + '</span>' + (subject === "hf" && PAU_TEMAS[n] ? '<span class="temas-pau">' + esc(t("pauBadge")) + '</span>' : '') + (anexo && T[k].clase ? '<span class="temas-anexo">في القسم</span>' : '') + '</button></li>';
           if (anexo) exp.push(li);
-          else { if (!extra) flush(); out += li; }
+          else { if (!extra) { flush(); nTemas++; } out += li; }
         });
         flush();
         return out;
       })() + '</ol>';
+      if (plegable){
+        var nom = esc((grpNames && grpNames[gr.g]) || gr.g);
+        return '<details class="filb" data-ep="' + esc(gr.g) + '"><summary><h3 class="temas-b" data-ep="' + esc(gr.g) + '">' + (numB ? esc("المحور") + ' ' + numB + ' · ' : '') + nom + ' <span class="filb-n">(' + nTemas + ')</span></h3></summary>' + cuerpo + '</details>';
+      }
+      return (gr.g ? '<h3 class="temas-b" data-' + grpAttr + '="' + esc(gr.g) + '">' + esc((grpNames && grpNames[gr.g]) || gr.g) + '</h3>' : '') + cuerpo;
     }).join("");
   }
   ["fil", "hf", "ipc"].forEach(function(s){

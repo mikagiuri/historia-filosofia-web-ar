@@ -515,6 +515,7 @@ details.filb>summary .temas-b::after{content:"▸";margin-inline-start:auto;font
 details.filb[open]>summary .temas-b::after{transform:rotate(90deg)}
 details.filb .filb-n{font-weight:400;letter-spacing:0;opacity:.8}
 details.filb>summary:focus-visible{outline:2px solid var(--r);outline-offset:2px;border-radius:4px}
+details.filb[data-ep]>summary:focus-visible{outline-color:var(--e)}
 /* (11-10) exploraciones de cada tema, plegadas en «Exploraciones (n)» */
 ol.itin-temas li.temas-exp>details{margin-inline-start:18px}
 ol.itin-temas li.temas-exp summary{cursor:pointer;width:fit-content;font:600 .78rem var(--sans);letter-spacing:.03em;color:var(--muted);padding:4px 10px;border:1px dashed var(--line);border-radius:999px}
