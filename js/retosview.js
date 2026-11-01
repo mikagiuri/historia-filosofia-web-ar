@@ -3,7 +3,7 @@
    Reutiliza las preguntas de los cuestionarios y añade temporizador, puntos por
    velocidad, racha (multiplicador) y pantalla final con rango y mejor marca. */
 
-const RETO_SUBJ = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة", ipc: "التفكير النقدي" };
+const RETO_SUBJ = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة", ipc: "التفكير النقدي", mat: "Matemáticas I", bio: "Biología" };   // (01-11) mat y bio: Refuerzos
 const RETO_TIME = 15;          // segundos por pregunta (valor por defecto)
 const RETO_TIMES = [10, 15, 20, 30, 45];   // opciones de tiempo que el jugador puede elegir antes de empezar
 const RETO_QUICK = 10;         // nº de preguntas del «reto rápido»

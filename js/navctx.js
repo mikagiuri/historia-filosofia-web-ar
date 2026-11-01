@@ -21,7 +21,7 @@
    (comparten el ámbito léxico global entre <script> clásicos). */
 
 (function(){
-  var CONCRETE = { fil: 1, hf: 1, ipc: 1 };   // materias válidas como contexto (nunca «all»)
+  var CONCRETE = { fil: 1, hf: 1, ipc: 1, mat: 1, bio: 1 };   // (01-11) mat y bio: Refuerzos   // materias válidas como contexto (nunca «all»)
   var DEFAULT_SUBJECT = "fil";                 // materia por defecto la primera vez (se recuerda la última usada)
   var LS_KEY = "aula.ctxSubject";
 
@@ -118,7 +118,7 @@
     }
   };
   /* Vistas que son «landing» de una materia → registran contexto (id == materia). */
-  var LANDING = { fil: 1, hf: 1, ipc: 1 };
+  var LANDING = { fil: 1, hf: 1, ipc: 1, mat: 1, bio: 1 };
 
   function onShown(id){
     if (LANDING[id]){ ctx.subject = id; save(id); return; }

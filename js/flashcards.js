@@ -13,7 +13,7 @@ const known = store.get("aula-known", {});   // (v205) restaurada: la borró c88
 
 const cardEl = document.getElementById("card");
 
-const DECK_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة", ipc: "التفكير النقدي" };
+const DECK_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة", ipc: "التفكير النقدي", mat: "Matemáticas I", bio: "Biología" };   // (01-11) mat y bio: Refuerzos
 const DECK_EPOCAS = { ant: "القديمة", med: "الوسيطة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
 /* (12-10) criterio del profesor: en 1.º Tarjetas se elige PRIMERO el tema en un desplegable (no una fila de
    veinte barajas); cada tema del curso es su ámbito. En HF y en la web local no hay desplegable (27 temas: demasiados).
@@ -46,7 +46,7 @@ function renderDeckFilter(){
   const tipoBtns = hayFrases ? ["all", "conceptos", "frases"].map(t =>
     '<button class="fbtn" data-tipo="' + t + '" aria-pressed="' + (t === deckTipo) + '">' +
     (t === "all" ? "الكل" : DECK_TIPOS[t]) + '</button>').join("") : "";
-  const subjBtns = ["all", "fil", "hf", "ipc"].map(s =>
+  const subjBtns = ["all", "fil", "hf", "ipc"].concat(["mat", "bio"].filter(s => Object.values(DECKS).some(x => x && x.subject === s))).map(s =>   // (01-11) mat y bio: solo si hay (maestra y Refuerzos)
     '<button class="fbtn" data-subj="' + s + '" aria-pressed="' + (s === deckSubject) + '">' +
     (s === "all" ? "الكل" : DECK_SUBJECTS[s]) + '</button>'
   ).join("");

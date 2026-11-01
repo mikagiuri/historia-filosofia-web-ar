@@ -6,12 +6,12 @@ let theorySubject = "all";
 let theoryBlock = "all";
 let theoryShowAnexos = false;   /* (12-10, rediseño) las exploraciones salen ocultas por defecto */
 
-const THEORY_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة", ipc: "التفكير النقدي", fil4: "Filosofía 4.º ESO" };   // (25-10) fil4: solo web local
+const THEORY_SUBJECTS = { fil: "الفلسفة 1", hf: "تاريخ الفلسفة", ipc: "التفكير النقدي", fil4: "Filosofía 4.º ESO", mat: "Matemáticas I", bio: "Biología" };   // (01-11) mat y bio: Refuerzos   // (25-10) fil4: solo web local
 const THEORY_EPOCAS = { ant: "القديمة", med: "الوسيطة", mod: "الحديثة", ilu: "الأنوار", con: "المعاصرة" };
 
 function renderTheoryFilter(){
   const box = document.getElementById("theoryfilter");
-  const subjBtns = ["all", "fil", "hf", "ipc"].concat(Object.values(THEORY).some(t => t && t.subject === "fil4") ? ["fil4"] : []).map(s =>   /* (25-10) fil4 (4.º ESO) solo existe en la web local */
+  const subjBtns = ["all", "fil", "hf", "ipc"].concat(["fil4", "mat", "bio"].filter(s => Object.values(THEORY).some(t => t && t.subject === s))).map(s =>   /* (25-10) fil4 (4.º ESO) solo existe en la web local; (01-11) mat y bio, en la maestra y en Refuerzos */
     '<button class="fbtn" data-subj="' + s + '" aria-pressed="' + (s === theorySubject) + '">' +
     (s === "all" ? "الكل" : THEORY_SUBJECTS[s]) + '</button>'
   ).join("");
@@ -377,6 +377,7 @@ function loadTheory(k){
       hs.map((h, i) => '<li><a href="#th-' + i + '">' + h.textContent + '</a></li>').join("") + '</ol>';
     if (_sec){ const h = body.querySelector('h2[data-sec="' + _sec + '"]'); if (h) h.scrollIntoView({ block: "start" }); }
   }
+  if (window.Previos) window.Previos.enToc(toc, k);   // (01-11, sesión 110) «Antes de empezar: ¿qué recuerdas…?», primera línea del índice
   body.querySelectorAll("h2[data-sec]").forEach(h => h.insertAdjacentHTML("beforeend", ' <a class="th-sec" href="#teoria/' + k + '/' + h.dataset.sec + '" title="رابط إلى هذه الفقرة" aria-label="رابط إلى هذه الفقرة">§' + h.dataset.sec + '</a>'));   // tras el índice: el «§» no entra en sus títulos
   if (window.langFragGrc) window.langFragGrc(body);   // DUA D0.6: el griego del tema se marca con lang="grc" para el lector de pantalla
   if (window.DiccEnLinea) window.DiccEnLinea.marcar(body, t.subject, () => window.Itinerario.temaOf("teoria", k, t));   // DUA D1.3 (P3): el Diccionario dentro del texto
