@@ -253,4 +253,5 @@ function loadUniverso(arg){
       // (19-10) las imágenes diferidas que cargan después del salto lo desplazan: se vuelve a saltar durante 3 s
       document.querySelectorAll("#universo img").forEach(i => { if (!i.complete) i.addEventListener("load", () => { if (Date.now() - t0 < 3000) ir(); }, { once: true }); }); } }
 }
-if (uaBox()) uaRender();
+/* (02-11, P-040) se pinta al abrir la vista por primera vez, no al cargar la página (js/carga_diferida.js) */
+if (uaBox()) (window.pintarAlAbrir || ((id, f) => f()))("universo", uaRender);

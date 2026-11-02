@@ -171,4 +171,5 @@ function loadRescritura(arg){
   if (id && resTextos().some(t => t.id === id)){ RES.id = id; resBarajar(); }
   resRender();
 }
-if (resBox()) resRender();
+/* (02-11, P-040) se pinta al abrir la vista por primera vez, no al cargar la página (js/carga_diferida.js) */
+if (resBox()) (window.pintarAlAbrir || ((id, f) => f()))("rescritura", resRender);

@@ -322,7 +322,9 @@ document.head.insertAdjacentHTML("beforeend",
    original, aunque el tema se lea por páginas; cada apartado lleva un «§» con su enlace. */
 function theorySecArg(k){ const m = /^(.*?)(?:\/|§)(\d+)$/.exec(k || ""); return m && THEORY[m[1]] ? { k: m[1], sec: +m[2] } : { k: k, sec: null }; }
 function theoryMarcaSecs(html){ const d = document.createElement("div"); d.innerHTML = html; [...d.children].filter(n => n.tagName === "H2").forEach((h, i) => { h.dataset.sec = i + 1; }); return d.innerHTML; }
+let theoryPendiente = null, theoryHecha = false;   // (02-11, P-040) tema pedido mientras llega el texto; ya hay un tema pintado
 function loadTheory(k){
+  const _arg = k;
   const _sa = theorySecArg(k); k = _sa.k; const _sec = _sa.sec;
   if (k !== theoryKey) theoryPart = 0;
   theoryKey = k;
@@ -344,6 +346,19 @@ function loadTheory(k){
   const relHtml = (typeof relatedStripHtml === "function") ? relatedStripHtml(k, "teoria") : "";
   const porApartados = theoryPorApartados(t), trocear = !THEORY_POR_APARTADOS.includes(t.subject);
   const head = '<div class="theory-head"><span class="kick" style="color:var(--' + t.subject + ')">' + t.tema + '</span><h1>' + t.title + '</h1>' + (t.clase ? '<span class="en-clase">في القسم</span>' : '')   /* solo las exploraciones que el profesor ya ha trabajado en clase (campo clase:true en theory.js) */ + '</div>' + relHtml;
+  /* (02-11, P-040) en las webs del alumnado el html de los temas llega bajo demanda (js/carga_diferida.js): mientras
+     tanto se pintan ya los filtros y el título del tema, en su sitio, y al llegar el texto se abre el último tema pedido */
+  if (typeof textosListos === "function" && !textosListos("theory", k)){
+    body.innerHTML = head;
+    theoryPendiente = _arg;
+    cargarTextos("theory", k).then(() => {
+      const p = theoryPendiente; if (p == null) return;
+      theoryPendiente = null;
+      if (textosListos("theory", theorySecArg(p).k)) loadTheory(p);   // sin red se queda el título (no se reintenta en bucle)
+    });
+    return;
+  }
+  theoryHecha = true;
   const htmlSecs = theoryMarcaSecs(t.html);
   if (porApartados){ body.innerHTML = head; theorySplitParts(body, htmlSecs, trocear); }
   else body.innerHTML = head + htmlSecs;
@@ -387,4 +402,14 @@ function loadTheory(k){
 }
 
 renderTheoryFilter();
-loadTheory(theoryKey);
+/* (02-11, P-040) si el html de los temas aún no está, no se pide al arrancar: el primer tema se pinta al abrir «Teoría» */
+if (typeof textosListos !== "function" || textosListos("theory")) loadTheory(theoryKey);
+else document.addEventListener("DOMContentLoaded", () => {
+  const prev = window.show;
+  window.show = function(id){
+    const out = prev.apply(this, arguments);
+    const body = document.getElementById("theorybody");
+    if (id === "teoria" && !theoryHecha && theoryPendiente == null) loadTheory(theoryKey);
+    return out;
+  };
+});

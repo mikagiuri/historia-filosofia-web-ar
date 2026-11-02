@@ -261,4 +261,5 @@ function loadLeibniz(arg){
   lzRender();
   if (arg){ const el = document.getElementById("lz-" + arg); if (el) el.scrollIntoView({ block: "start" }); }
 }
-if (lzBox()) lzRender();
+/* (02-11, P-040) se pinta al abrir la vista por primera vez, no al cargar la página (js/carga_diferida.js) */
+if (lzBox()) (window.pintarAlAbrir || ((id, f) => f()))("leibniz", lzRender);

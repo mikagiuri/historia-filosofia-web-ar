@@ -254,7 +254,13 @@
     document.head.appendChild(s);
   }
 
+  /* (02-11, P-040) en las webs del alumnado el texto de los temas y de las biografías llega bajo demanda: al abrir el
+     buscador se piden y, cuando llegan, el índice se rehace con ellos */
+  var tmTextos = null;   // llegan varios temas seguidos: el índice se rehace una vez
+  document.addEventListener("textos-llegan", function(){ index = null; clearTimeout(tmTextos); tmTextos = setTimeout(function(){ if (ov && !ov.hidden && input && input.value) render(search(input.value)); }, 250); });
+  function pedirTextos(){ if (window.cargarTextos) Object.keys(window.DIFERIDOS || {}).forEach(function(n){ window.cargarTextos(n); }); }
   function ensure(){
+    pedirTextos();
     if (ov) return;
     css();
     ov = document.createElement("div");

@@ -172,4 +172,5 @@ function loadPalabra(arg){
       // (19-10) las imágenes diferidas que cargan después del salto lo desplazan: se vuelve a saltar durante 3 s
       document.querySelectorAll("#palabra img").forEach(i => { if (!i.complete) i.addEventListener("load", () => { if (Date.now() - t0 < 3000) ir(); }, { once: true }); }); } }
 }
-if (paBox()) paRender();
+/* (02-11, P-040) se pinta al abrir la vista por primera vez, no al cargar la página (js/carga_diferida.js) */
+if (paBox()) (window.pintarAlAbrir || ((id, f) => f()))("palabra", paRender);

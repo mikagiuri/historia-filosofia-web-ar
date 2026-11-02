@@ -374,6 +374,8 @@ function bioVida(p){
 function loadBiografia(id){
   const box = document.getElementById("biobox");
   if (!box) return;
+  /* (02-11, P-040) en las webs del alumnado la biografía y la anécdota llegan bajo demanda (js/carga_diferida.js) */
+  if (typeof textosListos === "function" && !textosListos("biografias")){ cargarTextos("biografias").then(() => loadBiografia(id)); return; }
   if (/^epoca-/.test(id || "") && bioFichaEpoca(id.slice(6))){ loadEpoca(id.slice(6)); return; }
   const all = bioList(), p = all.find(x => x.id === id);
   if (!p){ renderBioList(); return; }
@@ -490,5 +492,7 @@ function loadEpocas(){ renderEpocas(); }
 
 renderIluControls();
 renderBioList();
+/* (02-11, P-040) la búsqueda mira también la biografía y la anécdota: al abrir la sección se piden, y si ya se había escrito algo, se repite al llegar */
+document.addEventListener("textos-llegan", e => { if (e.detail === "biografias" && bioQuery) renderBioList(); });
 renderEpocas();
 try { bioInjectTheory(); } catch (e){}   // la primera unidad ya está pintada al cargar theoryview.js

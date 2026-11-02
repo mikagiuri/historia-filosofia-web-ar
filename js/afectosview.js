@@ -644,4 +644,5 @@ function loadAfectos(arg) {
   if (arg === "retos" || arg === "caja") AF_ST.modo = arg;
   afRender();
 }
-if (afBox()) afRender();
+/* (02-11, P-040) se pinta al abrir la vista por primera vez, no al cargar la página (js/carga_diferida.js) */
+if (afBox()) (window.pintarAlAbrir || ((id, f) => f()))("afectos", afRender);

@@ -220,4 +220,5 @@ function loadAdagios(arg){
   if (el){ el.classList.add("adg-marca"); setTimeout(() => el.scrollIntoView({ block: "center" }), 80); setTimeout(() => el.classList.remove("adg-marca"), 2600); }
 }
 window.loadAdagios = loadAdagios;
-if (adgBox() && typeof ADAGIOS !== "undefined"){ adgFiltro(); adgRender(); }
+/* (02-11, P-040) se pinta al abrir la vista por primera vez, no al cargar la página (js/carga_diferida.js) */
+if (adgBox() && typeof ADAGIOS !== "undefined") (window.pintarAlAbrir || ((id, f) => f()))("adagios", () => { adgFiltro(); adgRender(); });

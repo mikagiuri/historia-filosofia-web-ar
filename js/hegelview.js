@@ -260,4 +260,5 @@ function loadHegel(arg) {
   if (HG_MESAS.some((m) => m[0] === arg)) HG.mesa = arg;
   hgRender();
 }
-if (hgBox()) hgRender();
+/* (02-11, P-040) se pinta al abrir la vista por primera vez, no al cargar la página (js/carga_diferida.js) */
+if (hgBox()) (window.pintarAlAbrir || ((id, f) => f()))("hegel", hgRender);

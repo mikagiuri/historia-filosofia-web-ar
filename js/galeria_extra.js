@@ -58,5 +58,5 @@
     var iv = setInterval(function(){ if (mount()) clearInterval(iv); }, 200);
     setTimeout(function(){ clearInterval(iv); }, 4000);
   }
-  renderGalGrid();   // re-render inicial: IA oculta por defecto
+  (window.pintarAlAbrir || function(id, f){ f(); })("galeria", function(){ renderGalGrid(); });   // re-render inicial: IA oculta por defecto (02-11, P-040: al abrir la Galería)
 })();

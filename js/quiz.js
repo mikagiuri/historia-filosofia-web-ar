@@ -79,9 +79,12 @@ const LEX_IPC = [["pensar", /pensar|pentsatu/i], ["argumentar", /argument|argudi
   ["dialogo", /di[aá]logo|elkarrizk/i], ["medios", /medios|hedabide/i], ["huella", /huella|aztarna/i], ["grupo", /grupo|taldea/i]];
 const LEX = {};   // clave → { terms: términos del tema, extra: resto del bloque o la materia }
 
-const lexFold = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+/* (02-11, P-040) lexFold y lexSkel, memorizadas: lexItems las aplica una y otra vez a los mismos términos y definiciones, y
+   montar los cuestionarios de léxico al arrancar costaba ~0,7 s en un móvil. El resultado es el mismo. */
+const lexMemo = f => { const c = new Map(); return s => { const k = String(s || ""); let r = c.get(k); if (r === undefined){ r = f(k); c.set(k, r); } return r; }; };
+const lexFold = lexMemo(s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, " ").trim());
 /* esqueleto para comparar términos: sin tildes, plural ni grafías griegas alternativas */
-const lexSkel = s => lexFold(s).replace(/ch|kh/g, "j").replace(/ph/g, "f").replace(/th/g, "t").replace(/y/g, "i").replace(/k/g, "c").replace(/s\b/g, "");
+const lexSkel = lexMemo(s => lexFold(s).replace(/ch|kh/g, "j").replace(/ph/g, "f").replace(/th/g, "t").replace(/y/g, "i").replace(/k/g, "c").replace(/s\b/g, ""));
 const lexClean = s => String(s || "").replace(/\*\*/g, "");
 /* tapa en un texto las palabras del término (o de su misma familia: idealismo → ideal…) */
 function lexMask(text, term){

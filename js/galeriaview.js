@@ -209,5 +209,5 @@ function galClose(){ if (_lb) _lb.hidden = true;
   if (_galPrev && _galPrev.focus){ try { _galPrev.focus(); } catch (e){} } _galPrev = null; }
 function galStep(d){ galPos = (galPos + d + galList.length) % galList.length; galShow(); }
 
-renderGalFilter();
-renderGalGrid();
+/* (02-11, P-040) se pinta al abrir la vista por primera vez, no al cargar la página (js/carga_diferida.js) */
+(window.pintarAlAbrir || ((id, f) => f()))("galeria", () => { renderGalFilter(); renderGalGrid(); });

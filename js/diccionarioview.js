@@ -237,5 +237,5 @@ function loadDiccionario(id){
   setTimeout(() => el.scrollIntoView({ block: "center", behavior: A11y.motion() }), 60);
 }
 
-renderGloControls();
-renderGloList();
+/* (02-11, P-040) se pinta al abrir la vista por primera vez, no al cargar la página (js/carga_diferida.js) */
+(window.pintarAlAbrir || ((id, f) => f()))("diccionario", () => { renderGloControls(); renderGloList(); });
