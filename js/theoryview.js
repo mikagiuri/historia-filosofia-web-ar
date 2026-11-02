@@ -179,7 +179,7 @@ function theoryPorApartados(t){ return THEORY_POR_APARTADOS.includes(t.subject) 
 let theoryPart = 0, theoryWhole = false;
 /* al imprimir sale siempre el tema entero, sin la barra de apartados */
 document.head.insertAdjacentHTML("beforeend",
-  '<style>.th-sec{margin-left:.4em;font-size:.6em;font-weight:400;color:var(--muted);text-decoration:none;opacity:.55;vertical-align:middle}.th-sec:hover,.th-sec:focus{opacity:1;text-decoration:underline}.th-partnav{flex-wrap:nowrap;gap:.5rem}.th-partnav .btn:disabled{visibility:hidden}.th-partnav .th-partpos{text-align:center;flex:1}' +
+  '<style>.th-sec{margin-left:.4em;font-size:.6em;font-weight:400;color:var(--muted);text-decoration:none;vertical-align:middle}.th-sec:hover,.th-sec:focus{text-decoration:underline}.th-partnav{flex-wrap:nowrap;gap:.5rem}.theory thead td.th-esquina{background:var(--surface-2)}.th-partnav .btn:disabled{visibility:hidden}.th-partnav .th-partpos{text-align:center;flex:1}' +
   '@media print{.th-part[hidden]{display:block!important}.th-partnav,[data-thwhole]{display:none!important}}</style>');
 
 function theoryShowPart(body, i, scroll){
@@ -378,7 +378,10 @@ function loadTheory(k){
     if (_sec){ const h = body.querySelector('h2[data-sec="' + _sec + '"]'); if (h) h.scrollIntoView({ block: "start" }); }
   }
   if (window.Previos) window.Previos.enToc(toc, k);   // (01-11, sesión 110) «Antes de empezar: ¿qué recuerdas…?», primera línea del índice
-  body.querySelectorAll("h2[data-sec]").forEach(h => h.insertAdjacentHTML("beforeend", ' <a class="th-sec" href="#teoria/' + k + '/' + h.dataset.sec + '" title="رابط إلى هذه الفقرة" aria-label="رابط إلى هذه الفقرة">§' + h.dataset.sec + '</a>'));   // tras el índice: el «§» no entra en sus títulos
+  body.querySelectorAll("h2[data-sec]").forEach(h => h.insertAdjacentHTML("beforeend", ' <a class="th-sec" href="#teoria/' + k + '/' + h.dataset.sec + '" title="رابط إلى هذه الفقرة" aria-label="§' + h.dataset.sec + ' · ' + "رابط إلى هذه الفقرة" + '">§' + h.dataset.sec + '</a>'));   // (02-11, la 116) sin opacity:.55 (2,2:1) y con el nombre accesible empezando por el «N» visible   // tras el índice: el «§» no entra en sus títulos
+  // (02-11, la 116) la esquina vacía de las tablas de doble entrada es una celda, no un encabezado sin texto (axe empty-table-header)
+  body.querySelectorAll("table").forEach(t => { t.tabIndex = 0; });   // (02-11, la 116) en el móvil las tablas anchas se desplazan: con foco, también con el teclado
+  body.querySelectorAll("thead th:empty").forEach(th => { const td = document.createElement("td"); td.className = "th-esquina"; th.replaceWith(td); });
   if (window.langFragGrc) window.langFragGrc(body);   // DUA D0.6: el griego del tema se marca con lang="grc" para el lector de pantalla
   if (window.DiccEnLinea) window.DiccEnLinea.marcar(body, t.subject, () => window.Itinerario.temaOf("teoria", k, t));   // DUA D1.3 (P3): el Diccionario dentro del texto
 }

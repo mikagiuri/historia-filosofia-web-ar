@@ -369,7 +369,7 @@ function ejeCard(E, range){
   if (range){ EJE.AX0 = range[0]; EJE.AX1 = range[1]; }
   const html = '<div class="crono-card eje-card"><div class="crono-h"><h2 class="crono-title">' + escapeCrono(F.title) + '</h2>' +
     '<span class="crono-span eje-sub">' + escapeCrono(F.sub) + '</span></div>' +
-    '<div class="eje-scroll">' + ejeSvg(F) + '</div>' +
+    '<div class="eje-scroll" tabindex="0" role="region" aria-label="' + escapeCrono(F.title) + '">' + ejeSvg(F) + '</div>' +   // (02-11, la 116) con foco, para desplazarla con el teclado
     (F.txt.desliza ? '<p class="eje-hint" aria-hidden="true">' + escapeCrono(F.txt.desliza) + '</p>' : '') + ejeGrid(F) + '</div>';
   EJE.AX0 = a0; EJE.AX1 = a1;
   return html;

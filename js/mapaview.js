@@ -71,7 +71,7 @@ const MAPA_DESC = {
   signos: "دورة في لغة الإشارة."
 };
 /* cuántos elementos tiene cada sección (si su colección está cargada en esta web) */
-const MAPA_CUENTA = { tarjetas: "DECKS", cuestionarios: "QUIZZES", diccionario: "DICCIONARIO", biografias: "BIOGRAFIAS", citas: "CITAS", adagios: "ADAGIOS", polemicas: "POLEMICAS", perseguidos: "PERSEGUIDOS", comunidades: "COMUNIDADES",
+const MAPA_CUENTA = { tarjetas: "DECKS", cuestionarios: "QUIZZES", diccionario: "DICCIONARIO", biografias: "BIOGRAFIAS", adagios: "ADAGIOS", polemicas: "POLEMICAS", perseguidos: "PERSEGUIDOS", comunidades: "COMUNIDADES",
   infografias: "INFOGRAFIAS", mapas: "MAPS", esquemas: "ESQUEMAS", cronogramas: "CRONOGRAMAS", genealogias: "GENEALOGIAS", lecturas: "LECTURAS",
   galeria: "GALERIA", dilemas: "DILEMAS", disertaciones: "DISERTACIONES", nudos: "NUDOS", pistas: "PISTAS", materiales: "MATERIALS" };
 function mapaG(name){ try { return (0, eval)("typeof " + name + " !== 'undefined' ? " + name + " : undefined"); } catch (e){ return undefined; } }

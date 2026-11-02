@@ -68,6 +68,7 @@ function loadLectura(k){
   const relHtml = (typeof relatedStripHtml === "function") ? relatedStripHtml(k, "lecturas") : "";
   body.innerHTML = '<div class="theory-head"><span class="kick" style="color:var(--' + t.subject + ')">' + t.tema + '</span><h1>' + t.title + '</h1></div>' + relHtml + t.html;
   if (typeof wireRelated === "function") wireRelated(body);
+  body.querySelectorAll("table").forEach(t => { t.tabIndex = 0; });   // (02-11, la 116) en el móvil las tablas anchas se desplazan: con foco, también con el teclado
   // Enlazar con el comentario de texto guiado si existe la vista
   const comentBtn = document.getElementById("comentariolink");
   if (comentBtn) comentBtn.style.display = "inline-flex";

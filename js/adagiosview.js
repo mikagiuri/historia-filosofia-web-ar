@@ -9,7 +9,7 @@
    Enlace profundo: #adagios/<id>. Los temas se enlazan solo si existen en la web (THEORY filtrado).
    (12-10) Interruptor «Colección: Adagios | Frases»: las frases célebres (citas.js, CITAS), con el mismo aspecto: retrato del autor,
    la frase, qué quiere decir (sen), cuándo usarla (uso) y de dónde viene; filtro por época. Sustituye a la antigua sección
-   «Frases» (#citas, que ahora abre aquí: alias en app.js). Enlace profundo: #adagios/frases. */
+   «Frases». Enlace profundo: #adagios/frases. */
 
 /* textos de interfaz: cadenas enteras (así los traduce web_i18n/ui/<lang>.json) */
 const ADG_TXT = {

@@ -12,6 +12,12 @@
   if (!sec || !SUBJ.length){ if (btn) btn.remove(); if (sec) sec.remove(); return; }
   var U = GUIA.ui, cur = SUBJ[0];
   var FL = document.documentElement.dir === "rtl" ? "←" : "→";   // en árabe (rtl) la flecha apunta al otro lado
+  /* (02-11, la 116) ancho y alto de las capturas (iguales en castellano y en euskera): el navegador reserva su hueco
+     antes de cargarlas y la página no salta. Si falta una, se pinta sin tamaño, como antes. */
+  var TAM = { "01_ficha.webp": [1400, 1094], "05_tema.webp": [1400, 875], "06_para_seguir.webp": [1400, 875], "07_tarjetas.webp": [1400, 875],
+    "08_cuestionarios.webp": [1400, 875], "09_buscador.webp": [1400, 875], "10_movil_menu.webp": [750, 1624], "11_imprescindibles.webp": [1400, 875],
+    "fil/02_menu_estudiar.webp": [536, 566], "fil/03_menu_practicar.webp": [536, 488], "fil/04_menu_tercera.webp": [536, 332],
+    "hf/02_menu_estudiar.webp": [536, 590], "hf/03_menu_practicar.webp": [536, 512], "hf/04_menu_tercera.webp": [536, 512] };
   function esc(s){ return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
   function vale(b){ return !b.solo || b.solo === cur; }
   function vista(v){ return v === "MATERIA" ? cur : v; }
@@ -27,7 +33,7 @@
         /* (19-10) la web en euskera lleva sus propias capturas (media/guia/<materia>/eu/); las demás lenguas, las de castellano */
         var src = "media/guia/" + cur + "/" + ((document.documentElement.lang || "").slice(0, 2) === "eu" ? "eu/" : "") + b.src;
         return '<figure class="guia-fig' + (b.w ? " guia-" + b.w : "") + '"><a href="' + src + '" target="_blank" rel="noopener">' +
-          '<img src="' + src + '" alt="' + esc(b.cap) + '" loading="lazy"></a><figcaption>' + esc(b.cap) + '</figcaption></figure>';
+          '<img src="' + src + '"' + (function(t){ return t ? ' width="' + t[0] + '" height="' + t[1] + '"' : ""; })(TAM[cur + "/" + b.src] || TAM[b.src]) + ' alt="' + esc(b.cap) + '" loading="lazy"></a><figcaption>' + esc(b.cap) + '</figcaption></figure>';
       case "list":
         h = b.rows.filter(vale).map(function(r){
           var v = abre(r.view);
@@ -36,9 +42,10 @@
         }).join("");
         return '<div class="guia-list">' + h + '</div>';
       case "steps":
-        h = b.rows.filter(vale).map(function(r){
+        h = b.rows.filter(vale).map(function(r, i){
           var v = abre(r.view);
-          return '<li><strong>' + r.titulo + '</strong><span>' + r.texto + '</span>' +
+          // (02-11, la 116) el número del paso, en un elemento propio y no en li::before: con el ::before, axe no podía medir el contraste de «Abrir →»
+          return '<li><b class="guia-pnum" aria-hidden="true">' + (i + 1) + '</b><strong>' + r.titulo + '</strong><span>' + r.texto + '</span>' +
             (v ? '<button type="button" class="guia-abrir" data-gv="' + v + '">' + U.abrir + ' ' + FL + '</button>' : '') + '</li>';
         }).join("");
         return '<ol class="guia-steps">' + h + '</ol>';

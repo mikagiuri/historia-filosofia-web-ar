@@ -43,6 +43,9 @@
   /* lectura de globales léxicos (const/let de otros scripts) por su nombre */
   function G(name){ try { return (0, eval)("typeof " + name + " !== 'undefined' ? " + name + " : undefined"); } catch (e){ return undefined; } }
   function coll(name){ var v = G(name); return v && typeof v === "object" ? v : null; }
+  /* (02-11) los datos de Prepara PAU, sin escribir su nombre entre comillas: el diccionario de interfaz del euskera
+     traduce la cadena «PAU» («USaP») también en el código, y el itinerario PAU se quedaba sin sus enlaces en eu */
+  function pauDatos(){ return typeof PAU !== "undefined" && PAU && typeof PAU === "object" ? PAU : null; }
   function fn(name){ var f = window[name]; return typeof f === "function" ? f : null; }
   function view(id){ return !!document.getElementById(id); }
   var SUBJ_COLOR = { fil: "var(--fil)", hf: "var(--hf)", ipc: "var(--ipc)", mat: "var(--mat)", bio: "var(--bio)" };   // (01-11) mat y bio: Refuerzos
@@ -304,8 +307,8 @@
       .map(function(k){ return { go: "disertaciones", arg: k, label: strip(D[k].title) }; });
   }
   function comparativasDe(subject, tema){
-    var Pa = coll("PAU"); if (subject !== "hf" || !PAU_TEMAS[tema] || !Pa || !Pa["comparativas-temas"] || !view("pau")) return [];
-    return [{ go: "pau", arg: "comparativas-temas", label: strip(Pa["comparativas-temas"].title) }];
+    var Pa = pauDatos(); if (subject !== "hf" || !PAU_TEMAS[tema] || !Pa || !Pa["comparativas-temas"] || !view("prepara_PAU")) return [];
+    return [{ go: "prepara_PAU", arg: "comparativas-temas", label: strip(Pa["comparativas-temas"].title) }];
   }
   /* rótulo de una sección tal como lo pone el menú (ya traducido); si no está en el menú, el de TXT */
   function navLabel(v, k){ var b = document.querySelector('#tabs [data-view="' + v + '"]'); return b ? strip(b.textContent) : t(k || v); }
@@ -770,13 +773,13 @@
   function pauPasos(){
     /* (19-10) sin entrada en el menú (p. ej. «resumenes», Resúmenes), el título de la sección: nunca la clave cruda */
     var navLabel = function(id){ var b = document.querySelector('#tabs button[data-view="' + id + '"]'), h = document.querySelector("#" + id + " h1"); return b ? strip(b.textContent) : h ? strip(h.textContent) : ""; };
-    var item = function(go_, name, key){ var c = coll(name); if (!view(go_) || !c || !c[key]) return null; return { go: go_, arg: key, label: strip(c[key].title || c[key].name || key) }; };
+    var item = function(go_, name, key){ var c = typeof name === "string" ? coll(name) : name; if (!view(go_) || !c || !c[key]) return null; return { go: go_, arg: key, label: strip(c[key].title || c[key].name || key) }; };
     var sec = function(id){ return view(id) ? { go: id, arg: "", label: navLabel(id) || id } : null; };
     var steps = [
-      { id: "pau", label: t("pau1"), short: t("spau1"), items: [item("prepara_PAU", "PAU", "estructura"), item("prepara_PAU", "PAU", "modelos")] },
-      { id: "comentario", label: t("pau2"), short: t("spau2"), items: [item("comentario", "COMENTARIO", "metodo"), item("comentario", "COMENTARIO", "consejos"), item("prepara_PAU", "PAU", "ejercicio1"), sec("lecturas")] },
+      { id: "pau", label: t("pau1"), short: t("spau1"), items: [item("prepara_PAU", pauDatos(), "estructura"), item("prepara_PAU", pauDatos(), "modelos")] },
+      { id: "comentario", label: t("pau2"), short: t("spau2"), items: [item("comentario", "COMENTARIO", "metodo"), item("comentario", "COMENTARIO", "consejos"), item("prepara_PAU", pauDatos(), "ejercicio1"), sec("lecturas")] },
       { id: "disertaciones", label: t("pau3"), short: t("spau3"), items: [item("disertaciones", "DISERTACIONES", "metodologia"), item("disertaciones", "DISERTACIONES", "temas"), item("disertaciones", "DISERTACIONES", "comparativas")] },
-      { id: "pau-ej3", label: t("pau4"), short: t("spau4"), items: [item("prepara_PAU", "PAU", "ejercicio3"), item("prepara_PAU", "PAU", "comparativas-temas")] },
+      { id: "pau-ej3", label: t("pau4"), short: t("spau4"), items: [item("prepara_PAU", pauDatos(), "ejercicio3"), item("prepara_PAU", pauDatos(), "comparativas-temas")] },
       { id: "rubricas", label: t("pau5"), short: t("spau5"), items: [sec("rubricas")] },
       { id: "unidad", label: t("pau6"), short: t("spau6"), items: [sec("cuestionarios"), sec("unidad"), sec("resumenes"), sec("cronogramas")] }
     ];
@@ -913,7 +916,7 @@
     tmp.innerHTML = temasHtml(s);
     var first = el.querySelector(":scope > .sec-head");   // «Explora la materia» (la web en números)
     [].slice.call(tmp.children).forEach(function(n){ if (first) el.insertBefore(n, first); else el.appendChild(n); });
-    if (s === "hf" && view("pau")){
+    if (s === "hf" && view("prepara_PAU")){
       tmp.innerHTML = '<div class="itin-hub">' + pauHtml() + '</div>';
       var hub = el.querySelector(".hubmap");
       if (tmp.firstElementChild){ if (hub && hub.parentNode === el) el.insertBefore(tmp.firstElementChild, hub.nextSibling); else el.appendChild(tmp.firstElementChild); }

@@ -45,10 +45,15 @@
 }
 
 *{box-sizing:border-box}
+html{scrollbar-gutter:stable}   /* (02-11, la 116, a propuesta de la 117) el hueco de la barra de desplazamiento, reservado desde el principio: la página no salta cuando el JS la pinta */
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;line-height:1.15;margin:0}
 p{margin:0}
 a{color:var(--accent);text-decoration:none}
+/* (02-11, la 116) Los enlaces dentro del texto (párrafos, listas y tablas de la teoría y de las páginas de lectura, y de
+   #fuentes) van subrayados: solo por el color no se distinguen (WCAG 1.4.1, axe link-in-text-block). Índices, menús,
+   botones y enlaces con clase propia no cambian. */
+.theory p a:not([class]),.theory li a:not([class]),.theory td a:not([class]),#fuentes p a:not([class]),#fuentes li a:not([class]){text-decoration:underline;text-underline-offset:.15em;text-decoration-thickness:1px}
 button{font-family:inherit;color:inherit;cursor:pointer}
 .card,.face,.front-t,.back-t{color:var(--ink)}
 :focus-visible{outline:2.5px solid var(--accent-2);outline-offset:2px;border-radius:4px}
@@ -94,18 +99,23 @@ main{padding:clamp(28px,5vw,52px) 0 80px}
   .view.active{display:block !important;animation:none}
 }
 
-.eyebrow{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+/* (02-11, la 116) los rótulos en mayúsculas (.eyebrow y .kick), a .78rem como mínimo (antes .7-.74rem) */
+.eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .lead{font-size:1.08rem;color:var(--muted);max-width:60ch;margin-top:12px}
 h1.title{font-size:clamp(2rem,5vw,3rem);font-weight:700;margin-top:8px}
 h2.sec{font-size:1.5rem;margin:0 0 4px}
 .sec-head{margin:44px 0 18px}
 .sec-head p{color:var(--muted);margin-top:4px;max-width:62ch}
+/* (02-11, la 116) «Novedades» de la portada de la maestra (#inicio, solo local): una línea por publicación, con la fecha delante */
+ul.novedades{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-width:72ch}
+ul.novedades li{padding:8px 14px;background:var(--surface);border:1px solid var(--line);border-inline-start:3px solid var(--accent);border-radius:10px;font-size:.94rem;line-height:1.5}
+ul.novedades li b{font-family:var(--mono);font-size:.8rem;font-weight:600;color:var(--muted);margin-inline-end:4px}
 
 /* Tarjetas de materia */
 .courses{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:28px}
 .course{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 20px;
   box-shadow:var(--shadow);border-top:3px solid var(--c);display:flex;flex-direction:column;gap:10px}
-.course .kick{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--c)}
+.course .kick{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--c)}
 .course h3{font-size:1.3rem}
 .course p{color:var(--muted);font-size:.94rem}
 .course .meta{margin-top:auto;display:flex;gap:14px;flex-wrap:wrap;font-size:.82rem;color:var(--muted);
@@ -316,7 +326,7 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:24px 0 60px;colo
 .toc a:hover{color:var(--ink);border-inline-start-color:var(--line)}
 .theory{max-width:70ch;min-width:0;overflow-wrap:break-word;font-family:var(--serif);font-size:1.07rem;line-height:1.72;color:var(--ink)}
 .theory-head{margin-bottom:10px}
-.theory-head .kick{font-family:var(--sans);color:var(--hf);font-weight:600;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase}
+.theory-head .kick{font-family:var(--sans);color:var(--hf);font-weight:600;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
 .theory-head h1{font-size:clamp(1.7rem,4vw,2.3rem);margin-top:4px}
 .theory h2{font-size:1.35rem;margin:34px 0 12px;scroll-margin-top:80px;line-height:1.25}
 .theory p{margin:0 0 15px}
@@ -343,7 +353,7 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:24px 0 60px;colo
 /* ----- Mapas conceptuales (Markmap) ----- */
 .mapstage{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:6px}
 .maphead{padding:12px 16px;border-bottom:1px solid #eadfce;background:#faf7f1}
-.maphead .kick{font-family:var(--sans);font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}
+.maphead .kick{font-family:var(--sans);font-weight:700;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
 .maphead h2{font-family:var(--serif);font-size:1.2rem;margin:2px 0 0;color:#221f1a}
 #mapsvg{display:block;width:100%;height:68vh;min-height:420px;background:#fff;cursor:grab}
 #mapsvg:active{cursor:grabbing}
@@ -358,7 +368,7 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:24px 0 60px;colo
 .hubtile:focus-visible{outline:2px solid var(--c,var(--accent));outline-offset:2px}
 .hubtile-n{font:800 1.5rem/1 var(--serif);color:var(--c,var(--accent));font-variant-numeric:tabular-nums}
 .hubtile-l{font-size:.9rem;color:var(--muted)}
-.hubtile-s{font-size:.78rem;color:var(--muted);opacity:.8}
+.hubtile-s{font-size:.78rem;color:var(--muted)}   /* (02-11, la 116) sin opacity:.8, que la dejaba en 3,7:1 */
 
 /* ===== «Continuar donde lo dejaste» (Inicio) ===== */
 .resume{display:flex;align-items:center;gap:.8rem;margin:0 0 1.4rem;padding:.7rem .9rem;
@@ -447,7 +457,7 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:24px 0 60px;colo
 .itin-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
 .itin-card{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--c,var(--accent));border-radius:var(--radius);padding:16px 16px 14px;
   display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
-.itin-card .kick{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--c,var(--accent))}
+.itin-card .kick{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--c,var(--accent))}
 .itin-card h3{font-size:1.08rem}
 .itin-card ol.itin-mini{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px;counter-reset:paso}
 .itin-card ol.itin-mini li{display:contents}
@@ -474,8 +484,6 @@ footer{border-top:1px solid var(--line);margin-top:60px;padding:24px 0 60px;colo
 .chip[data-ep="medmod"],.fbtn[data-ep="medmod"]{box-shadow:inset 4px 0 0 var(--e2)}
 .chip[data-ep="medmod"][aria-pressed="true"],.fbtn[data-ep="medmod"][aria-pressed="true"]{background:linear-gradient(90deg,var(--e),var(--e2));box-shadow:none}
 /* Frases y Diccionario: la tarjeta lleva el color de su época */
-#citas .citcard[data-ep]{border-inline-start-color:var(--e)}
-#citas .citcard[data-ep] .cit-q::before{color:var(--e)}
 #diccionario .dicitem[data-ep]{border-inline-start-color:var(--e)}
 #diccionario .dicitem[data-ep] .tag{color:var(--e)}
 .theory-head[data-ep] .kick{color:var(--e) !important}   /* la vista pone color:var(--hf) en línea */
@@ -513,7 +521,7 @@ details.filb>summary{list-style:none;cursor:pointer}
 details.filb>summary::-webkit-details-marker{display:none}
 details.filb>summary .temas-b::after{content:"▸";margin-inline-start:auto;font-size:.9rem;transition:transform .15s}
 details.filb[open]>summary .temas-b::after{transform:rotate(90deg)}
-details.filb .filb-n{font-weight:400;letter-spacing:0;opacity:.8}
+details.filb .filb-n{font-weight:400;letter-spacing:0}   /* (02-11, la 116) sin opacity:.8: el color de rama o de época solo ya pasa de 4,5:1 */
 details.filb>summary:focus-visible{outline:2px solid var(--r);outline-offset:2px;border-radius:4px}
 details.filb[data-ep]>summary:focus-visible{outline-color:var(--e)}
 /* (11-10) exploraciones de cada tema, plegadas en «Exploraciones (n)» */
@@ -534,7 +542,7 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 .fin-pn-card{display:flex;flex-direction:column;gap:4px;text-align:start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font:inherit;color:inherit;cursor:pointer}
 .fin-pn-card.fin-next{text-align:end;align-items:flex-end}
 .fin-pn-card:hover{border-color:var(--c,var(--accent))}
-.fin-pn-card .kick{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+.fin-pn-card .kick{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--muted)}
 .fin-pn-card b{font-family:var(--serif);font-weight:600;font-size:1rem;line-height:1.25}
 @media(max-width:600px){.fin-row{flex-direction:column;gap:4px}.fin-l{padding-top:0;flex-basis:auto}.fin-pager{grid-template-columns:1fr}.fin-pn-card.fin-next{text-align:start;align-items:flex-start}}
 /* (12-10, rediseño Lote 2 · piloto) los tres bloques de la caja «Para seguir con este tema» */
@@ -3974,14 +3982,14 @@ ol.itin-temas .temas-t .imp{ margin-inline-start:.2rem; font-size:.95rem }   /* 
 #guia .guia-go{ font:inherit; font-weight:600; color:var(--accent); background:none; border:0; padding:0; cursor:pointer; text-align:start; text-decoration:underline; text-underline-offset:3px; }
 #guia .guia-go:hover{ color:var(--accent-2); }
 #guia .guia-d{ line-height:1.55; }
-#guia .guia-steps{ list-style:none; counter-reset:paso; padding:0; margin:1rem 0; display:grid; gap:.7rem; }
-#guia .guia-steps li{ counter-increment:paso; position:relative; padding-inline-start:2.6rem; line-height:1.5; }
-#guia .guia-steps li::before{ content:counter(paso); position:absolute; inset-inline-start:0; top:0; width:1.8rem; height:1.8rem; border-radius:50%; display:grid; place-items:center; background:var(--accent); color:var(--on-accent); font-weight:700; font-size:.9rem; }
+#guia .guia-steps{ list-style:none; padding:0; margin:1rem 0; display:grid; gap:.7rem; }
+#guia .guia-steps li{ position:relative; padding-inline-start:2.6rem; line-height:1.5; }
+#guia .guia-steps .guia-pnum{ position:absolute; inset-inline-start:0; top:0; width:1.8rem; height:1.8rem; border-radius:50%; display:grid; place-items:center; background:var(--accent); color:var(--on-accent); font-weight:700; font-size:.9rem; }
 #guia .guia-steps li strong{ display:block; }
 #guia .guia-steps li span{ color:var(--muted); }
 #guia .guia-abrir{ font:inherit; font-size:.85rem; margin-top:.2rem; padding:0; border:0; background:none; color:var(--accent); cursor:pointer; text-decoration:underline; text-underline-offset:3px; display:block; }
 .guia-pie{ margin:2rem 0 0; padding-top:1rem; border-top:1px solid var(--line-soft); font-size:.92rem; }
-.guia-pie a{ color:var(--accent); }
+.guia-pie a{ color:var(--accent); display:inline-block; padding-block:.3em; }   /* (02-11, la 116) zona táctil de 24 px como mínimo */
 @media (max-width:560px){
   #guia .guia-row{ grid-template-columns:1fr; gap:.1rem; }
   /* la cabecera del móvil ya lleva buscador, menú, idioma y tema: el «?» no cabe; a la guía se llega desde el pie de la ficha */

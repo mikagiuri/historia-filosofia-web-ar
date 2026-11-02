@@ -39,7 +39,8 @@ const GLO_CSS = `
 #diccionario .diclist{display:grid;gap:10px}
 #diccionario .dicitem{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--radius);padding:13px 16px 14px;background:var(--surface);box-shadow:var(--shadow)}
 #diccionario .dicitem .top{display:flex;flex-wrap:wrap;justify-content:space-between;column-gap:12px;align-items:baseline}
-#diccionario .dicitem h4{margin:0 0 5px;font-size:17px;font-family:var(--serif);color:var(--ink)}
+/* (02-11, la 116) cada término en <h2> (antes <h4>: saltaba del <h1> de la sección), con el aspecto del <h4>; la «λ» en tinta */
+#diccionario .dicitem h2{margin:0 0 5px;font-size:17px;font-family:var(--serif);font-weight:700;line-height:1.5;text-wrap:wrap;color:var(--ink)}
 #diccionario .dicitem .tag{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap}
 #diccionario .dicitem p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink)}
 #diccionario .dicitem .src{color:var(--muted);font-size:12px;margin-top:7px}
@@ -50,7 +51,7 @@ const GLO_CSS = `
 #diccionario .dicitem .ety[hidden]{display:none}
 #diccionario .dicitem .ety b{font-weight:600;color:var(--ink)}
 #diccionario .dicitem .ety i{color:var(--ink)}
-#diccionario .dic-root{display:inline-flex;align-items:center;justify-content:center;width:1.55em;height:1.55em;margin-left:.4em;vertical-align:.12em;padding:0;border:1px solid var(--line);border-radius:50%;background:var(--surface-2);color:var(--muted);font:600 13px var(--serif);line-height:1;cursor:pointer}
+#diccionario .dic-root{display:inline-flex;align-items:center;justify-content:center;width:1.55em;height:1.55em;margin-left:.4em;vertical-align:.12em;padding:0;border:1px solid var(--line);border-radius:50%;background:var(--surface-2);color:var(--ink);font:600 13px var(--serif);line-height:1;cursor:pointer}
 #diccionario .dic-root:hover,#diccionario .dic-root[aria-expanded="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 #diccionario mark{background:var(--accent);color:var(--on-accent);padding:0 2px;border-radius:3px}
 #diccionario .dicempty{color:var(--muted);padding:24px 2px}
@@ -206,7 +207,7 @@ function renderGloList(){
     const src = g.tema ? '<div class="src">' + gloEsc(g.tema) + (g.unidad ? " · " + g.unidad : "") + '</div>' : "";
     const ilu = dicBiografias(g);
     const ep = g.subject === "hf" && { A: "ant", B: "medmod", C: "con" }[g.bloque];   // (30-09) color del bloque de HF (styles.css)
-    return '<article class="dicitem"' + (g.id ? ' data-gid="' + g.id + '"' : '') + (ep ? ' data-ep="' + ep + '"' : '') + '><div class="top"><h4>' + term + btn + (g.subject === "hf" && typeof impBadge === "function" && typeof IMPRESCINDIBLES !== "undefined" ? ' ' + impBadge("glo", g) : '') + '</h4><span class="tag">' + gloEsc(tag) + '</span></div><p>' + def + '</p>' + ety + src + ilu + '</article>';
+    return '<article class="dicitem"' + (g.id ? ' data-gid="' + g.id + '"' : '') + (ep ? ' data-ep="' + ep + '"' : '') + '><div class="top"><h2>' + term + btn + (g.subject === "hf" && typeof impBadge === "function" && typeof IMPRESCINDIBLES !== "undefined" ? ' ' + impBadge("glo", g) : '') + '</h2><span class="tag">' + gloEsc(tag) + '</span></div><p>' + def + '</p>' + ety + src + ilu + '</article>';
   }).join("");
   if (window.langFragGrc) window.langFragGrc(list);   // DUA D0.6: el griego de las etimologías y definiciones se marca con lang="grc"
 }
