@@ -8,7 +8,7 @@
    · imágenes, fuentes y CDN (mermaid, markmap) siguen stale-while-revalidate: pesan y casi no cambian.
    Tras la primera visita toda la web ya visitada funciona sin conexión.
    ⚠ Sube VERSION al desplegar cambios para invalidar la caché antigua. */
-const VERSION = "v299-2026-11-02";
+const VERSION = "v300-2026-11-02";
 // Bachillerato y 2.º ESO se sirven en el MISMO origen (mikagiuri.github.io) bajo
 // subrutas distintas. La caché debe ser única por sitio o una web desalojaría la
 // de la otra: derivamos el prefijo del scope del propio service worker.
@@ -35,7 +35,16 @@ self.addEventListener("fetch", e => {
   if (req.method !== "GET") return;
   // Navegaciones (abrir/refrescar): red primero; si no hay conexión, el index cacheado.
   if (req.mode === "navigate") {
-    e.respondWith(fetch(req).catch(() => caches.match("./index.html")));
+    e.respondWith(fetch(req).catch(() => {
+      // (02-11, P-117) sin conexión, una dirección sin almohadilla (…/teoria/hf-kant/) salta a su #: servir aquí el
+      // index.html guardado rompería sus rutas relativas (js/, css/ y media/ colgarían de teoria/hf-kant/)
+      const scope = new URL(self.registration.scope).pathname, p = new URL(req.url).pathname;
+      const rest = p.indexOf(scope) === 0 ? p.slice(scope.length).replace(/\/+$/, "").replace(/\/?index\.html$/, "") : "";
+      if (/^[a-z0-9_-]+(?:\/[a-z0-9_-]+)*$/i.test(rest))
+        return new Response('<!doctype html><meta charset="utf-8"><script>location.replace(' + JSON.stringify(self.registration.scope + "#" + rest) + ")</script>",
+          { headers: { "Content-Type": "text/html; charset=utf-8" } });
+      return caches.match("./index.html");
+    }));
     return;
   }
   // Código propio (html/js/css/json/manifest): red primero revalidando; sin red, la caché.

@@ -7,12 +7,13 @@
 <title>الصفحة غير موجودة · Página no encontrada</title>
 <script>
 // GitHub Pages sirve este 404.html para cualquier ruta inexistente: vuelve a index.html conservando el hash
-// (las secciones de la web son rutas hash, p. ej. #tarjetas). Sin hash, un único tramo de ruta (…/tarjetas)
-// se convierte en hash (#tarjetas); index.html muestra su propio aviso si la sección no existe.
+// (las secciones de la web son rutas hash, p. ej. #tarjetas). Sin hash, la ruta (…/tarjetas, …/teoria/hf-kant,
+// hasta cuatro tramos) se convierte en hash (#tarjetas, #teoria/hf-kant): cubre las direcciones sin página propia
+// (P-117, fase B1); index.html muestra su propio aviso si la sección no existe.
 (function(){
   var base = "/historia-filosofia-web-ar/", h = location.hash;
   if (!h) { var rest = location.pathname.indexOf(base) === 0 ? location.pathname.slice(base.length).replace(/\/+$/, "") : "";
-    if (/^[a-z0-9_-]+$/i.test(rest) && rest !== "index.html") h = "#" + rest; }
+    if (/^[a-z0-9_-]+(?:\/[a-z0-9_-]+){0,3}$/i.test(rest) && rest !== "index.html") h = "#" + rest; }
   location.replace(base + h);
 })();
 </script>

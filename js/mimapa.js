@@ -73,6 +73,14 @@
       setTimeout(() => { espera = false; dibujar(); }, 250);
       return;
     }
+    /* (02-11, P-119) sin tamaño todavía (pestaña recién abierta): Markmap calcula el encuadre con
+       0 × 0 y escribe translate(NaN,NaN). Se espera a que el cuadro tenga medidas. */
+    const r = svg.getBoundingClientRect();
+    if (!r.width || !r.height){
+      if (espera) return; espera = true;
+      setTimeout(() => { espera = false; dibujar(); }, 100);
+      return;
+    }
     const m = actual();
     const k = window.markmap;
     if (!tf) tf = new k.Transformer();

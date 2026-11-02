@@ -28,6 +28,7 @@
     blEstudiar: "للمراجعة", blPau: "استعدّ للـ PAU", blPensar: "فكّر واكتب", blAmpliar: "تعمّق", pauBadge: "قراءة PAU",
     cronogramas: "الجداول الزمنية", disertaciones: "الإنشاء الفلسفي", comparativas: "مقارنات", polemicas: "سجالات", comunidades: "الجماعات",
     puenteFil: "ستعودون إليه في السنة الثانية من البكالوريا", puenteHf: "سبق أن رأيتموه في السنة الأولى من البكالوريا", hfSig: "HF",
+    otraWebHf: "(في موقع السنة الثانية)", otraWebFil: "(في موقع السنة الأولى)",   // (02-11, P-118) enlaces que salen a la otra web
     antes: "قبل أن تبدأ: {n} مصطلحات",   // (02-11, P-107)
     perseguidos: "المضطهَدون", duelo: "مبارزة الحجج", juegos: "ألعاب", logica: "ركن المنطق", masFondo: "للتعمّق في هذا الموضوع",
     videosEu: "فيديوهات بالباسكية (Ikusgela)", videoEu: "فيديو بالباسكية من Ikusgela", transcripcion: "النص المكتوب", transcripcionT: "نص الفيديو: الترجمة المكتوبة من Ikusgela", infografia: "إنفوغرافيك", mapa: "خريطة", esquema: "خطاطة", lectura: "قراءة", dilema: "معضلة", comentario: "شرح",
@@ -624,22 +625,60 @@
     ]
   };
   var WEB_REPO = { fil: "aula-de-filosofia-web", hf: "historia-filosofia-web" };
-  /* (01-11) enlaces del texto a un tema de la otra materia («#teoria/hf-…» en 1.º, «#teoria/fil-…» en HF): en las webs
-     del alumnado ese tema no está y el enlace no llevaba a ninguna parte. Como las cajas de puentes, se abre la otra web
-     publicada, en la misma lengua y en pestaña nueva. En la web completa (el tema existe) no cambia nada. */
-  document.addEventListener("click", function(e){
-    var a = e.target.closest && e.target.closest('a[href^="#teoria/"]'); if (!a) return;
-    var resto = a.getAttribute("href").slice(8), k = resto.split("/")[0], T = coll("THEORY");
-    var otra = /^hf-/.test(k) ? "hf" : /^fil-/.test(k) ? "fil" : null;
-    if (!T || T[k] || !otra) return;
+  /* (02-11, P-118) lenguas publicadas de cada web: HF no tiene neerlandés, así que desde la de 1.º en neerlandés se va
+     a la de HF en inglés (antes llevaba a una web que no existe) */
+  var LENGUAS_WEB = { fil: ["es", "eu", "fr", "en", "ar", "nl"], hf: ["es", "eu", "fr", "en", "ar"] };
+  function urlOtraWeb(otra, dir){
     var lang = (document.documentElement.lang || "es").slice(0, 2);
+    if (LENGUAS_WEB[otra].indexOf(lang) < 0) lang = "en";
+    return "https://mikagiuri.github.io/" + WEB_REPO[otra] + (lang === "es" ? "" : "-" + lang) + "/#" + dir;
+  }
+  /* (02-11, P-118) ¿lleva este enlace «#sección/clave» a la otra web de Bachillerato? Sí cuando en esta web falta (la
+     sección o la clave) y es de la otra materia: temas «hf-…»/«fil-…», términos «g-fil-…» del Diccionario y, en general,
+     lo que en la web de 1.º solo tiene HF (Genealogías, las fichas de HF) y al revés. En la web completa no falta nada. */
+  var DATOS_SECCION = { teoria: "THEORY", diccionario: "DICCIONARIO", pistas: "PISTAS", biografias: "BIOGRAFIAS" };
+  function claveEn(datos, k){
+    if (!datos) return false;
+    if (Array.isArray(datos)) return datos.some(function(x){ return x && x.id === k; });
+    return Object.prototype.hasOwnProperty.call(datos, k);
+  }
+  function otraWebDe(dir){
+    var p = String(dir).split("/"), sec = p[0], k = p[1] || "", T = coll("THEORY");
+    if (!T) return null;
+    var esta = Object.keys(T).some(function(x){ return /^fil-/.test(x); }) ? (Object.keys(T).some(function(x){ return /^hf-/.test(x); }) ? null : "fil")
+      : Object.keys(T).some(function(x){ return /^hf-/.test(x); }) ? "hf" : null;
+    if (!esta) return null;   // la web completa o la de la ESO: no se reenvía
+    var otra = esta === "fil" ? "hf" : "fil";
+    if (!view(sec)) return /^(genealogias|cronogramas|prepara_PAU|comentario)$/.test(sec) ? otra : null;
+    if (!k || !DATOS_SECCION[sec] || claveEn(coll(DATOS_SECCION[sec]), k)) return null;
+    if (/^teoria$/.test(sec)) return /^hf-/.test(k) ? "hf" : /^fil-/.test(k) ? "fil" : null;
+    if (/^diccionario$/.test(sec)) return /^g-fil-/.test(k) ? "fil" : otra;
+    return otra;
+  }
+  /* Tras pintar un texto: los enlaces que salen a la otra web llevan su dirección publicada, se abren en otra pestaña y
+     dicen a cuál van, «(en la web de 2.º)», sin estilos nuevos. */
+  function marcarOtraWeb(root){
+    if (!root) return;
+    root.querySelectorAll('a[href^="#"]').forEach(function(a){
+      if (a.dataset.otraWeb) return;
+      var dir = a.getAttribute("href").slice(1), otra = otraWebDe(dir); if (!otra) return;
+      a.dataset.otraWeb = otra;
+      a.setAttribute("href", urlOtraWeb(otra, dir)); a.target = "_blank"; a.rel = "noopener";
+      a.insertAdjacentText("afterend", " " + t(otra === "hf" ? "otraWebHf" : "otraWebFil"));
+    });
+  }
+  /* (01-11) los enlaces que no se han marcado al pintar (otras vistas) también se abren en la otra web publicada,
+     en la misma lengua y en pestaña nueva, en vez de no llevar a ninguna parte */
+  document.addEventListener("click", function(e){
+    var a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
+    var dir = a.getAttribute("href").slice(1), otra = otraWebDe(dir); if (!otra) return;
     e.preventDefault(); e.stopPropagation();
-    window.open("https://mikagiuri.github.io/" + WEB_REPO[otra] + (lang === "es" ? "" : "-" + lang) + "/#teoria/" + resto, "_blank", "noopener");
+    window.open(urlOtraWeb(otra, dir), "_blank", "noopener");
   }, true);
   function puentesHtml(subject, key){
     var arr = PUENTES[key]; if (!arr || !arr.length) return "";
-    var T = coll("THEORY"), lang = (document.documentElement.lang || "es").slice(0, 2), otra = subject === "fil" ? "hf" : "fil";
-    var url = "https://mikagiuri.github.io/" + WEB_REPO[otra] + (lang === "es" ? "" : "-" + lang) + "/#teoria/";
+    var T = coll("THEORY"), otra = subject === "fil" ? "hf" : "fil";
+    var url = urlOtraWeb(otra, "teoria/");
     return '<div class="fin-bloque fin-puentes"><h3>' + esc(t(subject === "fil" ? "puenteFil" : "puenteHf")) + '</h3>' + arr.map(function(x){
       var lab = (otra === "hf" ? t("hfSig") + " · " : "") + (typeof x.n === "number" ? t("tema", { n: x.n }) : x.n) + " · " + x.tit;
       var a = T && T[x.k] ? btn({ go: "teoria", arg: x.k, label: lab }) : '<a class="itin-lnk" href="' + esc(url + x.k) + '" target="_blank" rel="noopener">' + esc(lab) + ' ↗</a>';
@@ -978,5 +1017,5 @@
     if (G("quizKey") != null) renderQuiz(G("quizKey"));
   } catch (e){}
 
-  window.Itinerario = { itinerario: itinerario, temaOf: temaOf, go: go, epocaFicha: epocaFicha, gloTema: gloTema, claseTema: function(u){ return CLASES_TEMA[u] || null; }, temasDe: temasDe, esAnexo: esAnexo, PUENTES: PUENTES };
+  window.Itinerario = { itinerario: itinerario, marcarOtraWeb: marcarOtraWeb, temaOf: temaOf, go: go, epocaFicha: epocaFicha, gloTema: gloTema, claseTema: function(u){ return CLASES_TEMA[u] || null; }, temasDe: temasDe, esAnexo: esAnexo, PUENTES: PUENTES };
 })();

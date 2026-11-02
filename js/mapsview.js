@@ -99,10 +99,22 @@ function drawMap(){
     return;
   }
 
+  /* (02-11, P-119) con la vista oculta el SVG mide 0 × 0 y el encuadre de Markmap sale
+     translate(NaN,NaN) (pasaba al abrir en frío #mimapa u otra sección). Solo se dibuja con
+     tamaño; al abrir Mapas lo vuelven a pedir lazy_libs.js y la pestaña. */
+  const svg = document.getElementById("mapsvg");
+  const r = svg ? svg.getBoundingClientRect() : null;
+  if (!r || !r.width || !r.height){
+    const vista = document.getElementById("mapas");
+    if (svg && vista && vista.classList.contains("active") && !_pending){
+      _pending = true;
+      setTimeout(() => { _pending = false; drawMap(); }, 100);
+    }
+    return;
+  }
   const mk = window.markmap;
   if (!_tf) _tf = new mk.Transformer();
   const data = _tf.transform(m.md).root;
-  const svg = document.getElementById("mapsvg");
   if (!_mm) _mm = mk.Markmap.create(svg, { autoFit: false, initialExpandLevel: 3, colorFreezeLevel: 2, spacingVertical: 6, spacingHorizontal: 90, paddingX: 16, duration: 250 }, data);
   else _mm.setData(data);
   requestAnimationFrame(() => { try { _mm.fit(); } catch (e) {} });
@@ -118,10 +130,12 @@ function loadMap(k){
 renderMapFilter();
 renderMapChips();
 /* Forzar que el autoloader cargue sus dependencias (d3, markmap-view, markmap-lib)
-   aunque no haya elementos .markmap que auto-renderizar. */
+   aunque no haya elementos .markmap que auto-renderizar. (02-11, P-119) Sobre un elemento vacío, para que no
+   pinte otro mapa dentro de los SVG de Mapas y Mi mapa (ver lazy_libs.js). */
 (function(){
   const al = window.markmap && window.markmap.autoLoader;
-  if (al && typeof al.renderAll === "function") { try { al.renderAll(); } catch (e) {} }
+  if (al && typeof al.renderAllUnder === "function") { try { al.renderAllUnder(document.createElement("div")); } catch (e) {} }
+  else if (al && typeof al.renderAll === "function") { try { al.renderAll(); } catch (e) {} }
 })();
 /* Redibujar/ajustar al entrar en la pestaña Mapas (la vista está oculta al cargar,
    así que el primer dibujo se hace cuando ya es visible y tiene tamaño). */

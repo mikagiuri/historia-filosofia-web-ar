@@ -22,8 +22,12 @@
     if (done[MARKMAP]) return; done[MARKMAP] = true;
     var s = document.createElement("script"); s.src = MARKMAP; s.async = true;
     s.onload = function(){
+      /* dispara la carga de dependencias (modo manual). (02-11, P-119) Sobre un elemento vacío: renderAll() espera a
+         las dependencias y luego pinta TODO «.markmap» del documento, y para entonces Mapas o Mi mapa ya pueden haber
+         dado esa clase a su SVG; el autoloader le metía dentro otro SVG vacío, de 0 × 0, con translate(NaN,NaN). */
       try { var al = window.markmap && window.markmap.autoLoader;
-        if (al && typeof al.renderAll === "function") al.renderAll(); } catch (e){}   // dispara la carga de dependencias (modo manual)
+        if (al && typeof al.renderAllUnder === "function") al.renderAllUnder(document.createElement("div"));
+        else if (al && typeof al.renderAll === "function") al.renderAll(); } catch (e){}
       if (typeof drawMap === "function") requestAnimationFrame(drawMap);
       if (typeof window.drawMiMapa === "function") requestAnimationFrame(window.drawMiMapa);   // (24-10) «Mi mapa»
     };

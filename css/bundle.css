@@ -669,6 +669,13 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 /* (DUA D0.2, 23-10) Red de seguridad: con «reducir movimiento» del sistema, ninguna animación ni desplazamiento suave */
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 
+/* (02-11, P-120) En el móvil el nombre de la web se cortaba con «…» («Aula de Fi…»): ahora parte en dos
+   líneas, sin cambiar la altura de la cabecera ni mover el contenido. Vale en todas las lenguas sin rótulos
+   nuevos. Gana a la regla de accesibilidad.css por ser más concreta (header .bar-in .brand). */
+@media (max-width:520px){
+  header .bar-in .brand{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;text-overflow:clip;font-size:clamp(.875rem,3.8vw,1rem);line-height:1.1}
+}
+
 
 /* ==== css/mobile.css ==== */
 /* ===== Capa móvil (mobile-first overrides) — Aula de Filosofía =====

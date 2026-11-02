@@ -399,6 +399,7 @@ function loadTheory(k){
   body.querySelectorAll("thead th:empty").forEach(th => { const td = document.createElement("td"); td.className = "th-esquina"; th.replaceWith(td); });
   if (window.langFragGrc) window.langFragGrc(body);   // DUA D0.6: el griego del tema se marca con lang="grc" para el lector de pantalla
   if (window.DiccEnLinea) window.DiccEnLinea.marcar(body, t.subject, () => window.Itinerario.temaOf("teoria", k, t));   // DUA D1.3 (P3): el Diccionario dentro del texto
+  if (window.Itinerario && window.Itinerario.marcarOtraWeb) window.Itinerario.marcarOtraWeb(body);   // (02-11, P-118) «… (en la web de 2.º)»
 }
 
 renderTheoryFilter();
