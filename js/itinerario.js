@@ -28,6 +28,7 @@
     blEstudiar: "للمراجعة", blPau: "استعدّ للـ PAU", blPensar: "فكّر واكتب", blAmpliar: "تعمّق", pauBadge: "قراءة PAU",
     cronogramas: "الجداول الزمنية", disertaciones: "الإنشاء الفلسفي", comparativas: "مقارنات", polemicas: "سجالات", comunidades: "الجماعات",
     puenteFil: "ستعودون إليه في السنة الثانية من البكالوريا", puenteHf: "سبق أن رأيتموه في السنة الأولى من البكالوريا", hfSig: "HF",
+    antes: "قبل أن تبدأ: {n} مصطلحات",   // (02-11, P-107)
     perseguidos: "المضطهَدون", duelo: "مبارزة الحجج", juegos: "ألعاب", logica: "ركن المنطق", masFondo: "للتعمّق في هذا الموضوع",
     videosEu: "فيديوهات بالباسكية (Ikusgela)", videoEu: "فيديو بالباسكية من Ikusgela", transcripcion: "النص المكتوب", transcripcionT: "نص الفيديو: الترجمة المكتوبة من Ikusgela", infografia: "إنفوغرافيك", mapa: "خريطة", esquema: "خطاطة", lectura: "قراءة", dilema: "معضلة", comentario: "شرح",
     pau: "مسار PAU", pauLead: "استعدوا لـ PAU بالترتيب: أولًا كيف هو الامتحان، ثم كل تمرين، وفي النهاية التدرب حسب المواضيع.",
@@ -52,7 +53,7 @@
   function temaNum(o){
     if (!o) return null;
     if (typeof o.tema === "number") return o.tema;
-    var m = String(o.tema || "").match(/(?:Tema|Thème|Topic|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/); return m ? +(m[1] || m[2]) : null;
+    var m = String(o.tema || "").match(/(?:Tema|Thème|Topic|Thema|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/); return m ? +(m[1] || m[2]) : null;
   }
   var IPC_KEY = /^(?:map-)?ipc-([a-z]+)/;
   var IPC_ALIAS = { conceptos: "pensar", publicidad: "medios", prejuicios: "sesgos", moda: "huella", consumo: "huella", fastfashion: "huella", critico: "pensar", bulos: "falacias", hecho: "pensar", tecnologia: "medios", genero: "grupo", emociones: "pensar" };
@@ -710,13 +711,30 @@
       (rowsHtml ? '<h2>' + esc(t("seguir")) + '</h2>' + rowsHtml : '') +
       '<div class="fin-pager">' + card(prev, "‹ " + t(i < 0 && esAnexo(T[key]) ? "volverTema" : "anterior"), "") + card(next, t("siguienteTema") + " ›", " fin-next") + '</div></section>';
   }
+  /* (02-11, P-107: ideas de Dislegi, aprobadas el 26-10, docs/36) arriba de cada tema, «Antes de empezar: 5 términos»: los
+     cinco términos del tema con más importancia (imp) que ya tienen entrada en el Diccionario, con su definición y su ficha.
+     Solo en la entrada principal de cada tema, y plegada en una línea con el estilo de «Ampliar» para no desplazar el
+     contenido (docs/35, regla 4.1). Las definiciones son las del Diccionario: en cada lengua salen ya traducidas. */
+  function antesHtml(subject, tema, key){
+    var Gl = G("DICCIONARIO"), T = coll("THEORY"); if (!Array.isArray(Gl) || !T || !view("diccionario")) return "";
+    var prim = temasDe(subject).filter(function(k){ return !T[k].sigla && !extraDe(k, T[k]) && temaOf("teoria", k, T[k]) === tema; })[0]; if (prim !== key) return "";
+    /* a igual importancia, primero el que antes sale en el texto del tema (el que el alumnado se encuentra antes) */
+    var txt = strip(T[key].html || "").toLowerCase(), pos = function(g){ var i = txt.indexOf(strip(g.t).toLowerCase()); return i < 0 ? 1e9 : i; };
+    var cs = Gl.filter(function(g){ return g && g.id && g.subject === subject && g.t && g.def && gloTema(g) === tema; }).map(function(g){ return { g: g, p: pos(g) }; })
+      .sort(function(a, b){ return ((b.g.imp || 0) - (a.g.imp || 0)) || (a.p - b.p); }).slice(0, 5);
+    if (!cs.length) return "";
+    return '<details class="fin-bloque fin-amp itin-antes" style="--c:' + (SUBJ_COLOR[subject] || "var(--accent)") + '"><summary>' + esc(t("antes", { n: cs.length })) + '</summary><ul>' +
+      cs.map(function(x){ return '<li><a href="#diccionario/' + esc(x.g.id) + '"><strong>' + esc(strip(x.g.t)) + '</strong></a> · ' + esc(strip(x.g.def)) + '</li>'; }).join("") + '</ul></details>';
+  }
   function itemTema(go_, key){ var c = coll(COLL[go_]), o = c && c[key]; return o ? { subject: o.subject, tema: temaOf(go_, key, o) } : null; }
   function renderTeoria(k){
     k = String(k || "").replace(/(?:\/|§)\d+$/, "");   /* (07-10) «clave/n»: enlace a un apartado */
     var body = document.getElementById("theorybody"), tm = itemTema("teoria", k); if (!body || !tm) return;
     var rel = body.querySelector(".related-row"); if (rel) rel.remove();   // la tira antigua de la cabecera: todo va al final
-    body.querySelectorAll(":scope > .itin-fin, :scope > .th-part > .itin-fin").forEach(function(o){ o.remove(); });
+    body.querySelectorAll(":scope > .itin-fin, :scope > .th-part > .itin-fin, :scope > .itin-antes").forEach(function(o){ o.remove(); });
     if (tm.tema == null) return;
+    var ant = document.createElement("div"); ant.innerHTML = antesHtml(tm.subject, tm.tema, k);
+    if (ant.firstElementChild){ var head = body.querySelector(":scope > .theory-head"); body.insertBefore(ant.firstElementChild, head ? head.nextSibling : body.firstChild); }
     var tmp = document.createElement("div"); tmp.innerHTML = finHtml(tm.subject, tm.tema, k);
     /* (25-10, el profesor: «solo enlaces relacionados con el apartado, no con el tema completo») en la vista por
        apartados la caja va dentro del ÚLTIMO apartado: sale una sola vez, al final del tema, y no debajo de cada uno */

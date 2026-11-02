@@ -303,7 +303,7 @@ function renderSubjects(){
       <div class="hubmap" style="--c:${s.color}">${resMap.map(r => `<button class="hubtile" data-hub="${r.go}"${r.tipo ? ` data-tipo="${r.tipo}"` : ""}><span class="hubtile-n">${r.n}</span><span class="hubtile-l">${r.label}</span>${r.sub ? `<span class="hubtile-s">${r.sub}</span>` : ""}</button>`).join("")}</div>`
       : "";
     el.innerHTML = `<div class="subhead" style="--c:${s.color}"><span class="kick">${s.kick}</span><h1>${s.name}</h1></div>
-      <p class="lead">${s.intro}</p>
+      ${s.intro ? `<p class="lead">${s.intro}</p>` : ""}
       ${hub}
       ${mats ? `<div class="sec-head"><h2 class="sec">الموارد التعليمية</h2></div>
       <div class="mats">${mats}</div>` : ""}${tools}`;

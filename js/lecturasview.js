@@ -15,8 +15,8 @@ function lecEsFil(){ return typeof SUBJECTS !== "undefined" && !!SUBJECTS.fil &&
 function lecRama(t){
   const T = String(t.tema || "");
   if (/·\s*M(?:\s|$|\()/.test(T)) return "met";   /* «Filosofía · M» (la sigla M no se traduce) */
-  /* multilingüe: ES «Tema 5», EU «5. gaia», FR «Thème 5», EN «Topic 5», AR «الموضوع 5» (el rótulo llega traducido) */
-  const m = T.match(/(?:Tema|Thème|Topic|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/);
+  /* multilingüe: ES «Tema 5», EU «5. gaia», FR «Thème 5», EN «Topic 5», AR «الموضوع 5», NL «Thema 5» (el rótulo llega traducido) */
+  const m = T.match(/(?:Tema|Thème|Topic|Thema|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/);
   const n = m ? +(m[1] || m[2]) : null;
   return n ? ({ 1: "int", 2: "ant", 3: "con", 4: "log", 5: "eti", 6: "pol", 7: "est" }[n] || "int") : "int";
 }

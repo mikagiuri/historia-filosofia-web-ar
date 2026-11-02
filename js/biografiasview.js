@@ -45,7 +45,7 @@ function bioRamas(p){
   for (const k of p.temas || []){
     if (typeof THEORY === "undefined" || !THEORY[k]) continue;
     const t = THEORY[k], T = String(t.tema || "");
-    const mm = /(?:Tema|Thème|Topic|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/.exec(T);
+    const mm = /(?:Tema|Thème|Topic|Thema|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/.exec(T);
     const n = typeof t.temaN === "number" ? t.temaN : (/·\s*M(?:\s|$|\()/.test(T) ? 3.5 : (mm ? +(mm[1] || mm[2]) : null));
     if (n === 3.5) s.add("met"); else if (MAP[n]) s.add(MAP[n]);
   }

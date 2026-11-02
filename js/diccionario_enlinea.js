@@ -23,7 +23,7 @@
 
   var EXCLUIR = {};
   var FUERA = "h1, h2, h3, h4, h5, h6, blockquote, table, figure, figcaption, summary, a, button, code, pre, " +
-    ".theory-head, .related-row, .th-partnav, .pilares, .itin, .itin-fin, .no-dicc, .cl-quote, .cl-cita, .cl-def, .cl-reveal, .cl-repaso, .cl-hoja, [lang='grc']";
+    ".theory-head, .related-row, .th-partnav, .pilares, .itin, .itin-fin, .itin-antes, .no-dicc, .cl-quote, .cl-cita, .cl-def, .cl-reveal, .cl-repaso, .cl-hoja, [lang='grc']";
   var html = document.documentElement;
   var lengua = (html.lang || "es").slice(0, 2);
   var L = "\\p{L}\\p{M}";

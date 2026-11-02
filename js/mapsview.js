@@ -20,7 +20,7 @@ function mapAmbOf(k, m){
   if (MAP_AMB_CLAVE[k]) return MAP_AMB_CLAVE[k];
   const T = String(m && m.tema || "");
   if (/·\s*M(?:\s|$|\()/.test(T)) return "met";
-  const mm = /(?:Tema|Thème|Topic|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/.exec(T);   /* rótulo ya traducido (EU «5. gaia»…) */
+  const mm = /(?:Tema|Thème|Topic|Thema|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/.exec(T);   /* rótulo ya traducido (EU «5. gaia»…) */
   const n = mm ? +(mm[1] || mm[2]) : null;
   return ({ 1: "int", 2: "ant", 3: "con", 4: "log", 5: "eti", 6: "pol", 7: "est" })[n] || null;
 }

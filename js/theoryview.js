@@ -109,7 +109,7 @@ function relatedFor(key, self){
               (typeof INFOGRAFIAS !== "undefined" && INFOGRAFIAS[key]) || null;
   if (src){
     const temaN = o => { if (!o) return null; if (typeof o.tema === "number") return o.tema; if (typeof o.temaN === "number") return o.temaN;
-      const m = String(o.tema || "").match(/(?:Tema|Thème|Topic|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/); return m ? +(m[1] || m[2]) : null; };
+      const m = String(o.tema || "").match(/(?:Tema|Thème|Topic|Thema|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/); return m ? +(m[1] || m[2]) : null; };
     let tn = temaN(src);
     if (tn == null && typeof TEMA_ALIAS !== "undefined" && TEMA_ALIAS[key] != null) tn = TEMA_ALIAS[key];
     const subj = src.subject;
@@ -129,7 +129,7 @@ function relatedFor(key, self){
   }
   /* (11-10) ficha de la época del tema (HF), en Biografías */
   if (src && window.Itinerario && window.Itinerario.epocaFicha && document.getElementById("biografias") && typeof bioNombreFicha === "function"){
-    const tn = (TEMA_ALIAS[key] != null ? TEMA_ALIAS[key] : (typeof src.temaN === "number" ? src.temaN : (String(src.tema || "").match(/(?:Tema|Thème|Topic|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/) || []).slice(1).find(Boolean)));
+    const tn = (TEMA_ALIAS[key] != null ? TEMA_ALIAS[key] : (typeof src.temaN === "number" ? src.temaN : (String(src.tema || "").match(/(?:Tema|Thème|Topic|Thema|الموضوع)\s+(\d+)|(\d+)\.\s*gaia/) || []).slice(1).find(Boolean)));
     const ep = tn != null ? window.Itinerario.epocaFicha(src.subject, +tn) : null;
     if (ep) out.push({ go: "biografias", arg: "epoca-" + ep, label: TV_EPOCA_DE.replace("{e}", bioNombreFicha(ep)) });
   }
