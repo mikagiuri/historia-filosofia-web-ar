@@ -123,6 +123,10 @@ function renderEsqChips(){
 /* ---- Esquema v2: HTML propio a partir de e.v2 (ver el formato al final de esquemas.js).
    Se prefiere al mermaid cuando existe; el mermaid sigue disponible con «Ver el diagrama anterior». */
 let esqMode = "diag";   /* "diag" (diagrama del v2) · "fichas" · "orig" (mermaid original) */
+/* (02-11) si un esquema tiene v3 (versión nueva, mismo formato), se pinta ese; el v2 queda guardado en los datos.
+   Si tiene las dos, el selector «Versión completa / Versión breve» deja elegir (completa = v3, por defecto) y se recuerda. */
+let esqVer = (function (){ try { return localStorage.getItem("esqVersion") === "breve" ? "breve" : "completa"; } catch (e) { return "completa"; } })();
+function esqV(e){ return e.v3 && e.v2 && esqVer === "breve" ? e.v2 : (e.v3 || e.v2); }
 function esqEsc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 function esqNodo(n, top){
   const hijos = Array.isArray(n.c) && n.c.length ? '<ul class="esq2-hijos">' + n.c.map(function (h){ return "<li>" + esqNodo(h, false) + "</li>"; }).join("") + "</ul>" : "";
@@ -133,7 +137,7 @@ function esqNodo(n, top){
   return top ? '<li class="esq2-rama' + (n.k ? " esq2-k" : "") + '">' + body + "</li>" : '<div class="' + (n.k ? "esq2-k" : "") + '">' + body + "</div>";
 }
 function esqV2Html(e){
-  const v = e.v2;
+  const v = esqV(e);
   return '<div class="esq2" data-s="' + esqEsc(e.subject) + '">' +
     (v.pregunta ? '<p class="esq2-q">' + esqEsc(v.pregunta) + "</p>" : "") +
     '<div class="esq2-root">' + esqEsc(v.raiz) + "</div>" +
@@ -156,7 +160,7 @@ function esqV2Html(e){
    que en euskera sale del v2 ya traducido. */
 function esqLbl(s){ return String(s == null ? "" : s).replace(/"/g, "#quot;").replace(/[<>]/g, ""); }
 function esqV2Mermaid(e){
-  const v = e.v2, lines = ["flowchart LR"], ids = {}, keys = [], hijos = {};
+  const v = esqV(e), lines = ["flowchart LR"], ids = {}, keys = [], hijos = {};
   let n = 0;
   function node(nd, parent){
     const id = "n" + (++n);
@@ -278,7 +282,10 @@ function esqTabs(e){
   /* (08-10) «Cuadrícula» (js/esq_grid.js): el v2 colocado en una cuadrícula compacta con vecindad 8 */
   if (typeof EsqGrid !== "undefined") t.splice(1, 0, ["cuad", "شبكة"]);
   return '<div class="esq2-tabs" role="group" aria-label="عرض الخطاطة">' + t.map(function (x){
-    return '<button class="fbtn" data-em="' + x[0] + '" aria-pressed="' + (esqMode === x[0]) + '">' + x[1] + "</button>"; }).join("") + "</div>";
+    return '<button class="fbtn" data-em="' + x[0] + '" aria-pressed="' + (esqMode === x[0]) + '">' + x[1] + "</button>"; }).join("") + "</div>" +
+    (e.v3 ? '<div class="esq2-tabs" role="group" aria-label="نسخة المخطط">' +
+      [["completa", "النسخة الكاملة"], ["breve", "النسخة المختصرة"]].map(function (x){
+        return '<button class="fbtn" data-ev="' + x[0] + '" aria-pressed="' + (esqVer === x[0]) + '">' + x[1] + "</button>"; }).join("") + "</div>" : "");
 }
 
 function drawEsq(){
@@ -295,6 +302,8 @@ function drawEsq(){
   if (head){
     head.insertAdjacentHTML("beforeend", esqTabs(e));
     head.querySelectorAll("[data-em]").forEach(function (b){ b.addEventListener("click", function (){ esqMode = b.dataset.em; drawEsq(); }); });
+    head.querySelectorAll("[data-ev]").forEach(function (b){ b.addEventListener("click", function (){
+      esqVer = b.dataset.ev; try { localStorage.setItem("esqVersion", esqVer); } catch (e2) {} drawEsq(); }); });
   }
   st.classList.toggle("v2", mode === "fichas");
   if (st.parentNode) st.parentNode.classList.toggle("v2", !!e.v2);
@@ -303,11 +312,11 @@ function drawEsq(){
   if (typeof mermaid === "undefined"){ st.innerHTML = '<p class="esq-wait">جارٍ تحميل محرك الرسوم…</p>'; setTimeout(drawEsq, 350); return; }
   if (_esqTheme === null || _esqTheme !== esqThemeName()) esqInit();
   const src = mode === "diag" ? esqV2Mermaid(e) : e.mermaid;
-  const pedido = esqKey + "|" + mode;   /* (08-10) mermaid es asíncrono: si mientras dibuja se cambia de esquema o de pestaña
+  const pedido = esqKey + "|" + mode + "|" + esqVer;   /* (08-10) mermaid es asíncrono: si mientras dibuja se cambia de esquema o de pestaña
                                             (p. ej. a «Cuadrícula»), su resultado llegaría tarde y pisaría lo nuevo: se descarta */
   mermaid.render("esqm" + (++_mid), src).then(function (res){
-    if (pedido !== esqKey + "|" + (e.v2 ? esqMode : "orig")) return;
-    st.innerHTML = (mode === "diag" && e.v2.pregunta ? '<p class="esq2-q esq2-q-diag">' + esqEsc(e.v2.pregunta) + "</p>" : "") + res.svg +
+    if (pedido !== esqKey + "|" + (e.v2 ? esqMode : "orig") + "|" + esqVer) return;
+    st.innerHTML = (mode === "diag" && esqV(e).pregunta ? '<p class="esq2-q esq2-q-diag">' + esqEsc(esqV(e).pregunta) + "</p>" : "") + res.svg +
       '<p class="esq2-hint">اسحبوا للتنقل؛ وبالزرين − / + تصغّرون أو تكبّرون. في «بطاقات»، كل مفهوم مع شرحه.</p>';
     if (mode === "diag") esqCruces(st.querySelector("svg"), esqV2Mermaid.cruces);
     esqZoomSetup(st);

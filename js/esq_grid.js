@@ -259,7 +259,7 @@ const EsqGrid = (function (){
   function render(e, st, opts){
     const short = !!(opts && opts.short);
     injectCss();
-    const v = e.v2, tree = buildTree(v), n = tree.nodes.length;
+    const v = typeof esqV === "function" ? esqV(e) : (e.v3 || e.v2), tree = buildTree(v), n = tree.nodes.length;
     const width = st.clientWidth || 700;
     let shape = null, pos = null;
     for (const sh of gridShapes(n, width)){ pos = layout(tree, sh.rows, sh.cols, 1, 300, 60); if (pos){ shape = sh; break; } }   /* 300 intentos por forma: las que no caben se descartan en ~0,1 s */
