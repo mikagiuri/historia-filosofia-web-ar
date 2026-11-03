@@ -410,7 +410,10 @@ else document.addEventListener("DOMContentLoaded", () => {
   window.show = function(id){
     const out = prev.apply(this, arguments);
     const body = document.getElementById("theorybody");
-    if (id === "teoria" && !theoryHecha && theoryPendiente == null) loadTheory(theoryKey);
+    /* (02-11, P-117) si la dirección ya pide un tema que existe (#teoria/hf-aa, también desde …/teoria/hf-aa/), no se
+       pinta antes el tema por defecto: se veía un segundo otro tema y su clave pasaba a la barra. El enrutado lo abre justo después */
+    const pide = /^#teoria\/([^\/§?]+)/.exec(location.hash || ""), clave = pide && decodeURIComponent(pide[1]);
+    if (id === "teoria" && !theoryHecha && theoryPendiente == null && !(clave && THEORY[clave])) loadTheory(theoryKey);
     return out;
   };
 });

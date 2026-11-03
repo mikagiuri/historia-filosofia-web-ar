@@ -90,6 +90,8 @@ function renderDeckFilter(){
   }));
 }
 
+/* (02-11, P-001) etiqueta corta de materia dentro de una etiqueta de lista; la usan también los cuestionarios */
+function chipMateria(s){ return SUBJECTS[s] ? `<span class="chip-materia" style="color:var(--${s})">${SUBJECTS[s].name}</span> ` : ""; }
 function renderDeckChips(){
   const box = document.getElementById("deckchips");
   const entries = Object.entries(DECKS).filter(([k, d]) => {
@@ -99,8 +101,10 @@ function renderDeckChips(){
     if (!deckOk(d)) return false;
     return true;
   });
+  /* (02-11, P-001) los nombres ya no llevan la materia: si la lista mezcla materias (la maestra con «Todas»), la etiqueta la dice aparte */
+  const mezcla = new Set(entries.map(([, d]) => d.subject)).size > 1;
   box.innerHTML = entries
-    .map(([k, d]) => `<button class="chip" data-deck="${k}" aria-pressed="${k === deckKey}">${d.name}</button>`).join("");
+    .map(([k, d]) => `<button class="chip" data-deck="${k}" aria-pressed="${k === deckKey}">${mezcla ? chipMateria(d.subject) : ""}${d.name}</button>`).join("");
   box.querySelectorAll("[data-deck]").forEach(b => b.addEventListener("click", () => loadDeck(b.dataset.deck)));
 }
 

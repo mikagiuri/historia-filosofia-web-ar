@@ -75,19 +75,32 @@ const LEX_Q_DEF = "ماذا تعني «{t}»؟";
 /* unidades del diccionario de HF sin cuestionario del libro (las demás: QUIZ_TEMA["ltfh-" + unidad]) */
 const LEX_UNIDAD = { "A1-A2": "T1", A3: "T3", A4: "T4", A5: "T5", DM: "T14" };
 /* temas de Pensamiento crítico por el nombre del diccionario, en castellano y en euskera */
-const LEX_IPC = [["pensar", /pensar|pentsatu/i], ["argumentar", /argument|argudi/i], ["falacias", /falac|faltsu/i], ["sesgos", /sesgo|alborap/i],
-  ["dialogo", /di[aá]logo|elkarrizk/i], ["medios", /medios|hedabide/i], ["huella", /huella|aztarna/i], ["grupo", /grupo|taldea/i]];
+// (02-11, P-016, sesión 126) también los rótulos de la web china: sin ellos todo caía en «otros» y, como lexFold quita el chino,
+// no salía ningún cuestionario de léxico. Así la web china usa las mismas direcciones que la castellana (#cuestionarios/lex-ipc-…).
+const LEX_IPC = [["pensar", /pensar|pentsatu|自己思考/i], ["argumentar", /argument|argudi|论证/i], ["falacias", /falac|faltsu|谬误/i], ["sesgos", /sesgo|alborap|偏见$/i],
+  ["dialogo", /di[aá]logo|elkarrizk|对话/i], ["medios", /medios|hedabide|媒体/i], ["huella", /huella|aztarna|足迹/i], ["grupo", /grupo|taldea|群体/i]];
+const LEX_IPC_OTROS = [["prejuicios-y-etica", /偏见与伦理/]];   // (02-11) temas «otros» con rótulo chino: la clave castellana
 const LEX = {};   // clave → { terms: términos del tema, extra: resto del bloque o la materia }
 
 /* (02-11, P-040) lexFold y lexSkel, memorizadas: lexItems las aplica una y otra vez a los mismos términos y definiciones, y
    montar los cuestionarios de léxico al arrancar costaba ~0,7 s en un móvil. El resultado es el mismo. */
 const lexMemo = f => { const c = new Map(); return s => { const k = String(s || ""); let r = c.get(k); if (r === undefined){ r = f(k); c.set(k, r); } return r; }; };
-const lexFold = lexMemo(s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, " ").trim());
+// (02-11, sesión 126) conserva también los caracteres chinos: antes los quitaba y en la web china todos los términos daban «»
+// (lexUnicos los juntaba en uno y no salía ningún cuestionario de léxico). En las demás lenguas el resultado es el mismo.
+// (03-11) también las letras árabes, sin harakat ni tatweel: en árabe pasaba lo mismo (solo salían 1 cuestionario de léxico en
+// Filosofía 1.º y 5 en HF). Las demás lenguas no llevan esas letras: su resultado no cambia.
+const lexFold = lexMemo(s => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[\u064B-\u065F\u0670\u0640]/g, "").replace(/[^a-z0-9一-鿿\u0621-\u063A\u0641-\u064A\u0660-\u0669\u0671-\u06D3]+/g, " ").trim());
 /* esqueleto para comparar términos: sin tildes, plural ni grafías griegas alternativas */
 const lexSkel = lexMemo(s => lexFold(s).replace(/ch|kh/g, "j").replace(/ph/g, "f").replace(/th/g, "t").replace(/y/g, "i").replace(/k/g, "c").replace(/s\b/g, ""));
 const lexClean = s => String(s || "").replace(/\*\*/g, "");
 /* tapa en un texto las palabras del término (o de su misma familia: idealismo → ideal…) */
 function lexMask(text, term){
+  if (/[一-鿿]/.test(term)) return String(text).split(String(term).replace(/\*\*/g, "")).join("___");   // (02-11) chino: sin espacios entre palabras, se tapa el término tal cual
+  if (/[\u0621-\u064A]/.test(term)){   // (03-11) árabe: se tapa el término tal cual y también sin el artículo «ال»
+    const t = String(term).replace(/\*\*/g, ""), sin = t.replace(/^\u0627\u0644/, "");
+    const r = String(text).split(t).join("___");
+    return sin !== t && sin.length >= 3 ? r.split(sin).join("___") : r;
+  }
   const stems = lexFold(term).split(" ").filter(w => w.length >= 4).map(w => w.slice(0, Math.max(4, Math.ceil(w.length * 0.6))));   // participación → particip(ar)
   if (!stems.length) return text;
   return text.replace(/[\p{L}\p{N}]+/gu, w => stems.some(s => lexFold(w).startsWith(s)) ? "___" : w);
@@ -97,7 +110,8 @@ function lexTemaDe(g){
   if (g.subject === "fil" && /· M$/.test(g.tema || "")) return { id: "M" };   // (08-10) tema M (metafísica), sin número
   if (g.subject === "fil"){ const m = /(\d+)/.exec(g.tema || ""); return { id: m ? "T" + m[1] : "T4" }; }   // sin número: el taller de argumentación (tema 4)
   const hit = LEX_IPC.find(([, re]) => re.test(g.tema || ""));
-  return { id: hit ? hit[0] : "otros", etq: String(g.tema || "").split(" · ").pop() };
+  const otro = LEX_IPC_OTROS.find(([, re]) => re.test(g.tema || ""));
+  return { id: hit ? hit[0] : "otros", etq: String(g.tema || "").split(" · ").pop(), clave: otro && otro[0] };
 }
 function lexUnicos(list){ const seen = new Set(); return list.filter(g => { const s = lexSkel(g.t); if (seen.has(s)) return false; seen.add(s); return true; }); }
 /* Casos trampa (DICCIONARIO_TRAMPAS, diccionario.js): si el término preguntado tiene pareja en su tema, la pareja
@@ -127,7 +141,7 @@ function lexMontar(){
   DICCIONARIO.forEach(g => {
     if (!g.t || !g.def || !QUIZ_TEMAS[g.subject]) return;
     const tema = lexTemaDe(g); if (!tema) return;
-    const k = "lex-" + g.subject + "-" + (tema.id === "otros" ? lexFold(tema.etq).replace(/ /g, "-") : tema.id);
+    const k = "lex-" + g.subject + "-" + (tema.id === "otros" ? tema.clave || lexFold(tema.etq).replace(/ /g, "-") : tema.id);
     (grupos[k] = grupos[k] || { subject: g.subject, block: g.bloque, tema: tema.id, etq: tema.etq, terms: [] }).terms.push(g);
   });
   Object.entries(grupos).forEach(([k, gr]) => {
@@ -225,7 +239,10 @@ function renderQuizChips(){
   const box = document.getElementById("quizchips");
   const allEntries = Object.entries(QUIZZES).filter(([k, q]) => quizEnFiltro(k, q, true));
   const chip = ([k, q]) => `<button class="chip" data-quiz="${k}" aria-pressed="${k === quizKey}">${q.name}</button>`;
-  if (quizSubject === "all"){ box.innerHTML = allEntries.map(chip).join(""); }
+  if (quizSubject === "all"){
+    /* (02-11, P-001) los nombres ya no llevan la materia: si la lista mezcla materias (la maestra), la etiqueta la dice aparte */
+    const mezcla = new Set(allEntries.map(([, q]) => q.subject)).size > 1 && typeof chipMateria === "function";
+    box.innerHTML = allEntries.map(([k, q]) => mezcla ? `<button class="chip" data-quiz="${k}" aria-pressed="${k === quizKey}">${chipMateria(q.subject)}${q.name}</button>` : chip([k, q])).join(""); }
   else if (quizTema === "autor"){
     /* (12-10, Lote 3 · H4) «Por autor»: Del libro + sueltos de autor, ordenados por nombre */
     const aut = allEntries.filter(([k]) => quizSerie(k) === "autor").sort((a, b) => a[1].name.localeCompare(b[1].name));

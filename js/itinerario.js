@@ -104,7 +104,11 @@
   function gloTema(g){
     if (g.subject === "ipc" && g.k) return g.k;   /* (24-10) clave de tema que no se traduce (tools/build_diccionario_ipc.js) */
     if (g.subject === "ipc"){ var tt = String(g.tema || "").toLowerCase(); for (var i = 0; i < GLO_IPC.length; i++) if (tt.indexOf(GLO_IPC[i][0]) >= 0) return GLO_IPC[i][1]; return null; }
+    /* (02-11, P-116) temaN: el tema de la web cuando no es el de la unidad del libro (una unidad del libro reparte sus términos en dos temas) */
+    if (typeof g.temaN === "number") return g.temaN;
     if (g.subject === "hf"){ var Q = coll("QUIZ_TEMA"), c = Q && Q["ltfh-" + g.unidad], m = c && String(c).match(/^T(\d+)$/); return m ? +m[1] : (GLO_UNIDAD[g.unidad] || null); }
+    /* (02-11, P-116) «Filosofía · M» (Metafísica de 1.º) = 3.5, como en temaOf; en todas las lenguas la sigla sigue siendo M */
+    if (g.subject === "fil" && /·\s*M(?:\s|$|\()/.test(String(g.tema || ""))) return 3.5;
     return temaNum(g);
   }
 
@@ -759,14 +763,15 @@
      contenido (docs/35, regla 4.1). Las definiciones son las del Diccionario: en cada lengua salen ya traducidas. */
   function antesHtml(subject, tema, key){
     var Gl = G("DICCIONARIO"), T = coll("THEORY"); if (!Array.isArray(Gl) || !T || !view("diccionario")) return "";
-    var prim = temasDe(subject).filter(function(k){ return !T[k].sigla && !extraDe(k, T[k]) && temaOf("teoria", k, T[k]) === tema; })[0]; if (prim !== key) return "";
+    /* (02-11, P-116) la sigla M (Metafísica de 1.º) es la entrada principal de su tema; AP y AA de HF no (sus temas ya la tienen) */
+    var prim = temasDe(subject).filter(function(k){ return (!T[k].sigla || T[k].sigla === "M") && !extraDe(k, T[k]) && temaOf("teoria", k, T[k]) === tema; })[0]; if (prim !== key) return "";
     /* a igual importancia, primero el que antes sale en el texto del tema (el que el alumnado se encuentra antes) */
     var txt = strip(T[key].html || "").toLowerCase(), pos = function(g){ var i = txt.indexOf(strip(g.t).toLowerCase()); return i < 0 ? 1e9 : i; };
     var cs = Gl.filter(function(g){ return g && g.id && g.subject === subject && g.t && g.def && gloTema(g) === tema; }).map(function(g){ return { g: g, p: pos(g) }; })
       .sort(function(a, b){ return ((b.g.imp || 0) - (a.g.imp || 0)) || (a.p - b.p); }).slice(0, 5);
     if (!cs.length) return "";
     return '<details class="fin-bloque fin-amp itin-antes" style="--c:' + (SUBJ_COLOR[subject] || "var(--accent)") + '"><summary>' + esc(t("antes", { n: cs.length })) + '</summary><ul>' +
-      cs.map(function(x){ return '<li><a href="#diccionario/' + esc(x.g.id) + '"><strong>' + esc(strip(x.g.t)) + '</strong></a> · ' + esc(strip(x.g.def)) + '</li>'; }).join("") + '</ul></details>';
+      cs.map(function(x){ return '<li><a href="#diccionario/' + esc(x.g.id) + '"><strong>' + esc(strip(x.g.t)) + '</strong></a> · ' + esc(strip(x.g.def)).replace(/\*([^*]+)\*/g, '<i>$1</i>') + '</li>'; }).join("") + '</ul></details>';
   }
   function itemTema(go_, key){ var c = coll(COLL[go_]), o = c && c[key]; return o ? { subject: o.subject, tema: temaOf(go_, key, o) } : null; }
   function renderTeoria(k){

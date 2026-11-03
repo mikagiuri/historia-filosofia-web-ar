@@ -122,6 +122,10 @@
 
   function onShown(id){
     if (LANDING[id]){ ctx.subject = id; save(id); return; }
+    /* (02-11, P-117) si la dirección ya pide algo de esta vista (#teoria/hf-aa, también desde …/teoria/hf-aa/), no se abre
+       el primero de la materia: se veía un segundo otro tema y su clave pasaba a la barra. El enrutado abre el pedido
+       justo después, y su cargador pone los filtros de ese tema */
+    if ((location.hash || "").indexOf("#" + id + "/") === 0) return;
     var fn = APPLY[id];
     if (fn){ try { fn(ctx.subject); } catch (e){} }
   }

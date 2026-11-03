@@ -168,6 +168,7 @@ table.week tr:last-child td{border-bottom:0}
 .chips .quiz-tema{flex:1 1 100%;display:grid;gap:6px}
 .quiz-tema-chips{display:flex;gap:8px;flex-wrap:wrap}
 .chip{background:var(--surface);border:1px solid var(--line);color:var(--muted);padding:8px 14px;border-radius:999px;font-size:.9rem;font-weight:500}
+.chip-materia{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.03em}  /* (02-11, P-001) materia en las listas mezcladas de la maestra */
 .chip[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:transparent}
 .chip:hover:not([aria-pressed="true"]){color:var(--ink);border-color:var(--accent)}
 
@@ -706,7 +707,8 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 @media (min-width: 880px) {
   #tabs .navsec { position: relative; display: inline-flex; align-items: center; }
   /* separador (--line) entre las pestañas imprescindibles y las auxiliares (Historia, Juegos) */
-  #tabs .navsec.navsplit { border-inline-start: 1px solid var(--line); padding-inline-start: 10px; margin-inline-start: 8px; }
+  /* (03-11) separador más ceñido (antes 10 + 8 px), para que el menú de 1.º quepa en una fila */
+  #tabs .navsec.navsplit { border-inline-start: 1px solid var(--line); padding-inline-start: 6px; margin-inline-start: 4px; }
   #tabs .navgroup {
     display: inline-flex; align-items: center; gap: 6px; cursor: pointer; user-select: none;
     font-size: .92rem; font-weight: 600; color: var(--muted); margin: 0;
@@ -725,6 +727,12 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
   }
   #tabs .navsec.open > .navmenu { display: flex; }
   #tabs .navmenu button { width: 100%; text-align: start; white-space: nowrap; padding: 9px 12px; border-radius: 8px; }
+}
+/* (03-11, P-127) el menú, en UNA fila desde 1100 px: con «Razonar y escribir» (P-125), el de 1.º se partía a 1280 px
+   en es, fr, en y nl («Juegos» bajaba y la cabecera pasaba de 63 a 79 px). Huecos y relleno algo menores; mismos nombres */
+@media (min-width: 1100px) {
+  .bar-in:has(#tabs .navgroup) { gap: 10px; }
+  #tabs .navgroup { padding: 7px 8px; gap: 4px; font-size: .9rem; }
 }
 
 @media (max-width: 760px) {
@@ -898,15 +906,17 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
 /* (08-10) con el botón de idioma hay un botón más en la cabecera: entre 880 y 1099 px el menú horizontal
    se partía en dos líneas; botones y huecos algo más estrechos para que quepa en una */
 @media (min-width: 880px) and (max-width: 1099px) {
-  .bar-in:has(.langbtn) { gap: 10px; }
+  /* (03-11, P-127) huecos de 6 px (antes 10) y grupos de 5 px de relleno y .85rem (antes 7 px y .88rem): el neerlandés y el francés de 1.º se partían */
+  .bar-in:has(.langbtn) { gap: 6px; }
   .bar-in:has(.langbtn) .theme { width: 34px; height: 34px; }
   /* (12-10) con el grupo «Historia» (siete grupos) tampoco cabía: grupos más estrechos */
-  #tabs .navgroup { padding: 7px 7px; gap: 4px; font-size: .88rem; }
+  #tabs .navgroup { padding: 7px 5px; gap: 3px; font-size: .85rem; }
 }
 @media (min-width: 880px) and (max-width: 999px) {
   #tabs .navgroup::after { display: none; }
-  #tabs .navgroup { padding: 6px 5px; font-size: .85rem; }
-  .bar-in:has(.langbtn) { gap: 6px; }
+  /* (03-11, P-127) antes 6px 5px, .85rem y huecos de 6 px: 1.º se partía entre 880 y 920 px */
+  #tabs .navgroup { padding: 6px 4px; font-size: .82rem; }
+  .bar-in:has(.langbtn) { gap: 4px; }
 }
 @media (min-width: 761px) and (max-width: 879px) {
   /* ---- Cabecera con menú ☰ ---- */
