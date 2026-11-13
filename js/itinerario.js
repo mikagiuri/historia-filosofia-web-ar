@@ -811,7 +811,10 @@
     var orig = window[name]; if (typeof orig !== "function") return;
     window[name] = function(k){ var out = orig.apply(this, arguments); try { after(k); } catch (e){} return out; };
   }
-  wrap("loadTheory", renderTeoria); wrap("loadDeck", renderDeck); wrap("loadQuiz", renderQuiz); wrap("loadClase", renderClase);
+  /* (11-11) el rastro también se rehace al cambiar de tema dentro de #teoria (por la dirección, el buscador o un enlace
+     del texto): esos cambios llaman a loadTheory sin pasar por show(), y la miga se quedaba con el tema anterior */
+  function teoriaCambia(k){ renderTeoria(k); var v = document.getElementById("teoria"); if (v && v.classList.contains("active")) crumbs("teoria"); }
+  wrap("loadTheory", teoriaCambia); wrap("loadDeck", renderDeck); wrap("loadQuiz", renderQuiz); wrap("loadClase", renderClase);
 
   /* ---------- itinerario PAU (Historia de la Filosofía) ---------- */
   function pauPasos(){

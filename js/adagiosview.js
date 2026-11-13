@@ -13,9 +13,13 @@
 
 /* textos de interfaz: cadenas enteras (así los traduce web_i18n/ui/<lang>.json) */
 const ADG_TXT = {
-  coleccion: "المجموعة", colAdagios: "المأثورات", colFrases: "أقوال",
+  coleccion: "المجموعة", colAdagios: "المأثورات", colFrases: "أقوال", colMitos: "الأساطير",
   leadA: "شعارات لاتينية ويونانية يستشهد بها الفلاسفة منذ قرون: ماذا تقول، ومن أين تأتي، ومتى تُستعمل. تعلّموها كما يتعلمها تلميذ في عصر النهضة.",
   leadF: "أقوال فلسفية مشهورة: ماذا تعني، ومن أين تأتي، ومتى تُستعمل في تعليق على نص أو في إنشاء فلسفي.",
+  leadM: "أساطير يونانية ولاتينية تعيد الفلسفة حكايتها منذ قرون: ماذا يحدث فيها، ومن أين تأتي، وكيف تفكّر بها الفلسفة.",
+  relato: "الحكاية:", piensa: "كيف تفكّر بها الفلسفة:", pensar: "للتفكير:",
+  cuentaM: "عدد الأساطير: {n}", cuentaM1: "أسطورة واحدة",
+  pruebaAyudaM: "حاولوا أن تحكوا الأسطورة وأن تشرحوا كيف تفكّر بها الفلسفة؛ ثم انقروا على «اكشف».",
   epoca: "العصر", todas: "الكل", antigua: "القديمة", medieval: "الوسيطة", moderna: "الحديثة", contemporanea: "المعاصرة",
   usoF: "استعملها:", cuentaF: "{n} عبارات", cuentaF1: "قول واحد",
   ambito: "المجال", todos: "الكل",
@@ -74,6 +78,8 @@ let adgAmb = "all", adgPrueba = false, adgCol = "adagios", adgEp = "all";
 const ADG_EPOCAS = ["antigua", "medieval", "moderna", "contemporanea"];
 const ADG_EP_COLOR = { antigua: "ant", medieval: "med", moderna: "mod", contemporanea: "con" };   // color de época (styles.css)
 function adgHayFrases(){ return typeof CITAS !== "undefined" && CITAS && CITAS.length; }
+/* (12-11, P-056) tercera colección: «Mitos» (mitos.js, MITOS) */
+function adgHayMitos(){ return typeof MITOS !== "undefined" && MITOS && MITOS.length; }
 
 function adgEsc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 function adgBox(){ return document.getElementById("adagiosbox"); }
@@ -96,21 +102,21 @@ function adgNombres(txt, hechos){
 function adgFiltro(){
   const f = document.getElementById("adagiosfilter");
   if (!f) return;
-  f.innerHTML = (adgHayFrases() ? '<div class="fgroup"><span class="flabel">' + adgT("coleccion") + '</span>' +
-      [["adagios", "colAdagios"], ["frases", "colFrases"]].map(c => '<button class="fbtn" data-adg-c="' + c[0] + '" aria-pressed="' + (adgCol === c[0]) + '">' + adgT(c[1]) + '</button>').join("") + '</div>' : '') +
+  f.innerHTML = (adgHayFrases() || adgHayMitos() ? '<div class="fgroup"><span class="flabel">' + adgT("coleccion") + '</span>' +
+      [["adagios", "colAdagios"], ["frases", "colFrases"], ["mitos", "colMitos"]].filter(c => c[0] === "adagios" || (c[0] === "frases" ? adgHayFrases() : adgHayMitos())).map(c => '<button class="fbtn" data-adg-c="' + c[0] + '" aria-pressed="' + (adgCol === c[0]) + '">' + adgT(c[1]) + '</button>').join("") + '</div>' : '') +
     (adgCol === "frases" ?
       '<div class="fgroup"><span class="flabel">' + adgT("epoca") + '</span>' +
       ["all"].concat(ADG_EPOCAS).filter(e => e === "all" || CITAS.some(q => q.e === e)).map(e => '<button class="fbtn" data-adg-e="' + e + '" aria-pressed="' + (e === adgEp) + '">' +
         adgT(e === "all" ? "todas" : e) + '</button>').join("") + '</div>' :
       '<div class="fgroup"><span class="flabel">' + adgT("ambito") + '</span>' +
-      ["all"].concat(ADG_AMB).map(a => '<button class="fbtn" data-adg-a="' + a + '" aria-pressed="' + (a === adgAmb) + '">' +
+      ["all"].concat(ADG_AMB).filter(a => a === "all" || adgCol !== "mitos" || MITOS.some(m => m.amb === a)).map(a => '<button class="fbtn" data-adg-a="' + a + '" aria-pressed="' + (a === adgAmb) + '">' +
         adgT(a === "all" ? "todos" : a) + '</button>').join("") + '</div>') +
     '<div class="fgroup"><span class="flabel">' + adgT("modo") + '</span>' +
     [["leer", false], ["prueba", true]].map(m => '<button class="fbtn" data-adg-m="' + m[0] + '" aria-pressed="' + (adgPrueba === m[1]) + '">' + adgT(m[0]) + '</button>').join("") + '</div>';
   f.querySelectorAll("[data-adg-a]").forEach(b => b.addEventListener("click", () => { adgAmb = b.dataset.adgA; adgFiltro(); adgRender(); }));
   f.querySelectorAll("[data-adg-e]").forEach(b => b.addEventListener("click", () => { adgEp = b.dataset.adgE; adgFiltro(); adgRender(); }));
   f.querySelectorAll("[data-adg-c]").forEach(b => b.addEventListener("click", () => { adgCol = b.dataset.adgC; adgLead(); adgFiltro(); adgRender();
-    if (typeof setDeepHash === "function") setDeepHash("adagios", adgCol === "frases" ? "frases" : ""); }));
+    if (typeof setDeepHash === "function") setDeepHash("adagios", adgCol === "adagios" ? "" : adgCol); }));
   f.querySelectorAll("[data-adg-m]").forEach(b => b.addEventListener("click", () => { adgPrueba = b.dataset.adgM === "prueba"; adgFiltro(); adgRender(); }));
 }
 
@@ -157,7 +163,24 @@ function adgFichaF(q, i){
       '<p class="adg-o"><span class="adg-k">' + adgT("origen") + '</span> ' + (q.img ? adgEsc(q.a) : autor) + ', ' + adgEsc(q.o) + '.</p>' +
     '</div></article>';
 }
-function adgLead(){ const l = document.querySelector("#adagios .lead"); if (l) l.textContent = adgT(adgCol === "frases" ? "leadF" : "leadA"); }
+/* (12-11, P-056) ficha de un mito: título, nombres originales, el relato y, debajo, qué piensa la filosofía, cuándo usarlo,
+   de dónde viene, los temas y una pregunta. En «Ponte a prueba» solo se ve el título. */
+function adgFichaM(m){
+  const h = new Set(), N = t => adgNombres(t, h);
+  return '<article class="adg-card adg-mito' + (adgPrueba ? ' adg-oculta' : '') + '" id="adgm-' + adgEsc(m.id) + '" data-ep="ant">' +
+    '<h2 class="adg-es">' + adgEsc(m.t) + '</h2>' +
+    (m.nom ? '<p class="adg-nom">' + adgEsc(m.nom) + '</p>' : '') +
+    (adgPrueba ? '<p class="adg-ayuda">' + adgT("pruebaAyudaM") + '</p><button class="adg-desc" aria-expanded="false">' + adgT("descubrir") + '</button>' : '') +
+    '<div class="adg-cuerpo">' +
+      '<p class="adg-rel"><span class="adg-k">' + adgT("relato") + '</span> ' + adgEsc(m.rel) + '</p>' +
+      '<p class="adg-sen"><span class="adg-k">' + adgT("piensa") + '</span> ' + N(m.sen) + '</p>' +
+      (m.uso ? '<p class="adg-uso"><span class="adg-k">' + adgT("uso") + '</span> ' + N(m.uso) + '</p>' : '') +
+      '<p class="adg-o"><span class="adg-k">' + adgT("origen") + '</span> ' + N(m.o) + '.</p>' +
+      adgTemas({ t: m.th }) +
+      (m.p ? '<p class="adg-pensar"><strong>' + adgT("pensar") + '</strong> ' + adgEsc(m.p) + '</p>' : '') +
+    '</div></article>';
+}
+function adgLead(){ const l = document.querySelector("#adagios .lead"); if (l) l.textContent = adgT(adgCol === "frases" ? "leadF" : adgCol === "mitos" ? "leadM" : "leadA"); }
 
 function adgHistoria(){
   const h = new Set(), p = k => '<p>' + adgNombres(adgT(k), h) + '</p>';
@@ -183,6 +206,13 @@ function adgRender(){
     box.innerHTML = '<div class="adg-grid">' + lf.map(([q, i]) => adgFichaF(q, i)).join("") + '</div>' +
       '<p class="adg-cuenta">' + (lf.length === 1 ? adgT("cuentaF1") : adgT("cuentaF", { n: lf.length })) + '</p>';
     if (window.langFragGrc) window.langFragGrc(box);   // DUA D0.6: griego suelto de las frases con lang="grc" (la cita griega ya lo lleva)
+    return;
+  }
+  if (adgCol === "mitos" && adgHayMitos()){
+    const lm = MITOS.filter(m => adgAmb === "all" || m.amb === adgAmb);
+    box.innerHTML = '<div class="adg-grid">' + lm.map(adgFichaM).join("") + '</div>' +
+      '<p class="adg-cuenta">' + (lm.length === 1 ? adgT("cuentaM1") : adgT("cuentaM", { n: lm.length })) + '</p>';
+    if (window.langFragGrc) window.langFragGrc(box);
     return;
   }
   const l = ADAGIOS.filter(a => adgAmb === "all" || a.amb === adgAmb);
@@ -211,6 +241,15 @@ function adgRender(){
 function loadAdagios(arg){
   const id = String(arg || "").split("/")[0];
   if (id === "frases" && adgHayFrases()){ adgCol = "frases"; adgLead(); adgFiltro(); adgRender(); return; }
+  /* (12-11, P-056) #adagios/mitos y #adagios/mitos/<id> */
+  if (id === "mitos" && adgHayMitos()){
+    const mid = String(arg || "").split("/")[1] || "", m = MITOS.find(x => x.id === mid);
+    adgCol = "mitos"; if (m && adgAmb !== "all" && m.amb !== adgAmb) adgAmb = "all";
+    adgLead(); adgFiltro(); adgRender();
+    const em = m && document.getElementById("adgm-" + m.id);
+    if (em){ em.classList.add("adg-marca"); setTimeout(() => em.scrollIntoView({ block: "center" }), 80); setTimeout(() => em.classList.remove("adg-marca"), 2600); }
+    return;
+  }
   if (adgCol !== "adagios"){ adgCol = "adagios"; adgLead(); adgFiltro(); }
   const a = ADAGIOS.find(x => x.id === id);
   if (a && adgAmb !== "all" && a.amb !== adgAmb){ adgAmb = "all"; adgFiltro(); }

@@ -3561,6 +3561,11 @@ figure.mq .mq-ir{font-size:.85rem;font-weight:600;color:var(--accent);white-spac
 #adagios .adg-fig-ret img{ object-position:50% 18% }
 #adagios .adg-fig-ret figcaption{ font-size:.85rem; color:var(--ink) }
 #adagios .adg-cita{ font-size:1.12rem; font-style:italic; font-weight:500; line-height:1.4 }
+/* (12-11, P-056) colección «Mitos»: nombres originales, relato y pregunta para pensar */
+#adagios .adg-nom{ margin:0; font-size:.9rem; color:var(--muted) }
+#adagios .adg-rel{ font-size:.97rem }
+#adagios .adg-pensar{ font-size:.95rem; background:var(--surface-2); border-radius:8px; padding:.5rem .7rem }
+#adagios .adg-pensar strong{ color:var(--accent) }
 
 
 /* ==== css/polemicas.css ==== */
