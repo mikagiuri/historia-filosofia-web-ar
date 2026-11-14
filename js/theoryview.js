@@ -195,6 +195,19 @@ function theoryShowPart(body, i, scroll){
   document.querySelectorAll("#toc [data-thpart]").forEach(a => a.classList.toggle("on", !theoryWhole && +a.dataset.thpart === theoryPart));
   if (scroll) body.scrollIntoView({ block: "start" });
 }
+/* (13-11, 3b-0074 T1) «← Anterior», «Siguiente →» y el índice cambian de apartado sin recargar: ahora cada apartado deja
+   también su dirección (#teoria/<tema>%2F<n>, la misma que el «§» y la portada) y su entrada en el historial, para que
+   «atrás» vuelva al apartado anterior y no a la portada, y la dirección se pueda copiar. pushState no dispara hashchange
+   (no se repinta nada); al volver con «atrás» sí, y el enrutado abre ese apartado. Las páginas de un apartado troceado
+   (HF, «(2/3)») no tienen número propio: no apuntan nada. */
+function theoryApuntaApartado(body){
+  if (theoryWhole || typeof activeViewId === "function" && activeViewId() !== "teoria") return;
+  const part = body.querySelectorAll(".th-part")[theoryPart], h = part && part.querySelector("h2[data-sec]");
+  if (!h) return;
+  const dir = "#teoria/" + encodeURIComponent(theoryKey + "/" + h.dataset.sec);
+  if (location.hash === dir) return;
+  try { history.pushState(null, "", dir); } catch (e){}
+}
 
 function theorySplitParts(body, html, trocear){
   const tmp = document.createElement("div");
@@ -234,8 +247,8 @@ function theorySplitParts(body, html, trocear){
     body.appendChild(sec);
   });
   body.insertAdjacentHTML("beforeend", navHtml);
-  body.querySelectorAll("[data-thprev]").forEach(b => b.addEventListener("click", () => theoryShowPart(body, theoryPart - 1, true)));
-  body.querySelectorAll("[data-thnext]").forEach(b => b.addEventListener("click", () => theoryShowPart(body, theoryPart + 1, true)));
+  body.querySelectorAll("[data-thprev]").forEach(b => b.addEventListener("click", () => { theoryShowPart(body, theoryPart - 1, true); theoryApuntaApartado(body); }));
+  body.querySelectorAll("[data-thnext]").forEach(b => b.addEventListener("click", () => { theoryShowPart(body, theoryPart + 1, true); theoryApuntaApartado(body); }));
   body.querySelectorAll("[data-thwhole]").forEach(b => b.addEventListener("click", () => { theoryWhole = !theoryWhole; theoryShowPart(body, theoryPart, true); }));
 }
 
@@ -353,8 +366,12 @@ function loadTheory(k){
     theoryPendiente = _arg;
     cargarTextos("theory", k).then(() => {
       const p = theoryPendiente; if (p == null) return;
+      /* (13-11, 3b-0072) si lo que llega es el texto de otro tema (p. ej. el tema por defecto, pedido al abrir «Teoría»
+         desde la portada justo antes que el apartado tocado), el pendiente se deja para la carga de su propio tema: antes se
+         borraba aquí y, al llegar después el texto del tema pedido, ya no había nada que abrir (solo salía la cabecera) */
+      if (!textosListos("theory", theorySecArg(p).k)) return;   // sin red se queda el título (no se reintenta en bucle)
       theoryPendiente = null;
-      if (textosListos("theory", theorySecArg(p).k)) loadTheory(p);   // sin red se queda el título (no se reintenta en bucle)
+      loadTheory(p);
     });
     return;
   }
@@ -383,6 +400,7 @@ function loadTheory(k){
       if (theoryWhole) return;
       ev.preventDefault();
       theoryShowPart(body, +a.dataset.thpart, true);
+      theoryApuntaApartado(body);
     }));
     theoryShowPart(body, theoryPart, false);
     if (_sec){ const h = body.querySelector('h2[data-sec="' + _sec + '"]'), parts = [...body.querySelectorAll(".th-part")], pi = h ? parts.indexOf(h.closest(".th-part")) : -1;

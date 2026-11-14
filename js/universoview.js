@@ -43,7 +43,7 @@ function uaCausasRender(i){
   const opts = uaBaraja(C.objetos.flatMap(x => x.r));
   box.querySelector(".ua-causas-filas").innerHTML = C.causas.map((c, k) =>
     '<label class="ua-fila"><span>' + c + '</span><select data-k="' + k + '"><option value="">' + uaT("eligeOpc") + "</option>" +
-    opts.map(x => '<option value="' + x.replace(/"/g, "&quot;") + '">' + x + "</option>").join("") + "</select></label>").join("");
+    opts.map(x => '<option value="' + x.replace(/"/g, "&quot;") + '">' + x + "</option>").join("") + '</select><span class="ua-marca" aria-hidden="true"></span></label>').join("");
   box.querySelector(".ua-res").textContent = "";
   box.querySelectorAll(".ua-elige button").forEach((b, k) => b.setAttribute("aria-pressed", String(k === i)));
   box.dataset.obj = i;
@@ -51,7 +51,9 @@ function uaCausasRender(i){
 function uaCausasComprobar(){
   const C = UNIVERSO.cambio, box = document.getElementById("ua-causas"), o = C.objetos[+box.dataset.obj];
   let n = 0;
-  box.querySelectorAll("select").forEach(s => { const ok = s.value === o.r[+s.dataset.k]; n += ok; s.classList.toggle("ua-bien", ok); s.classList.toggle("ua-malo", !ok); });
+  box.querySelectorAll("select").forEach(s => { const ok = s.value === o.r[+s.dataset.k]; n += ok; s.classList.toggle("ua-bien", ok); s.classList.toggle("ua-malo", !ok);
+    s.setAttribute("aria-invalid", String(!ok));   /* daltonismo (aupa-0048): ✓/✗ visible al lado (oculto al lector, que oye «no válido») */
+    const m = s.nextElementSibling; if (m) { m.textContent = ok ? "✓" : "✗"; m.className = "ua-marca " + (ok ? "ua-bien" : "ua-malo"); } });
   box.querySelector(".ua-res").innerHTML = (n === 4 ? '<span class="ua-ok">' + uaT("causasOk") + "</span>" : uaT("causasMal", { n })) + (o.id === "roble" && n === 4 ? " " + C.roble : "");
 }
 

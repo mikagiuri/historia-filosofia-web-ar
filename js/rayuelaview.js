@@ -46,6 +46,10 @@ function rayEsc(s){ return String(s == null ? "" : s).replace(/&/g, "&amp;").rep
 function rayData(){ const d = store.get(RAY_KEY, {}); return d && typeof d === "object" ? d : {}; }
 function raySave(d){ store.set(RAY_KEY, d); }
 function rayLinea(id){ return (RAY_R.lineas.find(l => l.id === id) || { color: "#888" }).color; }
+/* daltonismo (aupa-0048): la contradicción no se reconoce solo por el rojo: en el plano va en rombo (no círculo), con tramo discontinuo y su prefijo */
+function rayForma(s, x, y, r, c){ return s.tipo === "contradiccion"
+  ? '<polygon class="ray-rombo" points="' + x + "," + (y - r - 3) + " " + (x + r + 3) + "," + y + " " + x + "," + (y + r + 3) + " " + (x - r - 3) + "," + y + '" stroke="' + c + '" fill="' + c + '"/>'
+  : '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" stroke="' + c + '" fill="' + c + '"/>'; }
 const RAY_HOY = new Date().toISOString().slice(0, 10);
 function rayRedAbierta(n){ const r = (RAY_R.redes || []).find(x => x.n === (n || 1)); return !r || !r.abre || r.abre <= RAY_HOY; }
 function rayOpciones(s){ return s.opciones.filter(o => !o.red || rayRedAbierta(o.red)); }
@@ -93,7 +97,7 @@ function rayMapa(via){
   let edges = "", nodes = "";
   for (let i = 1; i < nodos.length; i++){
     const s = R.estaciones[nodos[i - 1]], o = (s.opciones || []).find(x => x.to === nodos[i]) || {};
-    edges += '<path class="ray-e now' + (o.red ? " tr" : "") + '" d="' + seg(pos[i - 1], pos[i]) + '" stroke="' + (s.tipo === "contradiccion" ? "#d23a2b" : rayLinea(s.linea)) + '"/>';
+    edges += '<path class="ray-e now' + (o.red ? " tr" : "") + (s.tipo === "contradiccion" ? " contra" : "") + '" d="' + seg(pos[i - 1], pos[i]) + '" stroke="' + (s.tipo === "contradiccion" ? "#d23a2b" : rayLinea(s.linea)) + '"/>';
   }
   nodos.forEach((n, i) => {
     const [x, y] = pos[i], lx = maxX + 30;
@@ -105,10 +109,10 @@ function rayMapa(via){
       return;
     }
     const s = R.estaciones[n], c = s.tipo === "contradiccion" ? "#d23a2b" : rayLinea(s.linea);
-    nodes += '<g class="ray-st vis' + (i === actual ? " cur" : "") + '">' + (i === actual ? '<circle class="ray-halo" cx="' + x + '" cy="' + y + '" r="24" stroke="' + c + '"/>' : "") +
-      '<circle cx="' + x + '" cy="' + y + '" r="16" stroke="' + c + '" fill="' + c + '"/>' +
+    nodes += '<g class="ray-st vis' + (i === actual ? " cur" : "") + (s.tipo === "contradiccion" ? " contra" : "") + '">' + (i === actual ? '<circle class="ray-halo" cx="' + x + '" cy="' + y + '" r="24" stroke="' + c + '"/>' : "") +
+      rayForma(s, x, y, 16, c) +
       '<text class="ray-num" x="' + x + '" y="' + (y + 4.5) + '" text-anchor="middle">' + rayEsc(n) + '</text>' +
-      '<text class="ray-lbl" x="' + lx + '" y="' + (y + 5) + '">' + rayEsc(s.titulo.replace(/^[^:]*:\s*/, "")) + '</text></g>';
+      '<text class="ray-lbl" x="' + lx + '" y="' + (y + 5) + '">' + rayEsc(s.tipo === "contradiccion" ? s.titulo : s.titulo.replace(/^[^:]*:\s*/, "")) + '</text></g>';
   });
   const W = maxX + 30 + 300, H = Y0 + (nodos.length - 1) * DY + 34;
   return '<svg class="ray-map ruta" viewBox="0 0 ' + W + ' ' + H + '" style="max-width:' + W + 'px" role="img" aria-label="' + rayEsc(RAY_TXT.mapaAria) + '">' + edges + nodes + '</svg>';
@@ -142,7 +146,7 @@ function rayMapaTodas(){
   Object.entries(ed).forEach(([k, c]) => {
     const [a, b] = k.split(">"), [x1, y1] = pos[a], [x2, y2] = pos[b], s = R.estaciones[a], o = (s.opciones || []).find(x => x.to === b) || {};
     const h = (y2 - y1) * 0.55;
-    edges += '<path class="ray-e now' + (o.red ? " tr" : "") + '" style="stroke-width:' + Math.min(4 + 2 * c, 14) + 'px" d="M' + x1 + " " + y1 + " C" + x1 + " " + (y1 + h) + " " + x2 + " " + (y2 - h) + " " + x2 + " " + y2 +
+    edges += '<path class="ray-e now' + (o.red ? " tr" : "") + (s.tipo === "contradiccion" ? " contra" : "") + '" style="stroke-width:' + Math.min(4 + 2 * c, 14) + 'px" d="M' + x1 + " " + y1 + " C" + x1 + " " + (y1 + h) + " " + x2 + " " + (y2 - h) + " " + x2 + " " + y2 +
       '" stroke="' + (s.tipo === "contradiccion" ? "#d23a2b" : rayLinea(s.linea)) + '"/>';
   });
   nodos.forEach(n => {
@@ -154,7 +158,7 @@ function rayMapaTodas(){
       return;
     }
     const s = R.estaciones[n], c = s.tipo === "contradiccion" ? "#d23a2b" : rayLinea(s.linea);
-    nodes += '<g class="ray-st vis"><title>' + rayEsc(n + " · " + s.titulo) + ' (' + cnt[n] + ')</title><circle cx="' + x + '" cy="' + y + '" r="16" stroke="' + c + '" fill="' + c + '"/>' +
+    nodes += '<g class="ray-st vis' + (s.tipo === "contradiccion" ? " contra" : "") + '"><title>' + rayEsc(n + " · " + s.titulo) + ' (' + cnt[n] + ')</title>' + rayForma(s, x, y, 16, c) +
       '<text class="ray-num" x="' + x + '" y="' + (y + 4.5) + '" text-anchor="middle">' + rayEsc(n) + '</text></g>';
   });
   const W = Math.max(...Object.values(pos).map(p => p[0])) + 30, H = Math.max(...Object.values(pos).map(p => p[1])) + 30;
@@ -174,7 +178,7 @@ function rayListaTodas(){
 function rayLeyenda(via){
   const usadas = new Set((via && via.todas ? Object.keys(rayTodas().cnt) : (via && via.ruta) || []).map(n => RAY_R.estaciones[n] && RAY_R.estaciones[n].linea));
   const ls = RAY_R.lineas.filter(l => usadas.has(l.id));
-  return ls.length ? '<div class="ray-legend"><b>' + RAY_TXT.leyenda + '</b>' + ls.map(l => '<span><i style="background:' + l.color + '"></i>' + rayEsc(l.nombre) + '</span>').join("") + '</div>' : "";
+  return ls.length ? '<div class="ray-legend"><b>' + RAY_TXT.leyenda + '</b>' + ls.map(l => '<span' + (l.id === "l-contradiccion" ? ' class="contra"' : "") + '><i style="background:' + l.color + '"></i>' + rayEsc(l.nombre) + '</span>').join("") + '</div>' : "";
 }
 
 /* ---------- pantallas ---------- */

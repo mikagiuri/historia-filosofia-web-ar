@@ -149,6 +149,24 @@ function routeFromHash(){
   }
 }
 window.addEventListener("hashchange", routeFromHash);
+/* (13-11, 3b-0074 T2) Punto de lectura al volver: se apunta el desplazamiento de cada dirección mientras se lee y, al
+   volver a ella con «atrás» o «adelante» (popstate), se recupera después del repintado. Antes, al ir de la teoría a una
+   biografía o una lectura y volver, show() subía al principio y se perdía el sitio (de 19 215 px a 578). Solo al volver
+   por el historial: un enlace nuevo abre la página arriba, como siempre. Va después de routeFromHash: cuando corre,
+   la vista ya está repintada y los eventos scroll del cambio aún no han llegado, así que lo apuntado sigue intacto. */
+(function puntoDeLectura(){
+  const POS = Object.create(null);
+  let porHistorial = false, apuntar = true;
+  window.addEventListener("scroll", () => { if (apuntar) POS[location.hash] = window.scrollY; }, { passive: true });
+  window.addEventListener("popstate", () => { porHistorial = true; });
+  window.addEventListener("hashchange", () => {
+    const y = POS[location.hash], volver = porHistorial; porHistorial = false;
+    if (!volver || !(y > 0)) return;
+    apuntar = false;   // que el salto al principio de show() no pise lo apuntado mientras se recupera
+    const ir = () => window.scrollTo(0, y);
+    requestAnimationFrame(() => { ir(); requestAnimationFrame(() => { ir(); apuntar = true; }); });
+  });
+})();
 /* enrutado inicial tras cargar todos los scripts (para pasar por el show() ya envuelto por navctx).
    (29-09) Las webs del alumnado no tienen portada: sin hash, se abre la ficha de su materia. */
 document.addEventListener("DOMContentLoaded", function(){

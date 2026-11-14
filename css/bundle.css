@@ -271,6 +271,11 @@ table.rubrica tr.r-sec td{background:var(--surface-2);font-weight:600;color:var(
 .opt.wrong{background:var(--bad-bg);border-color:var(--bad)}
 .opt.wrong .k{background:var(--bad);border-color:var(--bad);color:var(--on-bad)}
 .opt.dim{opacity:.55}
+/* daltonismo (aupa-0048): ✓ en la correcta y ✗ en la elegida mal, a la derecha (al final en RTL); borde discontinuo en la errónea */
+.opt.correct::after,.opt.wrong::after{flex:0 0 auto;margin-inline-start:auto;padding-inline-start:4px;font-weight:700;font-size:1.1rem;line-height:24px}
+.opt.correct::after{content:"✓";content:"✓" / "";color:var(--ok)}
+.opt.wrong::after{content:"✗";content:"✗" / "";color:var(--bad)}
+.opt.wrong{border-style:dashed;border-width:2px;padding:12px 14px}
 .fb{margin-top:16px;padding:13px 15px;border-radius:11px;background:var(--surface-2);border:1px solid var(--line-soft);
   font-size:.92rem;color:var(--ink);display:none}
 .fb.show{display:block}
@@ -807,6 +812,7 @@ ol.itin-temas li.temas-exp li.temas-extra button{margin-inline-start:0;width:100
   /* ---- Cuestionarios: opciones a lo ancho ---- */
   .opts { gap: 10px; }
   .opt { width: 100%; text-align: start; padding: 12px 14px; }
+  .opt.wrong { padding: 11px 13px; }   /* borde de 2 px (aupa-0048): sin salto */
   .q-card { padding: 16px; }
 
   /* ---- Mapas y esquemas: alto útil y scroll dentro de su caja ---- */
@@ -1060,6 +1066,11 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #retos .retos-opt.correct .k{ color:var(--ok); }
 #retos .retos-opt.wrong{ border-color:var(--bad); background:var(--bad-bg); }
 #retos .retos-opt.wrong .k{ color:var(--bad); }
+/* daltonismo (aupa-0048): como .opt en styles.css */
+#retos .retos-opt.correct::after, #retos .retos-opt.wrong::after{ flex:0 0 auto; margin-inline-start:auto; padding-inline-start:4px; font-weight:700; font-size:1.1rem; line-height:1.4 }
+#retos .retos-opt.correct::after{ content:"✓"; content:"✓" / ""; color:var(--ok); }
+#retos .retos-opt.wrong::after{ content:"✗"; content:"✗" / ""; color:var(--bad); }
+#retos .retos-opt.wrong{ border-style:dashed; border-width:2px; padding:calc(.7rem - 1px) calc(.85rem - 1px); }
 #retos .retos-fb{ margin-top:.9rem; padding:.75rem .85rem; border-inline-start:3px solid var(--accent); background:var(--surface-2);
   border-radius:8px; font-size:.92rem; line-height:1.45; opacity:0; max-height:0; overflow:hidden; transition:opacity .25s; }
 #retos .retos-fb.show{ opacity:1; max-height:none; }
@@ -2016,6 +2027,11 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #rayuela .ray-legend{ display:flex; flex-wrap:wrap; gap:.3rem .9rem; font-size:.78rem; color:var(--muted); padding:.4rem .5rem 0; }
 #rayuela .ray-legend b{ width:100%; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; }
 #rayuela .ray-legend i{ display:inline-block; width:18px; height:5px; border-radius:3px; margin-inline-end:.35rem; vertical-align:middle; }
+/* daltonismo (aupa-0048): contradicción = rombo y trazo discontinuo, también en la leyenda */
+#rayuela .ray-e.contra{ stroke-dasharray:10 7; stroke-linecap:butt; }
+#rayuela .ray-st .ray-rombo{ stroke-width:4; stroke-linejoin:round; }
+#rayuela .ray-legend span.contra i{ background:repeating-linear-gradient(to right, currentColor 0 6px, transparent 6px 10px) !important; color:#d23a2b; }
+#rayuela .ray-legend span.contra::after{ content:"◆"; content:"◆" / ""; color:#d23a2b; margin-inline-start:.3rem; }
 #rayuela .ray-intro{ font-size:1.05rem; line-height:1.65; margin:0 0 .8rem; max-width:62ch; }
 #rayuela .ray-stats{ color:var(--muted); font-size:.92rem; }
 #rayuela .ray-actions{ display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; margin:1rem 0; }
@@ -2205,6 +2221,11 @@ a.brand { text-decoration: none; color: inherit; cursor: pointer; }
 #logica .lg-tabla .lg-f{ color:var(--bad) }
 #logica .lg-tabla tr.lg-ok td{ background:var(--ok-bg) }
 #logica .lg-tabla tr.lg-contra td{ background:var(--bad-bg); font-weight:700 }
+/* daltonismo (aupa-0048): la fila del contraejemplo lleva ✗ y borde, no solo el fondo rosa */
+#logica .lg-tabla tr.lg-contra td{ border-block:2px solid var(--bad) }
+#logica .lg-tabla tr.lg-contra td:first-child{ border-inline-start:2px solid var(--bad) }
+#logica .lg-tabla tr.lg-contra td:last-child{ border-inline-end:2px solid var(--bad) }
+#logica .lg-tabla tr.lg-contra td:first-child::before{ content:"✗ "; content:"✗ " / ""; color:var(--bad); font-family:var(--sans) }
 #logica .lg-veredicto{ border-radius:10px; padding:.55rem .8rem; margin:.6rem 0; font-weight:600 }
 #logica .lg-tautologia{ background:var(--ok-bg); color:var(--ink) }
 #logica .lg-contradiccion{ background:var(--bad-bg); color:var(--ink) }
@@ -2586,6 +2607,12 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #universo select, #universo .ua-campos select{ font:inherit; padding:.3rem .45rem; border:1px solid var(--line); border-radius:8px; background:var(--surface-2); color:var(--ink); max-width:100% }
 #universo select.ua-bien{ border-color:var(--ok); box-shadow:0 0 0 2px var(--ok) }
 #universo select.ua-malo{ border-color:var(--bad); box-shadow:0 0 0 2px var(--bad) }
+/* daltonismo (aupa-0048): además del color, ✓/✗ junto a cada desplegable y borde discontinuo en el malo */
+#universo select.ua-malo{ border-style:dashed; border-width:2px }
+#universo .ua-fila .ua-marca{ display:inline-block; min-width:1.2em; font-weight:700; text-align:center }
+#universo .ua-fila .ua-marca:empty{ display:none }
+#universo .ua-marca.ua-bien{ color:var(--ok) }
+#universo .ua-marca.ua-malo{ color:var(--bad) }
 #universo .ua-campos{ display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:flex-end; margin:.6rem 0 }
 #universo .ua-campos label{ display:flex; flex-direction:column; gap:.2rem; font-size:.88rem; color:var(--muted) }
 #universo .ua-res{ margin-top:.6rem }
@@ -2594,10 +2621,33 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 
 /* capacidades y sangre */
 #universo .ua-marcar td{ text-align:center }
+/* móvil (aupa-0048, aparte): la tabla «¿Qué puede hacer cada viviente?» cabe entera a 390 px; sin mayúsculas ni espaciado
+   que corten «Una planta» o «Desplazarse». Si en otra lengua no cabe, se desplaza y una sombra en el borde lo indica. */
+@media (max-width:640px){
+  #universo .ua-marcar{ font-size:.85rem; table-layout:auto }
+  #universo .ua-marcar th{ text-transform:none; letter-spacing:0; font-size:.76rem; line-height:1.25; padding:.4rem .2rem }
+  #universo .ua-marcar thead th{ text-align:center; vertical-align:bottom }
+  #universo .ua-marcar tbody th{ color:var(--ink); font-weight:600; padding-inline-start:0 }
+  #universo .ua-marcar td{ padding:.4rem .15rem }
+  #universo .ua-tabla-wrap{ background:linear-gradient(to right, var(--surface) 30%, transparent) left / 1.2rem 100% no-repeat local,
+    linear-gradient(to left, var(--surface) 30%, transparent) right / 1.2rem 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgba(0,0,0,.22), transparent) left / .6rem 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.22), transparent) right / .6rem 100% no-repeat scroll }
+}
 #universo .ua-marcar input{ width:1.15rem; height:1.15rem; accent-color:var(--accent) }
 #universo td.ua-bien, #universo li.ua-bien{ background:color-mix(in srgb, var(--ok) 18%, transparent) }
 #universo td.ua-malo, #universo li.ua-malo{ background:var(--bad-bg) }
 #universo td.ua-duda{ background:color-mix(in srgb, var(--hf) 18%, transparent) }
+/* daltonismo (aupa-0048): símbolo además del fondo; «/ ""» = texto alternativo vacío (el lector de pantalla no lo lee) */
+#universo td.ua-bien::after, #universo td.ua-malo::after, #universo td.ua-duda::after{ display:inline-block; margin-inline-start:.25em; font-weight:700; width:.9em }
+#universo td.ua-bien::after{ content:"✓"; content:"✓" / ""; color:var(--ok) }
+#universo td.ua-malo::after{ content:"✗"; content:"✗" / ""; color:var(--bad) }
+#universo td.ua-duda::after{ content:"?"; content:"?" / ""; color:var(--muted) }
+#universo td.ua-malo{ outline:2px dashed var(--bad); outline-offset:-3px }
+#universo li.ua-bien > span:first-child::before, #universo li.ua-malo > span:first-child::before{ display:inline-block; width:1.2em; font-weight:700 }
+#universo li.ua-bien > span:first-child::before{ content:"✓"; content:"✓" / ""; color:var(--ok) }
+#universo li.ua-malo > span:first-child::before{ content:"✗"; content:"✗" / ""; color:var(--bad) }
+#universo li.ua-malo{ outline:2px dashed var(--bad); outline-offset:-2px }
 #universo .ua-animales{ list-style:none; padding:0; margin:.6rem 0; display:grid; gap:.35rem }
 #universo .ua-animales li{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:.4rem; padding:.3rem .5rem; border-radius:8px; border-bottom:1px solid var(--line-soft) }
 #universo .ua-dos{ display:flex; gap:.35rem }
@@ -2732,6 +2782,11 @@ html[dir="rtl"] #logicabox .lg-ley-f{ text-align:right; }   /* la fórmula va en
 #palabra .pa-exp{ font-size:.9rem; margin:.45rem 0 0 !important }
 #palabra li.pa-bien{ background:color-mix(in srgb, var(--ok) 15%, transparent) }
 #palabra li.pa-malo{ background:var(--bad-bg) }
+/* daltonismo (aupa-0048): ✓/✗ delante de la frase corregida y borde discontinuo en la mala (el símbolo, con texto alternativo vacío) */
+#palabra .pa-items li.pa-malo{ border:2px dashed var(--bad) }
+#palabra li.pa-bien .pa-frase::before, #palabra li.pa-malo .pa-frase::before{ display:inline-block; width:1.3em; font-family:var(--sans); font-weight:700 }
+#palabra li.pa-bien .pa-frase::before{ content:"✓"; content:"✓" / ""; color:var(--ok) }
+#palabra li.pa-malo .pa-frase::before{ content:"✗"; content:"✗" / ""; color:var(--bad) }
 #palabra .pa-con-fig{ display:flow-root }
 #palabra .pa-fig{ float:inline-end; width:9rem; margin:.2rem 0 .6rem 1rem }
 #palabra .pa-fig img{ width:100%; border-radius:10px; display:block }

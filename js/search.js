@@ -352,6 +352,7 @@
 
   function activate(i){
     var e = current[i]; if (!e) return;
+    var q = input ? input.value : "";   // lo buscado, antes de cerrar (T3)
     close();
     if (typeof show === "function") show(e.go);
     if (e.go === "diccionario" && e.glo){
@@ -366,7 +367,41 @@
     }
     var fn = LOADER[e.go];
     if (e.arg && fn && typeof window[fn] === "function") window[fn](e.arg);
-    if (e.find) setTimeout(function(){ scrollToText(e.go, e.find); }, 120);
+    /* (13-11, 3b-0074 T3) un resultado de «Apartado» abría el apartado por el principio y había que buscar a mano la frase
+       (en el tema 2, «animal político» está a media docena de pantallas). Ahora se va a lo buscado: la frase entera si
+       está tal cual en el apartado; si no, su palabra más larga que esté. Se reintenta un rato por si el texto del tema
+       aún está llegando (carga diferida). La dirección sigue siendo la del apartado (#teoria/<tema>%2F<n>): no hace falta
+       llevar el bloque en ella y las direcciones de siempre no cambian */
+    var find = e.find || (e.type === "الفقرة" ? loBuscado(e.text, q) : "");
+    /* (14-11, 3b-0083) show() cambia location.hash y el «hashchange» llega DESPUÉS, como tarea aparte: routeFromHash
+       vuelve a llamar a show(), que sube al principio (scrollTo(0,0)). Si el texto del tema ya estaba cargado, el primer
+       intento saltaba a la frase al momento y ese hashchange lo deshacía: la frase quedaba resaltada pero fuera de la
+       pantalla (1171 px en web_hf_eu, una de cada tres veces). Ahora el primer intento espera a que pase el hashchange y,
+       tras el salto, se comprueba un momento después que la frase sigue en pantalla; si no, se vuelve a llevar a ella */
+    if (find){
+      /* el texto de alrededor puede seguir llegando y empujar la frase hacia abajo: se vigila un momento (1,5 s) y se
+         deja de vigilar en cuanto quien lee toca, pulsa una tecla o mueve la rueda, para no pelear con su desplazamiento */
+      var suelta = false, mano = function(){ suelta = true; };
+      ["wheel", "touchstart", "keydown", "mousedown"].forEach(function(t){ window.addEventListener(t, mano, { once: true, passive: true }); });
+      var intenta = function(n){
+        if (scrollToText(e.go, find)){ [300, 800, 1500].forEach(function(ms){ setTimeout(sigueAhi, ms); }); return; }
+        if (n < 15) setTimeout(function(){ intenta(n + 1); }, 200);
+      };
+      var sigueAhi = function(){
+        if (suelta) return;
+        var f = document.querySelector("#" + e.go + " .search-flash"); if (!f) return;
+        var r = f.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > (window.innerHeight || 800)) f.scrollIntoView({ block: "center" });
+      };
+      setTimeout(function(){ intenta(0); }, 60);
+    }
+  }
+  function loBuscado(texto, consulta){
+    var t = fold(texto || "").replace(/\s+/g, ""), c = String(consulta || "").trim();
+    if (!c) return "";
+    if (t.indexOf(fold(c).replace(/\s+/g, "")) >= 0) return c;
+    var pal = c.split(/\s+/).filter(function(w){ return w.length > 3 && t.indexOf(fold(w)) >= 0; }).sort(function(a, b){ return b.length - a.length; });
+    return pal[0] || "";
   }
 
   function onKey(e){
