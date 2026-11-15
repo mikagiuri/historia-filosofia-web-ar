@@ -4013,10 +4013,10 @@ figure.mq .mq-ir{font-size:.85rem;font-weight:600;color:var(--accent);white-spac
 
 /* ===== «Los lugares de…»: itinerario vital en un mapa (lugaresview.js; el dibujo lo hace tools/build_mapa.js) =====
    El SVG no trae colores: salen de las variables de la web, y es igual en claro y en oscuro. --e es el color de la época.
-   --lg-e1 … --lg-e8 son los tonos suaves de los estados (fronteras de época): cuál lleva cada uno lo dice
+   --lg-e1 … --lg-e9 son los tonos suaves de los estados (fronteras de época): cuál lleva cada uno lo dice
    tools/fronteras_epoca.js. El azul se reserva para el mar, ríos y lagos: ningún estado va en azul. El color no va solo: cada estado lleva su frontera trazada y su nombre. */
 #biografias .bio-lug{ --lg-tierra:#e8e2d5; --lg-mar:#c9def0; --lg-costa:#8d897f; --lg-rio:#7fa6c9; --lg-lago:#c9def0; --lg-mar-rot:#2f5578;
-  --lg-frontera:#4f493f; --lg-rot:#4a463e; --lg-halo:#fbf8f1; --lg-e1:#f2e7ad; --lg-e2:#eeb48c; --lg-e3:#efd4ce; --lg-e4:#d0e5d2; --lg-e5:#e1d6ec; --lg-e6:#e0e3b4; --lg-e7:#d9c3ad; --lg-e8:#e3b7d3; --lg-ruta:#8f1d2c; }
+  --lg-frontera:#4f493f; --lg-rot:#4a463e; --lg-halo:#fbf8f1; --lg-e1:#f2e7ad; --lg-e2:#eeb48c; --lg-e3:#efd4ce; --lg-e4:#d0e5d2; --lg-e5:#e1d6ec; --lg-e6:#e0e3b4; --lg-e7:#d9c3ad; --lg-e8:#e3b7d3; --lg-e9:#df9a9a; --lg-ruta:#8f1d2c; --lg-ciudad:#1d6b45; --lg-pueblo:#6a645a; }
 /* (15-11) El mapa se ve igual de día que de noche (lo pide el profesor): sus colores no cambian con el tema, y dentro
    del dibujo se fijan también la tinta, el fondo y el color de la época a sus valores de día. */
 #biografias .lg-svg{ --ink:#22242b; --surface:#faf8f3; --on-e:#fff; --e:#267A5B }
@@ -4030,8 +4030,10 @@ figure.mq .mq-ir{font-size:.85rem;font-weight:600;color:var(--accent);white-spac
 #biografias .lg-mar{fill:var(--lg-mar)}
 #biografias .lg-tierra{fill:var(--lg-tierra);stroke:var(--lg-costa);stroke-width:.6;stroke-linejoin:round}
 #biografias .lg-e1{fill:var(--lg-e1)} #biografias .lg-e2{fill:var(--lg-e2)} #biografias .lg-e3{fill:var(--lg-e3)}
-#biografias .lg-e7{fill:var(--lg-e7)} #biografias .lg-e4{fill:var(--lg-e4)} #biografias .lg-e5{fill:var(--lg-e5)} #biografias .lg-e6{fill:var(--lg-e6)} #biografias .lg-e8{fill:var(--lg-e8)}
+#biografias .lg-e7{fill:var(--lg-e7)} #biografias .lg-e4{fill:var(--lg-e4)} #biografias .lg-e5{fill:var(--lg-e5)} #biografias .lg-e6{fill:var(--lg-e6)} #biografias .lg-e8{fill:var(--lg-e8)} #biografias .lg-e9{fill:var(--lg-e9)}
 #biografias .lg-sin-costa{stroke:none}
+#biografias .lg-trama{stroke:none;pointer-events:none}   /* rayas del tono de otro estado (hegemonía): el relleno es un <pattern> del propio SVG */
+#biografias .lg-k .lg-trama{stroke:var(--lg-frontera);stroke-width:1}
 #biografias .lg-lago{fill:var(--lg-lago);stroke:var(--lg-rio);stroke-width:.4}
 #biografias .lg-rio{fill:none;stroke:var(--lg-rio);stroke-width:.7;stroke-linecap:round;stroke-linejoin:round}
 #biografias .lg-frontera{fill:none;stroke:var(--lg-costa);stroke-width:.55;stroke-dasharray:2 2;opacity:.8}
@@ -4040,6 +4042,7 @@ figure.mq .mq-ir{font-size:.85rem;font-weight:600;color:var(--accent);white-spac
 #biografias .lg-anio{font:600 8.5px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--lg-mar);stroke-width:3px;stroke-linejoin:round}
 #biografias .lg-ruta{fill:none;stroke:var(--lg-ruta);stroke-width:1.5;stroke-dasharray:4 2.5;stroke-linecap:round;opacity:.95}   /* (15-11) granate: no es el color de ningún estado */
 #biografias .lg-flecha, #biografias .lg-punto{fill:var(--lg-ruta)}
+#biografias .lg-ciudad{fill:var(--lg-ciudad);stroke:var(--lg-halo);stroke-width:.7}   /* ciudad de un poder en tierra de otro (las polis de Asia Menor, Italia o Tracia): un punto, sin nombre */
 #biografias .lg-con-tramo .lg-tramo{opacity:.28}   /* (15-11) con una parada elegida, solo destaca el tramo por el que llegó */
 #biografias .lg-con-tramo .lg-tramo.on{opacity:1}
 #biografias .lg-tramo.on .lg-ruta{stroke-width:2.4;stroke-dasharray:none;opacity:1}
@@ -4053,9 +4056,10 @@ figure.mq .mq-ir{font-size:.85rem;font-weight:600;color:var(--accent);white-spac
 #biografias .lg-rot-pais{font:600 8.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;fill:var(--lg-rot)}
 #biografias .lg-rot-menor{font:600 7.5px var(--sans);letter-spacing:.04em;fill:var(--lg-rot)}
 #biografias .lg-rot-interno{font:italic 500 8px var(--sans);fill:var(--lg-rot)}
+#biografias .lg-rot-pueblo{font:italic 500 8px var(--sans);fill:var(--lg-pueblo)}   /* pueblos sin Estado, sobre la tierra sin color */
 #biografias .lg-rot-mar{font:italic 9px var(--serif);fill:var(--lg-mar-rot);stroke:var(--lg-mar);stroke-opacity:1}
 :root[lang="ar"] #biografias .lg-rot{letter-spacing:0;font-size:10px}   /* el árabe no admite separar letras */
-:root[lang="ar"] #biografias .lg-rot-menor, :root[lang="ar"] #biografias .lg-rot-interno{font-size:8.5px}
+:root[lang="ar"] #biografias .lg-rot-menor, :root[lang="ar"] #biografias .lg-rot-interno, :root[lang="ar"] #biografias .lg-rot-pueblo{font-size:8.5px}
 #biografias .lg-m{cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent}
 #biografias .lg-toque{fill:transparent}
 #biografias .lg-c{fill:var(--ink);stroke:var(--surface);stroke-width:1.2}
@@ -4066,6 +4070,12 @@ figure.mq .mq-ir{font-size:.85rem;font-weight:600;color:var(--accent);white-spac
 #biografias .lg-m.on .lg-c{fill:var(--e);stroke:var(--ink);stroke-width:1.4}
 #biografias .lg-m.on .lg-num{fill:var(--on-e)}
 #biografias .lg-m:focus-visible .lg-toque{fill:none;stroke:var(--accent);stroke-width:2.5;opacity:1}
+/* la leyenda, dentro del marco del mapa: las muestras llevan las clases del dibujo y por eso su mismo color, de día y de noche */
+#biografias .lg-leyenda{border-top:1px solid var(--line);padding:7px 10px 8px;font:500 .78rem/1.35 var(--sans);color:var(--ink)}
+#biografias .lg-leyenda ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px}
+#biografias .lg-leyenda li{display:flex;align-items:center;gap:5px}
+#biografias .lg-k{flex:none;width:14px;height:14px;display:block}
+#biografias .lg-k-m{stroke:var(--lg-frontera);stroke-width:1}
 /* la parada elegida, bajo el mapa */
 #biografias .lg-ficha{display:flex;gap:10px;align-items:flex-start;margin-top:10px;padding:10px 12px;min-height:4.2em;border:1px solid var(--line);border-inline-start:3px solid var(--e);border-radius:10px;border-start-start-radius:0;border-end-start-radius:0;background:var(--surface-2)}
 #biografias .lg-ficha.vacia{align-items:center}

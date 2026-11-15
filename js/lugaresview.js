@@ -7,12 +7,18 @@
    fronteras; cada estado lleva además su tono y su frontera trazada). Los nombres de las paradas, las fechas y lo que hizo en cada sitio van en la lista, en HTML, y se
    traducen como el resto. Tocar un número resalta su parada en la lista, la enseña bajo el mapa y marca el tramo por el que llegó a ella; tocar una parada
    resalta su número. Con el teclado: tabulador hasta el número o la parada, Intro o espacio.
-   «Modo repaso»: esconde nombres y explicaciones; cada parada se descubre al tocarla. */
+   «Modo repaso»: esconde nombres y explicaciones; cada parada se descubre al tocarla.
+   Un año de fronteras negativo es antes de Cristo: el mapa dice «Hacia 387 a. C.», no «Fronteras de -387».
+   Si el mapa trae «leyenda» (qué poder es cada color, qué son los puntos), va en HTML dentro del marco del mapa,
+   debajo del dibujo, con muestras que usan las mismas clases que el mapa (mismo color de día y de noche). Una entrada
+   con «trama» lleva además las rayas del mapa: usa su mismo <pattern> (lg-<id>-t<tono>), que está en el SVG de arriba. */
 const LUG_T = { toca: "المس رقمًا على الخريطة أو محطة في القائمة.", repaso: "وضع المراجعة: إخفاء الأسماء",
   repasoToca: "وضع المراجعة: أيّ مكان يمثّله كل رقم؟ المسه للتحقق.", parada: "المحطة {n}", km: "{n} كم",
   mapa: "خريطة بالمحطات المرقّمة", credito: "السواحل والأنهار والحدود الحالية: Natural Earth.",
   fronteras: "حدود عام {n}",
-  creditoEpoca: "السواحل والأنهار: Natural Earth (ملك عام). حدود عام {n} تقريبية: رُكّبت من المقاطعات الحالية في Natural Earth." };
+  creditoEpoca: "السواحل والأنهار: Natural Earth (ملك عام). حدود عام {n} تقريبية: رُكّبت من المقاطعات الحالية في Natural Earth.",
+  haciaAC: "نحو سنة {n} ق.م", leyenda: "مفتاح الخريطة",
+  creditoAC: "السواحل والأنهار: Natural Earth (ملك عام). حدود نحو سنة {n} ق.م تقريبية: رُكّبت من المقاطعات الحالية في Natural Earth ومن خطوط مرسومة باليد." };
 
 function lugEsc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
 function lugDatos(id){
@@ -21,6 +27,18 @@ function lugDatos(id){
 }
 /* lo que se lee de una parada: cabecera (lugar y fechas) y texto; «t» puede llevar <em> */
 function lugCab(s){ return '<span class="lg-cab"><b class="lg-lugar">' + lugEsc(s.lugar) + '</b> <span class="lg-fechas">' + lugEsc(s.fechas) + '</span></span>'; }
+
+/* la leyenda: una muestra por entrada, con las clases del mapa (lg-e4…) para que el color sea el mismo */
+function lugLeyenda(L, id){
+  if (!(L.leyenda || []).length) return "";
+  return '<figcaption class="lg-leyenda"><ul aria-label="' + LUG_T.leyenda + '">' + L.leyenda.map(x =>
+    '<li><svg class="lg-k" viewBox="0 0 14 14" aria-hidden="true" focusable="false">' +
+      (x.ciudad ? '<circle class="lg-ciudad" cx="7" cy="7" r="3.6"/>' : '<rect class="lg-tierra' + (x.tono ? " lg-e" + (+x.tono) : "") + ' lg-k-m" x="1" y="1" width="12" height="12" rx="2.5"/>' +
+        (x.trama ? '<rect class="lg-trama lg-k-m" fill="url(#lg-' + lugEsc(id) + '-t' + (+x.trama) + ')" x="1" y="1" width="12" height="12" rx="2.5"/>' : '')) +
+    '</svg><span>' + lugEsc(x.t) + '</span></li>').join("") + '</ul></figcaption>';
+}
+/* el año de las fronteras, como se lee: «1880» o, antes de Cristo, «387» con su fórmula */
+function lugAnio(anio, conAC, sinAC){ const n = +anio; return n < 0 ? conAC.replace("{n}", lugEsc(-n)) : sinAC.replace("{n}", lugEsc(anio)); }
 
 function lugaresDe(p){
   const D = p && lugDatos(p.id);
@@ -31,7 +49,7 @@ function lugaresDe(p){
     (L.intro ? '<p class="lg-intro">' + lugEsc(L.intro) + '</p>' : '') +
     '<div class="lg-cuerpo">' +
       '<div class="lg-col">' +
-        '<figure class="lg-mapa" role="group" aria-label="' + LUG_T.mapa + '">' + D.svg + '</figure>' +
+        '<figure class="lg-mapa" role="group" aria-label="' + LUG_T.mapa + '">' + D.svg + lugLeyenda(L, p.id) + '</figure>' +
         (L.notaFronteras ? '<p class="lg-nota lg-nota-fr">' + lugEsc(L.notaFronteras) + '</p>' : '') +
         '<div class="lg-ficha" aria-live="polite"></div>' +
       '</div>' +
@@ -42,7 +60,7 @@ function lugaresDe(p){
           '<span class="lg-txt">' + lugCab(s) + '<span class="lg-t">' + s.t + '</span></span></button></li>').join("") + '</ol>' +
       '</div>' +
     '</div>' +
-    '<p class="lg-nota">' + (L.nota ? lugEsc(L.nota) + ' ' : '') + (L.fronteras ? LUG_T.creditoEpoca.replace("{n}", lugEsc(L.fronteras)) : LUG_T.credito) + '</p>' +
+    '<p class="lg-nota">' + (L.nota ? lugEsc(L.nota) + ' ' : '') + (L.fronteras ? lugAnio(L.fronteras, LUG_T.creditoAC, LUG_T.creditoEpoca) : LUG_T.credito) + '</p>' +
   '</div>';
 }
 
@@ -69,7 +87,7 @@ function lugaresActivar(caja){
         ts.setAttribute("x", t.getAttribute("x")); if (i) ts.setAttribute("dy", "1.15em"); ts.textContent = txt; t.appendChild(ts);
       });
     });
-    sec.querySelectorAll("[data-anio]").forEach(t => { t.textContent = LUG_T.fronteras.replace("{n}", t.dataset.anio); });
+    sec.querySelectorAll("[data-anio]").forEach(t => { t.textContent = +t.dataset.anio < 0 ? LUG_T.haciaAC.replace("{n}", -t.dataset.anio) : LUG_T.fronteras.replace("{n}", t.dataset.anio); });
     sec.querySelectorAll("[data-km]").forEach(t => { t.textContent = LUG_T.km.replace("{n}", t.dataset.km); });
     function pintar(){
       sec.classList.toggle("lg-repaso-on", repaso);
