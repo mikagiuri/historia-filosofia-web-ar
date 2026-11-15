@@ -4011,6 +4011,93 @@ figure.mq .mq-ir{font-size:.85rem;font-weight:600;color:var(--accent);white-spac
 #epocas .bio-life{margin:4px 0 0;color:var(--muted)} #epocas .figwrap{margin:12px 0} #epocas .epo-ir{margin:0}
 [dir="rtl"] #epocas .epo-arr{display:inline-block;transform:scaleX(-1)}
 
+/* ===== «Los lugares de…»: itinerario vital en un mapa (lugaresview.js; el dibujo lo hace tools/build_mapa.js) =====
+   El SVG no trae colores: salen de las variables de la web, y es igual en claro y en oscuro. --e es el color de la época.
+   --lg-e1 … --lg-e7 son los tonos suaves de los estados (fronteras de época): cuál lleva cada uno lo dice
+   tools/fronteras_epoca.js. El azul se reserva para el mar, ríos y lagos: ningún estado va en azul. El color no va solo: cada estado lleva su frontera trazada y su nombre. */
+#biografias .bio-lug{ --lg-tierra:#e8e2d5; --lg-mar:#c9def0; --lg-costa:#8d897f; --lg-rio:#7fa6c9; --lg-lago:#c9def0; --lg-mar-rot:#2f5578;
+  --lg-frontera:#4f493f; --lg-rot:#4a463e; --lg-halo:#fbf8f1; --lg-e1:#f2e7ad; --lg-e2:#eeb48c; --lg-e3:#efd4ce; --lg-e4:#d0e5d2; --lg-e5:#e1d6ec; --lg-e6:#e0e3b4; --lg-e7:#d9c3ad; --lg-ruta:#8f1d2c; }
+/* (15-11) El mapa se ve igual de día que de noche (lo pide el profesor): sus colores no cambian con el tema, y dentro
+   del dibujo se fijan también la tinta, el fondo y el color de la época a sus valores de día. */
+#biografias .lg-svg{ --ink:#22242b; --surface:#faf8f3; --on-e:#fff; --e:#267A5B }
+#biografias [data-b="ant"] .lg-svg{--e:#8F6600} #biografias [data-b="med"] .lg-svg{--e:#8A4B84} #biografias [data-b="ren"] .lg-svg{--e:#B83220}
+#biografias [data-b="mod"] .lg-svg{--e:#0A76A0} #biografias [data-b="ilu"] .lg-svg{--e:#5B4FC4} #biografias [data-b="con"] .lg-svg{--e:#267A5B}
+#biografias .lg-intro{font-size:1rem;line-height:1.6;max-width:70ch;margin:0 0 12px}
+#biografias .lg-cuerpo{display:grid;gap:12px}
+#biografias .lg-col{min-width:0}
+#biografias .lg-mapa{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+#biografias .lg-svg{display:block;width:100%;height:auto;direction:ltr}
+#biografias .lg-mar{fill:var(--lg-mar)}
+#biografias .lg-tierra{fill:var(--lg-tierra);stroke:var(--lg-costa);stroke-width:.6;stroke-linejoin:round}
+#biografias .lg-e1{fill:var(--lg-e1)} #biografias .lg-e2{fill:var(--lg-e2)} #biografias .lg-e3{fill:var(--lg-e3)}
+#biografias .lg-e7{fill:var(--lg-e7)} #biografias .lg-e4{fill:var(--lg-e4)} #biografias .lg-e5{fill:var(--lg-e5)} #biografias .lg-e6{fill:var(--lg-e6)}
+#biografias .lg-sin-costa{stroke:none}
+#biografias .lg-lago{fill:var(--lg-lago);stroke:var(--lg-rio);stroke-width:.4}
+#biografias .lg-rio{fill:none;stroke:var(--lg-rio);stroke-width:.7;stroke-linecap:round;stroke-linejoin:round}
+#biografias .lg-frontera{fill:none;stroke:var(--lg-costa);stroke-width:.55;stroke-dasharray:2 2;opacity:.8}
+#biografias .lg-epoca{stroke:var(--lg-frontera);stroke-width:1.35;stroke-dasharray:none;stroke-linejoin:round;stroke-linecap:round;opacity:1}   /* fronteras de época: continuas y marcadas */
+#biografias .lg-interna{fill:none;stroke:var(--lg-frontera);stroke-width:.7;stroke-dasharray:.6 2.2;stroke-linecap:round}   /* estados de dentro de un imperio (recuadro ampliado) */
+#biografias .lg-anio{font:600 8.5px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--lg-mar);stroke-width:3px;stroke-linejoin:round}
+#biografias .lg-ruta{fill:none;stroke:var(--lg-ruta);stroke-width:1.5;stroke-dasharray:4 2.5;stroke-linecap:round;opacity:.95}   /* (15-11) granate: no es el color de ningún estado */
+#biografias .lg-flecha, #biografias .lg-punto{fill:var(--lg-ruta)}
+#biografias .lg-con-tramo .lg-tramo{opacity:.28}   /* (15-11) con una parada elegida, solo destaca el tramo por el que llegó */
+#biografias .lg-con-tramo .lg-tramo.on{opacity:1}
+#biografias .lg-tramo.on .lg-ruta{stroke-width:2.4;stroke-dasharray:none;opacity:1}
+#biografias .lg-tramo.on .lg-flecha{stroke:var(--lg-ruta);stroke-width:2.2;stroke-linejoin:round}
+#biografias .lg-marco{fill:none;stroke:none}
+#biografias .lg-caja, #biografias .lg-marco-det{fill:none;stroke:var(--ink);stroke-width:.8}
+#biografias .lg-guia{fill:none;stroke:var(--ink);stroke-width:.5;stroke-dasharray:1.5 2;opacity:.7}
+#biografias .lg-escala path{fill:none;stroke:var(--ink);stroke-width:.9}
+#biografias .lg-km{font:500 8px var(--sans);fill:var(--ink)}
+#biografias .lg-rot{pointer-events:none;paint-order:stroke;stroke:var(--lg-halo);stroke-opacity:.55;stroke-width:2.4px;stroke-linejoin:round}
+#biografias .lg-rot-pais{font:600 8.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;fill:var(--lg-rot)}
+#biografias .lg-rot-menor{font:600 7.5px var(--sans);letter-spacing:.04em;fill:var(--lg-rot)}
+#biografias .lg-rot-interno{font:italic 500 8px var(--sans);fill:var(--lg-rot)}
+#biografias .lg-rot-mar{font:italic 9px var(--serif);fill:var(--lg-mar-rot);stroke:var(--lg-mar);stroke-opacity:1}
+:root[lang="ar"] #biografias .lg-rot{letter-spacing:0;font-size:10px}   /* el árabe no admite separar letras */
+:root[lang="ar"] #biografias .lg-rot-menor, :root[lang="ar"] #biografias .lg-rot-interno{font-size:8.5px}
+#biografias .lg-m{cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent}
+#biografias .lg-toque{fill:transparent}
+#biografias .lg-c{fill:var(--ink);stroke:var(--surface);stroke-width:1.2}
+#biografias .lg-num{font:600 11.5px var(--sans);fill:var(--surface);pointer-events:none;font-variant-numeric:tabular-nums}
+#biografias .lg-m:hover .lg-c{fill:var(--e)}
+#biografias .lg-m:hover .lg-num{fill:var(--on-e)}
+#biografias .lg-m.on .lg-toque{fill:var(--e);opacity:.28}
+#biografias .lg-m.on .lg-c{fill:var(--e);stroke:var(--ink);stroke-width:1.4}
+#biografias .lg-m.on .lg-num{fill:var(--on-e)}
+#biografias .lg-m:focus-visible .lg-toque{fill:none;stroke:var(--accent);stroke-width:2.5;opacity:1}
+/* la parada elegida, bajo el mapa */
+#biografias .lg-ficha{display:flex;gap:10px;align-items:flex-start;margin-top:10px;padding:10px 12px;min-height:4.2em;border:1px solid var(--line);border-inline-start:3px solid var(--e);border-radius:10px;border-start-start-radius:0;border-end-start-radius:0;background:var(--surface-2)}
+#biografias .lg-ficha.vacia{align-items:center}
+#biografias .lg-pista{color:var(--muted);font-size:.92rem}
+#biografias .lg-n{flex:none;display:grid;place-items:center;width:1.75em;height:1.75em;border-radius:50%;background:var(--ink);color:var(--surface);font:600 .82rem var(--sans);font-variant-numeric:tabular-nums}
+#biografias .lg-ficha .lg-n, #biografias .lg-lista li.on .lg-n{background:var(--e);color:var(--on-e)}
+#biografias .lg-txt{min-width:0;display:block}
+#biografias .lg-cab{display:flex;flex-wrap:wrap;gap:0 10px;align-items:baseline}
+#biografias .lg-lugar{font-family:var(--serif);font-size:1.05rem;font-weight:600}
+#biografias .lg-fechas{font:600 .8rem var(--mono);color:var(--e)}
+#biografias .lg-t{display:block;font-family:var(--serif);font-size:1rem;line-height:1.5;margin-top:2px}
+/* la lista */
+#biografias .lg-barra{margin:0 0 6px}
+#biografias .lg-lista{list-style:none;margin:0;padding:0}
+#biografias .lg-p{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:start;padding:8px 10px;border:1px solid transparent;border-radius:10px;background:none;font:inherit;color:var(--ink);cursor:pointer}
+#biografias .lg-p:hover{background:var(--surface-2)}
+#biografias .lg-lista li.on .lg-p{background:var(--surface-2);border-color:var(--e)}
+#biografias .lg-p:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+#biografias .lg-nota-fr{margin:6px 2px 0}   /* la frase de las fronteras de la época, pegada al mapa */
+#biografias .lg-nota{font-size:.8rem;line-height:1.45;color:var(--muted);margin:10px 0 0;max-width:80ch}
+/* modo repaso: nombres y explicaciones tapados hasta que se toca la parada */
+#biografias .lg-repaso-on .lg-p:not([aria-pressed="true"]) .lg-lugar{color:transparent;background:var(--line);border-radius:4px;user-select:none}
+#biografias .lg-repaso-on .lg-p:not([aria-pressed="true"]) .lg-t{display:none}
+@media (min-width:760px){
+  #biografias .lg-cuerpo{grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:20px;align-items:start}
+  #biografias .lg-col:first-child{position:sticky;top:76px}
+}
+@media print{
+  #biografias .lg-barra, #biografias .lg-ficha{display:none !important}
+  #biografias .lg-mapa{max-width:9cm}
+}
+
 
 /* ==== css/imprescindibles.css ==== */
 /* Señalética de importancia (19-10): puntos 5-1 con el color de la materia; solo variables de styles.css. */

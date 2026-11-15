@@ -1,6 +1,6 @@
 "use strict";
 /* ===== Vista Biografías ===== depende de: biografias.js (BIOGRAFIAS), biografias_retratos.js (BIOGRAFIAS_RETRATOS, opcional),
-   theory.js (THEORY, para los enlaces a los temas) =====
+   theory.js (THEORY, para los enlaces a los temas), lugaresview.js (opcional: el mapa «Los lugares de…» de la ficha) =====
    Biografías de los pensadores que aparecen en la teoría de Filosofía 1.º y de Historia de la
    Filosofía 2.º. Listado en orden cronológico, filtrable por materia (si la web trae las dos),
    época y búsqueda; cada tarjeta abre la ficha del pensador (enlace profundo #biografias/<id>).
@@ -409,6 +409,7 @@ function loadBiografia(id){
       '</header>' +
       '<div class="bio-bio">' + (p.bio || "") + '</div>' +
       bioVida(p) +
+      (typeof lugaresDe === "function" ? lugaresDe(p) : "") +   // «Los lugares de…»: su itinerario en un mapa (lugaresview.js), si lo tiene
       bioCitas(p) +
       (p.anecdota ? '<div class="bio-sec bio-anec"><h3><span>طُرفة</span>' + (p.tradicion ? ' <span class="bio-trad">حسب التقليد</span>' : '') + '</h3>' +
         p.anecdota + (p.fuente ? '<p class="bio-fuente"><span>المصدر</span>: ' + bioEsc(p.fuente) + '</p>' : '') + '</div>' : '') +
@@ -430,6 +431,7 @@ function loadBiografia(id){
     (window.show || show)("teoria");
     if (typeof window.loadTheory === "function") window.loadTheory(b.dataset.th);
   }));
+  if (typeof lugaresActivar === "function") lugaresActivar(box);
   const img = box.querySelector(".bio-portrait img");
   if (img) img.addEventListener("click", () => { if (typeof openLightbox === "function") openLightbox(img.src, img.alt); });
   window.scrollTo(0, 0);
