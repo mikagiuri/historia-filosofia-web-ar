@@ -55,7 +55,20 @@ function lugaresActivar(caja){
     const marcas = [...sec.querySelectorAll(".lg-m[data-n]")], filas = [...sec.querySelectorAll(".lg-p[data-n]")];
     let sel = 0, repaso = false;
     // los rótulos del mapa (países, mar) y las barras de escala: el texto viene de los datos, ya traducido
-    sec.querySelectorAll("[data-rot]").forEach(t => { const r = (L.rotulos || [])[+t.dataset.rot]; if (r) t.textContent = r.t; });
+    sec.querySelectorAll("[data-rot]").forEach(t => {
+      const r = (L.rotulos || [])[+t.dataset.rot]; if (!r) return;
+      const txt = String(r.t), cortes = [];   // dónde puede partirse: en un espacio (que se quita) o tras un guion (que se queda)
+      for (let i = 1; i < txt.length - 1; i++){ if (txt[i] === " ") cortes.push([i, i + 1]); else if (txt[i] === "-") cortes.push([i + 1, i + 1]); }
+      if (!r.partir || !cortes.length){ t.textContent = txt; return; }
+      // un nombre largo, en dos líneas: se parte por donde quedan más iguales
+      let c = cortes[0];
+      for (const x of cortes) if (Math.abs(x[0] - (txt.length - x[1])) < Math.abs(c[0] - (txt.length - c[1]))) c = x;
+      t.textContent = "";
+      [txt.slice(0, c[0]), txt.slice(c[1])].forEach((txt, i) => {
+        const ts = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+        ts.setAttribute("x", t.getAttribute("x")); if (i) ts.setAttribute("dy", "1.15em"); ts.textContent = txt; t.appendChild(ts);
+      });
+    });
     sec.querySelectorAll("[data-anio]").forEach(t => { t.textContent = LUG_T.fronteras.replace("{n}", t.dataset.anio); });
     sec.querySelectorAll("[data-km]").forEach(t => { t.textContent = LUG_T.km.replace("{n}", t.dataset.km); });
     function pintar(){

@@ -4013,10 +4013,10 @@ figure.mq .mq-ir{font-size:.85rem;font-weight:600;color:var(--accent);white-spac
 
 /* ===== «Los lugares de…»: itinerario vital en un mapa (lugaresview.js; el dibujo lo hace tools/build_mapa.js) =====
    El SVG no trae colores: salen de las variables de la web, y es igual en claro y en oscuro. --e es el color de la época.
-   --lg-e1 … --lg-e7 son los tonos suaves de los estados (fronteras de época): cuál lleva cada uno lo dice
+   --lg-e1 … --lg-e8 son los tonos suaves de los estados (fronteras de época): cuál lleva cada uno lo dice
    tools/fronteras_epoca.js. El azul se reserva para el mar, ríos y lagos: ningún estado va en azul. El color no va solo: cada estado lleva su frontera trazada y su nombre. */
 #biografias .bio-lug{ --lg-tierra:#e8e2d5; --lg-mar:#c9def0; --lg-costa:#8d897f; --lg-rio:#7fa6c9; --lg-lago:#c9def0; --lg-mar-rot:#2f5578;
-  --lg-frontera:#4f493f; --lg-rot:#4a463e; --lg-halo:#fbf8f1; --lg-e1:#f2e7ad; --lg-e2:#eeb48c; --lg-e3:#efd4ce; --lg-e4:#d0e5d2; --lg-e5:#e1d6ec; --lg-e6:#e0e3b4; --lg-e7:#d9c3ad; --lg-ruta:#8f1d2c; }
+  --lg-frontera:#4f493f; --lg-rot:#4a463e; --lg-halo:#fbf8f1; --lg-e1:#f2e7ad; --lg-e2:#eeb48c; --lg-e3:#efd4ce; --lg-e4:#d0e5d2; --lg-e5:#e1d6ec; --lg-e6:#e0e3b4; --lg-e7:#d9c3ad; --lg-e8:#e3b7d3; --lg-ruta:#8f1d2c; }
 /* (15-11) El mapa se ve igual de día que de noche (lo pide el profesor): sus colores no cambian con el tema, y dentro
    del dibujo se fijan también la tinta, el fondo y el color de la época a sus valores de día. */
 #biografias .lg-svg{ --ink:#22242b; --surface:#faf8f3; --on-e:#fff; --e:#267A5B }
@@ -4030,7 +4030,7 @@ figure.mq .mq-ir{font-size:.85rem;font-weight:600;color:var(--accent);white-spac
 #biografias .lg-mar{fill:var(--lg-mar)}
 #biografias .lg-tierra{fill:var(--lg-tierra);stroke:var(--lg-costa);stroke-width:.6;stroke-linejoin:round}
 #biografias .lg-e1{fill:var(--lg-e1)} #biografias .lg-e2{fill:var(--lg-e2)} #biografias .lg-e3{fill:var(--lg-e3)}
-#biografias .lg-e7{fill:var(--lg-e7)} #biografias .lg-e4{fill:var(--lg-e4)} #biografias .lg-e5{fill:var(--lg-e5)} #biografias .lg-e6{fill:var(--lg-e6)}
+#biografias .lg-e7{fill:var(--lg-e7)} #biografias .lg-e4{fill:var(--lg-e4)} #biografias .lg-e5{fill:var(--lg-e5)} #biografias .lg-e6{fill:var(--lg-e6)} #biografias .lg-e8{fill:var(--lg-e8)}
 #biografias .lg-sin-costa{stroke:none}
 #biografias .lg-lago{fill:var(--lg-lago);stroke:var(--lg-rio);stroke-width:.4}
 #biografias .lg-rio{fill:none;stroke:var(--lg-rio);stroke-width:.7;stroke-linecap:round;stroke-linejoin:round}
