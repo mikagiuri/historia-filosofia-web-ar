@@ -3864,17 +3864,17 @@ figure.mq .mq-ir{font-size:.85rem;font-weight:600;color:var(--accent);white-spac
 /* ==== css/biografias.css ==== */
 /* ===== Biografías: biografías de los pensadores de la teoría (biografiasview.js) =====
    Colores de época = los del eje cronológico del curso (eje_cronologico.js); en oscuro, tonos claros. */
-#biografias, .bio-strip{
+#biografias, .bio-strip, .lg-fuera{
   --e-ant:#8F6600; --e-med:#8A4B84; --e-ren:#B83220; --e-mod:#0A76A0; --e-ilu:#5B4FC4; --e-con:#267A5B;
 }
 @media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) #biografias, :root:not([data-theme="light"]) .bio-strip{ --e-ant:#E3B23C; --e-med:#C48ABF; --e-ren:#F07A66; --e-mod:#5BC3EA; --e-ilu:#A9A2F2; --e-con:#6FCBA6; }
+  :root:not([data-theme="light"]) #biografias, :root:not([data-theme="light"]) .bio-strip, :root:not([data-theme="light"]) .lg-fuera{ --e-ant:#E3B23C; --e-med:#C48ABF; --e-ren:#F07A66; --e-mod:#5BC3EA; --e-ilu:#A9A2F2; --e-con:#6FCBA6; }
 }
-:root[data-theme="dark"] #biografias, :root[data-theme="dark"] .bio-strip{ --e-ant:#E3B23C; --e-med:#C48ABF; --e-ren:#F07A66; --e-mod:#5BC3EA; --e-ilu:#A9A2F2; --e-con:#6FCBA6; }
-:is(#biografias, .bio-strip) [data-b="ant"]{ --e:var(--e-ant) } :is(#biografias, .bio-strip) [data-b="med"]{ --e:var(--e-med) }
-:is(#biografias, .bio-strip) [data-b="ren"]{ --e:var(--e-ren) } :is(#biografias, .bio-strip) [data-b="mod"]{ --e:var(--e-mod) }
-:is(#biografias, .bio-strip) [data-b="ilu"]{ --e:var(--e-ilu) }   /* (29-09) Ilustración */
-:is(#biografias, .bio-strip) [data-b="con"]{ --e:var(--e-con) }
+:root[data-theme="dark"] #biografias, :root[data-theme="dark"] .bio-strip, :root[data-theme="dark"] .lg-fuera{ --e-ant:#E3B23C; --e-med:#C48ABF; --e-ren:#F07A66; --e-mod:#5BC3EA; --e-ilu:#A9A2F2; --e-con:#6FCBA6; }
+:is(#biografias, .bio-strip, .lg-fuera) [data-b="ant"]{ --e:var(--e-ant) } :is(#biografias, .bio-strip, .lg-fuera) [data-b="med"]{ --e:var(--e-med) }
+:is(#biografias, .bio-strip, .lg-fuera) [data-b="ren"]{ --e:var(--e-ren) } :is(#biografias, .bio-strip, .lg-fuera) [data-b="mod"]{ --e:var(--e-mod) }
+:is(#biografias, .bio-strip, .lg-fuera) [data-b="ilu"]{ --e:var(--e-ilu) }   /* (29-09) Ilustración */
+:is(#biografias, .bio-strip, .lg-fuera) [data-b="con"]{ --e:var(--e-con) }
 
 #biografias .filterbar[hidden], #biografias .bio-count[hidden]{display:none}
 #biografias .bio-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--e);margin-inline-end:6px;vertical-align:1px}
@@ -4015,97 +4015,152 @@ figure.mq .mq-ir{font-size:.85rem;font-weight:600;color:var(--accent);white-spac
    El SVG no trae colores: salen de las variables de la web, y es igual en claro y en oscuro. --e es el color de la época.
    --lg-e1 … --lg-e9 son los tonos suaves de los estados (fronteras de época): cuál lleva cada uno lo dice
    tools/fronteras_epoca.js. El azul se reserva para el mar, ríos y lagos: ningún estado va en azul. El color no va solo: cada estado lleva su frontera trazada y su nombre. */
-#biografias .bio-lug{ --lg-tierra:#e8e2d5; --lg-mar:#c9def0; --lg-costa:#8d897f; --lg-rio:#7fa6c9; --lg-lago:#c9def0; --lg-mar-rot:#2f5578;
+:is(#biografias, .lg-fuera) .bio-lug{ --lg-tierra:#e8e2d5; --lg-mar:#c9def0; --lg-costa:#8d897f; --lg-rio:#7fa6c9; --lg-lago:#c9def0; --lg-mar-rot:#2f5578;
   --lg-frontera:#4f493f; --lg-rot:#4a463e; --lg-halo:#fbf8f1; --lg-e1:#f2e7ad; --lg-e2:#eeb48c; --lg-e3:#efd4ce; --lg-e4:#d0e5d2; --lg-e5:#e1d6ec; --lg-e6:#e0e3b4; --lg-e7:#d9c3ad; --lg-e8:#e3b7d3; --lg-e9:#df9a9a; --lg-ruta:#8f1d2c; --lg-ciudad:#1d6b45; --lg-pueblo:#6a645a; }
 /* (15-11) El mapa se ve igual de día que de noche (lo pide el profesor): sus colores no cambian con el tema, y dentro
    del dibujo se fijan también la tinta, el fondo y el color de la época a sus valores de día. */
-#biografias .lg-svg{ --ink:#22242b; --surface:#faf8f3; --on-e:#fff; --e:#267A5B }
-#biografias [data-b="ant"] .lg-svg{--e:#8F6600} #biografias [data-b="med"] .lg-svg{--e:#8A4B84} #biografias [data-b="ren"] .lg-svg{--e:#B83220}
-#biografias [data-b="mod"] .lg-svg{--e:#0A76A0} #biografias [data-b="ilu"] .lg-svg{--e:#5B4FC4} #biografias [data-b="con"] .lg-svg{--e:#267A5B}
-#biografias .lg-intro{font-size:1rem;line-height:1.6;max-width:70ch;margin:0 0 12px}
-#biografias .lg-cuerpo{display:grid;gap:12px}
-#biografias .lg-col{min-width:0}
-#biografias .lg-mapa{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
-#biografias .lg-svg{display:block;width:100%;height:auto;direction:ltr}
-#biografias .lg-mar{fill:var(--lg-mar)}
-#biografias .lg-tierra{fill:var(--lg-tierra);stroke:var(--lg-costa);stroke-width:.6;stroke-linejoin:round}
-#biografias .lg-e1{fill:var(--lg-e1)} #biografias .lg-e2{fill:var(--lg-e2)} #biografias .lg-e3{fill:var(--lg-e3)}
-#biografias .lg-e7{fill:var(--lg-e7)} #biografias .lg-e4{fill:var(--lg-e4)} #biografias .lg-e5{fill:var(--lg-e5)} #biografias .lg-e6{fill:var(--lg-e6)} #biografias .lg-e8{fill:var(--lg-e8)} #biografias .lg-e9{fill:var(--lg-e9)}
-#biografias .lg-sin-costa{stroke:none}
-#biografias .lg-trama{stroke:none;pointer-events:none}   /* rayas del tono de otro estado (hegemonía): el relleno es un <pattern> del propio SVG */
-#biografias .lg-k .lg-trama{stroke:var(--lg-frontera);stroke-width:1}
-#biografias .lg-lago{fill:var(--lg-lago);stroke:var(--lg-rio);stroke-width:.4}
-#biografias .lg-rio{fill:none;stroke:var(--lg-rio);stroke-width:.7;stroke-linecap:round;stroke-linejoin:round}
-#biografias .lg-frontera{fill:none;stroke:var(--lg-costa);stroke-width:.55;stroke-dasharray:2 2;opacity:.8}
-#biografias .lg-epoca{stroke:var(--lg-frontera);stroke-width:1.35;stroke-dasharray:none;stroke-linejoin:round;stroke-linecap:round;opacity:1}   /* fronteras de época: continuas y marcadas */
-#biografias .lg-interna{fill:none;stroke:var(--lg-frontera);stroke-width:.7;stroke-dasharray:.6 2.2;stroke-linecap:round}   /* estados de dentro de un imperio (recuadro ampliado) */
-#biografias .lg-anio{font:600 8.5px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--lg-mar);stroke-width:3px;stroke-linejoin:round}
-#biografias .lg-ruta{fill:none;stroke:var(--lg-ruta);stroke-width:1.5;stroke-dasharray:4 2.5;stroke-linecap:round;opacity:.95}   /* (15-11) granate: no es el color de ningún estado */
-#biografias .lg-flecha, #biografias .lg-punto{fill:var(--lg-ruta)}
-#biografias .lg-ciudad{fill:var(--lg-ciudad);stroke:var(--lg-halo);stroke-width:.7}   /* ciudad de un poder en tierra de otro (las polis de Asia Menor, Italia o Tracia): un punto, sin nombre */
-#biografias .lg-con-tramo .lg-tramo{opacity:.28}   /* (15-11) con una parada elegida, solo destaca el tramo por el que llegó */
-#biografias .lg-con-tramo .lg-tramo.on{opacity:1}
-#biografias .lg-tramo.on .lg-ruta{stroke-width:2.4;stroke-dasharray:none;opacity:1}
-#biografias .lg-tramo.on .lg-flecha{stroke:var(--lg-ruta);stroke-width:2.2;stroke-linejoin:round}
-#biografias .lg-marco{fill:none;stroke:none}
-#biografias .lg-caja, #biografias .lg-marco-det{fill:none;stroke:var(--ink);stroke-width:.8}
-#biografias .lg-guia{fill:none;stroke:var(--ink);stroke-width:.5;stroke-dasharray:1.5 2;opacity:.7}
-#biografias .lg-escala path{fill:none;stroke:var(--ink);stroke-width:.9}
-#biografias .lg-km{font:500 8px var(--sans);fill:var(--ink)}
-#biografias .lg-rot{pointer-events:none;paint-order:stroke;stroke:var(--lg-halo);stroke-opacity:.55;stroke-width:2.4px;stroke-linejoin:round}
-#biografias .lg-rot-pais{font:600 8.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;fill:var(--lg-rot)}
-#biografias .lg-rot-menor{font:600 7.5px var(--sans);letter-spacing:.04em;fill:var(--lg-rot)}
-#biografias .lg-rot-interno{font:italic 500 8px var(--sans);fill:var(--lg-rot)}
-#biografias .lg-rot-pueblo{font:italic 500 8px var(--sans);fill:var(--lg-pueblo)}   /* pueblos sin Estado, sobre la tierra sin color */
-#biografias .lg-rot-mar{font:italic 9px var(--serif);fill:var(--lg-mar-rot);stroke:var(--lg-mar);stroke-opacity:1}
-:root[lang="ar"] #biografias .lg-rot{letter-spacing:0;font-size:10px}   /* el árabe no admite separar letras */
-:root[lang="ar"] #biografias .lg-rot-menor, :root[lang="ar"] #biografias .lg-rot-interno, :root[lang="ar"] #biografias .lg-rot-pueblo{font-size:8.5px}
-#biografias .lg-m{cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent}
-#biografias .lg-toque{fill:transparent}
-#biografias .lg-c{fill:var(--ink);stroke:var(--surface);stroke-width:1.2}
-#biografias .lg-num{font:600 11.5px var(--sans);fill:var(--surface);pointer-events:none;font-variant-numeric:tabular-nums}
-#biografias .lg-m:hover .lg-c{fill:var(--e)}
-#biografias .lg-m:hover .lg-num{fill:var(--on-e)}
-#biografias .lg-m.on .lg-toque{fill:var(--e);opacity:.28}
-#biografias .lg-m.on .lg-c{fill:var(--e);stroke:var(--ink);stroke-width:1.4}
-#biografias .lg-m.on .lg-num{fill:var(--on-e)}
-#biografias .lg-m:focus-visible .lg-toque{fill:none;stroke:var(--accent);stroke-width:2.5;opacity:1}
+:is(#biografias, .lg-fuera) .lg-svg{ --ink:#22242b; --surface:#faf8f3; --on-e:#fff; --e:#267A5B }
+:is(#biografias, .lg-fuera) [data-b="ant"] .lg-svg{--e:#8F6600} :is(#biografias, .lg-fuera) [data-b="med"] .lg-svg{--e:#8A4B84} :is(#biografias, .lg-fuera) [data-b="ren"] .lg-svg{--e:#B83220}
+:is(#biografias, .lg-fuera) [data-b="mod"] .lg-svg{--e:#0A76A0} :is(#biografias, .lg-fuera) [data-b="ilu"] .lg-svg{--e:#5B4FC4} :is(#biografias, .lg-fuera) [data-b="con"] .lg-svg{--e:#267A5B}
+:is(#biografias, .lg-fuera) .lg-intro{font-size:1rem;line-height:1.6;max-width:70ch;margin:0 0 12px}
+:is(#biografias, .lg-fuera) .lg-cuerpo{display:grid;gap:12px}
+:is(#biografias, .lg-fuera) .lg-col{min-width:0}
+:is(#biografias, .lg-fuera) .lg-mapa{margin:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+:is(#biografias, .lg-fuera) .lg-svg{display:block;width:100%;height:auto;direction:ltr}
+:is(#biografias, .lg-fuera) .lg-mar{fill:var(--lg-mar)}
+:is(#biografias, .lg-fuera) .lg-tierra{fill:var(--lg-tierra);stroke:var(--lg-costa);stroke-width:.6;stroke-linejoin:round}
+:is(#biografias, .lg-fuera) .lg-e1{fill:var(--lg-e1)} :is(#biografias, .lg-fuera) .lg-e2{fill:var(--lg-e2)} :is(#biografias, .lg-fuera) .lg-e3{fill:var(--lg-e3)}
+:is(#biografias, .lg-fuera) .lg-e7{fill:var(--lg-e7)} :is(#biografias, .lg-fuera) .lg-e4{fill:var(--lg-e4)} :is(#biografias, .lg-fuera) .lg-e5{fill:var(--lg-e5)} :is(#biografias, .lg-fuera) .lg-e6{fill:var(--lg-e6)} :is(#biografias, .lg-fuera) .lg-e8{fill:var(--lg-e8)} :is(#biografias, .lg-fuera) .lg-e9{fill:var(--lg-e9)}
+:is(#biografias, .lg-fuera) .lg-sin-costa{stroke:none}
+:is(#biografias, .lg-fuera) .lg-trama{stroke:none;pointer-events:none}   /* rayas del tono de otro estado (hegemonía): el relleno es un <pattern> del propio SVG */
+:is(#biografias, .lg-fuera) .lg-k .lg-trama{stroke:var(--lg-frontera);stroke-width:1}
+:is(#biografias, .lg-fuera) .lg-lago{fill:var(--lg-lago);stroke:var(--lg-rio);stroke-width:.4}
+:is(#biografias, .lg-fuera) .lg-rio{fill:none;stroke:var(--lg-rio);stroke-width:.7;stroke-linecap:round;stroke-linejoin:round}
+:is(#biografias, .lg-fuera) .lg-frontera{fill:none;stroke:var(--lg-costa);stroke-width:.55;stroke-dasharray:2 2;opacity:.8}
+:is(#biografias, .lg-fuera) .lg-epoca{stroke:var(--lg-frontera);stroke-width:1.35;stroke-dasharray:none;stroke-linejoin:round;stroke-linecap:round;opacity:1}   /* fronteras de época: continuas y marcadas */
+:is(#biografias, .lg-fuera) .lg-interna{fill:none;stroke:var(--lg-frontera);stroke-width:.7;stroke-dasharray:.6 2.2;stroke-linecap:round}   /* estados de dentro de un imperio (recuadro ampliado) */
+:is(#biografias, .lg-fuera) .lg-anio{font:600 8.5px var(--sans);fill:var(--ink);paint-order:stroke;stroke:var(--lg-mar);stroke-width:3px;stroke-linejoin:round}
+:is(#biografias, .lg-fuera) .lg-ruta{fill:none;stroke:var(--lg-ruta);stroke-width:1.5;stroke-dasharray:4 2.5;stroke-linecap:round;opacity:.95}   /* (15-11) granate: no es el color de ningún estado */
+:is(#biografias, .lg-fuera) .lg-flecha, :is(#biografias, .lg-fuera) .lg-punto{fill:var(--lg-ruta)}
+:is(#biografias, .lg-fuera) .lg-ciudad{fill:var(--lg-ciudad);stroke:var(--lg-halo);stroke-width:.7}   /* ciudad de un poder en tierra de otro (las polis de Asia Menor, Italia o Tracia): un punto, sin nombre */
+:is(#biografias, .lg-fuera) .lg-con-tramo .lg-tramo{opacity:.28}   /* (15-11) con una parada elegida, solo destaca el tramo por el que llegó */
+:is(#biografias, .lg-fuera) .lg-con-tramo .lg-tramo.on{opacity:1}
+:is(#biografias, .lg-fuera) .lg-tramo.on .lg-ruta{stroke-width:2.4;stroke-dasharray:none;opacity:1}
+:is(#biografias, .lg-fuera) .lg-tramo.on .lg-flecha{stroke:var(--lg-ruta);stroke-width:2.2;stroke-linejoin:round}
+:is(#biografias, .lg-fuera) .lg-marco{fill:none;stroke:none}
+:is(#biografias, .lg-fuera) .lg-caja, :is(#biografias, .lg-fuera) .lg-marco-det{fill:none;stroke:var(--ink);stroke-width:.8}
+:is(#biografias, .lg-fuera) .lg-guia{fill:none;stroke:var(--ink);stroke-width:.5;stroke-dasharray:1.5 2;opacity:.7}
+:is(#biografias, .lg-fuera) .lg-escala path{fill:none;stroke:var(--ink);stroke-width:.9}
+:is(#biografias, .lg-fuera) .lg-km{font:500 8px var(--sans);fill:var(--ink)}
+:is(#biografias, .lg-fuera) .lg-rot{pointer-events:none;paint-order:stroke;stroke:var(--lg-halo);stroke-opacity:.55;stroke-width:2.4px;stroke-linejoin:round}
+:is(#biografias, .lg-fuera) .lg-rot-pais{font:600 8.5px var(--sans);letter-spacing:.14em;text-transform:uppercase;fill:var(--lg-rot)}
+:is(#biografias, .lg-fuera) .lg-rot-menor{font:600 7.5px var(--sans);letter-spacing:.04em;fill:var(--lg-rot)}
+:is(#biografias, .lg-fuera) .lg-rot-interno{font:italic 500 8px var(--sans);fill:var(--lg-rot)}
+:is(#biografias, .lg-fuera) .lg-rot-pueblo{font:italic 500 8px var(--sans);fill:var(--lg-pueblo)}   /* pueblos sin Estado, sobre la tierra sin color */
+:is(#biografias, .lg-fuera) .lg-rot-region{font:italic 600 8px var(--sans);letter-spacing:.06em;fill:var(--lg-rot)}   /* (15-11) regiones del mundo griego, en un mapa sin estados (los presocráticos) */
+:is(#biografias, .lg-fuera) .lg-rot-mar{font:italic 9px var(--serif);fill:var(--lg-mar-rot);stroke:var(--lg-mar);stroke-opacity:1}
+:root[lang="ar"] :is(#biografias, .lg-fuera) .lg-rot{letter-spacing:0;font-size:10px}   /* el árabe no admite separar letras */
+:root[lang="ar"] :is(#biografias, .lg-fuera) .lg-rot-region, :root[lang="ar"] :is(#biografias, .lg-fuera) .lg-rot-menor, :root[lang="ar"] :is(#biografias, .lg-fuera) .lg-rot-interno, :root[lang="ar"] :is(#biografias, .lg-fuera) .lg-rot-pueblo{font-size:8.5px}
+:is(#biografias, .lg-fuera) .lg-m{cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent}
+:is(#biografias, .lg-fuera) .lg-toque{fill:transparent}
+:is(#biografias, .lg-fuera) .lg-c{fill:var(--ink);stroke:var(--surface);stroke-width:1.2}
+:is(#biografias, .lg-fuera) .lg-num{font:600 11.5px var(--sans);fill:var(--surface);pointer-events:none;font-variant-numeric:tabular-nums}
+:is(#biografias, .lg-fuera) .lg-m:hover .lg-c{fill:var(--e)}
+:is(#biografias, .lg-fuera) .lg-m:hover .lg-num{fill:var(--on-e)}
+:is(#biografias, .lg-fuera) .lg-m.on .lg-toque{fill:var(--e);opacity:.28}
+:is(#biografias, .lg-fuera) .lg-m.on .lg-c{fill:var(--e);stroke:var(--ink);stroke-width:1.4}
+:is(#biografias, .lg-fuera) .lg-m.on .lg-num{fill:var(--on-e)}
+:is(#biografias, .lg-fuera) .lg-m:focus-visible .lg-toque{fill:none;stroke:var(--accent);stroke-width:2.5;opacity:1}
+/* (15-11) el mapa dentro de la teoría (lugaresEn, en lugaresview.js): mismo aspecto que en la ficha, con aire arriba y abajo */
+.lg-fuera{margin:1.4em 0 1.6em}
+.lg-fuera .bio-lug h3{margin:0 0 6px}
+/* en la teoría la columna es estrecha: el mapa va entero, la ficha de la parada debajo y la lista, compacta (lugar y fechas;
+   lo que hizo allí se lee en la ficha al tocarla) */
+.lg-fuera .lg-cuerpo{grid-template-columns:minmax(0,1fr) !important}
+.lg-fuera .lg-col:first-child{position:static !important}
+.lg-fuera .lg-mapa{max-width:640px}
+.lg-fuera .lg-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(13rem,1fr));gap:2px 8px}
+.lg-fuera .lg-lista .lg-t{display:none !important}
+.lg-fuera .lg-p{padding:5px 8px;align-items:center}
+/* (15-11) botones por escuela (mapa de los presocráticos): la elegida deja a la vista sus ciudades */
+:is(#biografias, .lg-fuera) .lg-grupos{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
+:is(#biografias, .lg-fuera) .lg-g[aria-pressed="true"]{background:var(--e);border-color:var(--e);color:var(--on-e)}
+:is(#biografias, .lg-fuera) .lg-gdesc{margin:0 0 8px;font-size:.95rem;line-height:1.45;max-width:70ch}
+:is(#biografias, .lg-fuera) .lg-m.lg-otra{opacity:.22}
+/* un color por escuela (fijo, igual de día y de noche, ninguno azul): números del mapa, de la lista, de la ficha y de la
+   línea del tiempo, y la muestra de cada botón */
+:is(#biografias, .lg-fuera) .lg-s0{--sc:#9a6400} :is(#biografias, .lg-fuera) .lg-s1{--sc:#6a4c9c} :is(#biografias, .lg-fuera) .lg-s2{--sc:#b4441c}
+:is(#biografias, .lg-fuera) .lg-s3{--sc:#2e7650} :is(#biografias, .lg-fuera) .lg-s4{--sc:#a3366c} :is(#biografias, .lg-fuera) .lg-s5{--sc:#555a5f}
+:is(#biografias, .lg-fuera) .lg-con-s .lg-c, :is(#biografias, .lg-fuera) .lg-m.lg-con-s:hover .lg-c{fill:var(--sc)}
+:is(#biografias, .lg-fuera) .lg-m.lg-con-s .lg-num{fill:#fff}
+:is(#biografias, .lg-fuera) .lg-m.lg-con-s.on .lg-c{fill:var(--sc);stroke:var(--ink);stroke-width:2.2}
+:is(#biografias, .lg-fuera) .lg-n.lg-con-s{background:var(--sc) !important;color:#fff !important}
+:is(#biografias, .lg-fuera) .lg-sw{display:inline-block;width:.7em;height:.7em;border-radius:50%;background:var(--sc);margin-inline-end:6px;vertical-align:.02em}
+:is(#biografias, .lg-fuera) .lg-g.lg-con-s[aria-pressed="true"], :is(#biografias, .lg-fuera) .lg-g[class*="lg-s"][aria-pressed="true"]{background:var(--sc);border-color:var(--sc);color:#fff}
+:is(#biografias, .lg-fuera) .lg-g[class*="lg-s"][aria-pressed="true"] .lg-sw{background:#fff}
+/* Jonia y la Magna Grecia, rayadas como en el mapa del profesor; las flechas de viaje, solo con su escuela pulsada */
+:is(#biografias, .lg-fuera) .lg-zona{stroke:none;pointer-events:none}
+:is(#biografias, .lg-fuera) .lg-zona-raya{stroke:var(--lg-costa);stroke-width:.75;opacity:.75}
+:is(#biografias, .lg-fuera) .lg-zona-borde{fill:none;stroke:#6f6858;stroke-width:.8;stroke-dasharray:4 2.5;pointer-events:none}
+:is(#biografias, .lg-fuera) .lg-viaje{display:none}
+:is(#biografias, .lg-fuera) .lg-viaje.on{display:inline}
+:is(#biografias, .lg-fuera) .lg-viaje .lg-ruta{stroke-width:2;stroke-dasharray:none}
+:is(#biografias, .lg-fuera) .lg-viaje .lg-ruta.lg-dudoso{stroke-dasharray:3 3}
+/* la línea del tiempo, bajo el mapa */
+:is(#biografias, .lg-fuera) .lg-tl{margin:8px 0 0;border:1px solid var(--line);border-radius:10px;background:#faf8f3;padding:4px 6px 2px}
+:is(#biografias, .lg-fuera) .lg-linea{display:block;width:100%;height:auto;direction:ltr;--ink:#22242b;--surface:#faf8f3}
+:is(#biografias, .lg-fuera) .lg-eje{fill:none;stroke:#6f6858;stroke-width:1}
+:is(#biografias, .lg-fuera) .lg-tl-a{font:500 10px var(--sans);fill:#4a463e}
+:is(#biografias, .lg-fuera) .lg-tl-v{stroke:#b8b2a5;stroke-width:.8}
+:is(#biografias, .lg-fuera) .lg-tl-p{cursor:pointer}
+:is(#biografias, .lg-fuera) .lg-tl-p .lg-c{fill:#22242b;stroke:#faf8f3;stroke-width:1}
+:is(#biografias, .lg-fuera) .lg-tl-p .lg-num{font:600 10px var(--sans);fill:#fff;pointer-events:none}
+:is(#biografias, .lg-fuera) .lg-tl-p.lg-con-s .lg-c{fill:var(--sc)}
+:is(#biografias, .lg-fuera) .lg-tl-p.on .lg-c{stroke:#22242b;stroke-width:1.8}
+:is(#biografias, .lg-fuera) .lg-tl-p.lg-otra{opacity:.22}
+:is(#biografias, .lg-fuera) .lg-m.lg-otra.on{opacity:1}
 /* la leyenda, dentro del marco del mapa: las muestras llevan las clases del dibujo y por eso su mismo color, de día y de noche */
-#biografias .lg-leyenda{border-top:1px solid var(--line);padding:7px 10px 8px;font:500 .78rem/1.35 var(--sans);color:var(--ink)}
-#biografias .lg-leyenda ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px}
-#biografias .lg-leyenda li{display:flex;align-items:center;gap:5px}
-#biografias .lg-k{flex:none;width:14px;height:14px;display:block}
-#biografias .lg-k-m{stroke:var(--lg-frontera);stroke-width:1}
+:is(#biografias, .lg-fuera) .lg-leyenda{border-top:1px solid var(--line);padding:7px 10px 8px;font:500 .78rem/1.35 var(--sans);color:var(--ink)}
+:is(#biografias, .lg-fuera) .lg-leyenda ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px}
+:is(#biografias, .lg-fuera) .lg-leyenda li{display:flex;align-items:center;gap:5px}
+:is(#biografias, .lg-fuera) .lg-k{flex:none;width:14px;height:14px;display:block}
+:is(#biografias, .lg-fuera) .lg-k-m{stroke:var(--lg-frontera);stroke-width:1}
 /* la parada elegida, bajo el mapa */
-#biografias .lg-ficha{display:flex;gap:10px;align-items:flex-start;margin-top:10px;padding:10px 12px;min-height:4.2em;border:1px solid var(--line);border-inline-start:3px solid var(--e);border-radius:10px;border-start-start-radius:0;border-end-start-radius:0;background:var(--surface-2)}
-#biografias .lg-ficha.vacia{align-items:center}
-#biografias .lg-pista{color:var(--muted);font-size:.92rem}
-#biografias .lg-n{flex:none;display:grid;place-items:center;width:1.75em;height:1.75em;border-radius:50%;background:var(--ink);color:var(--surface);font:600 .82rem var(--sans);font-variant-numeric:tabular-nums}
-#biografias .lg-ficha .lg-n, #biografias .lg-lista li.on .lg-n{background:var(--e);color:var(--on-e)}
-#biografias .lg-txt{min-width:0;display:block}
-#biografias .lg-cab{display:flex;flex-wrap:wrap;gap:0 10px;align-items:baseline}
-#biografias .lg-lugar{font-family:var(--serif);font-size:1.05rem;font-weight:600}
-#biografias .lg-fechas{font:600 .8rem var(--mono);color:var(--e)}
-#biografias .lg-t{display:block;font-family:var(--serif);font-size:1rem;line-height:1.5;margin-top:2px}
+:is(#biografias, .lg-fuera) .lg-ficha{display:flex;gap:10px;align-items:flex-start;margin-top:10px;padding:10px 12px;min-height:4.2em;border:1px solid var(--line);border-inline-start:3px solid var(--e);border-radius:10px;border-start-start-radius:0;border-end-start-radius:0;background:var(--surface-2)}
+:is(#biografias, .lg-fuera) .lg-ficha.vacia{align-items:center}
+:is(#biografias, .lg-fuera) .lg-pista{color:var(--muted);font-size:.92rem}
+:is(#biografias, .lg-fuera) .lg-n{flex:none;display:grid;place-items:center;width:1.75em;height:1.75em;border-radius:50%;background:var(--ink);color:var(--surface);font:600 .82rem var(--sans);font-variant-numeric:tabular-nums}
+:is(#biografias, .lg-fuera) .lg-ficha .lg-n, :is(#biografias, .lg-fuera) .lg-lista li.on .lg-n{background:var(--e);color:var(--on-e)}
+:is(#biografias, .lg-fuera) .lg-txt{min-width:0;display:block}
+:is(#biografias, .lg-fuera) .lg-cab{display:flex;flex-wrap:wrap;gap:0 10px;align-items:baseline}
+:is(#biografias, .lg-fuera) .lg-lugar{font-family:var(--serif);font-size:1.05rem;font-weight:600}
+:is(#biografias, .lg-fuera) .lg-fechas{font:600 .8rem var(--mono);color:var(--e)}
+:is(#biografias, .lg-fuera) .lg-t{display:block;font-family:var(--serif);font-size:1rem;line-height:1.5;margin-top:2px}
 /* la lista */
-#biografias .lg-barra{margin:0 0 6px}
-#biografias .lg-lista{list-style:none;margin:0;padding:0}
-#biografias .lg-p{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:start;padding:8px 10px;border:1px solid transparent;border-radius:10px;background:none;font:inherit;color:var(--ink);cursor:pointer}
-#biografias .lg-p:hover{background:var(--surface-2)}
-#biografias .lg-lista li.on .lg-p{background:var(--surface-2);border-color:var(--e)}
-#biografias .lg-p:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-#biografias .lg-nota-fr{margin:6px 2px 0}   /* la frase de las fronteras de la época, pegada al mapa */
-#biografias .lg-nota{font-size:.8rem;line-height:1.45;color:var(--muted);margin:10px 0 0;max-width:80ch}
+:is(#biografias, .lg-fuera) .lg-barra{margin:0 0 6px}
+:is(#biografias, .lg-fuera) .lg-lista{list-style:none;margin:0;padding:0}
+:is(#biografias, .lg-fuera) .lg-p{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:start;padding:8px 10px;border:1px solid transparent;border-radius:10px;background:none;font:inherit;color:var(--ink);cursor:pointer}
+:is(#biografias, .lg-fuera) .lg-p:hover{background:var(--surface-2)}
+:is(#biografias, .lg-fuera) .lg-lista li.on .lg-p{background:var(--surface-2);border-color:var(--e)}
+:is(#biografias, .lg-fuera) .lg-p:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+:is(#biografias, .lg-fuera) .lg-nota-fr{margin:6px 2px 0}   /* la frase de las fronteras de la época, pegada al mapa */
+:is(#biografias, .lg-fuera) .lg-nota{font-size:.8rem;line-height:1.45;color:var(--muted);margin:10px 0 0;max-width:80ch}
 /* modo repaso: nombres y explicaciones tapados hasta que se toca la parada */
-#biografias .lg-repaso-on .lg-p:not([aria-pressed="true"]) .lg-lugar{color:transparent;background:var(--line);border-radius:4px;user-select:none}
-#biografias .lg-repaso-on .lg-p:not([aria-pressed="true"]) .lg-t{display:none}
+:is(#biografias, .lg-fuera) .lg-repaso-on .lg-p:not([aria-pressed="true"]) .lg-lugar{color:transparent;background:var(--line);border-radius:4px;user-select:none}
+:is(#biografias, .lg-fuera) .lg-repaso-on .lg-p:not([aria-pressed="true"]) .lg-t{display:none}
+/* (15-11) en el móvil, la parada tocada se lee en la ficha de bajo el mapa: la lista va compacta (lugar y fechas), para
+   no repetir el texto dos veces seguidas (lo pidió el profesor, 3b-0111) */
+@media (max-width:759px){
+  :is(#biografias, .lg-fuera) .lg-lista .lg-t{display:none}
+  :is(#biografias, .lg-fuera) .lg-p{padding:5px 8px;align-items:center}
+}
 @media (min-width:760px){
-  #biografias .lg-cuerpo{grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:20px;align-items:start}
-  #biografias .lg-col:first-child{position:sticky;top:76px}
+  :is(#biografias, .lg-fuera) .lg-cuerpo{grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:20px;align-items:start}
+  :is(#biografias, .lg-fuera) .lg-col:first-child{position:sticky;top:76px}
 }
 @media print{
-  #biografias .lg-barra, #biografias .lg-ficha{display:none !important}
-  #biografias .lg-mapa{max-width:9cm}
+  :is(#biografias, .lg-fuera) .lg-barra, :is(#biografias, .lg-fuera) .lg-ficha{display:none !important}
+  :is(#biografias, .lg-fuera) .lg-mapa{max-width:9cm}
 }
 
 

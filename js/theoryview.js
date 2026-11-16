@@ -418,6 +418,7 @@ function loadTheory(k){
   if (window.langFragGrc) window.langFragGrc(body);   // DUA D0.6: el griego del tema se marca con lang="grc" para el lector de pantalla
   if (window.DiccEnLinea) window.DiccEnLinea.marcar(body, t.subject, () => window.Itinerario.temaOf("teoria", k, t));   // DUA D1.3 (P3): el Diccionario dentro del texto
   if (window.Itinerario && window.Itinerario.marcarOtraWeb) window.Itinerario.marcarOtraWeb(body);   // (02-11, P-118) «… (en la web de 2.º)»
+  if (typeof lugaresEn === "function") lugaresEn(body);   // (15-11) el mapa «Los lugares de…» que lleve el tema (lugaresview.js), al final: así el Diccionario no marca nada dentro de él
 }
 
 renderTheoryFilter();
